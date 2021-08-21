@@ -28,7 +28,11 @@ class ExistMerchant implements Rule
      */
     public function passes($attribute, $value)
     {
-        return User::merchant()->where($this->column, $value)->whereNull('deleted_at')->exists();
+        return User::mainMerchant()->orWhere(function ($query) {
+            $query->subMerchant();
+        })->where($this->column, $value)
+            ->whereNull('deleted_at')
+            ->exists();
     }
 
     /**

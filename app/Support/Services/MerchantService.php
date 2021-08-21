@@ -110,7 +110,7 @@ class MerchantService extends BaseService
             $config = [
                 'save_path'     =>   User::STORE_PATH,
                 'type'          =>   Media::TYPE_LOGO,
-                'filemime'      =>   FileManager::instance()->getMimesType($file->getClientOriginalExtension()),
+                'filemime'      => (new FileManager())->getMimesType($file->getClientOriginalExtension()),
                 'filename'      =>   $file->getClientOriginalName(),
                 'extension'     =>   $file->getClientOriginalExtension(),
                 'filesize'      =>   $file->getSize(),
@@ -136,7 +136,7 @@ class MerchantService extends BaseService
             $config = [
                 'save_path'     =>   User::STORE_PATH,
                 'type'          =>   Media::TYPE_SSM,
-                'filemime'      =>   FileManager::instance()->getMimesType($file->getClientOriginalExtension()),
+                'filemime'      => (new FileManager())->getMimesType($file->getClientOriginalExtension()),
                 'filename'      =>   $file->getClientOriginalName(),
                 'extension'     =>   $file->getClientOriginalExtension(),
                 'filesize'      =>   $file->getSize(),

@@ -45,7 +45,7 @@ class CountryStateController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CountryStateRequest $request, Country $country)
+    public function store(CountryStateRequest $request)
     {
         DB::beginTransaction();
 
@@ -65,9 +65,9 @@ class CountryStateController extends Controller
                 $file = $request->file('create')['file'];
 
                 if ($request->has('create.withCity')) {
-                    Excel::import(new CountryStateCityImport($country), $file, null, FileManager::instance()->getExcelReaderType($file->extension()));
+                    Excel::import(new CountryStateCityImport($country), $file, null, (new FileManager())->getExcelReaderType($file->extension()));
                 } else {
-                    Excel::import(new CountryStateImport($country), $file, null, FileManager::instance()->getExcelReaderType($file->extension()));
+                    Excel::import(new CountryStateImport($country), $file, null, (new FileManager())->getExcelReaderType($file->extension()));
                 }
             }
 
@@ -116,9 +116,9 @@ class CountryStateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Country $country, CountryState $country_state, CityDataTable $dataTable)
+    public function edit(CountryState $country_state, CityDataTable $dataTable)
     {
-        return $dataTable->with(['country_id' => $country->id, 'country_state_id' => $country_state->id])
+        return $dataTable->with(['country_state_id' => $country_state->id])
             ->render('country.country_state.edit', compact('country', 'country_state'));
     }
 
@@ -129,7 +129,7 @@ class CountryStateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CountryStateRequest $request, Country $country, CountryState $country_state)
+    public function update(CountryStateRequest $request, CountryState $country_state)
     {
         DB::beginTransaction();
 
@@ -178,7 +178,7 @@ class CountryStateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Country $country, CountryState $country_state)
+    public function destroy(CountryState $country_state)
     {
         $action     =   Permission::ACTION_DELETE;
         $module     =   strtolower(trans_choice('modules.country_state', 1));

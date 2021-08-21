@@ -8,23 +8,9 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     protected $custom_facades = [
-        'countryFacade' => \App\Support\Services\CountryService::class,
-        'userDetailFacade' => \App\Support\Services\UserDetailService::class,
-        'projectFacade' => \App\Support\Services\ProjectService::class,
-        'merchantFacade' => \App\Support\Services\MerchantService::class,
-        'ratingFacade' => \App\Support\Services\RatingService::class,
-        'priceFacade' => \App\Support\Services\PriceService::class,
-        'productFacade' => \App\Support\Services\ProductService::class,
-        'packageFacade' => \App\Support\Services\PackageService::class,
-        'productAttributeFacade' => \App\Support\Services\ProductAttributeService::class,
-        'currencyFacade' => \App\Support\Services\CurrencyService::class,
-        'orderFacade' => \App\Support\Services\OrderService::class,
-        'transactionFacade' => \App\Support\Services\TransactionService::class,
-        'cartFacade' => \App\Support\Services\CartService::class,
-        'accountFacade' => \App\Support\Services\AccountService::class,
-        'verificationFacade' => \App\Support\Services\VerificationService::class,
-        'userSubscriptionFacade' => \App\Support\Services\UserSubscriptionService::class,
-        'memberFacade' => \App\Support\Services\MemberService::class,
+        'merchantFacade'    =>  \App\Support\Services\MerchantService::class,
+        'accountFacade'     =>  \App\Support\Services\AccountService::class,
+        'memberFacade'      =>  \App\Support\Services\MemberService::class,
     ];
 
     /**

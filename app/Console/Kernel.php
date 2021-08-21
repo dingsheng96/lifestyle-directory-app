@@ -26,8 +26,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(new DeactivateExpiredSubscription)->daily();
-        $schedule->call(new FailOverdueTransaction)->daily();
+        $schedule->command('passport:purge')->hourly();
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Role;
+use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -29,5 +30,15 @@ class AuthServiceProvider extends ServiceProvider
         Gate::before(function ($user, $ability) {
             return $user->hasRole(Role::ROLE_SUPER_ADMIN) ? true : null;
         });
+
+        Passport::routes();
+
+        Passport::personalAccessClientId(
+            config('passport.personal_access_client.id')
+        );
+
+        Passport::personalAccessClientSecret(
+            config('passport.personal_access_client.secret')
+        );
     }
 }

@@ -63,7 +63,7 @@ class CityController extends Controller
             } else if ($request->hasFile('create.file')) {
 
                 $file = $request->file('create')['file'];
-                Excel::import(new CityImport($country_state), $file, null, FileManager::instance()->getExcelReaderType($file->extension()));
+                Excel::import(new CityImport($country_state), $file, null, (new FileManager())->getExcelReaderType($file->extension()));
             }
 
             DB::commit();

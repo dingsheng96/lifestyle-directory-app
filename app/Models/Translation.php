@@ -13,15 +13,10 @@ class Translation extends Model
     protected $table = 'translations';
 
     protected $fillable = [
-        'translatable_type', 'translatable_id', 'language_id', 'value'
+        'language_id', 'key', 'value'
     ];
 
     // Relationships
-    public function translatable()
-    {
-        return $this->morphTo();
-    }
-
     public function language()
     {
         return $this->belongsTo(Language::class, 'language_id', 'id');
