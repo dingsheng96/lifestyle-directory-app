@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RemoveRemarksInTransactionsTable extends Migration
+class CreateCategorizablesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class RemoveRemarksInTransactionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->dropColumn('remarks');
+        Schema::create('categorizables', function (Blueprint $table) {
+            $table->unsignedBigInteger('category_id')->index();
+            $table->morphs('categorizable');
+
+            $table->foreign('category_id')->references('id')->on('categories');
         });
     }
 
@@ -25,8 +28,6 @@ class RemoveRemarksInTransactionsTable extends Migration
      */
     public function down()
     {
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->string('remarks')->nullable()->after('status');
-        });
+        Schema::dropIfExists('categorizables');
     }
 }

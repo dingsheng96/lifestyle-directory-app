@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RemoveUserCategoryTable extends Migration
+class RenameAboutInBranchDetails extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class RemoveUserCategoryTable extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('user_category');
-        Schema::dropIfExists('categories');
+        Schema::table('branch_details', function (Blueprint $table) {
+            $table->renameColumn('about', 'description');
+        });
     }
 
     /**
@@ -24,6 +25,8 @@ class RemoveUserCategoryTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('branch_details', function (Blueprint $table) {
+            $table->renameColumn('description', 'about');
+        });
     }
 }
