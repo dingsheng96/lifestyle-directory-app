@@ -17,11 +17,6 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             RoleSeeder::class,
             UserSeeder::class,
-            UnitSeeder::class,
-            CurrencySeeder::class,
-            CountrySeeder::class,
-            ProductCategorySeeder::class,
-            ServiceSeeder::class,
         ]);
     }
 }

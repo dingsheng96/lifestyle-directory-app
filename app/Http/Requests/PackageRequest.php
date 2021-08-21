@@ -41,7 +41,7 @@ class PackageRequest extends FormRequest
                     ->whereNull('deleted_at')
             ],
             'status' => [
-                'required', Rule::in(array_keys(Status::instance()->activeStatus())),
+                'required', Rule::in(array_keys((new Status())->activeStatus())),
             ],
             'stock_type' => [
                 'required',  Rule::in([Package::STOCK_TYPE_FINITE, Package::STOCK_TYPE_INFINITE])

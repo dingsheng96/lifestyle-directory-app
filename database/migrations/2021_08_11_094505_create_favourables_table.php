@@ -14,9 +14,9 @@ class CreateFavourablesTable extends Migration
     public function up()
     {
         Schema::create('favourables', function (Blueprint $table) {
+
             $table->unsignedBigInteger('user_id')->index();
             $table->morphs('favourable');
-            $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
         });

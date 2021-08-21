@@ -69,10 +69,6 @@ class AppServiceProvider extends ServiceProvider
 
     private function registerObservers()
     {
-        \App\Models\Project::observe(\App\Observers\ProjectObserver::class);
-        \App\Models\Country::observe(\App\Observers\CountryObserver::class);
-        \App\Models\CountryState::observe(\App\Observers\CountryStateObserver::class);
-        \App\Models\Product::observe(\App\Observers\ProductObserver::class);
-        \App\Models\User::observe(\App\Observers\UserObserver::class);
+        // \App\Models\User::observe(\App\Observers\UserObserver::class);
     }
 }

@@ -2,58 +2,13 @@
 
 namespace App\Helpers;
 
-use App\Models\Order;
-use App\Models\Project;
-use App\Models\UserDetail;
-use App\Models\Transaction;
-
 class Status
 {
-    public static function instance()
-    {
-        return new self();
-    }
-
     public function activeStatus(): array
     {
         return [
-            'active' => __('labels.active'),
-            'inactive'  => __('labels.inactive')
-        ];
-    }
-
-    public function transactionStatus(): array
-    {
-        return [
-            Transaction::STATUS_PENDING => __('labels.pending'),
-            Transaction::STATUS_SUCCESS => __('labels.success'),
-            Transaction::STATUS_FAILED => __('labels.failed'),
-        ];
-    }
-
-    public function orderStatus(): array
-    {
-        return [
-            Order::STATUS_PENDING => __('labels.pending'),
-            Order::STATUS_PAID => __('labels.paid'),
-            Order::STATUS_CANCELLED => __('labels.cancelled'),
-        ];
-    }
-
-    public function verificationStatus(): array
-    {
-        return [
-            UserDetail::STATUS_PENDING => 'Pending',
-            UserDetail::STATUS_APPROVED => 'Approved',
-            UserDetail::STATUS_REJECTED => 'Rejected'
-        ];
-    }
-
-    public function projectStatus(): array
-    {
-        return [
-            Project::STATUS_PUBLISHED => __('labels.published'),
-            Project::STATUS_DRAFT => __('labels.draft'),
+            'active'    =>  __('labels.active'),
+            'inactive'  =>  __('labels.inactive')
         ];
     }
 

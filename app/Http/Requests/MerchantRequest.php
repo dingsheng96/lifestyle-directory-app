@@ -49,7 +49,7 @@ class MerchantRequest extends FormRequest
             'city'              =>  ['required', Rule::exists(City::class, 'id')->where('country_state_id', $this->get('country_state'))],
 
             'reg_no'            =>  ['required', Rule::unique(UserDetail::class, 'reg_no')->ignore($this->route('merchant')->id ?? $this->route('merchant'), 'user_id')->whereNull('deleted_at')],
-            'status'            =>  ['required', Rule::in(array_keys(Status::instance()->activeStatus()))],
+            'status'            =>  ['required', Rule::in(array_keys((new Status())->activeStatus()))],
             'website'           =>  ['nullable', 'url'],
             'facebook'          =>  ['nullable', 'url'],
             'whatsapp'          =>  ['nullable', new PhoneFormat],

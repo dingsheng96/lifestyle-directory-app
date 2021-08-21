@@ -47,7 +47,7 @@ class AdminRequest extends FormRequest
                 ],
                 'update.status' => [
                     'required',
-                    Rule::in(array_keys(Status::instance()->activeStatus()))
+                    Rule::in(array_keys((new Status())->activeStatus()))
                 ],
                 'update.password' => [
                     'nullable',
@@ -71,7 +71,7 @@ class AdminRequest extends FormRequest
             ],
             'create.status' => [
                 'required',
-                Rule::in(array_keys(Status::instance()->activeStatus()))
+                Rule::in(array_keys((new Status())->activeStatus()))
             ],
             'create.password' => [
                 'required',

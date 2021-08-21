@@ -27,7 +27,7 @@ class UserVerificationController extends Controller
 
     public function __construct()
     {
-        $this->statuses = Status::instance()->verificationStatus();
+        $this->statuses = (new Status())->verificationStatus();
     }
 
     /**

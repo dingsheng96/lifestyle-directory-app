@@ -24,7 +24,7 @@ class PackageController extends Controller
     {
         $this->products     =   Product::with(['productAttributes.prices'])->orderBy('name', 'asc')->get();
         $this->stock_types  =   Misc::instance()->packageStockTypes();
-        $this->statuses     =   Status::instance()->activeStatus();
+        $this->statuses     =   (new Status())->activeStatus();
     }
 
     /**

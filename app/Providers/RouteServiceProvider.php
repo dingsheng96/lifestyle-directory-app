@@ -107,13 +107,5 @@ class RouteServiceProvider extends ServiceProvider
                 })
                 ->firstOrFail();
         });
-
-        Route::bind('ads', function ($value) {
-            return Product::where('id', $value)
-                ->whereHas('productCategory', function ($query) {
-                    $query->where('name', ProductCategory::TYPE_ADS);
-                })
-                ->firstOrFail();
-        });
     }
 }

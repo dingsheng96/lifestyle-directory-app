@@ -19,7 +19,7 @@ class CreateMediaTable extends Migration
 
         Schema::create('media', function (Blueprint $table) {
             $table->id();
-            $table->morphs('sourceable');
+            $table->morphs('mediable');
             $table->string('type')->index();
             $table->string('original_filename')->nullable();
             $table->string('filename')->nullable();
@@ -29,7 +29,6 @@ class CreateMediaTable extends Migration
             $table->string('mime')->nullable();
             $table->longText('properties')->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

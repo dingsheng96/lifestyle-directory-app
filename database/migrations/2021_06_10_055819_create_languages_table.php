@@ -20,7 +20,7 @@ class CreateLanguagesTable extends Migration
         Schema::create('languages', function (Blueprint $table) {
             $table->id();
             $table->string('name')->index();
-            $table->string('code');
+            $table->string('code', 25)->index();
             $table->timestamps();
             $table->softDeletes();
         });

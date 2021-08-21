@@ -46,7 +46,7 @@ class MerchantController extends Controller
      */
     public function create()
     {
-        $statuses = Status::instance()->activeStatus();
+        $statuses = (new Status())->activeStatus();
 
         return view('merchant.create', compact('statuses'));
     }
@@ -139,7 +139,7 @@ class MerchantController extends Controller
         $logo           =   $merchant->media()->logo()->first();
         $documents      =   $merchant->media()->ssm()->get();
         $subscription   =   $merchant->userSubscriptions->first();
-        $statuses       =   Status::instance()->activeStatus();
+        $statuses       =   (new Status())->activeStatus();
 
         $plans = ProductAttribute::whereHas('product', function ($query) {
             $query->filterCategory(ProductCategory::TYPE_SUBSCRIPTION);

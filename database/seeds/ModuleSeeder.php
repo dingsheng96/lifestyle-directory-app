@@ -16,15 +16,13 @@ class ModuleSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
         DB::statement('TRUNCATE TABLE ' . (new Module())->getTable());
 
-        collect($this->getData())
-            ->sortBy('name')
-            ->each(function ($data, $key) {
-                Module::create([
-                    'name'          =>  $data['name'],
-                    'display'       =>  $data['display'],
-                    'description'   =>  $data['description']
-                ]);
-            });
+        collect($this->getData())->sortBy('name')->each(function ($data) {
+            Module::create([
+                'name'          =>  $data['name'],
+                'display'       =>  $data['display'],
+                'description'   =>  $data['description']
+            ]);
+        });
 
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
@@ -32,22 +30,14 @@ class ModuleSeeder extends Seeder
     public function getData()
     {
         return [
-            ['name' => 'country', 'display' => 'Country', 'description' => 'Country Module'],
-            ['name' => 'currency', 'display' => 'Currency', 'description' => 'Currency Module'],
-            ['name' => 'language', 'display' => 'Language', 'description' => 'Language Module'],
+            ['name' => 'locale', 'display' => 'Locale', 'description' => 'Locale Module'],
             ['name' => 'role', 'display' => 'Role', 'description' => 'Role Module'],
-            ['name' => 'unit', 'display' => 'Unit', 'description' => 'Unit Module'],
             ['name' => 'member', 'display' => 'Member', 'description' => 'Member Module'],
             ['name' => 'merchant', 'display' => 'Merchant', 'description' => 'Merchant Module'],
             ['name' => 'admin', 'display' => 'Admin', 'description' => 'Admin Module'],
-            ['name' => 'project', 'display' => 'Project', 'description' => 'Project Module'],
-            ['name' => 'ads', 'display' => 'Ads', 'description' => 'Ads Module'],
-            ['name' => 'order', 'display' => 'Order', 'description' => 'Order Module'],
-            ['name' => 'service', 'display' => 'Service', 'description' => 'Service Module'],
+            ['name' => 'category', 'display' => 'Category', 'description' => 'Category Module'],
             ['name' => 'activity_log', 'display' => 'Activity Log', 'description' => 'Activity Log Module'],
-            ['name' => 'package', 'display' => 'Package', 'description' => 'Package Module'],
-            ['name' => 'product', 'display' => 'Product', 'description' => 'Product Module'],
-            ['name' => 'transaction', 'display' => 'Transaction', 'description' => 'Transaction Module'],
+            ['name' => 'career', 'display' => 'Career', 'description' => 'Career Module'],
         ];
     }
 }

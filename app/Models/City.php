@@ -21,19 +21,9 @@ class City extends Model
         return $this->belongsTo(CountryState::class, 'country_state_id', 'id');
     }
 
-    public function country()
-    {
-        return $this->hasOneThrough(Country::class, CountryState::class, 'id', 'id', 'country_state_id', 'country_id');
-    }
-
     // Attributes
     public function getCountryStateNameAttribute()
     {
         return $this->countryState->name ?? '';
-    }
-
-    public function getCountryNameAttribute()
-    {
-        return $this->country->name ?? '';
     }
 }

@@ -42,7 +42,7 @@ class MemberController extends Controller
      */
     public function create()
     {
-        $statuses = Status::instance()->activeStatus();
+        $statuses = (new Status())->activeStatus();
 
         return view('member.create', compact('statuses'));
     }
@@ -115,7 +115,7 @@ class MemberController extends Controller
     {
         $member->load(['address']);
 
-        $statuses = Status::instance()->activeStatus();
+        $statuses = (new Status())->activeStatus();
 
         return view('member.edit', compact('member', 'statuses'));
     }

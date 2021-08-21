@@ -26,7 +26,7 @@ class ProductAttributeController extends Controller
         $this->stock_types      =   Misc::instance()->productStockTypes();
         $this->slot_types       =   Misc::instance()->adsSlotType();
         $this->validity_types   =   Misc::instance()->validityType();
-        $this->statuses         =   Status::instance()->activeStatus();
+        $this->statuses         =   (new Status())->activeStatus();
     }
 
     /**

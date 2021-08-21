@@ -49,7 +49,7 @@ class ProjectController extends Controller
     {
         $max_files          =   Media::MAX_IMAGE_PROJECT;
         $services           =   Service::orderBy('name', 'asc')->get();
-        $statuses           =   Status::instance()->projectStatus();
+        $statuses           =   (new Status())->projectStatus();
         $default_currency   =   Currency::defaultCountryCurrency()->first();
         $ads_boosters       =   [];
 
@@ -151,7 +151,7 @@ class ProjectController extends Controller
         $media              =   $project->media()->image()->get();
         $max_files          =   Media::MAX_IMAGE_PROJECT - $media->count();
         $default_price      =   $project->prices->first();
-        $statuses           =   Status::instance()->projectStatus();
+        $statuses           =   (new Status())->projectStatus();
         $services           =   Service::orderBy('name', 'asc')->get();
         $ads_boosters       =   Product::with(['userAdsQuotas'])
             ->filterCategory(ProductCategory::TYPE_ADS)

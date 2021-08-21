@@ -26,6 +26,9 @@ class MerchantComposer
      */
     public function compose(View $view)
     {
-        $view->with('merchants', User::merchant()->orderBy('name', 'asc')->get());
+        $view->with('merchants', User::mainMerchant()
+            ->orWhere(function ($query) {
+                $query->subMerchant();
+            })->orderBy('name', 'asc')->get());
     }
 }

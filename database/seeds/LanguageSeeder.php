@@ -29,8 +29,7 @@ class LanguageSeeder extends Seeder
     public function getData()
     {
         return [
-            ['name' => 'English', 'code' => 'en'],
-            ['name' => 'Chinese', 'code' => 'cn']
+            ['name' => 'English', 'code' => Language::CODE_EN]
         ];
     }
 }

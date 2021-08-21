@@ -14,12 +14,12 @@ class Address extends Model
     protected $table = 'addresses';
 
     protected $fillable = [
-        'sourceable_type', 'sourceable_id', 'address_1',
-        'address_2', 'postcode', 'city_id'
+        'addressable_type', 'addressable_id', 'address_1',
+        'address_2', 'postcode', 'city_id', 'latitude', 'longitude'
     ];
 
     // Relationships
-    public function sourceable()
+    public function addressable()
     {
         return $this->morphTo();
     }

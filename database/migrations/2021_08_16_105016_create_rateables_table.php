@@ -17,6 +17,7 @@ class CreateRateablesTable extends Migration
             $table->unsignedBigInteger('user_id')->index();
             $table->morphs('rateable');
             $table->unsignedBigInteger('scale');
+            $table->longText('review')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

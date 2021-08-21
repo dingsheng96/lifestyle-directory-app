@@ -9,8 +9,8 @@ class Role extends SpatieRole
 {
     use SoftDeletes;
 
-    const ROLE_SUPER_ADMIN = 'Super Admin';
-    const ROLE_ADMIN = 'Admin';
-    const ROLE_MERCHANT = 'Merchant';
-    const ROLE_MEMBER = 'Member';
+    const ROLE_SUPER_ADMIN  =   'Super Admin';
+    const ROLE_MERCHANT_1   =   'Merchant 1';
+    const ROLE_MERCHANT_2   =   'Merchant 2';
+    const ROLE_MEMBER       =   'Member';
 }

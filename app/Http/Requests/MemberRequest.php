@@ -46,7 +46,7 @@ class MemberRequest extends FormRequest
             'postcode'          =>  ['required', 'digits:5'],
             'country_state'     =>  ['required', Rule::exists(CountryState::class, 'id')->where('country_id', $this->get('country'))],
             'city'              =>  ['required', Rule::exists(City::class, 'id')->where('country_state_id', $this->get('country_state'))],
-            'status'            =>  ['required', Rule::in(array_keys(Status::instance()->activeStatus()))],
+            'status'            =>  ['required', Rule::in(array_keys((new Status())->activeStatus()))],
             'logo'              =>  [Rule::requiredIf(empty($this->route('member'))), 'nullable', 'image', 'max:2000', 'mimes:jpg,jpeg,png'],
         ];
     }

@@ -19,8 +19,8 @@ class CreateTranslationsTable extends Migration
 
         Schema::create('translations', function (Blueprint $table) {
             $table->id();
-            $table->morphs('sourceable');
             $table->unsignedBigInteger('language_id')->index();
+            $table->string('key');
             $table->longText('value');
             $table->timestamps();
             $table->softDeletes();

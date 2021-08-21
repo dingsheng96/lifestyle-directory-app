@@ -33,7 +33,7 @@ class AdminController extends Controller
      */
     public function index(AdminDataTable $dataTable)
     {
-        $statuses = Status::instance()->activeStatus();
+        $statuses = (new Status())->activeStatus();
 
         return $dataTable->render('admin.index', compact('statuses'));
     }

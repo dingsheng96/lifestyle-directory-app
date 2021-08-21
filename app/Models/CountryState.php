@@ -14,9 +14,7 @@ class CountryState extends Model
 
     protected $table = 'country_states';
 
-    protected $fillable = [
-        'name', 'country_id'
-    ];
+    protected $fillable = ['name'];
 
     // Relationships
     public function cities()
@@ -24,21 +22,8 @@ class CountryState extends Model
         return $this->hasMany(City::class, 'country_state_id', 'id');
     }
 
-    public function country()
-    {
-        return $this->belongsTo(Country::class, 'country_id', 'id');
-    }
-
     public function addresses()
     {
         return $this->hasManyThrough(Address::class, City::class, 'country_state_id', 'city_id', 'id', 'id');
-    }
-
-    // Scopes
-    public function scopeHasDefaultCountry($query)
-    {
-        return $query->whereHas('country', function ($query) {
-            $query->defaultCountry();
-        });
     }
 }

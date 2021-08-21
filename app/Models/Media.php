@@ -14,18 +14,17 @@ class Media extends Model
     const TYPE_SSM              =   'ssm';
     const TYPE_LOGO             =   'logo';
     const DEFAULT_IMAGE         =   'nopreview.png';
-    const MAX_IMAGE_PROJECT     =   10;
-    const MAX_IMAGE_PRODUCT     =   10;
+    const MAX_IMAGE_BRANCH      =   10;
 
     protected $table = 'media';
 
     protected $fillable = [
-        'sourceable_type', 'sourceable_id', 'type', 'original_filename',
+        'mediable_type', 'mediable_id', 'type', 'original_filename',
         'filename', 'path', 'extension', 'size', 'mime', 'properties'
     ];
 
     // Relationships
-    public function sourceable()
+    public function mediable()
     {
         return $this->morphTo();
     }

@@ -11,7 +11,6 @@ class Language extends Model
     use SoftDeletes;
 
     const CODE_EN = 'en';
-    const CODE_CN = 'cn';
 
     protected $table = 'languages';
 

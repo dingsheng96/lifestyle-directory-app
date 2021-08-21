@@ -18,9 +18,9 @@ class RoleSeeder extends Seeder
 
         foreach ($this->getData() as $data) {
             Role::create([
-                'name' => $data['name'],
-                'guard_name' => $data['guard_name'],
-                'description' => $data['description']
+                'name'          =>  $data['name'],
+                'guard_name'    =>  $data['guard_name'],
+                'description'   =>  $data['description']
             ]);
         }
 
@@ -30,7 +30,10 @@ class RoleSeeder extends Seeder
     private function getData()
     {
         return [
-            ['name' => 'Super Admin', 'guard_name' => config('auth.defaults.guard'), 'description' => 'User account used for system administration.'],
+            ['name' => Role::ROLE_SUPER_ADMIN, 'guard_name' => config('auth.defaults.guard'), 'description' => 'System Admin.'],
+            ['name' => Role::ROLE_MERCHANT_1, 'guard_name' => config('auth.defaults.guard'), 'description' => 'Main merchant'],
+            ['name' => Role::ROLE_MERCHANT_2, 'guard_name' => config('auth.defaults.guard'), 'description' => 'Sub merchant branch'],
+            ['name' => Role::ROLE_MEMBER, 'guard_name' => config('auth.defaults.guard'), 'description' => 'Normal member'],
         ];
     }
 }
