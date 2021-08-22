@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="card-footer bg-transparent text-md-right text-center">
-                    <a href="{{ route('members.index') }}" role="button" class="btn btn-light btn-rounded-corner">
+                    <a href="{{ route('members.index') }}" role="button" class="btn btn-light">
                         <i class="fas fa-chevron-left"></i>
                         {{ __('labels.back') }}
                     </a>

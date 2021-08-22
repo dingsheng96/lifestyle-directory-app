@@ -56,7 +56,7 @@
                     <div class="col-12 text-center">
                         <h4>{{ __('messages.no_subscription') }}</h4>
 
-                        <a role="button" href="{{ route('subscriptions.index') }}" class="btn btn-outline-primary btn-rounded-corner my-3">
+                        <a role="button" href="{{ route('subscriptions.index') }}" class="btn btn-outline-primary my-3">
                             {{ __('labels.sign_up_a_plan') }}
                         </a>
                     </div>
@@ -444,7 +444,7 @@
                             </div>
 
                             <div class="card-footer bg-transparent text-md-right text-center">
-                                <button type="submit" class="btn btn-outline-primary btn-rounded-corner float-right">
+                                <button type="submit" class="btn btn-outline-primary float-right">
                                     <i class="fas fa-paper-plane"></i>
                                     {{ __('labels.submit') }}
                                 </button>

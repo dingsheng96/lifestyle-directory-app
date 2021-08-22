@@ -10,7 +10,7 @@
                 <div class="card-header bg-transparent">
                     @can('country.create')
                     <span class="card-tools">
-                        <a href="#countryModal" class="btn btn-outline-primary btn-rounded-corner" data-toggle="modal">
+                        <a href="#countryModal" class="btn btn-outline-primary" data-toggle="modal">
                             <i class="fas fa-plus"></i>
                             {{ __('modules.create', ['module' => trans_choice('modules.country', 1)]) }}
                         </a>

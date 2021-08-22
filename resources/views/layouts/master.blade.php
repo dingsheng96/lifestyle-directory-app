@@ -9,27 +9,20 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name') }} @if (!empty($title)) {{ ' | ' . $title }} @endif</title>
-    <meta name="description" content="No.1 Contractor Platform in Malaysia Compare Price, Project Portfolios and Contractor's Specialization.">
-    <meta property="og:title" content="{{ config('app.name') }} @if (!empty($title)) {{ ' | ' . $title }} @endif" />
-    <meta property="og:url" content="{{ url()->current() }}">
-    <meta property="og:description" content="No.1 Contractor Platform in Malaysia Compare Price, Project Portfolios and Contractor's Specialization.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="{{ asset('storage/logo_og.png?v=' . time()) }}">
 
-
+    <link rel="icon" href="{{ asset('storage/logo.png') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="icon" href="{{ asset('storage/rhino_title.png') }}" type="image/x-icon">
-    @include('components.styles')
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css?v=' . time()) }}">
+{{-- <link rel="stylesheet" type="text/css" href="{{ asset('dropzone-5.7.0/dist/dropzone.css') }}"> --}}
 
 </head>
 
 <body class="hold-transition layout-fixed {{ $body ?? '' }}">
 
-    @if (Auth::check() && (!isset($guest_view) || !$guest_view))
-
+    @auth
     <div class="wrapper">
-
         @include('layouts.topnav')
         @include('layouts.sidenav')
 
@@ -44,21 +37,24 @@
         @include('layouts.footer') {{-- auth footer --}}
 
         @include('components.loader')
-
-        @includeWhen(Auth::user()->is_merchant, 'cart.index')
     </div>
+    @endauth
 
-    @else
-
-    @includeWhen(empty($blank), 'layouts.topnav')
-
+    @guest
     @yield('content')
+    @endguest
 
-    @includeWhen(empty($blank), 'layouts.footer')
-
-    @endif
-
-    @include('components.scripts')
+    <script type="text/javascript" src="{{ asset('js/app.js?v=' . time()) }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{-- <script type="text/javascript" src="{{ asset('dropzone-5.7.0/dist/dropzone.js?v=' . time()) }}"></script> --}}
+    <script type="text/javascript" src="{{ asset('js/function.js?v=' . time()) }}"></script>
+    <script type="text/javascript" src="{{ asset('js/dropdown.js?v=' . time()) }}"></script>
+    <script type="text/javascript" src="{{ asset('js/datepicker.js?v=' . time()) }}"></script>
+    <script type="text/javascript" src="{{ asset('js/style.js?v=' . time()) }}"></script>
+    <script type="text/javascript" src="{{ asset('js/modal.js?v=' . time()) }}"></script>
+    <script type="text/javascript" src="{{ asset('js/dropzone.js?v=' . time()) }}"></script>
+    <script type="text/javascript" src="{{ asset('js/dynamic-form.js?v=' . time()) }}"></script>
     @stack('scripts')
 
 </body>

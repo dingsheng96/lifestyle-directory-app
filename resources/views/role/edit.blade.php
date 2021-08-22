@@ -86,11 +86,11 @@
                     </div>
 
                     <div class="card-footer bg-transparent text-md-right text-center">
-                        <a role="button" href="{{ route('roles.index') }}" class="btn btn-light mx-2 btn-rounded-corner">
+                        <a role="button" href="{{ route('roles.index') }}" class="btn btn-light mx-2">
                             <i class="fas fa-times"></i>
                             {{ __('labels.cancel') }}
                         </a>
-                        <button type="submit" class="btn btn-outline-primary btn-rounded-corner">
+                        <button type="submit" class="btn btn-outline-primary">
                             <i class="fas fa-paper-plane"></i>
                             {{ __('labels.submit') }}
                         </button>

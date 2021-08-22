@@ -164,7 +164,7 @@
                 </div>
 
                 <div class="card-footer bg-transparent text-md-right text-center">
-                    <a href="{{ route('verifications.index') }}" role="button" class="btn btn-light btn-rounded-corner">
+                    <a href="{{ route('verifications.index') }}" role="button" class="btn btn-light">
                         <i class="fas fa-times"></i>
                         {{ __('labels.cancel') }}
                     </a>

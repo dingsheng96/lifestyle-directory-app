@@ -14,7 +14,7 @@
 
                     @can('member.create')
                     <div class="card-tools">
-                        <a href="{{ route('members.create') }}" class="btn btn-outline-primary btn-rounded-corner">
+                        <a href="{{ route('members.create') }}" class="btn btn-outline-primary">
                             <i class="fas fa-plus"></i>
                             {{ __('modules.create', ['module' => trans_choice('modules.member', 1)]) }}
                         </a>

@@ -13,7 +13,7 @@
                     </h3>
                     @can('merchant.create')
                     <div class="card-tools">
-                        <a href="{{ route('merchants.create') }}" class="btn btn-outline-primary btn-rounded-corner">
+                        <a href="{{ route('merchants.create') }}" class="btn btn-outline-primary">
                             <i class="fas fa-plus"></i>
                             {{ __('modules.create', ['module' => trans_choice('modules.merchant', 1)]) }}
                         </a>

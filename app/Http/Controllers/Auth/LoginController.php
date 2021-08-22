@@ -61,15 +61,14 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        $user->update([
-            'last_login_at' => now()
-        ]);
+        $message =  $user->name . ' ' . strtolower(__('messages.login_success'));
+        $log     =  'web:auth';
 
-        activity()->useLog('web')
+        activity()->useLog($log)
             ->causedByAnonymous()
             ->performedOn($user)
             ->withProperties($request->all())
-            ->log(__('messages.login_success'));
+            ->log($message);
 
         return redirect()->route('dashboard');
     }
@@ -82,10 +81,12 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        $message = __('messages.logout_success');
+        $user = Auth::user();
 
-        activity()->useLog('web')
-            ->causedBy(Auth::user())
+        $message = $user->name . ' ' . strtolower(__('messages.logout_success'));
+
+        activity()->useLog('web:auth')
+            ->causedBy($user)
             ->withProperties($request->all())
             ->log($message);
 

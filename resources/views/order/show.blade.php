@@ -81,7 +81,7 @@
 
                 <div class="row no-print">
                     <div class="col-12">
-                        <a href="{{ route('orders.index') }}" role="button" class="btn btn-light btn-rounded-corner float-right">
+                        <a href="{{ route('orders.index') }}" role="button" class="btn btn-light float-right">
                             <i class="fas fa-chevron-left"></i>
                             {{ __('labels.back') }}
                         </a>

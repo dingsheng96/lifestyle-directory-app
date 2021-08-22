@@ -1,6 +1,6 @@
 @if (empty($no_action))
 
-<a role="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<a role="button" class="btn btn-outline-purple dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     {{ __('labels.action') }}
 </a>
 <div class="dropdown-menu dropdown-menu-right">

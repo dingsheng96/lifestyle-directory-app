@@ -27,11 +27,11 @@
                         </div>
                     </div>
                     <div class="card-footer bg-transparent text-md-right text-center">
-                        <a role="button" href="{{ route('countries.edit', ['country' => $country->id]) }}" class="btn btn-light mx-2 btn-rounded-corner">
+                        <a role="button" href="{{ route('countries.edit', ['country' => $country->id]) }}" class="btn btn-light mx-2">
                             <i class="fas fa-times"></i>
                             {{ __('labels.cancel') }}
                         </a>
-                        <button type="submit" class="btn btn-outline-primary btn-rounded-corner">
+                        <button type="submit" class="btn btn-outline-primary">
                             <i class="fas fa-paper-plane"></i>
                             {{ __('labels.submit') }}
                         </button>
@@ -44,7 +44,7 @@
                 <div class="card-header bg-transparent">
                     <h3 class="card-title">{{ trans_choice('labels.city', 2) }}</h3>
                     <div class="card-tools">
-                        <a href="#cityModal" class="btn btn-outline-primary btn-rounded-corner" data-toggle="modal">
+                        <a href="#cityModal" class="btn btn-outline-primary" data-toggle="modal">
                             <i class="fas fa-plus"></i>
                             {{ __('modules.create', ['module' => trans_choice('modules.city', 1)]) }}
                         </a>

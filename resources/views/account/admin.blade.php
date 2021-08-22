@@ -95,7 +95,7 @@
                     </div>
 
                     <div class="card-footer bg-transparent text-md-right text-center">
-                        <button type="submit" class="btn btn-outline-primary btn-rounded-corner float-right">
+                        <button type="submit" class="btn btn-outline-primary float-right">
                             <i class="fas fa-paper-plane"></i>
                             {{ __('labels.submit') }}
                         </button>

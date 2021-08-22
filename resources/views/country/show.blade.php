@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="card-footer bg-transparent text-md-right text-center">
-                    <a role="button" href="{{ route('countries.index') }}" class="btn btn-light btn-rounded-corner">
+                    <a role="button" href="{{ route('countries.index') }}" class="btn btn-light">
                         <i class="fas fa-chevron-left"></i>
                         {{ __('labels.back') }}
                     </a>

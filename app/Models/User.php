@@ -194,16 +194,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->media()->logo()->first();
     }
 
-    public function getFolderNameAttribute()
+    public function getRoleNameAttribute()
     {
-        $folders = [
-            Role::ROLE_SUPER_ADMIN  => 'admin',
-            Role::ROLE_MERCHANT_1   => 'merchant',
-            Role::ROLE_MERCHANT_2   => 'merchant',
-            Role::ROLE_MEMBER       => 'member'
-        ];
-
-        return $folders[$this->roles()->first()->name];
+        return $this->roles()->first()->name;
     }
 
     public function getIsAdminAttribute()
@@ -224,6 +217,18 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getIsMemberAttribute()
     {
         return $this->role_name == Role::ROLE_MEMBER;
+    }
+
+    public function getFolderNameAttribute()
+    {
+        $folders = [
+            Role::ROLE_SUPER_ADMIN  => 'admin',
+            Role::ROLE_MERCHANT_1   => 'merchant',
+            Role::ROLE_MERCHANT_2   => 'merchant',
+            Role::ROLE_MEMBER       => 'member'
+        ];
+
+        return $folders[$this->role_name];
     }
 
     public function getFormattedPhoneNumberAttribute()

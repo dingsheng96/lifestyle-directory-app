@@ -227,11 +227,11 @@
                     </div>
 
                     <div class="card-footer bg-transparent text-md-right text-center">
-                        <a href="{{ route('members.index') }}" role="button" class="btn btn-light mx-2 btn-rounded-corner">
+                        <a href="{{ route('members.index') }}" role="button" class="btn btn-light mx-2">
                             <i class="fas fa-times"></i>
                             {{ __('labels.cancel') }}
                         </a>
-                        <button type="submit" class="btn btn-outline-primary btn-rounded-corner">
+                        <button type="submit" class="btn btn-outline-primary">
                             <i class="fas fa-paper-plane"></i>
                             {{ __('labels.submit') }}
                         </button>
