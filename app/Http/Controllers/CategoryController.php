@@ -84,7 +84,9 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        $category->load(['media']);
+
+        return view('category.show', compact('category'));
     }
 
     /**
