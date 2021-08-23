@@ -35,10 +35,18 @@
     @endcan
     @endisset
 
+    {{-- upload button --}}
+    @isset($upload)
+    <a role="button" href="{{ $upload['route'] ?? '#' }}" class="dropdown-item" @isset($upload['attribute']) {!! $upload['attribute'] !!} @endisset>
+        <i class="fas fa-upload mr-2 text-cyan"></i>
+        {{ __('labels.upload') }}
+    </a>
+    @endisset
+
     {{-- download button --}}
     @isset($download)
     <a role="button" href="{{ $download['route'] ?? '#' }}" class="dropdown-item" @isset($download['attribute']) {!! $download['attribute'] !!} @endisset>
-        <i class="fas fa-download mr-2 text-cyan"></i>
+        <i class="fas fa-download mr-2 text-green"></i>
         {{ __('labels.download') }}
     </a>
     @endisset

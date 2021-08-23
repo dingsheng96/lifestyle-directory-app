@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\CountryState;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\CountryState;
 
 class CountryStateRequest extends FormRequest
 {
@@ -18,7 +18,7 @@ class CountryStateRequest extends FormRequest
     public function authorize()
     {
         return Auth::guard('web')->check()
-            && Gate::any(['country.create', 'country.update']);
+            && Gate::any(['locale.create', 'locale.update']);
     }
 
     /**
@@ -35,7 +35,6 @@ class CountryStateRequest extends FormRequest
                     'nullable',
                     Rule::unique(CountryState::class, 'name')
                         ->ignore($this->route('country_state'), 'id')
-                        ->where('country_id', $this->route('country'))
                         ->whereNull('deleted_at')
                 ]
             ];
@@ -46,7 +45,6 @@ class CountryStateRequest extends FormRequest
                 Rule::requiredIf(!$this->hasFile('create.file')),
                 'nullable',
                 Rule::unique(CountryState::class, 'name')
-                    ->where('country_id', $this->route('country'))
                     ->whereNull('deleted_at')
             ],
             'create.file' => [
@@ -79,16 +77,9 @@ class CountryStateRequest extends FormRequest
      */
     public function attributes()
     {
-        if (!empty($this->route('country_state'))) {
-            return [
-                'name'  =>  __('validation.attributes.name'),
-                'file'  =>  __('validation.attributes.file')
-            ];
-        }
-
         return [
             'create.name'  =>  __('validation.attributes.name'),
-            'create.file'  =>  __('validation.attributes.file')
+            'create.file'  =>  __('validation.attributes.file'),
         ];
     }
 }

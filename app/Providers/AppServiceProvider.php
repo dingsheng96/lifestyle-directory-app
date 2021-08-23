@@ -7,12 +7,6 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    protected $custom_facades = [
-        'merchantFacade'    =>  \App\Support\Services\MerchantService::class,
-        'accountFacade'     =>  \App\Support\Services\AccountService::class,
-        'memberFacade'      =>  \App\Support\Services\MemberService::class,
-    ];
-
     /**
      * Register any application services.
      *
@@ -37,20 +31,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app['request']->server
             ->set('HTTPS', $this->app->environment() != 'local');
 
-        // bind custom facades
-        $this->bindFacades();
-
         // observers
         $this->registerObservers();
-    }
-
-    private function bindFacades()
-    {
-        foreach ($this->custom_facades as $facade => $class) {
-            $this->app->bind($facade, function () use ($class) {
-                return new $class();
-            });
-        }
     }
 
     private function registerObservers()

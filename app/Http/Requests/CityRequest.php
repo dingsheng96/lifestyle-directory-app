@@ -18,7 +18,7 @@ class CityRequest extends FormRequest
     public function authorize()
     {
         return Auth::guard('web')->check()
-            && Gate::any(['country.create', 'country.update']);
+            && Gate::any(['locale.create', 'locale.update']);
     }
 
     /**

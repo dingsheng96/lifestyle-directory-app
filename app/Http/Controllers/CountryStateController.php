@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Country;
 use App\Helpers\Message;
 use App\Helpers\Response;
 use App\Models\Permission;
-use App\Helpers\FileManager;
 use App\Models\CountryState;
 use App\DataTables\CityDataTable;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Maatwebsite\Excel\Facades\Excel;
+use App\DataTables\CountryStateDataTable;
 use App\Http\Requests\CountryStateRequest;
-use App\Imports\Settings\Country\CountryStateImport;
-use App\Imports\Settings\Country\CountryStateCityImport;
+use App\Support\Services\CountryStateService;
 
 class CountryStateController extends Controller
 {
@@ -24,9 +21,9 @@ class CountryStateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(CountryStateDataTable $dataTable)
     {
-        //
+        return $dataTable->render('locale.country_state.index');
     }
 
     /**
@@ -45,44 +42,29 @@ class CountryStateController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CountryStateRequest $request)
+    public function store(CountryStateRequest $request, CountryStateService $country_state_service)
     {
         DB::beginTransaction();
 
         $action     =   Permission::ACTION_CREATE;
         $module     =   strtolower(trans_choice('modules.country_state', 1));
         $message    =   Message::instance()->format($action, $module);
+        $status     =   'fail';
 
         try {
 
-            $country_state = new CountryState();
+            $country_state_service->setRequest($request)->store();
 
-            if (!empty($request->get('create')['name'])) {
-                $country_state->name = $request->get('create')['name'];
-                $country->countryStates()->save($country_state);
-            } else if ($request->hasFile('create.file')) {
-
-                $file = $request->file('create')['file'];
-
-                if ($request->has('create.withCity')) {
-                    Excel::import(new CountryStateCityImport($country), $file, null, (new FileManager())->getExcelReaderType($file->extension()));
-                } else {
-                    Excel::import(new CountryStateImport($country), $file, null, (new FileManager())->getExcelReaderType($file->extension()));
-                }
-            }
-
-            DB::commit();
-
-            $message = Message::instance()->format($action, $module, 'success');
+            $status     =   'success';
+            $message    =   Message::instance()->format($action, $module, $status);
 
             activity()->useLog('web')
                 ->causedBy(Auth::user())
-                ->performedOn($country_state)
+                ->performedOn(new CountryState())
                 ->withProperties($request->all())
                 ->log($message);
 
-            return redirect()->route('countries.index')
-                ->withSuccess($message);
+            DB::commit();
         } catch (\Error | \Exception $e) {
 
             DB::rollBack();
@@ -92,11 +74,9 @@ class CountryStateController extends Controller
                 ->performedOn(new CountryState())
                 ->withProperties($request->all())
                 ->log($e->getMessage());
-
-            return redirect()->back()
-                ->with('fail', $message)
-                ->withInput();
         }
+
+        return redirect()->route('locale.country-states.index')->with($status, $message);
     }
 
     /**
@@ -118,8 +98,7 @@ class CountryStateController extends Controller
      */
     public function edit(CountryState $country_state, CityDataTable $dataTable)
     {
-        return $dataTable->with(['country_state_id' => $country_state->id])
-            ->render('country.country_state.edit', compact('country', 'country_state'));
+        return $dataTable->with(['country_state_id' => $country_state->id])->render('locale.country_state.edit', compact('country_state'));
     }
 
     /**
@@ -129,24 +108,21 @@ class CountryStateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CountryStateRequest $request, CountryState $country_state)
+    public function update(CountryStateRequest $request, CountryState $country_state, CountryStateService $country_state_service)
     {
         DB::beginTransaction();
 
         $action     =   Permission::ACTION_UPDATE;
         $module     =   strtolower(trans_choice('modules.country_state', 1));
         $message    =   Message::instance()->format($action, $module);
+        $status     =   'fail';
 
         try {
 
-            $country_state->name = $request->get('name');
-            if ($country_state->isDirty()) {
-                $country_state->save();
-            }
+            $country_state_service->setModel($country_state)->setRequest($request)->store();
 
-            DB::commit();
-
-            $message = Message::instance()->format($action, $module, 'success');
+            $status     =   'success';
+            $message    =   Message::instance()->format($action, $module, $status);
 
             activity()->useLog('web')
                 ->causedBy(Auth::user())
@@ -154,8 +130,7 @@ class CountryStateController extends Controller
                 ->withProperties($request->all())
                 ->log($message);
 
-            return redirect()->route('countries.edit', ['country' => $country->id])
-                ->withSuccess($message);
+            DB::commit();
         } catch (\Error | \Exception $e) {
 
             DB::rollBack();
@@ -165,11 +140,9 @@ class CountryStateController extends Controller
                 ->performedOn($country_state)
                 ->withProperties($request->all())
                 ->log($e->getMessage());
-
-            return redirect()->back()
-                ->with('fail', $message)
-                ->withInput();
         }
+
+        return redirect()->route('locale.country-states.index')->with($status, $message);
     }
 
     /**
@@ -185,11 +158,12 @@ class CountryStateController extends Controller
         $status     =   'success';
         $message    =   Message::instance()->format($action, $module, 'success');
 
+        $country_state->cities()->delete();
         $country_state->delete();
 
         activity()->useLog('web')
             ->causedBy(Auth::user())
-            ->performedOn($country)
+            ->performedOn($country_state)
             ->log($message);
 
         return Response::instance()
@@ -197,7 +171,7 @@ class CountryStateController extends Controller
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('countries.index')
+                'redirect_to' => route('locale.country-states.index')
             ])
             ->sendJson();
     }

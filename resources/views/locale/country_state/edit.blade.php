@@ -1,17 +1,17 @@
-@extends('layouts.master', ['title' => trans_choice('modules.country_state', 2)])
+@extends('layouts.master', ['parent_title' => trans_choice('modules.locale', 2), 'title' => trans_choice('modules.country_state', 2)])
 
 @section('content')
 
 <div class="container-fluid">
 
-    <div class="row">
-        <div class="col-12 col-md-5">
-            <div class="card">
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card shadow-lg">
                 <div class="card-header bg-transparent">
                     <h3 class="card-title">{{ __('modules.edit', ['module' => trans_choice('modules.country_state', 1)]) }}</h3>
                 </div>
 
-                <form action="{{ route('countries.country-states.update', ['country' => $country->id, 'country_state' => $country_state->id]) }}" method="POST" role="form" enctype="multipart/form-data">
+                <form action="{{ route('locale.country-states.update', ['country_state' => $country_state->id]) }}" method="POST" role="form" enctype="multipart/form-data">
                     @csrf
                     @method('put')
 
@@ -27,11 +27,11 @@
                         </div>
                     </div>
                     <div class="card-footer bg-transparent text-md-right text-center">
-                        <a role="button" href="{{ route('countries.edit', ['country' => $country->id]) }}" class="btn btn-light mx-2">
-                            <i class="fas fa-times"></i>
-                            {{ __('labels.cancel') }}
+                        <a role="button" href="{{ route('locale.country-states.index') }}" class="btn btn-light mx-2">
+                            <i class="fas fa-caret-left"></i>
+                            {{ __('labels.back') }}
                         </a>
-                        <button type="submit" class="btn btn-outline-primary">
+                        <button type="submit" class="btn btn-purple">
                             <i class="fas fa-paper-plane"></i>
                             {{ __('labels.submit') }}
                         </button>
@@ -39,14 +39,17 @@
                 </form>
             </div>
         </div>
-        <div class="col-12 col-md-7">
-            <div class="card">
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="card shadow-lg">
                 <div class="card-header bg-transparent">
-                    <h3 class="card-title">{{ trans_choice('labels.city', 2) }}</h3>
+                    <h3 class="card-title mt-2 font-weight-bold">{{ trans_choice('labels.city', 2) }}</h3>
                     <div class="card-tools">
-                        <a href="#cityModal" class="btn btn-outline-primary" data-toggle="modal">
+                        <a href="#cityModal" class="btn btn-purple" data-toggle="modal">
                             <i class="fas fa-plus"></i>
-                            {{ __('modules.create', ['module' => trans_choice('modules.city', 1)]) }}
+                            {{ __('labels.create') }}
                         </a>
                     </div>
                 </div>
@@ -58,7 +61,7 @@
     </div>
 </div>
 
-@include('country.country_state.city.create')
+@include('locale.country_state.city.create')
 
 @endsection
 

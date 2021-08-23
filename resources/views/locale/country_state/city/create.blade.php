@@ -21,11 +21,11 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('countries.country-states.cities.store', ['country' => $country->id, 'country_state' => $country_state->id]) }}" method="POST" role="form" enctype="multipart/form-data">
+            <form action="{{ route('locale.country-states.cities.store', ['country_state' => $country_state->id]) }}" method="POST" role="form" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="name" class="col-form-label">{{ __('labels.name') }} <span class="text-red">*</span></label>
+                        <label for="name" class="col-form-label">{{ __('labels.name') }}</label>
                         <input type="text" id="name" name="create[name]" value="{{ old('create.name') }}" class="form-control ucfirst @error('create.name') is-invalid @enderror">
                         @error('create.name')
                         <span class="invalid-feedback" role="alert">
@@ -34,10 +34,10 @@
                         @enderror
                     </div>
 
-                    <h6 class="text-center">-- Or --</h6>
+                    <p class="text-center">-- Or --</p>
 
                     <div class="form-group">
-                        <label for="file" class="col-form-label">{{ trans_choice('labels.upload_file', 1) }} <span class="text-red">*</span></label>
+                        <label for="file" class="col-form-label">{{ trans_choice('labels.upload_file', 1) }}</label>
                         <div class="custom-file">
                             <input type="file" id="file" name="create[file]" class="custom-file-input @error('create.file') is-invalid @enderror">
                             <label class="custom-file-label" for="validatedCustomFile">Choose file</label>
@@ -50,11 +50,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-dismiss="modal">
-                        <i class="fas fa-times mr-2"></i>
-                        {{ __('labels.cancel') }}
-                    </button>
-                    <button type="submit" class="btn btn-outline-primary">
+                    <button type="submit" class="btn btn-purple">
                         <i class="fas fa-paper-plane mr-2"></i>
                         {{ __('labels.submit') }}
                     </button>

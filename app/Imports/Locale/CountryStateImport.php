@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Imports\Settings\Country;
+namespace App\Imports\Locale;
 
+use App\Models\CountryState;
 use Maatwebsite\Excel\Concerns\ToModel;
-use App\Models\Country;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\WithValidation;
@@ -11,13 +11,6 @@ use Maatwebsite\Excel\Concerns\WithValidation;
 class CountryStateImport implements ToModel, WithValidation, SkipsEmptyRows
 {
     use Importable;
-
-    public $country;
-
-    public function __construct(Country $country)
-    {
-        $this->country = $country;
-    }
 
     /**
      * @param array $row
@@ -27,11 +20,7 @@ class CountryStateImport implements ToModel, WithValidation, SkipsEmptyRows
     public function model(array $row)
     {
 
-        return $this->country->countryStates()
-            ->firstOrCreate(
-                ['name' => $row[0]],
-                ['name' => $row[0]]
-            );
+        return CountryState::firstOrCreate(['name' => $row[0]]);
     }
 
     public function rules(): array

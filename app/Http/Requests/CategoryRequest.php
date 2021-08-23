@@ -2,13 +2,11 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Currency;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CurrencyRequest extends FormRequest
+class CategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,7 +16,7 @@ class CurrencyRequest extends FormRequest
     public function authorize()
     {
         return Auth::guard('web')->check()
-            && Gate::any(['currency.create', 'currency.update']);
+            && Gate::any(['category.create', 'category.update']);
     }
 
     /**
@@ -28,24 +26,7 @@ class CurrencyRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'name' => [
-                'required',
-                Rule::unique(Currency::class, 'name')
-                    ->ignore($this->route('currency'), 'id')
-                    ->whereNull('deleted_at')
-            ],
-            'code' => [
-                'required',
-                Rule::unique(Currency::class, 'code')
-                    ->ignore($this->route('currency'), 'id')
-                    ->whereNull(('deleted_at'))
-            ],
-            'rate.*' => [
-                'required',
-                'numeric'
-            ]
-        ];
+        //
     }
 
     /**

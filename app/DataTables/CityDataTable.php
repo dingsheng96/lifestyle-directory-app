@@ -27,8 +27,8 @@ class CityDataTable extends DataTable
                 return view('components.action', [
                     'no_action' => $this->no_action ?: null,
                     'delete' => [
-                        'permission' => 'country.delete',
-                        'route' => route('countries.country-states.cities.destroy', ['country' => $this->country_id, 'country_state' => $this->country_state_id, 'city' => $data->id])
+                        'permission' => 'locale.delete',
+                        'route' => route('locale.country-states.cities.destroy', ['country_state' => $this->country_state_id, 'city' => $data->id])
                     ]
                 ])->render();
             })
@@ -61,7 +61,7 @@ class CityDataTable extends DataTable
             ->addTableClass('table-hover table w-100')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->orderBy(0, 'asc')
+            ->orderBy(1, 'asc')
             ->responsive(true)
             ->autoWidth(true)
             ->processing(false);
@@ -75,10 +75,10 @@ class CityDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::computed('DT_RowIndex', '#')->width('10%'),
-            Column::make('name')->title(__('labels.name'))->width('50%'),
-            Column::make('created_at')->title(__('labels.created_at'))->width('25%'),
-            Column::computed('action', __('labels.action'))->width('15%')
+            Column::computed('DT_RowIndex', '#'),
+            Column::make('name')->title(__('labels.name')),
+            Column::make('created_at')->title(__('labels.created_at')),
+            Column::computed('action', __('labels.action'))
                 ->exportable(false)
                 ->printable(false),
         ];

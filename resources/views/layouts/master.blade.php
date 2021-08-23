@@ -15,11 +15,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/app.css?v=' . time()) }}">
-{{-- <link rel="stylesheet" type="text/css" href="{{ asset('dropzone-5.7.0/dist/dropzone.css') }}"> --}}
+    {{-- <link rel="stylesheet" type="text/css" href="{{ asset('dropzone-5.7.0/dist/dropzone.css') }}"> --}}
 
 </head>
 
-<body class="hold-transition layout-fixed {{ $body ?? '' }}">
+<body class="hold-transition layout-fixed text-sm {{ $body ?? '' }}">
 
     @auth
     <div class="wrapper">

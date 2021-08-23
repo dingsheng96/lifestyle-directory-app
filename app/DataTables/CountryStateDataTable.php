@@ -27,12 +27,12 @@ class CountryStateDataTable extends DataTable
                 return view('components.action', [
                     'no_action' => $this->no_action ?: null,
                     'update' => [
-                        'permission' => 'country.update',
-                        'route' => route('countries.country-states.edit', ['country' => $this->country_id, 'country_state' => $data->id])
+                        'permission' => 'locale.update',
+                        'route' => route('locale.country-states.edit', ['country_state' => $data->id])
                     ],
                     'delete' => [
-                        'permission' => 'country.delete',
-                        'route' => route('countries.country-states.destroy', ['country' => $this->country_id, 'country_state' => $data->id])
+                        'permission' => 'locale.delete',
+                        'route' => route('locale.country-states.destroy', ['country_state' => $data->id])
                     ]
                 ])->render();
             })
@@ -50,8 +50,7 @@ class CountryStateDataTable extends DataTable
      */
     public function query(CountryState $model)
     {
-        return $model->where('country_id', $this->country_id)
-            ->withCount(['cities'])->newQuery();
+        return $model->withCount(['cities'])->newQuery();
     }
 
     /**
@@ -80,13 +79,13 @@ class CountryStateDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::computed('DT_RowIndex', '#')->width('10%'),
-            Column::make('name')->title(__('labels.name'))->width('35%'),
-            Column::make('cities_count')->width('15%')
+            Column::computed('DT_RowIndex', '#'),
+            Column::make('name')->title(__('labels.name')),
+            Column::make('cities_count')
                 ->searchable(false)
                 ->title(trans_choice('labels.city', 2)),
-            Column::make('created_at')->title(__('labels.created_at'))->width('25%'),
-            Column::computed('action', __('labels.action'))->width('15%')
+            Column::make('created_at')->title(__('labels.created_at')),
+            Column::computed('action', __('labels.action'))
                 ->exportable(false)
                 ->printable(false),
         ];

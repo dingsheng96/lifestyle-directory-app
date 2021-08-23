@@ -3,19 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\City;
-use App\Models\Country;
 use App\Helpers\Message;
 use App\Helpers\Response;
 use App\Models\Permission;
-use App\Helpers\FileManager;
 use App\Models\CountryState;
 use Illuminate\Http\Request;
+use App\Http\Requests\CityRequest;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Imports\Settings\Country\CityImport;
-use App\Http\Requests\CityRequest;
+use App\Support\Services\CountryStateService;
 
 class CityController extends Controller
 {
@@ -45,53 +42,36 @@ class CityController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CityRequest $request, Country $country, CountryState $country_state)
+    public function store(CityRequest $request, CountryState $country_state, CountryStateService $country_state_service)
     {
         DB::beginTransaction();
 
         $action     =   Permission::ACTION_CREATE;
         $module     =   strtolower(trans_choice('modules.city', 1));
         $message    =   Message::instance()->format($action, $module);
+        $status     =   'fail';
 
         try {
 
-            $city = new City();
+            $country_state_service->setModel($country_state)->setRequest($request)->storeCity();
 
-            if (!empty($request->get('create')['name'])) {
-                $city->name = $request->get('create')['name'];
-                $country_state->cities()->save($city);
-            } else if ($request->hasFile('create.file')) {
-
-                $file = $request->file('create')['file'];
-                Excel::import(new CityImport($country_state), $file, null, (new FileManager())->getExcelReaderType($file->extension()));
-            }
+            $status     =   'success';
+            $message    =   Message::instance()->format($action, $module, $status);
 
             DB::commit();
-
-            $message = Message::instance()->format($action, $module, 'success');
-
-            activity()->useLog('web')
-                ->causedBy(Auth::user())
-                ->performedOn($city)
-                ->withProperties($request->all())
-                ->log($message);
-
-            return redirect()->route('countries.edit', ['country' => $country->id])
-                ->withSuccess($message);
         } catch (\Error | \Exception $e) {
 
             DB::rollBack();
-
-            activity()->useLog('web')
-                ->causedBy(Auth::user())
-                ->performedOn(new City())
-                ->withProperties($request->all())
-                ->log($e->getMessage());
-
-            return redirect()->back()
-                ->with('fail', $message)
-                ->withInput();
+            $message = $e->getMessage();
         }
+
+        activity()->useLog('web')
+            ->causedBy(Auth::user())
+            ->performedOn(new City())
+            ->withProperties($request->all())
+            ->log($message);
+
+        return redirect()->route('locale.country-states.edit', ['country_state' => $country_state->id])->with($status, $message);
     }
 
     /**
@@ -134,7 +114,7 @@ class CityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Country $country, CountryState $country_state, City $city)
+    public function destroy(CountryState $country_state, City $city)
     {
         $action     =   Permission::ACTION_DELETE;
         $module     =   strtolower(trans_choice('modules.city', 1));
@@ -145,7 +125,7 @@ class CityController extends Controller
 
         activity()->useLog('web')
             ->causedBy(Auth::user())
-            ->performedOn($country)
+            ->performedOn($city)
             ->log($message);
 
         return Response::instance()
@@ -153,7 +133,7 @@ class CityController extends Controller
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('countries.edit', ['country' => $country->id])
+                'redirect_to' => route('locale.country-states.edit', ['country_state' => $country_state->id])
             ])
             ->sendJson();
     }

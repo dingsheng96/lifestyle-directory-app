@@ -19,7 +19,7 @@ return [
     'users' => 'Users',
     'verification' => 'Verification|Verifications',
     'admin' => 'Admin|Admins',
-    'merchant' => 'Contractor|Contractors',
+    'merchant' => 'Merchant|Merchants',
     'category' => 'Category|Categories',
     'member' => 'Member|Members',
 

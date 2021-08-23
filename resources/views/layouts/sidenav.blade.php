@@ -11,7 +11,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-                <li class="nav-header">{{ __('modules.general') }}</li>
+                <li class="nav-header font-weight-bold">{{ __('modules.general') }}</li>
 
                 <li class="nav-item">
                     <a href="{{ route('dashboard') }}" class="nav-link {{ Nav::hasSegment('dashboard', 1, 'active') }}">
@@ -23,7 +23,7 @@
                 {{-- USERS --}}
                 @canany(['merchant.create', 'merchant.read', 'merchant.update', 'merchant.delete', 'member.create', 'member.read', 'member.update', 'member.delete', 'admin.create', 'admin.read', 'admin.update', 'admin.delete'])
 
-                <li class="nav-header">{{ __('modules.users') }}</li>
+                <li class="nav-header font-weight-bold">{{ __('modules.users') }}</li>
 
                 @canany(['merchant.create'])
                 {{-- <li class="nav-item">
@@ -68,7 +68,7 @@
                 {{-- SETTINGS --}}
                 @canany(['locale.create', 'locale.read', 'locale.update', 'locale.delete', 'role.create', 'role.read', 'role.update', 'role.delete', 'category.create', 'category.read', 'category.update', 'category.delete'])
 
-                <li class="nav-header">{{ __('modules.settings') }}</li>
+                <li class="nav-header font-weight-bold">{{ __('modules.settings') }}</li>
 
                 @canany(['role.create', 'role.read', 'role.update', 'role.delete'])
                 <li class="nav-item">
@@ -82,7 +82,7 @@
                 @canany(['category.create', 'category.read', 'category.update', 'category.delete'])
                 <li class="nav-item">
                     <a href="{{ route('categories.index') }}" class="nav-link {{ Nav::hasSegment('categories', 1, 'active') }}">
-                        <i class="nav-icon fas fa-cube"></i>
+                        <i class="nav-icon fas fa-shapes"></i>
                         <p>{{ trans_choice('modules.category', 2) }}</p>
                     </a>
                 </li>
@@ -91,7 +91,7 @@
                 @canany(['locale.create', 'locale.read', 'locale.update', 'locale.delete'])
                 <li class="nav-item {{ Nav::hasSegment('locale', 1, 'menu-open') }}">
                     <a href="#" class="nav-link {{ Nav::hasSegment('locale', 1, 'active') }}">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <i class="nav-icon fas fa-globe-asia"></i>
                         <p>
                             {{ trans_choice('modules.locale', 2) }}
                             <i class="right fas fa-angle-left"></i>

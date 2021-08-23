@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Imports\Settings\Country;
+namespace App\Imports\Locale;
 
-use App\Models\City;
+use App\Models\CountryState;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\Importable;
-use App\Models\CountryState;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
@@ -28,10 +27,7 @@ class CityImport implements ToModel, WithValidation, SkipsEmptyRows
     public function model(array $row)
     {
         return $this->country_state->cities()
-            ->firstOrCreate(
-                ['name' => $row[0]],
-                ['name' => $row[0]]
-            );
+            ->firstOrCreate(['name' => $row[0]]);
     }
 
     public function rules(): array
