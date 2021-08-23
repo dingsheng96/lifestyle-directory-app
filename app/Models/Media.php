@@ -3,12 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Media extends Model
 {
-    use SoftDeletes;
-
     const TYPE_THUMBNAIL        =   'thumbnail';
     const TYPE_IMAGE            =   'image';
     const TYPE_SSM              =   'ssm';
