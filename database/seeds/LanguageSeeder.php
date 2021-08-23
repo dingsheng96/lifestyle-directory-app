@@ -19,7 +19,8 @@ class LanguageSeeder extends Seeder
         foreach ($this->getData() as $data) {
             Language::create([
                 'name' => $data['name'],
-                'code' => $data['code']
+                'code' => $data['code'],
+                'default' => $data['default']
             ]);
         }
 
@@ -29,7 +30,7 @@ class LanguageSeeder extends Seeder
     public function getData()
     {
         return [
-            ['name' => 'English', 'code' => Language::CODE_EN]
+            ['name' => 'English', 'code' => Language::CODE_EN, 'default' => true]
         ];
     }
 }

@@ -13,7 +13,7 @@ class Translation extends Model
     protected $table = 'translations';
 
     protected $fillable = [
-        'language_id', 'key', 'value'
+        'language_id', 'version', 'key', 'value'
     ];
 
     // Relationships

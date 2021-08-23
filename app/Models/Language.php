@@ -15,7 +15,11 @@ class Language extends Model
     protected $table = 'languages';
 
     protected $fillable = [
-        'name', 'code'
+        'name', 'code', 'current_version', 'default'
+    ];
+
+    protected $casts = [
+        'default' => 'boolean'
     ];
 
     // Relationships
