@@ -107,10 +107,10 @@ class FileManager
 
     public function resizeImage($store_path, $image)
     {
-        $max_width = 1024;
-        $max_height = 1024;
-        $filename = md5($image->getClientOriginalName() . uniqid() . time());
-        $save_path = $store_path . '/' . $filename . '.' . $image->extension();
+        $max_width  =   1024;
+        $max_height =   1024;
+        $filename   =   sha1($image->getClientOriginalName() . uniqid() . time());
+        $save_path  =   $store_path . '/' . $filename . '.' . $image->extension();
 
         $img = Image::make($image->path());
         $img->height() > $img->width() ? $max_width = null : $max_height = null;

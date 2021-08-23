@@ -10,6 +10,7 @@ use App\Models\CountryState;
 use Illuminate\Http\Request;
 use App\Http\Requests\CityRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Support\Services\CountryStateService;
@@ -62,7 +63,7 @@ class CityController extends Controller
         } catch (\Error | \Exception $e) {
 
             DB::rollBack();
-            $message = $e->getMessage();
+            Log::error($e);
         }
 
         activity()->useLog('web')

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
@@ -26,7 +27,11 @@ class CategoryRequest extends FormRequest
      */
     public function rules()
     {
-        //
+        return [
+            'name'          =>  ['required', Rule::unique(Category::class, 'name')->ignore($this->route('category'), 'id')->whereNull('deleted_at')],
+            'image'         =>  ['required', 'image', 'mimes:jpg,jpeg,png', 'max:2000'],
+            'description'   =>  ['nullable']
+        ];
     }
 
     /**

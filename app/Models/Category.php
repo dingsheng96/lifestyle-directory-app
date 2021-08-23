@@ -12,6 +12,8 @@ class Category extends Model
 {
     use SoftDeletes;
 
+    const STORE_PATH = '/categories';
+
     protected $table = 'categories';
 
     protected $fillable = [
@@ -24,7 +26,7 @@ class Category extends Model
         return $this->morphedByMany(User::class, 'categorizable', Categorizable::class);
     }
 
-    public function image()
+    public function media()
     {
         return $this->morphOne(Media::class, 'mediable');
     }

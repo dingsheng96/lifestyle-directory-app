@@ -79,6 +79,8 @@ return [
     'services' => 'Services',
     'version' => 'Version',
     'current_version' => 'Current Version',
+    'new_version' => 'New Version',
+    'use_version' => 'Use Version',
 
     'upload_thumbnail' => 'Upload Thumbnail',
     'upload_image' => 'Upload Image|Upload Images',
@@ -108,8 +110,8 @@ return [
 
     'title' => 'Title',
 
-    'updated_at' => 'Updated At',
     'created_at' => 'Created At',
+    'last_updated_at' => 'Last Updated At',
     'last_login_at' => 'Last Login At',
     'user' => 'User',
 
@@ -124,13 +126,10 @@ return [
 
     'thumbnail' => 'Thumbnail',
     'reg_no' => 'Registration No.',
-
     'admin_section' => 'Admin Section',
-
     'company_name' => 'Company Name',
-
     'info' => 'Info',
     'view_details' => 'View Details',
-
+    'user_account' => 'User Account',
 
 ];
