@@ -16,6 +16,12 @@ use App\Exports\Locale\LanguageTranslationsExport;
 
 class TranslationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['can:locale.create'])->only(['import', 'export']);
+        $this->middleware(['can:locale.update'])->only(['import', 'export']);
+    }
+
     public function import(Language $language, Request $request, LanguageService $language_service)
     {
         DB::beginTransaction();

@@ -17,6 +17,14 @@ use App\Support\Services\CountryStateService;
 
 class CountryStateController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['can:locale.read'])->only(['index', 'show']);
+        $this->middleware(['can:locale.create'])->only(['create', 'store']);
+        $this->middleware(['can:locale.update'])->only(['edit', 'update']);
+        $this->middleware(['can:locale.delete'])->only(['delete']);
+    }
+
     /**
      * Display a listing of the resource.
      *

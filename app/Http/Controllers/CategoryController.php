@@ -16,6 +16,14 @@ use App\Support\Services\CategoryService;
 
 class CategoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['can:category.read'])->only(['index', 'show']);
+        $this->middleware(['can:category.create'])->only(['create', 'store']);
+        $this->middleware(['can:category.update'])->only(['edit', 'update']);
+        $this->middleware(['can:category.delete'])->only(['delete']);
+    }
+
     /**
      * Display a listing of the resource.
      *

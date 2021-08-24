@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Role;
-use App\Models\Module;
 use App\Helpers\Message;
 use App\Helpers\Response;
 use App\Models\Permission;
-use Illuminate\Http\Request;
 use App\DataTables\RoleDataTable;
 use App\Http\Requests\RoleRequest;
 use Illuminate\Support\Facades\DB;
@@ -18,6 +16,14 @@ use App\Support\Services\RoleService;
 
 class RoleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['can:role.read'])->only(['index', 'show']);
+        $this->middleware(['can:role.create'])->only(['create', 'store']);
+        $this->middleware(['can:role.update'])->only(['edit', 'update']);
+        $this->middleware(['can:role.delete'])->only(['delete']);
+    }
+
     /**
      * Display a listing of the resource.
      *
