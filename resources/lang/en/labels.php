@@ -133,5 +133,6 @@ return [
     'user_account' => 'User Account',
     'import_translation' => 'Import Translations',
     'branches' => 'Branches',
-    'permission' => 'Permission|Permissions'
+    'permission' => 'Permission|Permissions',
+    'module' => 'Module|Modules'
 ];
