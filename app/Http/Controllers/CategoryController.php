@@ -6,8 +6,6 @@ use App\Helpers\Message;
 use App\Models\Category;
 use App\Helpers\Response;
 use App\Models\Permission;
-use App\Models\CountryState;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
