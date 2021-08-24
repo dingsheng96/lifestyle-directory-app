@@ -115,7 +115,7 @@
         </div>
     </div>
 
-    @include('locale.language.translation.import')
+    @include('locale.language.import')
 
 </div>
 
