@@ -1,4 +1,4 @@
-@extends('layouts.master', ['parent_title' => trans_choice('modules.category', 2), 'title' => __('modules.create', ['module' => trans_choice('modules.category', 1)])])
+@extends('layouts.master', ['parent_title' => trans_choice('modules.category', 2), 'title' => __('modules.edit', ['module' => trans_choice('modules.category', 1)])])
 
 @section('content')
 
@@ -7,9 +7,9 @@
     <div class="row mb-3">
         <div class="col-12">
             <div class="card shadow-lg">
-                <form action="{{ route('categories.store') }}" method="POST" role="form" enctype="multipart/form-data">
+                <form action="{{ route('categories.update', ['category' => $category->id]) }}" method="POST" role="form" enctype="multipart/form-data">
                     @csrf
-
+                    @method('put')
                     <div class="card-body">
                         <div class="form-group">
                             <label for="name" class="col-form-label">{{ __('labels.name') }} <span class="text-red">*</span></label>

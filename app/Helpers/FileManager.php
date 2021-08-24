@@ -117,11 +117,14 @@ class FileManager
         $save_path  =   $store_path . '/' . $filename . '.' . $image->extension();
 
         $img = Image::make($image->path());
-        $img->height() > $img->width() ? $max_width = null : $max_height = null;
+
+        $img->height() >= $img->width() ? $max_width = null : $max_height = null;
 
         $img->resize($max_width, $max_height, function ($constraint) {
             $constraint->aspectRatio();
-        })->save(public_path('storage/' . $save_path));
+        });
+
+        $img->save(public_path('storage/' . $save_path));
 
         return $save_path;
     }

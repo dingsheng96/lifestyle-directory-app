@@ -1,27 +1,10 @@
 {
     "modules":{
         "language": 100,
-        "user": 110,
-        "admin": 120,
-        "customer": 130,
-        "agent": 140,
-        "merchant": 141,
-        "member": 142,
-        "product": 150,
-        "package": 160,
-        "package_distribution": 161,
-        "carton": 170,
-        "carton_distribution": 171,
-        "role": 180,
-        "country": 190,
-        "country_state": 191,
-        "city": 192,
-        "currency": 200,
-        "category": 210,
-        "cart": 220,
-        "ads": 221,
-        "service": 222,
-        "media": 223,
+        "member": 120,
+        "country_state": 190,
+        "city": 191,
+        "category": 200,
         "system": 900
     },
     "actions": {
@@ -57,7 +40,9 @@
         },
         "force_update": {
             "app": 999,
-            "label": 998
+            "label": 998,
+            "logout": 996,
+            "login": 995
         }
     }
 }

@@ -2,15 +2,16 @@
 
 namespace App\Http\View\Composers;
 
+use App\Models\Service;
+use App\Models\Category;
 use Illuminate\View\View;
-use App\Models\Country;
 
-class CountryComposer
+class CategoryComposer
 {
     /**
      * Create a new categories composer.
      *
-     * @param  CountryRepository $countries
+     * @param  TopServiceRepository $top_service
      * @return void
      */
     public function __construct()
@@ -26,6 +27,8 @@ class CountryComposer
      */
     public function compose(View $view)
     {
-        $view->with('countries', Country::orderBy('name', 'asc')->get());
+        $categories = Category::with(['media'])->orderBy('name')->get();
+
+        $view->with('categories', $categories);
     }
 }

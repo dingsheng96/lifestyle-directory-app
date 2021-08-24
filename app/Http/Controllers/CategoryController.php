@@ -118,7 +118,7 @@ class CategoryController extends Controller
 
         try {
 
-            $category_service->setRequest($request)->store();
+            $category_service->setModel($category)->setRequest($request)->store();
 
             $status     =   'success';
             $message    =   Message::instance()->format($action, $module, $status);
