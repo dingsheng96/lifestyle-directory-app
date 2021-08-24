@@ -1,4 +1,4 @@
-@extends('layouts.master', ['parent_title' => trans_choice('modules.category', 2), 'title' => __('modules.create', ['module' => trans_choice('modules.category', 1)])])
+@extends('layouts.master', ['title' => trans_choice('modules.category', 2)])
 
 @section('content')
 
@@ -7,9 +7,13 @@
     <div class="row mb-3">
         <div class="col-12">
             <div class="card shadow-lg">
+
+                <div class="card-header bg-transparent border-0">
+                    <span class="h5">{{ __('modules.create', ['module' => trans_choice('modules.category', 1)]) }}</span>
+                </div>
+
                 <form action="{{ route('categories.store') }}" method="POST" role="form" enctype="multipart/form-data">
                     @csrf
-
                     <div class="card-body">
                         <div class="form-group">
                             <label for="name" class="col-form-label">{{ __('labels.name') }} <span class="text-red">*</span></label>
@@ -34,7 +38,7 @@
                                         <strong>{{ $message }}</strong>
                                     </span>
                                     @enderror
-                                    <ul class="pl-3 mt-3">{!! trans_choice('messages.upload_image_rules', 1, ['maxsize' => '2mb', 'extensions' => 'JPG,JPEG, PNG']) !!}</ul>
+                                    <ul class="pl-3 mt-3">{!! trans_choice('messages.upload_file_rules', 1, ['maxsize' => '2mb', 'extensions' => 'JPG,JPEG, PNG']) !!}</ul>
                                 </div>
                             </div>
                         </div>

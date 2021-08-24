@@ -1,17 +1,13 @@
 $(function () {
 
-    let updateCurrencyModal = $('#updateCurrencyModal');
+    let importTranslationModal = $('#importTranslationModal');
 
-    if(updateCurrencyModal.length > 0) {
-        updateCurrencyModal.on('show.bs.modal', function (event) {
+    if(importTranslationModal.length > 0) {
+        importTranslationModal.on('show.bs.modal', function (event) {
 
-            let obj     =   $(event.relatedTarget).data('object');
+            let version =   $(event.relatedTarget).data('version');
             let form    =   $(this).find('form');
-            let action  =   form.attr('action');
-
-            form.attr('action', action.toString().replace('__REPLACE__', obj.id));
-            $(this).find('input#update_name').val(obj.name);
-            $(this).find('input#update_code').val(obj.code);
+            form.find('#version').val(version);
         });
     }
 

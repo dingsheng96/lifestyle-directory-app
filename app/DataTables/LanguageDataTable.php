@@ -82,6 +82,7 @@ class LanguageDataTable extends DataTable
             Column::computed('DT_RowIndex', '#'),
             Column::make('name')->title(__('labels.name')),
             Column::make('code')->title(__('labels.code')),
+            Column::make('current_version')->title(__('labels.current_version')),
             Column::make('created_at')->title(__('labels.created_at')),
             Column::computed('action', __('labels.action'))
                 ->exportable(false)

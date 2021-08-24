@@ -28,11 +28,11 @@ class LanguageVersionDataTable extends DataTable
                 return view('components.action', [
                     'no_action' => $this->no_action ?: null,
                     'download' => [
-                        'route' => '',
+                        'route' => route('locale.languages.translations.export', ['language' => $this->language->id, 'version' => $data->version]),
                     ],
                     'upload' => [
                         'route' => '#importTranslationModal',
-                        'attribute' => 'data-toggle="modal"'
+                        'attribute' => 'data-toggle="modal" data-version="' . $data->version . '"'
                     ]
                 ])->render();
             })
@@ -57,9 +57,9 @@ class LanguageVersionDataTable extends DataTable
      */
     public function query(Translation $model)
     {
-        return $model->from(DB::raw('(SELECT * FROM ' . app(Translation::class)->getTable() . ' ORDER BY updated_at DESC) translations'))
+        return $model->select('version', DB::raw('MAX(updated_at) AS updated_at'))
             ->where('language_id', $this->language->id)
-            ->groupBy('translations.version')
+            ->groupBy('version')
             ->newQuery();
     }
 

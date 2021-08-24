@@ -27,4 +27,10 @@ class Language extends Model
     {
         return $this->hasMany(Translation::class, 'language_id', 'id');
     }
+
+    // Scopes
+    public function scopeDefault($query, bool $status = true)
+    {
+        return $query->where('default', $status);
+    }
 }

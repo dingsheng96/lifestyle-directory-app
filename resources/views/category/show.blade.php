@@ -1,4 +1,4 @@
-@extends('layouts.master', ['parent_title' => trans_choice('modules.category', 2), 'title' => __('modules.view', ['module' => trans_choice('modules.category', 1)])])
+@extends('layouts.master', ['title' => trans_choice('modules.category', 2)])
 
 @section('content')
 
@@ -7,6 +7,10 @@
     <div class="row mb-3">
         <div class="col-12">
             <div class="card shadow-lg">
+
+                <div class="card-header bg-transparent border-0">
+                    <span class="h5">{{ __('modules.view', ['module' => trans_choice('modules.category', 1)]) }}</span>
+                </div>
 
                 <div class="card-body">
                     <div class="form-group row">

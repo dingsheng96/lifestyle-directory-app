@@ -51,7 +51,6 @@ return [
 
     'country_state' => 'Country State|Country States',
     'city' => 'City|Cities',
-
     'name' => 'Name',
     'email' => 'Email Address',
     'password' => 'Password',
@@ -80,7 +79,8 @@ return [
     'version' => 'Version',
     'current_version' => 'Current Version',
     'new_version' => 'New Version',
-    'use_version' => 'Use Version',
+    'use_version' => 'Use This Version',
+    'download_format' => 'Download format',
 
     'upload_thumbnail' => 'Upload Thumbnail',
     'upload_image' => 'Upload Image|Upload Images',
@@ -131,5 +131,5 @@ return [
     'info' => 'Info',
     'view_details' => 'View Details',
     'user_account' => 'User Account',
-
+    'import_translation' => 'Import Translations'
 ];

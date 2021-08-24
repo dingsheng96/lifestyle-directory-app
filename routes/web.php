@@ -41,8 +41,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::resource('country-states.cities', 'CityController');
 
         Route::resource('languages', 'LanguageController');
-        Route::get('languages/{language}/translations/export', 'TranslationController@export')->name('languages.translations.export');
         Route::post('languages/{language}/translations/import', 'TranslationController@import')->name('languages.translations.import');
+        Route::get('languages/{language}/translations/export', 'TranslationController@export')->name('languages.translations.export');
     });
 
     Route::resource('activity-logs', 'ActivityLogController');

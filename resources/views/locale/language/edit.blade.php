@@ -51,16 +51,48 @@
                             </div>
                         </div>
 
-                        <hr>
-
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <a href="#createTranslationModal" class="btn btn-purple" data-toggle="modal">
-                                    <i class="fas fa-plus"></i>
-                                    {{ __('labels.create') }}
-                                </a>
+                        <div class="row">
+                            <div class="col-md-4 col-12">
+                                <div class="form-group">
+                                    <label for="new_version" class="col-form-label">{{ __('labels.new_version') }}</label>
+                                    <input type="text" id="new_version" name="new_version" value="{{ old('new_version') }}" class="form-control @error('new_version') is-invalid @enderror">
+                                    @error('new_version')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <div class="form-group">
+                                    <label for="file" class="col-form-label">{{ trans_choice('labels.upload_file', 1) }}</label>
+                                    <input type="file" id="file" name="file" class="form-control-file @error('file') is-invalid @enderror">
+                                    @error('file')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                    <ul class="pl-3 mt-3">
+                                        {!! trans_choice('messages.upload_file_rules', 1, ['maxsize' => '2mb', 'extensions' => 'JPG,JPEG, PNG']) !!}
+                                        <li>
+                                            {{ __('labels.download_format') }}
+                                            <a href="{{ $excel }}" download>here</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <div class="form-group">
+                                    <label for="use_version">{{ __('labels.use_version') }}</label>
+                                    <div class="icheck-purple">
+                                        <input type="checkbox" name="use_version" id="use_version" {{ old('use_version') ? "checked" : null }}>
+                                        <label for="use_version"></label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+                        <hr>
 
                         <div class="form-group">
                             <div class="table-responsive">
@@ -83,7 +115,6 @@
         </div>
     </div>
 
-    @include('locale.language.translation.create')
     @include('locale.language.translation.import')
 
 </div>

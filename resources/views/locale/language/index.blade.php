@@ -7,7 +7,7 @@
     @can('locale.create')
     <div class="row mb-3">
         <div class="col-12">
-            <a href="#languageModal" class="btn btn-purple" data-toggle="modal">
+            <a href="{{ route('locale.languages.create') }}" class="btn btn-purple">
                 <i class="fas fa-plus"></i>
                 {{ __('labels.create') }}
             </a>
@@ -25,8 +25,6 @@
         </div>
     </div>
 </div>
-
-@includeWhen(Auth::user()->can('locale.create'), 'locale.language.create')
 
 @endsection
 

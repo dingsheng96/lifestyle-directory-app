@@ -170,10 +170,10 @@ return [
         'pic_email' => 'email of person in charge',
         'pic_phone' => 'contact no. of person in charge',
         'ssm_cert' => 'ssm certificate',
-        'reg_no' => 'registration no.',
         'agree' => 'agreement',
         'merchant' => 'merchant',
-        'trans_no' => 'transaction no.',
+        'new_version' => 'new version',
+        'current_version' => 'current version'
     ],
 
 ];

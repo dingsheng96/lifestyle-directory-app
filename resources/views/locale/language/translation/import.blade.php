@@ -16,23 +16,18 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="importTranslationModalLabel">{{ __('modules.create', ['module' => trans_choice('modules.language', 1)]) }}</h5>
+                <h5 class="modal-title" id="importTranslationModalLabel">{{ __('labels.import_translation') }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('locale.languages.store') }}" method="POST" role="form" enctype="multipart/form-data">
+            <form action="{{ route('locale.languages.translations.import', ['language' => $language->id]) }}" method="POST" role="form" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
 
                     <div class="form-group">
                         <label for="version" class="col-form-label">{{ __('labels.version') }}</label>
-                        <input type="text" id="version" name="version" value="{{ old('version') }}" class="form-control @error('version') is-invalid @enderror">
-                        @error('version')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
+                        <input id="version" name="version" class="form-control-plaintext" readonly>
                     </div>
 
                     <div class="form-group">
@@ -43,6 +38,9 @@
                             <strong>{{ $message }}</strong>
                         </span>
                         @enderror
+                        <ul class="pl-3 mt-3">
+                            {!! trans_choice('messages.upload_file_rules', 1, ['maxsize' => '2mb', 'extensions' => 'JPG,JPEG, PNG']) !!}
+                        </ul>
                     </div>
 
                 </div>

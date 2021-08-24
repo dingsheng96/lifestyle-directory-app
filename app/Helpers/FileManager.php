@@ -23,6 +23,12 @@ class FileManager
         'zip'   =>  'application/zip'
     ];
 
+    public $reader = [
+        'xlsx'  =>  Excel::XLSX,
+        'csv'   =>  Excel::CSV,
+        'txt'   =>  Excel::CSV
+    ];
+
     public static function instance()
     {
         return new self();
@@ -76,13 +82,7 @@ class FileManager
     {
         $extension = strtolower($extension);
 
-        $reader = [
-            'xlsx'  =>  Excel::XLSX,
-            'csv'   =>  Excel::CSV,
-            'txt'   =>  Excel::CSV
-        ];
-
-        return $reader[$extension];
+        return $this->reader[$extension];
     }
 
     public function getExtensions(array $inclusives = []): array
