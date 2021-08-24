@@ -42,7 +42,7 @@
                                 <table class="table table-bordered table-striped table-hover">
                                     <thead>
                                         <tr>
-                                            <td></td>
+                                            <td class="font-weight-bold">{{ trans_choice('labels.module', 2) }}</td>
                                             @foreach ($actions as $action)
                                             <td class="font-weight-bold">
                                                 {{ Str::title($action->action) }}
@@ -57,7 +57,7 @@
                                             @foreach ($module->permissions as $permission)
                                             <td>
                                                 <div class="icheck-purple">
-                                                    <input type="checkbox" name="permissions[]" id="permission_{{ $permission->id }}" value="{{ $permission->id }}" {{ collect($role->permissions()->pluck('id'))->contains($permission->id) ? 'checked' : null }}>
+                                                    <input type="checkbox" name="permissions[]" id="permission_{{ $permission->id }}" value="{{ $permission->id }}" {{ collect($role->permissions->pluck('id'))->contains($permission->id) ? 'checked' : null }}>
                                                     <label for="permission_{{ $permission->id }}">{{ $permission->display }}</label>
                                                 </div>
                                             </td>

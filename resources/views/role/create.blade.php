@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col-12">
-            <div class="card">
+            <div class="card shadow-lg">
 
                 <div class="card-header bg-transparent border-0">
                     <span class="h5">{{ __('modules.create', ['module' => trans_choice('modules.role', 1)]) }}</span>
@@ -42,7 +42,7 @@
                                 <table class="table table-bordered table-striped table-hover">
                                     <thead>
                                         <tr>
-                                            <td></td>
+                                            <td class="font-weight-bold">{{ trans_choice('labels.module', 2) }}</td>
                                             @foreach ($actions as $action)
                                             <td class="font-weight-bold">
                                                 {{ Str::title($action->action) }}

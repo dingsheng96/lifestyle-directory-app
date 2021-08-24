@@ -84,7 +84,11 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
-        $role->load(['permissions']);
+        $role->load([
+            'permissions' => function ($query) {
+                $query->select('id');
+            }
+        ]);
 
         return view('role.show', compact('role'));
     }
@@ -97,7 +101,11 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        $role->load(['permissions']);
+        $role->load([
+            'permissions' => function ($query) {
+                $query->select('id');
+            }
+        ]);
 
         return view('role.edit', compact('role'));
     }
