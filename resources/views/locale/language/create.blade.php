@@ -20,7 +20,7 @@
                         <div class="row">
                             <div class="col-md-4 col-12">
                                 <div class="form-group">
-                                    <label for="name" class="col-form-label">{{ __('labels.name') }} <span class="text-red">*</span></label>
+                                    <label for="name" class="col-form-label">{{ __('labels.name') }} <span class="text-danger">*</span></label>
                                     <input type="text" id="name" name="name" value="{{ old('name') }}" class="form-control ucfirst @error('name') is-invalid @enderror">
                                     @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -31,7 +31,7 @@
                             </div>
                             <div class="col-md-4 col-12">
                                 <div class="form-group">
-                                    <label for="code" class="col-form-label">{{ __('labels.code') }} <span class="text-red">*</span></label>
+                                    <label for="code" class="col-form-label">{{ __('labels.code') }} <span class="text-danger">*</span></label>
                                     <input type="text" id="code" name="code" value="{{ old('code') }}" class="form-control lcall @error('code') is-invalid @enderror">
                                     @error('code')
                                     <span class="invalid-feedback" role="alert">

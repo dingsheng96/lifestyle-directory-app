@@ -131,5 +131,7 @@ return [
     'info' => 'Info',
     'view_details' => 'View Details',
     'user_account' => 'User Account',
-    'import_translation' => 'Import Translations'
+    'import_translation' => 'Import Translations',
+    'branches' => 'Branches',
+    'permission' => 'Permission|Permissions'
 ];

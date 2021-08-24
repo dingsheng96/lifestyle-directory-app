@@ -9,10 +9,12 @@ use App\Helpers\Response;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use App\DataTables\RoleDataTable;
+use App\Http\Requests\RoleRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\RoleRequest;
+use App\Support\Services\RoleService;
 
 class RoleController extends Controller
 {
@@ -33,7 +35,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        //
+        return view('role.create');
     }
 
     /**
@@ -42,49 +44,36 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(RoleRequest $request)
+    public function store(RoleRequest $request, RoleService $role_service)
     {
         DB::beginTransaction();
 
-        $action = Permission::ACTION_CREATE;
-        $module = strtolower(trans_choice('modules.role', 1));
-        $message = Message::instance()->format($action, $module);
+        $action     =   Permission::ACTION_CREATE;
+        $module     =   strtolower(trans_choice('modules.role', 1));
+        $message    =   Message::instance()->format($action, $module);
+        $status     =   'fail';
 
         try {
 
-            $input = $request->get('create');
+            $role_service->setRequest($request)->store();
 
-            $role = Role::create([
-                'name'          =>  $input['name'],
-                'description'   =>  $input['description'],
-                'guard'         =>  config('auth.default.guard')
-            ]);
+            $status     =   'success';
+            $message    =   Message::instance()->format($action, $module, $status);
 
             DB::commit();
-
-            $message = Message::instance()->format($action, $module, 'success');
-
-            activity()->useLog('web')
-                ->causedBy(Auth::user())
-                ->performedOn($role)
-                ->withProperties($request->all())
-                ->log($message);
-
-            return redirect()->route('roles.index')->withSuccess($message);
         } catch (\Error | \Exception $e) {
 
             DB::rollBack();
-
-            activity()->useLog('web')
-                ->causedBy(Auth::user())
-                ->performedOn(new Role())
-                ->withProperties($request->all())
-                ->log($e->getMessage());
-
-            return redirect()->back()
-                ->with('fail', $message)
-                ->withInput();
+            Log::error($e);
         }
+
+        activity()->useLog('web')
+            ->causedBy(Auth::user())
+            ->performedOn(new Role())
+            ->withProperties($request->all())
+            ->log($message);
+
+        return redirect()->route('roles.index')->with($status, $message);
     }
 
     /**
@@ -93,9 +82,11 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Role $role)
     {
-        //
+        $role->load(['permissions']);
+
+        return view('role.show', compact('role'));
     }
 
     /**
@@ -106,20 +97,9 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        $actions = Permission::select('action')
-            ->groupBy('action')
-            ->orderBy('action', 'asc')
-            ->get();
+        $role->load(['permissions']);
 
-        $modules = Module::orderBy('name', 'asc')
-            ->with([
-                'permissions' => function ($query) {
-                    $query->orderBy('action', 'asc');
-                }
-            ])
-            ->get();
-
-        return view('role.edit', compact('role', 'actions', 'modules'));
+        return view('role.edit', compact('role'));
     }
 
     /**
@@ -129,48 +109,36 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(RoleRequest $request, Role $role)
+    public function update(RoleRequest $request, Role $role, RoleService $role_service)
     {
         DB::beginTransaction();
 
-        $action = Permission::ACTION_UPDATE;
-        $module = strtolower(trans_choice('modules.role', 1));
-        $message = Message::instance()->format($action, $module);
+        $action     =   Permission::ACTION_UPDATE;
+        $module     =   strtolower(trans_choice('modules.role', 1));
+        $message    =   Message::instance()->format($action, $module);
+        $status     =   'fail';
 
         try {
-            $role->name         =   $request->get('name');
-            $role->description  =   $request->get('description');
-            $role->syncPermissions($request->get('permissions'));
 
-            if ($role->isDirty()) {
-                $role->save();
-            }
+            $role_service->setModel($role)->setRequest($request)->store();
+
+            $status     =   'success';
+            $message    =    Message::instance()->format($action, $module, $status);
 
             DB::commit();
-
-            $message = Message::instance()->format($action, $module, 'success');
-
-            activity()->useLog('web')
-                ->causedBy(Auth::user())
-                ->performedOn($role)
-                ->withProperties($request->all())
-                ->log($message);
-
-            return redirect()->route('roles.index')->withSuccess($message);
         } catch (\Error | \Exception $e) {
 
             DB::rollBack();
-
-            activity()->useLog('web')
-                ->causedBy(Auth::user())
-                ->performedOn($role)
-                ->withProperties($request->all())
-                ->log($e->getMessage());
-
-            return redirect()->back()
-                ->with('fail', $message)
-                ->withInput();
+            Log::error($e);
         }
+
+        activity()->useLog('web')
+            ->causedBy(Auth::user())
+            ->performedOn($role)
+            ->withProperties($request->all())
+            ->log($message);
+
+        return redirect()->route('roles.index')->with($status, $message);
     }
 
     /**

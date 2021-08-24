@@ -37,7 +37,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label for="name" class="col-form-label">{{ __('labels.name') }} <span class="text-red">*</span></label>
+                                    <label for="name" class="col-form-label">{{ __('labels.name') }} <span class="text-danger">*</span></label>
                                     <input type="text" name="name" id="name" value="{{ old('name', $user->name) ?? null }}" class="form-control ucfirst @error('name') is-invalid @enderror">
                                     @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -51,7 +51,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <label for="email" class="col-form-label">{{ __('labels.email') }} <span class="text-red">*</span></label>
+                                    <label for="email" class="col-form-label">{{ __('labels.email') }} <span class="text-danger">*</span></label>
                                     <input type="email" name="email" id="email" value="{{ old('email', $user->email) ?? null }}" class="form-control @error('email') is-invalid @enderror">
                                     @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -95,7 +95,7 @@
                     </div>
 
                     <div class="card-footer bg-transparent text-md-right text-center">
-                        <button type="submit" class="btn btn-outline-primary float-right">
+                        <button type="submit" class="btn btn-purple float-right">
                             <i class="fas fa-paper-plane"></i>
                             {{ __('labels.submit') }}
                         </button>

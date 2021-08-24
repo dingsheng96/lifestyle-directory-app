@@ -11,7 +11,7 @@
                 @csrf
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="create_name" class="col-form-label">{{ __('labels.name') }} <span class="text-red">*</span></label>
+                        <label for="create_name" class="col-form-label">{{ __('labels.name') }} <span class="text-danger">*</span></label>
                         <input type="text" id="create_name" name="create[name]" value="{{ old('create.name') }}" class="form-control ucfirst @error('create.name') is-invalid @enderror">
                         @error('create.name')
                         <span class="invalid-feedback" role="alert">
@@ -21,7 +21,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="create_email" class="col-form-label">{{ __('labels.email') }} <span class="text-red">*</span></label>
+                        <label for="create_email" class="col-form-label">{{ __('labels.email') }} <span class="text-danger">*</span></label>
                         <input type="email" id="create_email" name="create[email]" value="{{ old('create.email') }}" class="form-control @error('create.email') is-invalid @enderror">
                         @error('create.email')
                         <span class="invalid-feedback" role="alert">
@@ -31,7 +31,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-red">*</span></label>
+                        <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-danger">*</span></label>
                         <select name="create[status]" id="create_status" class="form-control select2 @error('create.status') is-invalid @enderror">
                             @foreach ($statuses as $index => $status)
                             <option value="{{ $index }}" {{ old('create.status', 'active') == $index ? 'selected' : null }}>{{ $status}}</option>
@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="password" class="col-form-label">{{ __('labels.password') }} <span class="text-red">*</span></label>
+                        <label for="password" class="col-form-label">{{ __('labels.password') }} <span class="text-danger">*</span></label>
                         <input type="password" id="create_password" name="create[password]" value="{{ old('create.password') }}" class="form-control @error('create.password') is-invalid @enderror">
                         @error('create.password')
                         <span class="invalid-feedback" role="alert">
@@ -56,7 +56,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="password_confirmation" class="col-form-label">{{ __('labels.password_confirmation') }} <span class="text-red">*</span></label>
+                        <label for="password_confirmation" class="col-form-label">{{ __('labels.password_confirmation') }} <span class="text-danger">*</span></label>
                         <input type="password" id="create_password_confirmation" name="create[password_confirmation]" value="{{ old('create.password_confirmation') }}" class="form-control @error('create.password_confirmation') is-invalid @enderror">
                         @error('create.password_confirmation')
                         <span class="invalid-feedback" role="alert">
@@ -71,8 +71,8 @@
                         <i class="fas fa-times mr-2"></i>
                         {{ __('labels.cancel') }}
                     </button>
-                    <button type="submit" class="btn btn-outline-primary">
-                        <i class="fas fa-paper-plane mr-2"></i>
+                    <button type="submit" class="btn btn-purple">
+                        <i class="fas fa-paper-plane"></i>
                         {{ __('labels.submit') }}
                     </button>
                 </div>

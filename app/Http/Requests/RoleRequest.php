@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Validation\Rule;
 use App\Models\Role;
+use App\Models\Permission;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use App\Models\Permission;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RoleRequest extends FormRequest
@@ -29,37 +29,11 @@ class RoleRequest extends FormRequest
      */
     public function rules()
     {
-        if ($this->route('role')) {
-            return [
-                'name' => [
-                    'required',
-                    Rule::unique(Role::class, 'name')
-                        ->ignore($this->route('role'), 'id')
-                        ->whereNull('deleted_at')
-                ],
-                'description' => [
-                    'nullable'
-                ],
-                'permissions' => [
-                    'nullable',
-                    'array'
-                ],
-                'permissions.*' => [
-                    Rule::exists(Permission::class, 'id')
-                        ->whereNull('deleted_at')
-                ]
-            ];
-        }
-
         return [
-            'create.name' => [
-                'required',
-                Rule::unique(Role::class, 'name')
-                    ->whereNull('deleted_at')
-            ],
-            'create.description' => [
-                'nullable'
-            ]
+            'name'          =>  ['required', Rule::unique(Role::class, 'name')->ignore($this->route('role'), 'id')->whereNull('deleted_at')],
+            'description'   =>  ['nullable'],
+            'permissions'   =>  ['nullable', 'array'],
+            'permissions.*' =>  ['exists:' . Permission::class . ',id']
         ];
     }
 
@@ -80,16 +54,9 @@ class RoleRequest extends FormRequest
      */
     public function attributes()
     {
-        if ($this->route('currency')) {
-            return [
-                'update.name' => __('validation.attributes.name'),
-                'update.code' => __('validation.attributes.code')
-            ];
-        }
-
         return [
-            'create.name'           =>  __('validation.attributes.name'),
-            'create.description'    =>  __('validation.attributes.description')
+            'permissions' => __('validation.attributes.permission'),
+            'permissions.*' => __('validation.attributes.permission'),
         ];
     }
 }

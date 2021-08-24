@@ -45,14 +45,11 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('languages/{language}/translations/export', 'TranslationController@export')->name('languages.translations.export');
     });
 
-    Route::resource('activity-logs', 'ActivityLogController');
+    Route::get('activity-logs', 'ActivityLogController')->name('activity-logs.index');
 });
 
 
 Route::group(['prefix' => 'data', 'as' => 'data.'], function () {
 
-    Route::group(['prefix' => 'countries/{country}', 'as' => 'countries.'], function () {
-        Route::post('country-states', 'DataController@getCountryStateFromCountry')->name('country-states');
-        Route::post('country-states/{country_state}/cities', 'DataController@getCityFromCountryState')->name('country-states.cities');
-    });
+    Route::post('country-states/{country_state}/cities', 'DataController@getCityFromCountryState')->name('country-states.cities');
 });

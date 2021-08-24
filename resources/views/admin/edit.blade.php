@@ -12,7 +12,7 @@
                 @method('put')
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="update_name" class="col-form-label">{{ __('labels.name') }} <span class="text-red">*</span></label>
+                        <label for="update_name" class="col-form-label">{{ __('labels.name') }} <span class="text-danger">*</span></label>
                         <input type="text" id="update_name" name="update[name]" value="{{ old('update.name') }}" class="form-control ucfirst @error('update.name') is-invalid @enderror">
                         @error('update.name')
                         <span class="invalid-feedback" role="alert">
@@ -22,7 +22,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="update_email" class="col-form-label">{{ __('labels.email') }} <span class="text-red">*</span></label>
+                        <label for="update_email" class="col-form-label">{{ __('labels.email') }} <span class="text-danger">*</span></label>
                         <input type="email" id="update_email" name="update[email]" value="{{ old('update.email') }}" class="form-control @error('update.email') is-invalid @enderror">
                         @error('update.email')
                         <span class="invalid-feedback" role="alert">
@@ -32,7 +32,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-red">*</span></label>
+                        <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-danger">*</span></label>
                         <select name="update[status]" id="update_status" class="form-control select2 @error('update.status') is-invalid @enderror">
                             @foreach ($statuses as $index => $status)
                             <option value="{{ $index }}" {{ old('update.status', 'active') == $index ? 'selected' : null }}>{{ $status}}</option>
@@ -74,8 +74,8 @@
                         <i class="fas fa-times mr-2"></i>
                         {{ __('labels.cancel') }}
                     </button>
-                    <button type="submit" class="btn btn-outline-primary">
-                        <i class="fas fa-paper-plane mr-2"></i>
+                    <button type="submit" class="btn btn-purple">
+                        <i class="fas fa-paper-plane"></i>
                         {{ __('labels.submit') }}
                     </button>
                 </div>

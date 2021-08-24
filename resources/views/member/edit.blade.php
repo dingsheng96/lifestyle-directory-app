@@ -29,7 +29,7 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="form-group">
-                                                    <label for="name" class="col-form-label">{{ __('labels.name') }} <span class="text-red">*</span></label>
+                                                    <label for="name" class="col-form-label">{{ __('labels.name') }} <span class="text-danger">*</span></label>
                                                     <input type="text" name="name" id="name" value="{{ old('name', $member->name) ?? null }}" class="form-control ucfirst @error('name') is-invalid @enderror" required>
                                                     @error('name')
                                                     <span class="invalid-feedback" role="alert">
@@ -42,7 +42,7 @@
                                         <div class="row">
                                             <div class="col-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label for="phone" class="col-form-label">{{ __('labels.contact_no') }} <span class="text-red">*</span></label>
+                                                    <label for="phone" class="col-form-label">{{ __('labels.contact_no') }} <span class="text-danger">*</span></label>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text bg-white">+</span>
@@ -58,7 +58,7 @@
                                             </div>
                                             <div class="col-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label for="email" class="col-form-label">{{ __('labels.email') }} <span class="text-red">*</span></label>
+                                                    <label for="email" class="col-form-label">{{ __('labels.email') }} <span class="text-danger">*</span></label>
                                                     <input type="email" name="email" id="email" value="{{ old('email', $member->email) ?? null }}" class="form-control @error('email') is-invalid @enderror" required>
                                                     @error('email')
                                                     <span class="invalid-feedback" role="alert">
@@ -92,7 +92,7 @@
 
                                             <div class="col-12 col-md-6">
                                                 <div class="form-group">
-                                                    <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-red">*</span></label>
+                                                    <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-danger">*</span></label>
                                                     <select name="status" id="status" class="form-control select2 @error('status') is-invalid @enderror">
                                                         @foreach ($statuses as $status => $display)
                                                         <option value="{{ $status }}" {{ old('status', $member->status) == $status }}>{{ $display }}</option>
@@ -141,7 +141,7 @@
 
                                     <div class="tab-pane text-left fade show" id="vert-tabs-location" role="tabpanel" aria-labelledby="vert-tabs-location-tab">
                                         <div class="form-group">
-                                            <label for="address_1" class="col-form-label">{{ __('labels.address_1') }} <span class="text-red">*</span></label>
+                                            <label for="address_1" class="col-form-label">{{ __('labels.address_1') }} <span class="text-danger">*</span></label>
                                             <input type="text" name="address_1" id="address_1" class="form-control @error('address_1') is-invalid @enderror" value="{{ old('address_1', $member->address->address_1 ?? null) }}" required>
                                             @error('address_1')
                                             <span class="invalid-feedback" role="alert">
@@ -151,7 +151,7 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="address_2" class="col-form-label">{{ __('labels.address_2') }} <span class="text-red">*</span></label>
+                                            <label for="address_2" class="col-form-label">{{ __('labels.address_2') }} <span class="text-danger">*</span></label>
                                             <input type="text" name="address_2" id="address_2" class="form-control @error('address_2') is-invalid @enderror" value="{{ old('address_2', $member->address->address_2 ?? null) }}" required>
                                             @error('address_2')
                                             <span class="invalid-feedback" role="alert">
@@ -163,7 +163,7 @@
                                         <div class="row">
                                             <div class="col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="country" class="col-form-label">{{ trans_choice('labels.country', 1) }} <span class="text-red">*</span></label>
+                                                    <label for="country" class="col-form-label">{{ trans_choice('labels.country', 1) }} <span class="text-danger">*</span></label>
                                                     <select name="country" id="country" class="form-control select2 @error('country') is-invalid @enderror country-state-filter" required>
                                                         <option value="0" selected disabled>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(trans_choice('labels.country', 1))]) }} ---</option>
                                                         @foreach ($countries as $country)
@@ -180,7 +180,7 @@
 
                                             <div class="col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="postcode" class="col-form-label">{{ __('labels.postcode') }} <span class="text-red">*</span></label>
+                                                    <label for="postcode" class="col-form-label">{{ __('labels.postcode') }} <span class="text-danger">*</span></label>
                                                     <input type="text" name="postcode" id="postcode" class="form-control @error('postcode') is-invalid @enderror" value="{{ old('postcode', $member->address->postcode ?? null) }}" required>
                                                     @error('postcode')
                                                     <span class="invalid-feedback" role="alert">
@@ -194,7 +194,7 @@
                                         <div class="row">
                                             <div class="col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="country_state" class="col-form-label">{{ trans_choice('labels.country_state', 1) }} <span class="text-red">*</span></label>
+                                                    <label for="country_state" class="col-form-label">{{ trans_choice('labels.country_state', 1) }} <span class="text-danger">*</span></label>
                                                     <select name="country_state" id="country_state" class="form-control select2 @error('country_state') is-invalid @enderror country-state-dropdown city-filter" data-selected="{{ old('country_state', $member->address->city->countryState->id ?? 0) }}"
                                                         data-country-state-route="{{ route('data.countries.country-states', ['__REPLACE__']) }}" required>
                                                         <option value="0" selected disabled>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(trans_choice('labels.country_state', 1))]) }} ---</option>
@@ -208,7 +208,7 @@
                                             </div>
                                             <div class="col-md-6 col-12">
                                                 <div class="form-group">
-                                                    <label for="city" class="col-form-label">{{ trans_choice('labels.city', 1) }} <span class="text-red">*</span></label>
+                                                    <label for="city" class="col-form-label">{{ trans_choice('labels.city', 1) }} <span class="text-danger">*</span></label>
                                                     <select name="city" id="city" class="form-control select2 @error('city') is-invalid @enderror city-dropdown" data-selected="{{ old('city', $member->address->city->id ?? 0) }}"
                                                         data-city-route="{{ route('data.countries.country-states.cities', ['__FIRST_REPLACE__', '__SECOND_REPLACE__']) }}" required>
                                                         <option value="0" selected disabled>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(trans_choice('labels.city', 1))]) }} ---</option>
@@ -232,7 +232,7 @@
                             <i class="fas fa-times"></i>
                             {{ __('labels.cancel') }}
                         </a>
-                        <button type="submit" class="btn btn-outline-primary">
+                        <button type="submit" class="btn btn-purple">
                             <i class="fas fa-paper-plane"></i>
                             {{ __('labels.submit') }}
                         </button>

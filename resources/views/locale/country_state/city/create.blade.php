@@ -51,7 +51,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-purple">
-                        <i class="fas fa-paper-plane mr-2"></i>
+                        <i class="fas fa-paper-plane"></i>
                         {{ __('labels.submit') }}
                     </button>
                 </div>

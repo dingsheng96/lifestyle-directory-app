@@ -17,7 +17,7 @@
                     @method('put')
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="name" class="col-form-label">{{ __('labels.name') }} <span class="text-red">*</span></label>
+                            <label for="name" class="col-form-label">{{ __('labels.name') }} <span class="text-danger">*</span></label>
                             <input type="text" id="name" name="name" value="{{ old('name', $category->name) }}" class="form-control ucfirst @error('name') is-invalid @enderror">
                             @error('name')
                             <span class="invalid-feedback" role="alert">
@@ -27,7 +27,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="image" class="col-form-label">{{ trans_choice('labels.upload_image', 1) }} <span class="text-red">*</span></label>
+                            <label for="image" class="col-form-label">{{ trans_choice('labels.upload_image', 1) }} <span class="text-danger">*</span></label>
                             <div class="row">
                                 <div class="col-12 col-sm-6 col-lg-3">
                                     <img src="{{ $category->media->full_file_path ?? $default_preview }}" alt="preview" class="custom-img-preview img-thumbnail d-block mx-auto">

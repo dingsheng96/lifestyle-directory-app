@@ -10,8 +10,6 @@ use App\Http\Controllers\Controller;
 
 class DataController extends Controller
 {
-
-
     public function getCityFromCountryState(CountryState $country_state)
     {
         $action = Permission::ACTION_READ;

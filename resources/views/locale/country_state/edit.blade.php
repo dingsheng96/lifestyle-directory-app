@@ -7,8 +7,8 @@
     <div class="row mb-3">
         <div class="col-12">
             <div class="card shadow-lg">
-                <div class="card-header bg-transparent">
-                    <h3 class="card-title">{{ __('modules.edit', ['module' => trans_choice('modules.country_state', 1)]) }}</h3>
+                <div class="card-header bg-transparent border-0">
+                    <span class="h5">{{ __('modules.edit', ['module' => trans_choice('modules.country_state', 1)]) }}</span>
                 </div>
 
                 <form action="{{ route('locale.country-states.update', ['country_state' => $country_state->id]) }}" method="POST" role="form" enctype="multipart/form-data">
@@ -17,7 +17,7 @@
 
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="name" class="col-form-label">{{ __('labels.name') }} <span class="text-red">*</span></label>
+                            <label for="name" class="col-form-label">{{ __('labels.name') }} <span class="text-danger">*</span></label>
                             <input type="text" id="name" name="name" value="{{ old('name', $country_state->name) }}" class="form-control ucfirst @error('name') is-invalid @enderror" required>
                             @error('name')
                             <span class="invalid-feedback" role="alert">

@@ -173,7 +173,8 @@ return [
         'agree' => 'agreement',
         'merchant' => 'merchant',
         'new_version' => 'new version',
-        'current_version' => 'current version'
+        'current_version' => 'current version',
+        'permission' => 'permission'
     ],
 
 ];

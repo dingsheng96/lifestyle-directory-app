@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-12">
             @can('role.create')
-            <a href="#roleModal" class="btn btn-purple" data-toggle="modal">
+            <a href="{{ route('roles.create') }}" class="btn btn-purple">
                 <i class="fas fa-plus"></i>
                 {{ __('labels.create') }}
             </a>
@@ -26,8 +26,6 @@
         </div>
     </div>
 </div>
-
-@includeWhen(Auth::user()->can('role.create'), 'role.create')
 
 @endsection
 
