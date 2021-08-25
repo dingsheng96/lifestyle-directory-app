@@ -41,8 +41,8 @@
 
                                     {{ __('labels.joined_since') }} : {{ $user->created_at->format('jS M Y') }}
                                     <br>
-                                    @if ($user->userDetail->years_of_experience > 0)
-                                    {{ __('labels.years_of_experience') }} : {{ trans_choice('labels.year', $user->userDetail->years_of_experience, ['value' => $user->userDetail->years_of_experience]) }}
+                                    @if ($user->branchDetail->years_of_experience > 0)
+                                    {{ __('labels.years_of_experience') }} : {{ trans_choice('labels.year', $user->branchDetail->years_of_experience, ['value' => $user->branchDetail->years_of_experience]) }}
                                     @endif
                                 </span>
                             </div>

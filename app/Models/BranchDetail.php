@@ -37,9 +37,9 @@ class BranchDetail extends Model
     }
 
     // Attributes
-    public function setPicPhoneAttribute($value)
+    public function setPicContactAttribute($value)
     {
-        $this->attributes['pic_phone'] = (new Misc())->phoneStoreFormat($value);
+        $this->attributes['pic_contact'] = (new Misc())->phoneStoreFormat($value);
     }
 
     public function setWhatsappAttribute($value)

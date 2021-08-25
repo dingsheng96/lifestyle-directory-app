@@ -46,7 +46,7 @@ class LoginController extends Controller
     {
         $credentials = array_merge(
             $request->only($this->username(), 'password'),
-            ['status' => User::STATUS_ACTIVE]
+            ['status' => User::STATUS_ACTIVE, 'application_status' => User::APPLICATION_STATUS_APPROVED]
         );
 
         return $credentials;

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Media;
 use App\Helpers\Status;
 use App\Models\Package;
 use App\Models\Product;
@@ -12,11 +13,14 @@ use App\Models\Permission;
 use App\Models\ProductCategory;
 use App\Models\ProductAttribute;
 use Illuminate\Support\Facades\DB;
+use App\DataTables\BranchDataTable;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\DataTables\MerchantDataTable;
 use App\Http\Requests\MerchantRequest;
 use App\Support\Facades\MerchantFacade;
+use App\Support\Services\MerchantService;
 use App\DataTables\SubscriptionLogsDataTable;
 
 class MerchantController extends Controller
@@ -46,9 +50,9 @@ class MerchantController extends Controller
      */
     public function create()
     {
-        $statuses = (new Status())->activeStatus();
+        $max_files = Media::MAX_BRANCH_IMAGE_UPLOAD;
 
-        return view('merchant.create', compact('statuses'));
+        return view('merchant.create', compact('max_files'));
     }
 
     /**
@@ -57,7 +61,7 @@ class MerchantController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(MerchantRequest $request)
+    public function store(MerchantRequest $request, MerchantService $merchant_service)
     {
         DB::beginTransaction();
 
@@ -68,32 +72,25 @@ class MerchantController extends Controller
 
         try {
 
-            $merchant = MerchantFacade::setRequest($request)->storeData()->getModel();
-
-            DB::commit();
+            $merchant_service->setRequest($request)->store()->setApplicationStatus(User::APPLICATION_STATUS_APPROVED);
 
             $status  = 'success';
             $message = Message::instance()->format($action, $module, $status);
 
-            activity()->useLog('web')
-                ->causedBy(Auth::user())
-                ->performedOn($merchant)
-                ->withProperties($request->all())
-                ->log($message);
-
-            return redirect()->route('merchants.index')->withSuccess($message);
+            DB::commit();
         } catch (\Error | \Exception $e) {
 
             DB::rollBack();
-
-            activity()->useLog('web')
-                ->causedBy(Auth::user())
-                ->performedOn(new User())
-                ->withProperties($request->all())
-                ->log($e->getMessage());
-
-            return redirect()->back()->withErrors($message)->withInput();
+            Log::error($e);
         }
+
+        activity()->useLog('web')
+            ->causedBy(Auth::user())
+            ->performedOn(new User())
+            ->withProperties($request->all())
+            ->log($message);
+
+        return redirect()->route('merchants.index')->with($status, $message);
     }
 
     /**
@@ -104,13 +101,13 @@ class MerchantController extends Controller
      */
     public function show(User $merchant)
     {
-        $user_details = $merchant->userDetail()
+        $user_details = $merchant->branchDetail()
             ->approvedDetails()
             ->with(['media'])
             ->first();
 
         $documents = $merchant->media()
-            ->ssm()
+            ->ssmCert()
             ->orderBy('created_at', 'asc')
             ->get();
 
@@ -123,42 +120,17 @@ class MerchantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $merchant, SubscriptionLogsDataTable $dataTable)
+    public function edit(User $merchant, BranchDataTable $dataTable)
     {
         $merchant->load([
-            'media',
-            'userDetail' => function ($query) {
-                $query->approvedDetails();
-            },
-            'userSubscriptions' => function ($query) {
-                $query->with(['userSubscriptionLogs'])->active();
-            }
+            'branchDetail', 'address', 'media'
         ]);
 
-        $user_details   =   $merchant->userDetail;
-        $logo           =   $merchant->media()->logo()->first();
-        $documents      =   $merchant->media()->ssm()->get();
-        $subscription   =   $merchant->userSubscriptions->first();
-        $statuses       =   (new Status())->activeStatus();
+        $image_and_thumbnail = collect($merchant->media)->whereNotIn('type', [Media::TYPE_LOGO, Media::TYPE_SSM]);
 
-        $plans = ProductAttribute::whereHas('product', function ($query) {
-            $query->filterCategory(ProductCategory::TYPE_SUBSCRIPTION);
-        })->whereDoesntHave('userSubscriptions', function ($query) use ($merchant) {
-            $query->where('user_id', $merchant->id)->active();
-        })->get();
+        $max_files = Media::MAX_BRANCH_IMAGE_UPLOAD - (clone $image_and_thumbnail)->count();
 
-        $packages = Package::with(['userSubscriptions'])
-            ->whereDoesntHave('userSubscriptions', function ($query) use ($merchant) {
-                $query->where('user_id', $merchant->id)->active(); // exlucde current merchant's active plan
-            })
-            ->get();
-
-        foreach ($packages as $package) {
-            $plans->push($package);
-        }
-
-        return $dataTable->with(['merchant_id', $merchant->id])
-            ->render('merchant.edit', compact('merchant', 'documents', 'user_details', 'statuses', 'logo', 'subscription', 'plans'));
+        return $dataTable->with(['merchant' => $merchant])->render('merchant.edit', compact('merchant', 'image_and_thumbnail', 'max_files'));
     }
 
     /**
@@ -168,7 +140,7 @@ class MerchantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(MerchantRequest $request, User $merchant)
+    public function update(MerchantRequest $request, User $merchant, MerchantService $merchant_service)
     {
         DB::beginTransaction();
 
@@ -179,45 +151,36 @@ class MerchantController extends Controller
 
         try {
 
-            $merchant->load([
-                'media', 'address',
-                'userDetail' => function ($query) {
-                    $query->approvedDetails();
-                },
-                'userSubscriptions' => function ($query) {
-                    $query->active();
-                }
-            ]);
+            $merchant->load(['media', 'address', 'branchDetail']);
 
-            $merchant = MerchantFacade::setModel($merchant)
-                ->setRequest($request)
-                ->storeData()
-                ->getModel();
-
-            DB::commit();
+            $merchant_service->setModel($merchant)->setRequest($request)->store();
 
             $status  = 'success';
             $message = Message::instance()->format($action, $module, $status);
 
-            activity()->useLog('web')
-                ->causedBy(Auth::user())
-                ->performedOn($merchant)
-                ->withProperties($request->all())
-                ->log($message);
-
-            return redirect()->route('merchants.index')->withSuccess($message);
+            DB::commit();
         } catch (\Error | \Exception $e) {
 
             DB::rollBack();
-
-            activity()->useLog('web')
-                ->causedBy(Auth::user())
-                ->performedOn(new User())
-                ->withProperties($request->all())
-                ->log($e->getMessage());
-
-            return redirect()->back()->withErrors($message)->withInput();
+            Log::error($e);
         }
+
+        activity()->useLog('web')
+            ->causedBy(Auth::user())
+            ->performedOn($merchant)
+            ->withProperties($request->all())
+            ->log($message);
+
+        return $request->ajax() ?
+            Response::instance()
+            ->withStatusCode('modules.merchant', 'actions.' . $action . $status)
+            ->withStatus($status)
+            ->withMessage($message, true)
+            ->withData([
+                'redirect_to' => route('merchants.index')
+            ])
+            ->sendJson()
+            : redirect()->route('merchants.index')->with($status, $message);
     }
 
     /**
@@ -230,29 +193,15 @@ class MerchantController extends Controller
     {
         $action     =   Permission::ACTION_DELETE;
         $module     =   strtolower(trans_choice('modules.merchant', 1));
-        $status     =   'fail';
-        $message    =   Message::instance()->format($action, $module);
+        $status     =   'success';
+        $message    =   Message::instance()->format($action, $module, $status);
 
-        try {
+        $merchant->delete();
 
-            $merchant->delete();
-
-            $message = Message::instance()->format($action, $module, 'success');
-            $status = 'success';
-
-            activity()->useLog('web')
-                ->causedBy(Auth::user())
-                ->performedOn($merchant)
-                ->log($message);
-        } catch (\Error | \Exception $e) {
-
-            DB::rollBack();
-
-            activity()->useLog('web')
-                ->causedBy(Auth::user())
-                ->performedOn($merchant)
-                ->log($e->getMessage());
-        }
+        activity()->useLog('web')
+            ->causedBy(Auth::user())
+            ->performedOn($merchant)
+            ->log($message);
 
         return Response::instance()
             ->withStatusCode('modules.merchant', 'actions.' . $action . $status)

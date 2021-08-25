@@ -23,7 +23,7 @@ return [
     'unavailable' => 'Unavailable',
     'add_more' => 'Add More',
     'default' => 'Default',
-    'published' => 'Published',
+    'publish' => 'Publish',
     'draft' => 'Draft',
     'select' => 'Select',
     'paid' => 'Paid',
@@ -36,6 +36,7 @@ return [
     'verified' => 'Verified',
     'unverified' => 'Unverified',
     'optional' => 'Optional',
+    'get_coordinate' => 'Get Coordinates',
 
     'copyright' => '&copy ' . config('app.name') . ' ' . date('Y') . '. All rights reserved.',
     'terms_policy' => 'Terms & Policies',
@@ -46,8 +47,6 @@ return [
     'view_all' => 'View All',
     'more_info' => 'More Info',
     'dropdown_placeholder' => 'Please select :label',
-    'change_profile_pic' => 'Change Profile Picture',
-    'change_logo' => 'Change Logo',
 
     'country_state' => 'Country State|Country States',
     'city' => 'City|Cities',
@@ -66,10 +65,13 @@ return [
     'permissions' => 'Permissions',
     'select_all' => 'Select All',
     'status' => 'Status',
+    'branch_status' => 'Branch Status',
     'contact_no' => 'Contact No.',
     'address_1' => 'Address 1',
     'address_2' => 'Address 2',
     'postcode' => 'Postal Code',
+    'longitude' => 'Longitude',
+    'latitude' => 'Latitude',
     'media' => 'Media',
     'category' => 'Category',
     'material_used' => 'Material Used',
@@ -121,6 +123,7 @@ return [
     'cover_photo' => 'Cover Photo',
 
     'settings' => 'Settings',
+    'gallery' => 'Gallery',
 
     'return_dashboard' => 'Return Dashboard',
     'ssm_cert' => 'SSM Certificate',
@@ -135,5 +138,10 @@ return [
     'import_translation' => 'Import Translations',
     'branches' => 'Branches',
     'permission' => 'Permission|Permissions',
-    'module' => 'Module|Modules'
+    'module' => 'Module|Modules',
+
+    'change_profile_pic' => 'Change Profile Picture',
+    'change_logo' => 'Change Logo',
+    'change_ssm_cert' => 'Change SSM Cert',
+    'branch' => 'Branch|Branches'
 ];

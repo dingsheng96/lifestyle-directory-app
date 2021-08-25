@@ -52731,3 +52731,10 @@ html.os-html,html.os-html>.os-host{display:block;overflow:hidden;box-sizing:bord
   color: #fff;
 }
 
+.list-group-item.active {
+  z-index: 2;
+  color: #fff;
+  background-color: #8d60d8;
+  border-color: #8d60d8;
+}
+

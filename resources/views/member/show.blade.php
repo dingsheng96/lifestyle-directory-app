@@ -10,7 +10,7 @@
 
                 <img src="{{ $member->cover_photo->full_file_path ?? $default_preview }}" alt="cover" class="card-img-top img-fluid" style="max-height: 10rem;">
 
-                <div class="card-body box-profile p-0">
+                <div class="card-body box-profile pt-0">
 
                     <img class="profile-user-img img-fluid img-circle custom-profile-image" src="{{ $member->profile_image->full_file_path ?? $default_preview }}" alt="User profile picture">
 
@@ -56,9 +56,9 @@
                             </div>
 
                         </div>
-                        <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">...</div>
-                        <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
-                        <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
+                        <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">Coming Soon...</div>
+                        <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">Coming Soon...</div>
+                        <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">Coming Soon...</div>
                     </div>
                 </div>
             </div>

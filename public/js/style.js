@@ -99,7 +99,7 @@ $(function() {
         if (file) {
             let reader = new FileReader();
             reader.onload = function() {
-                input.parent().find(".custom-img-preview").attr("src", reader.result);
+                input.parents('.form-group').find(".custom-img-preview").attr("src", reader.result);
             };
             reader.readAsDataURL(file);
         }

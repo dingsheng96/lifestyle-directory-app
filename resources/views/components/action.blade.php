@@ -25,16 +25,6 @@
     @endcan
     @endisset
 
-    {{-- delete button --}}
-    @isset($delete)
-    @can($delete['permission'])
-    <a role="button" href="{{ $delete['route'] ?? '#' }}" class="dropdown-item" onclick="event.preventDefault(); deleteAlert('{{ __('messages.confirm_question') }}', '{{ __('messages.delete_info') }}', '{{ $delete['route'] }}')" @isset($delete['attribute']) {!! $delete['attribute'] !!} @endisset>
-        <i class="fas fa-trash mr-2 text-red"></i>
-        {{ __('labels.delete') }}
-    </a>
-    @endcan
-    @endisset
-
     {{-- upload button --}}
     @isset($upload)
     <a role="button" href="{{ $upload['route'] ?? '#' }}" class="dropdown-item" @isset($upload['attribute']) {!! $upload['attribute'] !!} @endisset>
@@ -49,6 +39,16 @@
         <i class="fas fa-download mr-2 text-green"></i>
         {{ __('labels.download') }}
     </a>
+    @endisset
+
+    {{-- delete button --}}
+    @isset($delete)
+    @can($delete['permission'])
+    <a role="button" href="{{ $delete['route'] ?? '#' }}" class="dropdown-item" onclick="event.preventDefault(); deleteAlert('{{ __('messages.confirm_question') }}', '{{ __('messages.delete_info') }}', '{{ $delete['route'] }}')" @isset($delete['attribute']) {!! $delete['attribute'] !!} @endisset>
+        <i class="fas fa-trash mr-2 text-red"></i>
+        {{ __('labels.delete') }}
+    </a>
+    @endcan
     @endisset
 
 </div>

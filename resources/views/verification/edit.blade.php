@@ -49,13 +49,13 @@
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="reg_no" class="col-form-label">{{ __('labels.reg_no') }}</label>
-                                    <p class="form-control" id="reg_no">{{ $verification->userDetail->reg_no ?? null }}</p>
+                                    <p class="form-control" id="reg_no">{{ $verification->branchDetail->reg_no ?? null }}</p>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="business_since" class="col-form-label">{{ __('labels.business_since') }}</label>
-                                    <p class="form-control" id="business_since">{{ $verification->userDetail->business_since ?? null }}</p>
+                                    <p class="form-control" id="business_since">{{ $verification->branchDetail->business_since ?? null }}</p>
                                 </div>
                             </div>
                         </div>
@@ -64,13 +64,13 @@
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="website" class="col-form-label">{{ __('labels.website') }}</label>
-                                    <p class="form-control" id="website">{{ $verification->userDetail->website ?? null }}</p>
+                                    <p class="form-control" id="website">{{ $verification->branchDetail->website ?? null }}</p>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="facebook" class="col-form-label">{{ __('labels.facebook') }}</label>
-                                    <p class="form-control" id="facebook">{{ $verification->userDetail->facebook ?? null }}</p>
+                                    <p class="form-control" id="facebook">{{ $verification->branchDetail->facebook ?? null }}</p>
                                 </div>
                             </div>
                         </div>
@@ -83,7 +83,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-white">+</span>
                                         </div>
-                                        <p class="form-control" id="whatsapp">{{ $verification->userDetail->whatsapp ?? null }}</p>
+                                        <p class="form-control" id="whatsapp">{{ $verification->branchDetail->whatsapp ?? null }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -102,7 +102,7 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="pic_name" class="col-form-label">{{ __('labels.pic_name') }}</label>
-                                    <p class="form-control" id="pic_name">{{ $verification->userDetail->pic_name ?? null }}</p>
+                                    <p class="form-control" id="pic_name">{{ $verification->branchDetail->pic_name ?? null }}</p>
                                 </div>
                             </div>
                         </div>
@@ -115,14 +115,14 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text bg-white">+</span>
                                         </div>
-                                        <p class="form-control" id="pic_phone">{{ $verification->userDetail->pic_phone ?? null }}</p>
+                                        <p class="form-control" id="pic_phone">{{ $verification->branchDetail->pic_phone ?? null }}</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="pic_email" class="col-form-label">{{ __('labels.pic_email') }}</label>
-                                    <p class="form-control" id="pic_email">{{ $verification->userDetail->pic_email ?? null }}</p>
+                                    <p class="form-control" id="pic_email">{{ $verification->branchDetail->pic_email ?? null }}</p>
                                 </div>
                             </div>
                         </div>
@@ -179,7 +179,7 @@
                                     <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-danger">*</span></label>
                                     <select name="status" id="status" class="form-control select2 @error('status') is-invalid @enderror">
                                         @foreach ($statuses as $index => $status)
-                                        <option value="{{ $index }}" {{ old('status', $verification->userDetail->status) == $index ? 'selected' : null }}>{{ $status }}</option>
+                                        <option value="{{ $index }}" {{ old('status', $verification->branchDetail->status) == $index ? 'selected' : null }}>{{ $status }}</option>
                                         @endforeach
                                     </select>
                                     @error('status')

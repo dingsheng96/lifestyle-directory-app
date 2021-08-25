@@ -26,7 +26,7 @@ class AccountController extends Controller
             'userAdsQuotas' => function ($query) {
                 $query->orderBy('product_id');
             },
-            'userDetail' => function ($query) {
+            'branchDetail' => function ($query) {
                 $query->approvedDetails();
             },
             'userSubscriptions' => function ($query) {
@@ -39,7 +39,7 @@ class AccountController extends Controller
         ]);
 
         $address = $user->address;
-        $user_details = $user->userDetail;
+        $user_details = $user->branchDetail;
 
         return view('account.' . Auth::user()->folder_name, compact('user', 'user_details', 'address'));
     }

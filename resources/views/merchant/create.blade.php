@@ -4,37 +4,35 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-12">
+
+        <div class="col-12 col-md-3">
             <div class="card shadow-lg">
                 <div class="card-header bg-transparent border-0">
-                    <h5>{{ __('modules.create', ['module' => trans_choice('modules.merchant', 1)]) }}</h5>
+                    <span class="h5">{{ __('modules.create', ['module' => trans_choice('modules.merchant', 1)]) }}</span>
                 </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush" id="list-tab" role="tablist">
+                        <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">{{ __('labels.general') }}</a>
+                        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">{{ __('labels.location') }}</a>
+                        <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">{{ __('labels.settings') }}</a>
+                        <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">{{ __('labels.gallery') }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-9">
+            <div class="card shadow-lg">
 
                 <form action="{{ route('merchants.store') }}" method="post" role="form" enctype="multipart/form-data">
                     @csrf
 
                     <div class="card-body">
 
-                        <ul class="nav nav-tabs" id="custom-content-below-tab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="custom-content-below-home-tab" data-toggle="pill" href="#custom-content-below-home" role="tab" aria-controls="custom-content-below-home" aria-selected="true">Home</a>
-                            </li>
+                        <div class="tab-content" id="nav-tabContent">
 
-                            <li class="nav-item">
-                                <a class="nav-link" id="custom-content-below-messages-tab" data-toggle="pill" href="#custom-content-below-messages" role="tab" aria-controls="custom-content-below-messages" aria-selected="false">Messages</a>
-                            </li>
+                            <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
 
-                            <li class="nav-item">
-                                <a class="nav-link" id="custom-content-below-profile-tab" data-toggle="pill" href="#custom-content-below-profile" role="tab" aria-controls="custom-content-below-profile" aria-selected="false">Profile</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" id="custom-content-below-settings-tab" data-toggle="pill" href="#custom-content-below-settings" role="tab" aria-controls="custom-content-below-settings" aria-selected="false">Settings</a>
-                            </li>
-                        </ul>
-
-                        <div class="tab-content my-4" id="custom-content-below-tabContent">
-                            <div class="tab-pane fade show active" id="custom-content-below-home" role="tabpanel" aria-labelledby="custom-content-below-home-tab">
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
@@ -48,6 +46,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
@@ -92,7 +91,22 @@
                                     </div>
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
-                                            <label for="status" class="col-form-label">{{ __('labels.status') }}</label>
+                                            <label for="file" class="col-form-label">{{ __('labels.ssm_cert') }} <span class="text-danger">*</span></label>
+                                            <input type="file" name="ssm_cert" id="ssm_cert" value="{{ old('ssm_cert') }}" class="form-control-file @error('ssm_cert') is-invalid @enderror" accept="application/pdf">
+                                            @error('ssm_cert')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                            <ul class="pl-3 mt-3">{!! trans_choice('messages.upload_file_rules', 1, ['maxsize' => '2mb', 'extensions' => 'PDF']) !!}</ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-danger">*</span></label>
                                             <select name="status" id="status" class="form-control select2 @error('status') is-invalid @enderror">
                                                 @foreach ($statuses as $status => $display)
                                                 <option value="{{ $status }}" {{ old('status', 'active') == $status }}>{{ $display }}</option>
@@ -105,20 +119,31 @@
                                             @enderror
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
-                                            <label for="website" class="col-form-label">{{ __('labels.website') }}</label>
-                                            <input type="url" name="website" id="website" value="{{ old('website') }}" class="form-control @error('website') is-invalid @enderror">
-                                            @error('website')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
+                                            <label for="logo" class="col-form-label">{{ __('labels.logo') }} <span class="text-danger">*</span></label>
+                                            <div class="row">
+                                                <div class="col-md-6 col-12">
+                                                    <input type="file" id="logo" name="logo" class="form-control-file custom-img-input @error('logo') is-invalid @enderror" accept=".jpg,.jpeg,.png">
+                                                    @error('logo')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                    <ul class="pl-3 mt-3">{!! trans_choice('messages.upload_file_rules', 1, ['maxsize' => '2mb', 'extensions' => 'JPG,JPEG, PNG']) !!}</ul>
+                                                </div>
+                                                <div class="col-md-6 col-12">
+                                                    <img src="{{ $default_preview }}" alt="preview" class="custom-img-preview img-thumbnail">
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                </div>
+
+                                <hr>
+
+                                <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label for="whatsapp" class="col-form-label">{{ __('labels.whatsapp') }}</label>
@@ -129,6 +154,17 @@
                                                 <input type="text" name="whatsapp" id="whatsapp" value="{{ old('whatsapp') }}" class="form-control @error('whatsapp') is-invalid @enderror">
                                             </div>
                                             @error('whatsapp')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="website" class="col-form-label">{{ __('labels.website') }}</label>
+                                            <input type="url" name="website" id="website" value="{{ old('website') }}" class="form-control @error('website') is-invalid @enderror">
+                                            @error('website')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -161,9 +197,10 @@
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
 
-                            <div class="tab-pane fade" id="custom-content-below-messages" role="tabpanel" aria-labelledby="custom-content-below-messages-tab">
+                            <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
 
                                 <div class="form-group">
                                     <label for="address_1" class="col-form-label">{{ __('labels.address_1') }} <span class="text-danger">*</span></label>
@@ -197,9 +234,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="row">
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="country_state" class="col-form-label">{{ trans_choice('labels.country_state', 1) }} <span class="text-danger">*</span></label>
@@ -217,6 +252,9 @@
                                             @enderror
                                         </div>
                                     </div>
+                                </div>
+
+                                <div class="row">
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="city" class="col-form-label">{{ trans_choice('labels.city', 1) }} <span class="text-danger">*</span></label>
@@ -230,49 +268,45 @@
                                             @enderror
                                         </div>
                                     </div>
-
                                 </div>
 
-                            </div>
+                                <hr>
 
-                            <div class="tab-pane fade" id="custom-content-below-profile" role="tabpanel" aria-labelledby="custom-content-below-profile-tab">
                                 <div class="row">
-                                    <div class="col-12 col-md-6">
+                                    <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for="logo" class="col-form-label">{{ __('labels.logo') }}</label>
-                                            <div class="row">
-                                                <div class="col-12 col-md-6">
-                                                    <input type="file" id="logo" name="logo" class="form-control-file custom-img-input @error('logo') is-invalid @enderror" accept=".jpg,.jpeg,.png">
-                                                    @error('logo')
-                                                    <span class="invalid-feedback" role="alert">
-                                                        <strong>{{ $message }}</strong>
-                                                    </span>
-                                                    @enderror
-                                                    <ul class="pl-3 mt-3">{!! trans_choice('messages.upload_file_rules', 1, ['maxsize' => '2mb', 'extensions' => 'JPG,JPEG, PNG']) !!}</ul>
-                                                </div>
-                                                <div class="col-12 col-md-6">
-                                                    <img src="{{ $default_preview }}" alt="preview" class="custom-img-preview img-thumbnail d-block mx-auto">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label for="file" class="col-form-label">{{ __('labels.ssm_cert') }} <span class="text-danger">*</span></label>
-                                            <input type="file" name="ssm_cert" id="ssm_cert" value="{{ old('ssm_cert') }}" class="form-control-file @error('ssm_cert') is-invalid @enderror" accept="application/pdf">
-                                            @error('ssm_cert')
+                                            <label for="latitude" class="col-form-label">{{ __('labels.latitude') }} <span class="text-danger">*</span></label>
+                                            <input type="text" name="latitude" id="latitude" class="form-control @error('latitude') is-invalid @enderror" value="{{ old('latitude', 0) }}">
+                                            @error('latitude')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
                                             @enderror
-                                            <ul class="pl-3 mt-3">{!! trans_choice('messages.upload_file_rules', 1, ['maxsize' => '2mb', 'extensions' => 'PDF']) !!}</ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for="longitude" class="col-form-label">{{ __('labels.longitude') }} <span class="text-danger">*</span></label>
+                                            <input type="text" name="longitude" id="longitude" class="form-control @error('longitude') is-invalid @enderror" value="{{ old('longitude', 0) }}">
+                                            @error('longitude')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-purple">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        {{ __('labels.get_coordinate') }}
+                                    </button>
+                                </div>
+
                             </div>
 
-                            <div class="tab-pane fade" id="custom-content-below-settings" role="tabpanel" aria-labelledby="custom-content-below-settings-tab">
+                            <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
 
                                 <div class="form-group">
                                     <label for="pic_name" class="col-form-label">{{ __('labels.pic_name') }} <span class="text-danger">*</span></label>
@@ -320,7 +354,7 @@
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label for="password" class="col-form-label">{{ __('labels.password') }} <span class="text-danger">*</span></label>
-                                            <input type="password" name="password" id="password" value="{{ old('password')  }}" class="form-control @error('password') is-invalid @enderror">
+                                            <input type="password" name="password" id="password" value="{{ old('password')  }}" class="form-control @error('password') is-invalid @enderror" autocomplete="off">
                                             <small>{!! __('messages.password_format') !!}</small>
                                             @error('password')
                                             <span class="invalid-feedback" role="alert">
@@ -332,7 +366,7 @@
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label for="password_confirmation" class="col-form-label">{{ __('labels.password_confirmation') }} <span class="text-danger">*</span></label>
-                                            <input type="password" name="password_confirmation" id="password_confirmation" value="{{ old('password_confirmation') }}" class="form-control @error('password_confirmation') is-invalid @enderror">
+                                            <input type="password" name="password_confirmation" id="password_confirmation" value="{{ old('password_confirmation') }}" class="form-control @error('password_confirmation') is-invalid @enderror" autocomplete="off">
                                             @error('password_confirmation')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -342,14 +376,33 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
+                            <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+
+                                <div class="form-group">
+                                    <label for="files" class="col-form-label">{{ trans_choice('labels.upload_image', 2) }}</label>
+                                    <div class="dropzone" id="myDropzone" data-max-files="{{ $max_files }}" data-accepted-files=".jpg,.jpeg,.png" data-action="update">
+                                        <div class="dz-default dz-message">
+                                            <h1><i class="fas fa-cloud-upload-alt"></i></h1>
+                                            <h4>{{ __('messages.drag_and_drop') }}</h4>
+                                            <ul class="list-unstyled">{!! trans_choice('messages.upload_file_rules', 2, ['maxsize' => '10mb', 'extensions' => 'JPG,JPEG, PNG', 'maxfiles' => $max_files]) !!}</ul>
+                                        </div>
+                                    </div>
+                                    @error('files')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
 
                     <div class="card-footer bg-transparent text-md-right text-center">
                         <a href="{{ route('merchants.index') }}" role="button" class="btn btn-light mx-2">
-                            <i class="fas fa-times"></i>
-                            {{ __('labels.cancel') }}
+                            <i class="fas fa-caret-left"></i>
+                            {{ __('labels.back') }}
                         </a>
                         <button type="submit" class="btn btn-purple">
                             <i class="fas fa-paper-plane"></i>

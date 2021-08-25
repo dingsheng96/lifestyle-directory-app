@@ -7,7 +7,6 @@ use App\Helpers\Misc;
 use App\Models\Media;
 use App\Helpers\Status;
 use App\Models\Address;
-use App\Models\Service;
 use App\Models\Rateable;
 use App\Models\Favourable;
 use App\Models\BranchDetail;
@@ -26,8 +25,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $table = 'users';
 
     protected $fillable = [
-        'name', 'mobile_no', 'email', 'password',
-        'remember_token', 'status', 'email_verified_at'
+        'name', 'mobile_no', 'email', 'password', 'remember_token',
+        'status', 'application_status', 'email_verified_at'
     ];
 
     protected $hidden = [
@@ -41,29 +40,36 @@ class User extends Authenticatable implements MustVerifyEmail
     // Constants
     const STATUS_ACTIVE             =   'active';
     const STATUS_INACTIVE           =   'inactive';
-    const STORE_PATH                =   '/users';
-    const STORE_PROFILE_IMAGE_PATH  =   self::STORE_PATH . '/profile_images';
-    const STORE_COVER_PHOTO_PATH    =   self::STORE_PATH . '/cover_photos';
+    const STATUS_BRANCH_PUBLISH     =   'publish';
+    const STATUS_BRANCH_DRAFT       =   'draft';
+
+    const APPLICATION_STATUS_APPROVED   =   'approved';
+    const APPLICATION_STATUS_PENDING    =   'pending';
+    const APPLICATION_STATUS_REJECTED   =   'rejected';
+
+    const STORE_BASE_DIRECTORY      =   '/users';
+    const STORE_MEMBER_PATH         =   self::STORE_BASE_DIRECTORY . '/members';
+    const STORE_MERCHANT_PATH       =   self::STORE_BASE_DIRECTORY . '/merchants';
 
     // Relationships
     public function subBranches()
     {
-        return $this->hasMany(Branch::class, 'main_branch_id', 'id');
+        return $this->belongsToMany(self::class, Branch::class, 'main_branch_id', 'sub_branch_id', 'id', 'id')->withPivot(['status']);
     }
 
     public function mainBranch()
     {
-        return $this->belongsTo(Branch::class, 'sub_branch_id', 'id');
+        return $this->belongsToMany(self::class, Branch::class, 'sub_branch_id', 'main_branch_id', 'id', 'id')->withPivot(['status']);
     }
 
     public function branchDetail()
     {
-        return $this->hasOne(BranchDetail::class, 'user_id', 'id');
+        return $this->hasOne(BranchDetail::class, 'branch_id', 'id');
     }
 
     public function address()
     {
-        return $this->morphOne(Address::class, 'sourceable');
+        return $this->morphOne(Address::class, 'addressable');
     }
 
     public function media()
@@ -256,5 +262,33 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getCoverPhotoAttribute()
     {
         return collect($this->media)->firstWhere('type', Media::TYPE_COVER_PHOTO);
+    }
+
+    public function getImageAttribute()
+    {
+        return collect($this->media)->where('type', Media::TYPE_IMAGE)->all();
+    }
+
+    public function getLogoAttribute()
+    {
+        return collect($this->media)->firstWhere('type', Media::TYPE_LOGO);
+    }
+
+    public function getThumbnailAttribute()
+    {
+        return collect($this->media)->where('type', Media::TYPE_THUMBNAIL)->first();
+    }
+
+    public function getBranchStatusLabelAttribute()
+    {
+        $active_status  = $this->status_label;
+        $publish_status = (new Status())->statusLabel($this->main_branch->pivot->status);
+
+        return $active_status . '<br><span class="' . $publish_status['class'] . ' px-3">' . $publish_status['text'] . '</span>';
+    }
+
+    public function getMainBranchAttribute()
+    {
+        return $this->mainBranch()->first();
     }
 }

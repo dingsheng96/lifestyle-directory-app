@@ -23,7 +23,7 @@ return [
     'empty_list' => "You don't have any :list yet",
     'delete_info' => 'You will not be able to revert this!',
     'files_reached_limit' => 'The files has reached the limit.',
-    'drag_and_drop' => 'Drag and drop files here to upload',
+    'drag_and_drop' => 'Drop files here to upload',
     'boosts_ads_preference_text' => 'You may choose to boost this project',
     'select_prefer_boosts_ads_days' => 'Select your preferred day to boost ads.',
     'password_format' => 'Minimum 8 characters with at least 1 uppercase letter[A-Z], 1 lowercase letter [a-z] and 1 number[0-9].',

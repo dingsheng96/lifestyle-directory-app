@@ -9,7 +9,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class MerchantDataTable extends DataTable
+class BranchDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -27,15 +27,15 @@ class MerchantDataTable extends DataTable
                     'no_action' => $this->no_action ?: null,
                     'view' => [
                         'permission' => 'merchant.read',
-                        'route' => route('merchants.show', ['merchant' => $data->id])
+                        'route' => route('merchants.branches.show', ['merchant' => $this->merchant->id, 'branch' => $data->id])
                     ],
                     'update' => [
                         'permission' => 'merchant.update',
-                        'route' => route('merchants.edit', ['merchant' => $data->id])
+                        'route' => route('merchants.branches.edit', ['merchant' => $this->merchant->id, 'branch' => $data->id])
                     ],
                     'delete' => [
                         'permission' => 'merchant.delete',
-                        'route' => route('merchants.destroy', ['merchant' => $data->id])
+                        'route' => route('merchants.branches.destroy', ['merchant' => $this->merchant->id, 'branch' => $data->id])
                     ]
                 ])->render();
             })
@@ -43,10 +43,7 @@ class MerchantDataTable extends DataTable
                 return $data->created_at->toDateTimeString();
             })
             ->editColumn('status', function ($data) {
-                return $data->status_label;
-            })
-            ->editColumn('mobile_no', function ($data) {
-                return $data->formatted_phone_number;
+                return $data->branch_status_label;
             })
             ->rawColumns(['action', 'status', 'profile']);
     }
@@ -59,7 +56,10 @@ class MerchantDataTable extends DataTable
      */
     public function query(User $model)
     {
-        return $model->mainMerchant()->withCount(['subBranches'])->newQuery();
+        return $model->subMerchant()
+            ->whereHas('mainBranch', function ($query) {
+                $query->where('id', $this->merchant->id);
+            })->newQuery();
     }
 
     /**
@@ -70,7 +70,7 @@ class MerchantDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('merchant-table')
+            ->setTableId('merchant-branch-table')
             ->addTableClass('table-hover table w-100')
             ->columns($this->getColumns())
             ->minifiedAjax()
@@ -91,8 +91,6 @@ class MerchantDataTable extends DataTable
             Column::computed('DT_RowIndex', '#'),
             Column::make('name')->title(__('labels.name')),
             Column::make('email')->title(__('labels.email')),
-            Column::make('mobile_no')->title(__('labels.contact_no')),
-            Column::make('sub_branches_count')->title(__('labels.branches'))->searchable(false),
             Column::make('status')->title(__('labels.status')),
             Column::make('created_at')->title(__('labels.created_at')),
             Column::computed('action', __('labels.action'))

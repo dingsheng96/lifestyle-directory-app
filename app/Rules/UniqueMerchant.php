@@ -33,15 +33,15 @@ class UniqueMerchant implements Rule
     {
         return !User::where($this->unique_column, $value)
             ->when(!empty($this->ignore_id), function ($query) {
-
                 if (is_object($this->ignore_id)) {
                     $query->where($this->ignore_column, '!=', $this->ignore_id->{$this->ignore_column});
                 } else {
                     $query->where($this->ignore_column, '!=', $this->ignore_id);
                 }
-            })
-            ->whereHas('roles', function ($query) {
-                $query->where('name', Role::ROLE_MERCHANT_1);
+            })->where(function ($query) {
+                $query->mainMerchant()->orWhere(function ($query) {
+                    $query->subMerchant();
+                });
             })->exists();
     }
 

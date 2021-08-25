@@ -2,6 +2,8 @@
     "modules":{
         "language": 100,
         "member": 120,
+        "merchant": 130,
+        "admin": 140,
         "country_state": 190,
         "city": 191,
         "category": 200,

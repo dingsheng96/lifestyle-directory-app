@@ -32,6 +32,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::resource('merchants', 'MerchantController');
 
+    Route::resource('merchants.branches', 'BranchController');
+
     Route::resource('roles', 'RoleController');
 
     Route::resource('categories', 'CategoryController');
@@ -46,6 +48,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     });
 
     Route::get('activity-logs', 'ActivityLogController')->name('activity-logs.index');
+
+    Route::delete('media/{media}', 'MediaController')->name('media.destroy');
 });
 
 

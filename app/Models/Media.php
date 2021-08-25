@@ -19,8 +19,9 @@ class Media extends Model
     const TYPE_LOGO             =   'logo';
     const TYPE_PROFILE_IMAGE    =   'profile';
     const TYPE_COVER_PHOTO      =   'cover';
+    const TYPE_THUMBNAIL        =   'thumbnail';
     const DEFAULT_IMAGE         =   'nopreview.png';
-    const MAX_IMAGE_BRANCH      =   10;
+    const MAX_BRANCH_IMAGE_UPLOAD = 10;
 
     // Relationships
     public function mediable()
@@ -29,7 +30,7 @@ class Media extends Model
     }
 
     // Scopes
-    public function scopeSsm($query)
+    public function scopeSsmCert($query)
     {
         return $query->where('type', self::TYPE_SSM);
     }
@@ -52,6 +53,18 @@ class Media extends Model
     public function scopeCoverPhoto($query)
     {
         return $query->where('type', self::TYPE_COVER_PHOTO);
+    }
+
+    public function scopeThumbnail($query)
+    {
+        return $query->where('type', self::TYPE_THUMBNAIL);
+    }
+
+    public function scopeImageAndThumbnail($query)
+    {
+        return $query->image()->orWhere(function ($query) {
+            $query->thumbnail();
+        });
     }
 
     // Attributes
@@ -78,5 +91,10 @@ class Media extends Model
     public function getDefaultPreviewImageAttribute()
     {
         return asset('storage/' . self::DEFAULT_IMAGE);
+    }
+
+    public function getIsThumbnailAttribute()
+    {
+        return $this->type == self::TYPE_THUMBNAIL;
     }
 }

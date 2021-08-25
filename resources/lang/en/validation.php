@@ -178,7 +178,8 @@ return [
         'status' => 'status',
         'password' => 'password',
         'profile_image' => 'profile image',
-        'cover_photo' => 'cover photo'
+        'cover_photo' => 'cover photo',
+        'file' => 'file',
     ],
 
 ];

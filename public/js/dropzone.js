@@ -60,17 +60,14 @@ $(function () {
 
         this.on('sendingmultiple', function (file, xhr, formData) {
 
-            let data = form.not('#clone').serializeArray();
+            let data = form.serializeArray();
 
             $.each(data, function (key, el) {
                 formData.append(el.name, el.value);
             });
 
-            let thumbnail = form.find('[name=thumbnail]')[0].files[0];
-
-            if (thumbnail) {
-                formData.append('thumbnail', thumbnail);
-            }
+            formData.append('logo', form.find('[name=logo]')[0].files[0]);
+            formData.append('ssm_cert', form.find('[name=ssm_cert]')[0].files[0]);
         });
 
         this.on('successmultiple', function (file, response) {

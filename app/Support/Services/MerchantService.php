@@ -2,25 +2,14 @@
 
 namespace App\Support\Services;
 
-use Carbon\Carbon;
+use Exception;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Media;
-use App\Models\Package;
-use App\Models\UserDetail;
-use App\Models\Transaction;
 use App\Helpers\FileManager;
-use App\Models\UserAdsQuota;
-use App\Models\ProductCategory;
-use App\Models\ProductAttribute;
-use App\Models\UserSubscription;
-use App\Notifications\VerifyEmail;
-use App\Models\UserAdsQuotaHistory;
-use Illuminate\Support\Facades\Auth;
+use App\Models\BranchDetail;
 use Illuminate\Support\Facades\Hash;
 use App\Support\Services\BaseService;
-use Illuminate\Database\Eloquent\Builder;
-use App\Notifications\FreeTrialSubscription;
 
 class MerchantService extends BaseService
 {
@@ -31,97 +20,93 @@ class MerchantService extends BaseService
         parent::__construct(User::class);
     }
 
-    public function storeData(bool $from_verification = false)
+    public function store()
     {
-        $this->from_verification = $from_verification;
+        $this->model->name      =   $this->request->get('name');
+        $this->model->email     =   $this->request->get('email');
+        $this->model->status    =   $this->request->get('status', User::STATUS_INACTIVE);
+        $this->model->mobile_no =   $this->request->get('phone');
+        $this->model->password  =   !empty($this->request->get('password'))
+            ? Hash::make($this->request->get('password'))
+            : $this->model->password;
 
-        $this->storeProfile();
-        $this->storeDetails();
-        $this->storeAddress();
-        $this->storeImage();
-        $this->storeSsmCert();
-
-        return $this;
-    }
-
-    public function storeProfile()
-    {
-        $this->model->name      =  $this->request->get('name');
-        $this->model->phone     =  $this->request->get('phone');
-        $this->model->email     =  $this->request->get('email');
-        $this->model->status    =  $this->request->get('status', User::STATUS_ACTIVE);
-
-        if ($this->request->has('password') && !empty($this->request->get('password'))) {
-            $this->model->password = Hash::make($this->request->get('password'));
-        }
-
-        if (!$this->from_verification) {
-            $this->model->email_verified_at = now();
-        }
+        $this->model->application_status = User::APPLICATION_STATUS_PENDING;
 
         if ($this->model->isDirty()) {
             $this->model->save();
         }
 
+        $this->assignRole(Role::ROLE_MERCHANT_1);
+        $this->storeDetails();
+        $this->storeAddress();
+        $this->storeLogo();
+        $this->storeSsmCert();
+        $this->storeImage();
 
+        return $this;
+    }
 
-        $this->model->syncRoles([Role::ROLE_MERCHANT]);
+    public function storeBranch(User $main_branch)
+    {
+        $this->store();
+
+        $this->assignRole(Role::ROLE_MERCHANT_2); // assign role
+
+        // sync to main branch
+        $main_branch->subBranches()->syncWithoutDetaching([
+            $this->model->id => [
+                'status' => $this->request->get('branch_status', User::STATUS_BRANCH_PUBLISH)
+            ]
+        ]);
 
         return $this;
     }
 
     public function storeDetails()
     {
-        $details = $this->model->userDetail()
-            ->when($this->from_verification, function ($query) {
-                $query->pendingDetails()
-                    ->orWhere(function ($query) {
-                        $query->rejectedDetails();
-                    });
-            })
-            ->when(!$this->from_verification, function ($query) {
-                $query->approvedDetails();
-            })
-            ->firstOr(function () {
-                return new UserDetail();
-            });
+        $details = $this->model->branchDetail()->firstOr(function () {
+            return new BranchDetail();
+        });
 
-        $details->reg_no            =   $this->request->get('reg_no');
-        $details->business_since    =   $this->request->get('business_since');
-        $details->website           =   $this->request->get('website');
-        $details->facebook          =   $this->request->get('facebook');
-        $details->whatsapp          =   $this->request->get('whatsapp');
-        $details->pic_name          =   $this->request->get('pic_name');
-        $details->pic_phone         =   $this->request->get('pic_phone');
-        $details->pic_email         =   $this->request->get('pic_email');
-        $details->status            =   ($this->from_verification) ? UserDetail::STATUS_PENDING : UserDetail::STATUS_APPROVED; // if details created from verification page, set pending, else set approved
+        $details->reg_no        =   $this->request->get('reg_no');
+        $details->pic_name      =   $this->request->get('pic_name');
+        $details->pic_contact   =   $this->request->get('pic_phone');
+        $details->pic_email     =   $this->request->get('pic_email');
+        $details->description   =   $this->request->get('description');
+        $details->services      =   $this->request->get('services');
+        $details->website       =   $this->request->get('website');
+        $details->facebook      =   $this->request->get('facebook');
+        $details->whatsapp      =   $this->request->get('whatsapp');
+        $details->instagram     =   $this->request->get('instagram');
 
-        $this->model->userDetail()->save($details);
+        if ($details->isDirty()) {
+
+            $this->model->branchDetail()->save($details);
+        }
 
         return $this;
     }
 
-    public function storeImage()
+    public function storeLogo()
     {
         if ($this->request->hasFile('logo')) {
 
-            $file  =   $this->request->file('logo');
+            $logo  =   $this->request->file('logo');
 
             $config = [
-                'save_path'     =>   User::STORE_PATH,
-                'type'          =>   Media::TYPE_LOGO,
-                'filemime'      => (new FileManager())->getMimesType($file->getClientOriginalExtension()),
-                'filename'      =>   $file->getClientOriginalName(),
-                'extension'     =>   $file->getClientOriginalExtension(),
-                'filesize'      =>   $file->getSize(),
+                'save_path'     => User::STORE_MERCHANT_PATH . '/' . $this->model->id,
+                'type'          => Media::TYPE_LOGO,
+                'filemime'      => (new FileManager())->getMimesType($logo->getClientOriginalExtension()),
+                'filename'      => $logo->getClientOriginalName(),
+                'extension'     => $logo->getClientOriginalExtension(),
+                'filesize'      => $logo->getSize(),
             ];
 
-            $media = $this->model->media()->logo()
-                ->firstOr(function () {
-                    return new Media();
-                });
+            $media = $this->model->media()->logo()->firstOr(function () {
+                return new Media();
+            });
 
-            return $this->storeMedia($media, $config, $file);
+            $this->storeMedia($media, $config, $logo);
         }
 
         return $this;
@@ -131,185 +116,106 @@ class MerchantService extends BaseService
     {
         if ($this->request->hasFile('ssm_cert')) {
 
-            $file = $this->request->file('ssm_cert');
+            $ssm_cert = $this->request->file('ssm_cert');
 
             $config = [
-                'save_path'     =>   User::STORE_PATH,
-                'type'          =>   Media::TYPE_SSM,
-                'filemime'      => (new FileManager())->getMimesType($file->getClientOriginalExtension()),
-                'filename'      =>   $file->getClientOriginalName(),
-                'extension'     =>   $file->getClientOriginalExtension(),
-                'filesize'      =>   $file->getSize(),
+                'save_path'     => User::STORE_MERCHANT_PATH . '/' . $this->model->id,
+                'type'          => Media::TYPE_SSM,
+                'filemime'      => (new FileManager())->getMimesType($ssm_cert->getClientOriginalExtension()),
+                'filename'      => $ssm_cert->getClientOriginalName(),
+                'extension'     => $ssm_cert->getClientOriginalExtension(),
+                'filesize'      => $ssm_cert->getSize(),
             ];
 
-            $media = $this->model->media()->ssm()
-                ->firstOr(function () {
-                    return new Media();
-                });
-
-            return $this->storeMedia($media, $config, $file);
-        }
-
-        return $this;
-    }
-
-    public function storeSubscription(string $plan = null, Transaction $transaction = null)
-    {
-        if (!empty($plan)) {
-
-            $plan = json_decode($plan);
-
-            // calculate next billing date and expired date
-            $activation_date    =   Carbon::createFromFormat('Y-m-d', today()->toDateString());
-            $valid_until        =   $activation_date->copy();
-            $trial              =   false;
-
-            if ($plan->class == Package::class) { // if plan is package
-
-                $package        =   Package::with(['products.productCategory'])->where('id', $plan->id)->firstOrFail();
-                $package_items  =   $package->products;
-
-                foreach ($package_items as $attribute) {
-
-                    $item_qty = $attribute->pivot->quantity;
-
-                    while ($item_qty > 0) {
-
-                        $item_qty--;
-
-                        if ($attribute->productCategory->name == ProductCategory::TYPE_SUBSCRIPTION && !empty($attribute->validity_type)) {
-                            switch ($attribute->validity_type) {
-                                case ProductAttribute::VALIDITY_TYPE_DAY:
-                                    $valid_until = $valid_until->addDays($attribute->validity);
-                                    break;
-                                case ProductAttribute::VALIDITY_TYPE_MONTH:
-                                    $valid_until = $valid_until->addMonths($attribute->validity);
-                                    break;
-                                case ProductAttribute::VALIDITY_TYPE_YEAR:
-                                    $valid_until = $valid_until->addYears($attribute->validity);
-                                    break;
-                            }
-                        }
-                    }
-
-                    // check item whether is ads products from package
-                    if ($attribute->productCategory->name  == ProductCategory::TYPE_ADS) {
-
-                        $this->storeAdsQuota($attribute, $attribute->pivot->quantity);
-                    }
-                }
-
-                $next_bill_date = ($package->recurring) ? $valid_until->copy()->addDay()->startOfDay() : null;
-            }
-
-            if ($plan->class == ProductAttribute::class) { // if plan is product
-
-                $attribute = ProductAttribute::with(['product'])->where('id', $plan->id)->firstOrFail();
-
-                if ($attribute->productCategory->name == ProductCategory::TYPE_SUBSCRIPTION && !empty($attribute->validity_type)) {
-
-                    switch ($attribute->validity_type) {
-                        case ProductAttribute::VALIDITY_TYPE_DAY:
-                            $valid_until = $valid_until->addDays($attribute->validity);
-                            break;
-                        case ProductAttribute::VALIDITY_TYPE_MONTH:
-                            $valid_until = $valid_until->addMonths($attribute->validity);
-                            break;
-                        case ProductAttribute::VALIDITY_TYPE_YEAR:
-                            $valid_until = $valid_until->addYears($attribute->validity);
-                            break;
-                    }
-
-                    $next_bill_date = ($attribute->recurring) ? $valid_until->copy()->addDay()->startOfDay() : null;
-
-                    $trial = $attribute->trial_mode;
-                }
-            }
-
-            $subscription = $this->model->userSubscriptions()->active()
-                ->whereHasMorph('subscribable', $plan->class, function (Builder $query) use ($plan) {
-                    $query->where('id', $plan->id);
-                })->firstOr(function () {
-                    return new UserSubscription();
-                });
-
-            if (!$subscription) { // if different active subscription found, deactivate it
-                $this->model->userSubscriptions()
-                    ->active()->first()->update([
-                        'status' => UserSubscription::STATUS_INACTIVE
-                    ]);
-            }
-
-            // save subscription
-            $subscription->subscribable_type =  $plan->class;
-            $subscription->subscribable_id   =  $plan->id;
-            $subscription->status            =  UserSubscription::STATUS_ACTIVE;
-            $subscription->activated_at      =  $activation_date->startOfDay();
-            $subscription->next_billing_at   =  $next_bill_date;
-            $subscription->transaction_id    =  empty($transaction) ? null : $transaction->id;
-
-            $this->model->userSubscriptions()->save($subscription);
-
-            // save subscription logs
-            $subscription->userSubscriptionLogs()
-                ->create([
-                    'renewed_at' => $activation_date->startOfDay(),
-                    'expired_at' => $valid_until->endOfDay(),
-                ]);
-
-            if ($trial) {
-                $this->model->notify(new FreeTrialSubscription());
-            }
-        }
-
-        return $this;
-    }
-
-    public function storeAdsQuota(ProductAttribute $item, int $quantity)
-    {
-        $item->load(['product']);
-
-        if ($item->stock_type == ProductAttribute::STOCK_TYPE_INFINITE) {
-            $quantity = $item->quantity * $quantity;
-        } elseif ($item->stock_type == ProductAttribute::STOCK_TYPE_FINITE) {
-            $item->quantity -= $quantity;
-            $item->save();
-        }
-
-        $user_ads_quota = $this->model->userAdsQuotas()
-            ->where('product_id', $item->product->id)
-            ->firstOr(function () {
-                return new UserAdsQuota();
+            $media = $this->model->media()->ssmCert()->firstOr(function () {
+                return new Media();
             });
 
-        $user_ads_quota->product_id =   $item->product->id;
-        $user_ads_quota->quantity   +=  $quantity;
-
-        $this->model->userAdsQuotas()->save($user_ads_quota);
-
-        $initial_quantity = 0;
-        if (!$user_ads_quota->wasRecentlyCreated) { // existing records
-            $initial_quantity = $user_ads_quota->userAdsQuotaHistories()
-                ->orderByDesc('created_at')
-                ->first()
-                ->remaining_quantity;
+            $this->storeMedia($media, $config, $ssm_cert);
         }
 
-        // create new user ads quoata history
-        $sourceable_type    =   Auth::user();
-        $sourceable_id      =   Auth::id();
-        $applicable_type    =   $user_ads_quota;
-        $applicable_id      =   $user_ads_quota->id;
+        return $this;
+    }
 
-        $new_user_ads_quota_history = new UserAdsQuotaHistory();
-        $new_user_ads_quota_history->initial_quantity   =   $initial_quantity;
-        $new_user_ads_quota_history->process_quantity   =   $quantity;
-        $new_user_ads_quota_history->remaining_quantity =   $user_ads_quota->quantity;
-        $new_user_ads_quota_history->sourceable_type    =   get_class($sourceable_type);
-        $new_user_ads_quota_history->sourceable_id      =   $sourceable_id;
-        $new_user_ads_quota_history->applicable_type    =   get_class($applicable_type);
-        $new_user_ads_quota_history->applicable_id      =   $applicable_id;
-        $user_ads_quota->userAdsQuotaHistories()->save($new_user_ads_quota_history);
+    public function storeImage()
+    {
+        if ($this->request->hasFile('files')) {
+
+            $images = $this->request->file('files');
+
+            throw_if(
+                ($this->model->media()->imageAndThumbnail()->count() + count($images)) > Media::MAX_BRANCH_IMAGE_UPLOAD,
+                new Exception(__('messages.files_reached_limit'))
+            );
+
+            foreach ($images as $image) {
+
+                $config = [
+                    'save_path'     => User::STORE_MERCHANT_PATH . '/' . $this->model->id,
+                    'type'          => Media::TYPE_IMAGE,
+                    'filemime'      => (new FileManager())->getMimesType($image->getClientOriginalExtension()),
+                    'filename'      => $image->getClientOriginalName(),
+                    'extension'     => $image->getClientOriginalExtension(),
+                    'filesize'      => $image->getSize(),
+                ];
+
+                $this->storeMedia(new Media, $config, $image);
+            }
+        }
+
+        if ($this->model->media()->image()->count() > 0) {
+
+            $this->setThumbnail();
+        }
+
+        return $this;
+    }
+
+    public function setThumbnail()
+    {
+        if (!$this->model->wasRecentlyCreated && !$this->request->has('thumbnail')) {
+            return $this;
+        }
+
+        $images = $this->model->media();
+
+        if ($this->model->wasRecentlyCreated) { // get the first image as thumbnail if new User
+
+            $new_thumbnail = (clone $images)->image()->first();
+        } elseif ($this->request->has('thumbnail')) {
+
+            $old_thumbnail = (clone $images)->thumbnail()->first();
+            $new_thumbnail = (clone $images)->image()->where('id', $this->request->get('thumbnail'))->first();
+
+            if ($old_thumbnail && $new_thumbnail) {
+                $old_thumbnail->type = $new_thumbnail->type;
+                $old_thumbnail->save();
+            }
+        }
+
+        if ($new_thumbnail) {
+            $new_thumbnail->type = Media::TYPE_THUMBNAIL;
+            $new_thumbnail->save();
+        }
+
+        return $this;
+    }
+
+    public function assignRole(string $role)
+    {
+        $this->model->syncRoles([$role]);
+
+        return $this;
+    }
+
+    public function setApplicationStatus(string $status = User::APPLICATION_STATUS_PENDING)
+    {
+        $this->model->application_status = $status;
+
+        if ($this->model->isDirty()) {
+
+            $this->model->save();
+        }
 
         return $this;
     }

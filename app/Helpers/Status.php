@@ -12,6 +12,14 @@ class Status
         ];
     }
 
+    public function publishStatus(): array
+    {
+        return [
+            'publish' => __('labels.publish'),
+            'draft' => __('labels.draft')
+        ];
+    }
+
     public function statusLabel(string $status): array
     {
         $labels = [
@@ -35,41 +43,21 @@ class Status
                 'text' => __('labels.failed'),
                 'class' => 'badge badge-pill badge-lg badge-danger'
             ],
-            'paid' => [
-                'text' => __('labels.paid'),
-                'class' => 'badge badge-pill badge-lg badge-success'
-            ],
             'rejected' => [
                 'text' => __('labels.rejected'),
-                'class' => 'badge badge-pill badge-lg badge-danger'
-            ],
-            'cancelled' => [
-                'text' => __('labels.cancelled'),
                 'class' => 'badge badge-pill badge-lg badge-danger'
             ],
             'approved' => [
                 'text' => __('labels.approved'),
                 'class' => 'badge badge-pill badge-lg badge-success'
             ],
-            'published' => [
-                'text' => __('labels.published'),
-                'class' => 'badge badge-pill badge-lg badge-success'
+            'publish' => [
+                'text' => __('labels.publish'),
+                'class' => 'badge badge-pill badge-lg bg-purple'
             ],
             'draft' => [
                 'text' => __('labels.draft'),
                 'class' => 'badge badge-pill badge-lg badge-primary'
-            ],
-            'expired' => [
-                'text' => __('labels.expired'),
-                'class' => 'badge badge-pill badge-lg badge-danger'
-            ],
-            'boosting' => [
-                'text' => __('labels.boosting'),
-                'class' => 'badge badge-pill badge-lg badge-success'
-            ],
-            'upcoming' => [
-                'text' => __('labels.upcoming'),
-                'class' => 'badge badge-pill badge-lg badge-warning'
             ]
         ];
 

@@ -28,10 +28,10 @@ class VerificationComposer
     {
         $view->with(
             'verifications_count',
-            User::doesntHave('userDetail')
-                ->with('userDetail')
+            User::doesntHave('branchDetail')
+                ->with('branchDetail')
                 ->merchant()
-                ->orWhereHas('userDetail', function ($query) {
+                ->orWhereHas('branchDetail', function ($query) {
                     $query->pendingDetails()
                         ->orWhere(function ($query) {
                             $query->rejectedDetails();

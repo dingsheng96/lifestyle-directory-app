@@ -95,7 +95,8 @@ class RouteServiceProvider extends ServiceProvider
         Route::bind('merchant', function ($value) {
             return User::where('id', $value)
                 ->whereHas('roles', function ($query) {
-                    $query->where('name', Role::ROLE_MERCHANT);
+                    $query->where('name', Role::ROLE_MERCHANT_1)
+                        ->orWhere('name', Role::ROLE_MERCHANT_2);
                 })
                 ->firstOrFail();
         });

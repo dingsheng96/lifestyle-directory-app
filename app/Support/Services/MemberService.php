@@ -26,6 +26,8 @@ class MemberService extends BaseService
             ? Hash::make($this->request->get('password'))
             : $this->model->password;
 
+        $this->model->application_status = User::APPLICATION_STATUS_APPROVED;
+
         if (!$this->model->exists) { // new User
 
             $this->model->email_verified_at =   now();
@@ -48,7 +50,7 @@ class MemberService extends BaseService
             $profile_image  =   $this->request->file('profile_image');
 
             $config = [
-                'save_path'     => User::STORE_PROFILE_IMAGE_PATH,
+                'save_path'     => User::STORE_MEMBER_PATH . '/' . $this->model->id,
                 'type'          => Media::TYPE_PROFILE_IMAGE,
                 'filemime'      => (new FileManager())->getMimesType($profile_image->getClientOriginalExtension()),
                 'filename'      => $profile_image->getClientOriginalName(),
@@ -68,7 +70,7 @@ class MemberService extends BaseService
             $cover_photo = $this->request->file('cover_photo');
 
             $config = [
-                'save_path'     => User::STORE_COVER_PHOTO_PATH,
+                'save_path'     => User::STORE_MEMBER_PATH . '/' . $this->model->id,
                 'type'          => Media::TYPE_COVER_PHOTO,
                 'filemime'      => (new FileManager())->getMimesType($cover_photo->getClientOriginalExtension()),
                 'filename'      => $cover_photo->getClientOriginalName(),

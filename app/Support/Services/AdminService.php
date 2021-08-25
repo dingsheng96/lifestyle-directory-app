@@ -23,6 +23,8 @@ class AdminService extends BaseService
             ? Hash::make($this->request->get('password'))
             : $this->model->password;
 
+        $this->model->application_status = User::APPLICATION_STATUS_APPROVED;
+
         if (!$this->model->exists) { // new User
 
             $this->model->email_verified_at =   now();

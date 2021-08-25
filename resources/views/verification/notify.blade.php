@@ -7,7 +7,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card card-body shadow">
-                    @if ($user->userDetail->status == 'pending')
+                    @if ($user->branchDetail->status == 'pending')
 
                     <img src="{{ asset('storage/verification.png') }}" alt="" class="card-img-top img-fluid mx-auto" style="height: auto; width: 100px;">
                     <div class="row pt-4 pb-3">
@@ -20,7 +20,7 @@
                         </div>
                     </div>
 
-                    @elseif($user->userDetail->status == 'rejected')
+                    @elseif($user->branchDetail->status == 'rejected')
 
                     <img src="{{ asset('storage/error.png') }}" alt="" class="card-img-top img-fluid mx-auto" style="height: auto; width: 100px;">
                     <div class="row pt-4 pb-3">

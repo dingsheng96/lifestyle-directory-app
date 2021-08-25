@@ -63,7 +63,7 @@
                             <div class="form-group">
                                 <label for="business_since" class="col-form-label">{{ __('labels.business_since') }} <span class="text-danger">*</span></label>
                                 <div class="input-group">
-                                    <input type="text" name="business_since" id="business_since" value="{{ old('business_since', $user->userDetail->business_since ?? null) }}" class="form-control date-picker @error('business_since') is-invalid @enderror bg-white" readonly>
+                                    <input type="text" name="business_since" id="business_since" value="{{ old('business_since', $user->branchDetail->business_since ?? null) }}" class="form-control date-picker @error('business_since') is-invalid @enderror bg-white" readonly>
                                     <div class="input-group-append">
                                         <div class="input-group-text bg-white">
                                             <i class="far fa-calendar"></i>
@@ -80,7 +80,7 @@
                         <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label for="reg_no" class="col-form-label">{{ __('labels.reg_no') }} <span class="text-danger">*</span></label>
-                                <input type="text" name="reg_no" id="reg_no" value="{{ old('reg_no', $user->userDetail->reg_no ?? null) }}" class="form-control @error('reg_no') is-invalid @enderror">
+                                <input type="text" name="reg_no" id="reg_no" value="{{ old('reg_no', $user->branchDetail->reg_no ?? null) }}" class="form-control @error('reg_no') is-invalid @enderror">
                                 @error('reg_no')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -128,7 +128,7 @@
                         <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label for="website" class="col-form-label">{{ __('labels.website') }}</label>
-                                <input type="url" name="website" id="website" value="{{ old('website', $user->userDetail->website ?? null) }}" class="form-control @error('website') is-invalid @enderror" placeholder="{{ __('labels.optional') }}">
+                                <input type="url" name="website" id="website" value="{{ old('website', $user->branchDetail->website ?? null) }}" class="form-control @error('website') is-invalid @enderror" placeholder="{{ __('labels.optional') }}">
                                 @error('website')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -139,7 +139,7 @@
                         <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label for="facebook" class="col-form-label">{{ __('labels.facebook') }}</label>
-                                <input type="url" name="facebook" id="facebook" value="{{ old('facebook', $user->userDetail->facebook ?? null) }}" class="form-control @error('facebook') is-invalid @enderror" placeholder="{{ __('labels.optional') }}">
+                                <input type="url" name="facebook" id="facebook" value="{{ old('facebook', $user->branchDetail->facebook ?? null) }}" class="form-control @error('facebook') is-invalid @enderror" placeholder="{{ __('labels.optional') }}">
                                 @error('facebook')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -157,7 +157,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-white">+</span>
                                     </div>
-                                    <input type="text" name="whatsapp" id="whatsapp" value="{{ old('whatsapp', $user->userDetail->whatsapp ?? null) }}" class="form-control @error('whatsapp') is-invalid @enderror">
+                                    <input type="text" name="whatsapp" id="whatsapp" value="{{ old('whatsapp', $user->branchDetail->whatsapp ?? null) }}" class="form-control @error('whatsapp') is-invalid @enderror">
                                 </div>
                                 @error('whatsapp')
                                 <span class="invalid-feedback" role="alert">
@@ -267,7 +267,7 @@
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="pic_name" class="col-form-label">{{ __('labels.pic_name') }} <span class="text-danger">*</span></label>
-                                <input type="text" name="pic_name" id="pic_name" value="{{ old('pic_name', $user->userDetail->pic_name ?? null) }}" class="form-control @error('pic_name') is-invalid @enderror">
+                                <input type="text" name="pic_name" id="pic_name" value="{{ old('pic_name', $user->branchDetail->pic_name ?? null) }}" class="form-control @error('pic_name') is-invalid @enderror">
                                 @error('pic_name')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -285,7 +285,7 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text bg-white">+</span>
                                     </div>
-                                    <input type="text" name="pic_phone" id="pic_phone" value="{{ old('pic_phone', $user->userDetail->pic_phone ?? null)  }}" class="form-control @error('pic_phone') is-invalid @enderror">
+                                    <input type="text" name="pic_phone" id="pic_phone" value="{{ old('pic_phone', $user->branchDetail->pic_phone ?? null)  }}" class="form-control @error('pic_phone') is-invalid @enderror">
                                 </div>
                                 @error('pic_phone')
                                 <span class="invalid-feedback" role="alert">
@@ -297,7 +297,7 @@
                         <div class="col-12 col-md-6">
                             <div class="form-group">
                                 <label for="pic_email" class="col-form-label">{{ __('labels.pic_email') }} <span class="text-danger">*</span></label>
-                                <input type="email" name="pic_email" id="pic_email" value="{{ old('pic_email', $user->userDetail->pic_email ?? null) }}" class="form-control @error('pic_email') is-invalid @enderror">
+                                <input type="email" name="pic_email" id="pic_email" value="{{ old('pic_email', $user->branchDetail->pic_email ?? null) }}" class="form-control @error('pic_email') is-invalid @enderror">
                                 @error('pic_email')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>

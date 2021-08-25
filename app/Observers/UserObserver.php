@@ -36,7 +36,7 @@ class UserObserver
      */
     public function deleted(User $user)
     {
-        $user->userDetail()->delete();
+        $user->branchDetail()->delete();
         $user->address()->delete();
         $user->media()->delete();
     }
