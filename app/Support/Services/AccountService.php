@@ -52,8 +52,6 @@ class AccountService extends BaseService
         if ($this->model->isDirty()) {
             $this->model->save();
         }
-
-        $this->setModel($this->model);
     }
 
     public function storeDetails()

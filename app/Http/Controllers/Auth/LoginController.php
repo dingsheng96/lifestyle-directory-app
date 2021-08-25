@@ -62,9 +62,8 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         $message =  $user->name . ' ' . strtolower(__('messages.login_success'));
-        $log     =  'web:auth';
 
-        activity()->useLog($log)
+        activity()->useLog('web:auth')
             ->causedByAnonymous()
             ->performedOn($user)
             ->withProperties($request->all())

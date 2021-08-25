@@ -38,8 +38,6 @@ class CountryStateService extends BaseService
 
                 $this->model->save();
             }
-
-            $this->setModel($this->model);
         }
 
         return $this;

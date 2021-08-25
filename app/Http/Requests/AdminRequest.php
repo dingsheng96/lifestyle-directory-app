@@ -30,51 +30,27 @@ class AdminRequest extends FormRequest
      */
     public function rules()
     {
-        if ($this->route('admin')) {
-            return [
-                'update.name' => [
-                    'required',
-                    Rule::unique(User::class, 'name')
-                        ->ignore($this->route('admin'), 'id')
-                        ->whereNull('deleted_at')
-                ],
-                'update.email' => [
-                    'required',
-                    'email',
-                    Rule::unique(User::class, 'email')
-                        ->ignore($this->route('admin'), 'id')
-                        ->whereNull('deleted_at')
-                ],
-                'update.status' => [
-                    'required',
-                    Rule::in(array_keys((new Status())->activeStatus()))
-                ],
-                'update.password' => [
-                    'nullable',
-                    'confirmed',
-                    new PasswordFormat()
-                ]
-            ];
-        }
-
         return [
-            'create.name' => [
+            'name' => [
                 'required',
                 Rule::unique(User::class, 'name')
+                    ->ignore($this->route('admin'), 'id')
                     ->whereNull('deleted_at')
             ],
-            'create.email' => [
+            'email' => [
                 'required',
                 'email',
                 Rule::unique(User::class, 'email')
+                    ->ignore($this->route('admin'), 'id')
                     ->whereNull('deleted_at')
             ],
-            'create.status' => [
+            'status' => [
                 'required',
                 Rule::in(array_keys((new Status())->activeStatus()))
             ],
-            'create.password' => [
-                'required',
+            'password' => [
+                Rule::requiredIf(empty($this->route('admin'))),
+                'nullable',
                 'confirmed',
                 new PasswordFormat()
             ]
@@ -98,11 +74,6 @@ class AdminRequest extends FormRequest
      */
     public function attributes()
     {
-        return [
-            '*.name'        =>  __('validation.attributes.name'),
-            '*.email'       =>  __('validation.attributes.email'),
-            '*.status'      =>  __('validation.attributes.status'),
-            '*.password'    =>  __('validation.attributes.password'),
-        ];
+        return [];
     }
 }

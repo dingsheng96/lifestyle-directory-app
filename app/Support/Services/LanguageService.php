@@ -41,7 +41,7 @@ class LanguageService extends BaseService
             $this->model->save();
         }
 
-        $this->setModel($this->model);
+
 
         $this->storeTranslations();
 
