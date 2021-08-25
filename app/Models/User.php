@@ -23,10 +23,6 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable, SoftDeletes, HasRoles;
 
-    const STATUS_ACTIVE     =   'active';
-    const STATUS_INACTIVE   =   'inactive';
-    const STORE_PATH        =   '/users';
-
     protected $table = 'users';
 
     protected $fillable = [
@@ -41,6 +37,13 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // Constants
+    const STATUS_ACTIVE             =   'active';
+    const STATUS_INACTIVE           =   'inactive';
+    const STORE_PATH                =   '/users';
+    const STORE_PROFILE_IMAGE_PATH  =   self::STORE_PATH . '/profile_images';
+    const STORE_COVER_PHOTO_PATH    =   self::STORE_PATH . '/cover_photos';
 
     // Relationships
     public function subBranches()
@@ -65,7 +68,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function media()
     {
-        return $this->morphMany(Media::class, 'sourceable');
+        return $this->morphMany(Media::class, 'mediable');
     }
 
     public function favourites()
@@ -189,11 +192,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return '<span class="' . $label['class'] . ' px-3">' . $label['text'] . '</span>';
     }
 
-    public function getLogoAttribute()
-    {
-        return $this->media()->logo()->first();
-    }
-
     public function getRoleNameAttribute()
     {
         return $this->roles()->first()->name;
@@ -233,11 +231,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getFormattedPhoneNumberAttribute()
     {
-        if (empty($this->phone)) {
+        if (empty($this->mobile_no)) {
             return null;
         }
 
-        return (new Misc())->addTagsToPhone($this->phone);
+        return (new Misc())->addTagsToPhone($this->mobile_no);
     }
 
     public function getCategoryAttribute()
@@ -248,5 +246,15 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getRatingAttribute(): int
     {
         return round($this->ratings()->avg('scale'));
+    }
+
+    public function getProfileImageAttribute()
+    {
+        return collect($this->media)->firstWhere('type', Media::TYPE_PROFILE_IMAGE);
+    }
+
+    public function getCoverPhotoAttribute()
+    {
+        return collect($this->media)->firstWhere('type', Media::TYPE_COVER_PHOTO);
     }
 }

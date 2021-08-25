@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\Media;
 use Illuminate\Http\File;
 use Maatwebsite\Excel\Excel;
 use Intervention\Image\Facades\Image;
@@ -46,7 +47,7 @@ class FileManager
         return Storage::disk($this->disk);
     }
 
-    public function store(string $store_path, $save_file, string $old_file = null, string $filename = null): string
+    public function store(string $store_path, $save_file, string $old_file = null): string
     {
         $storage = $this->getStorageDisk();
 
@@ -66,9 +67,7 @@ class FileManager
             return $this->resizeImage($store_path, $save_file);
         }
 
-        return (empty($filename))
-            ? $storage->putFile($store_path, new File($save_file))
-            : $storage->putFileAs($store_path, new File($save_file), $filename);
+        return $storage->putFile($store_path, new File($save_file));
     }
 
     public function getMimesType(string $extension): string

@@ -39,15 +39,9 @@ class MemberRequest extends FormRequest
             'phone'             =>  ['required', new PhoneFormat],
             'email'             =>  ['required', 'email', new UniqueMember('email', $this->route('member'))],
             'password'          =>  [Rule::requiredIf(empty($this->route('member'))), 'nullable', new PasswordFormat, 'confirmed'],
-
-            'address_1'         =>  ['required', 'min:3', 'max:255'],
-            'address_2'         =>  ['nullable'],
-            'country'           =>  ['required', 'exists:' . Country::class . ',id'],
-            'postcode'          =>  ['required', 'digits:5'],
-            'country_state'     =>  ['required', Rule::exists(CountryState::class, 'id')->where('country_id', $this->get('country'))],
-            'city'              =>  ['required', Rule::exists(City::class, 'id')->where('country_state_id', $this->get('country_state'))],
             'status'            =>  ['required', Rule::in(array_keys((new Status())->activeStatus()))],
-            'logo'              =>  [Rule::requiredIf(empty($this->route('member'))), 'nullable', 'image', 'max:2000', 'mimes:jpg,jpeg,png'],
+            'profile_image'     =>  ['nullable', 'image', 'max:2000', 'mimes:jpg,jpeg,png'],
+            'cover_photo'       =>  ['nullable', 'image', 'max:2000', 'mimes:jpg,jpeg,png'],
         ];
     }
 
@@ -68,8 +62,6 @@ class MemberRequest extends FormRequest
      */
     public function attributes()
     {
-        return [
-            'logo' => __('validation.attributes.profile_picture')
-        ];
+        return [];
     }
 }

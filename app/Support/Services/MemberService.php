@@ -16,65 +16,72 @@ class MemberService extends BaseService
         parent::__construct(User::class);
     }
 
-    public function storeData()
+    public function store()
     {
-        $this->storeProfile();
-        $this->storeAddress();
-        $this->storeImage();
+        $this->model->name      =   $this->request->get('name');
+        $this->model->mobile_no =   $this->request->get('phone');
+        $this->model->email     =   $this->request->get('email');
+        $this->model->status    =   $this->request->get('status', User::STATUS_ACTIVE);
+        $this->model->password  =   !empty($this->request->get('password'))
+            ? Hash::make($this->request->get('password'))
+            : $this->model->password;
 
-        return $this;
-    }
+        if (!$this->model->exists) { // new User
 
-    public function storeProfile()
-    {
-        $this->model->name              =   $this->request->get('name');
-        $this->model->phone             =   $this->request->get('phone');
-        $this->model->email             =   $this->request->get('email');
-        $this->model->status            =   $this->request->get('status', User::STATUS_ACTIVE);
-
-        if ($this->request->has('password') && !empty($this->request->get('password'))) {
-            $this->model->password = Hash::make($this->request->get('password'));
+            $this->model->email_verified_at =   now();
+            $this->model->assignRole(Role::ROLE_MEMBER);
         }
 
         if ($this->model->isDirty()) {
             $this->model->save();
         }
 
-        if ($this->model->wasRecentlyCreated) {
-            $this->model->update([
-                'email_verified_at' => now()
-            ]);
-        }
-
-        $this->setModel($this->model);
-
-        $this->model->syncRoles([Role::ROLE_MEMBER]);
+        $this->storeImage();
 
         return $this;
     }
 
     public function storeImage()
     {
-        if ($this->request->hasFile('logo')) {
+        if ($this->request->hasFile('profile_image')) {
 
-            $file  =   $this->request->file('logo');
+            $profile_image  =   $this->request->file('profile_image');
 
             $config = [
-                'save_path'     =>   User::STORE_PATH,
-                'type'          =>   Media::TYPE_LOGO,
-                'filemime'      => (new FileManager())->getMimesType($file->getClientOriginalExtension()),
-                'filename'      =>   $file->getClientOriginalName(),
-                'extension'     =>   $file->getClientOriginalExtension(),
-                'filesize'      =>   $file->getSize(),
+                'save_path'     => User::STORE_PROFILE_IMAGE_PATH,
+                'type'          => Media::TYPE_PROFILE_IMAGE,
+                'filemime'      => (new FileManager())->getMimesType($profile_image->getClientOriginalExtension()),
+                'filename'      => $profile_image->getClientOriginalName(),
+                'extension'     => $profile_image->getClientOriginalExtension(),
+                'filesize'      => $profile_image->getSize(),
             ];
 
-            $media = $this->model->media()->logo()
-                ->firstOr(function () {
-                    return new Media();
-                });
+            $media = $this->model->media()->profileImage()->firstOr(function () {
+                return new Media();
+            });
 
-            return $this->storeMedia($media, $config, $file);
+            $this->storeMedia($media, $config, $profile_image);
         }
+
+        if ($this->request->hasFile('cover_photo')) {
+
+            $cover_photo = $this->request->file('cover_photo');
+
+            $config = [
+                'save_path'     => User::STORE_COVER_PHOTO_PATH,
+                'type'          => Media::TYPE_COVER_PHOTO,
+                'filemime'      => (new FileManager())->getMimesType($cover_photo->getClientOriginalExtension()),
+                'filename'      => $cover_photo->getClientOriginalName(),
+                'extension'     => $cover_photo->getClientOriginalExtension(),
+                'filesize'      => $cover_photo->getSize(),
+            ];
+
+            $media = $this->model->media()->coverPhoto()->firstOr(function () {
+                return new Media();
+            });
+
+            $this->storeMedia($media, $config, $cover_photo);
+        };
 
         return $this;
     }

@@ -63,7 +63,7 @@ class MerchantService extends BaseService
             $this->model->save();
         }
 
-        $this->setModel($this->model);
+
 
         $this->model->syncRoles([Role::ROLE_MERCHANT]);
 

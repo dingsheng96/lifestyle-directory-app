@@ -68,6 +68,13 @@ body {
     object-fit: cover;
 }
 
+.custom-profile-image {
+    position: relative;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
 .profile-user-img {
     height: 100px;
 }

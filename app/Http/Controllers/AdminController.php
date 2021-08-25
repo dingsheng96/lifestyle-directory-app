@@ -44,9 +44,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        $statuses = (new Status())->activeStatus();
-
-        return view('admin.create', compact('statuses'));
+        return view('admin.create');
     }
 
     /**
@@ -106,9 +104,7 @@ class AdminController extends Controller
      */
     public function edit(User $admin)
     {
-        $statuses = (new Status())->activeStatus();
-
-        return view('admin.edit', compact('statuses', 'admin'));
+        return view('admin.edit', compact('admin'));
     }
 
     /**

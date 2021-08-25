@@ -15,6 +15,7 @@ class Branch extends Model
         'main_branch_id', 'sub_branch_id', 'status'
     ];
 
+    // Constants
     const STATUS_PUBLISH    =   'publish';
     const STATUS_DRAFT      =   'draft';
 

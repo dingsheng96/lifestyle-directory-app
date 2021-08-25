@@ -10,8 +10,6 @@ class Language extends Model
 {
     use SoftDeletes;
 
-    const CODE_EN = 'en';
-
     protected $table = 'languages';
 
     protected $fillable = [
@@ -21,6 +19,9 @@ class Language extends Model
     protected $casts = [
         'default' => 'boolean'
     ];
+
+    // Constants
+    const CODE_EN = 'en';
 
     // Relationships
     public function translations()

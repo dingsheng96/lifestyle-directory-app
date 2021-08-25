@@ -117,7 +117,8 @@ return [
 
     'menu' => 'Menu',
     'profile' => 'Profile',
-    'profile_picture' => 'Profile Picture',
+    'profile_image' => 'Profile Image',
+    'cover_photo' => 'Cover Photo',
 
     'settings' => 'Settings',
 

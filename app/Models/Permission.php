@@ -10,6 +10,7 @@ class Permission extends SpatiePermission
 {
     use SoftDeletes;
 
+    // Constants
     const ACTION_CREATE = 'create';
     const ACTION_UPDATE = 'update';
     const ACTION_READ   = 'read';

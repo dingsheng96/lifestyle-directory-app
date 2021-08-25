@@ -9,6 +9,7 @@ class Role extends SpatieRole
 {
     use SoftDeletes;
 
+    // Constants
     const ROLE_SUPER_ADMIN  =   'Super Admin';
     const ROLE_MERCHANT_1   =   'Merchant 1';
     const ROLE_MERCHANT_2   =   'Merchant 2';

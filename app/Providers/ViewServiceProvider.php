@@ -7,11 +7,8 @@ use Illuminate\Support\ServiceProvider;
 class ViewServiceProvider extends ServiceProvider
 {
     protected $composers = [
-        // \App\Http\View\Composers\MerchantComposer::class => [
-        //     '*'
-        // ],
         \App\Http\View\Composers\DefaultPreviewComposer::class => [
-            'merchant.*', 'category.*'
+            'merchant.*', 'category.*', 'member.*'
         ],
         \App\Http\View\Composers\CategoryComposer::class => [
             'merchant.*'
@@ -19,6 +16,12 @@ class ViewServiceProvider extends ServiceProvider
         \App\Http\View\Composers\CountryStateComposer::class => [
             'merchant.*'
         ],
+        \App\Http\View\Composers\ActiveStatusComposer::class => [
+            'merchant.*', 'admin.*', 'member.*'
+        ],
+        // \App\Http\View\Composers\MerchantComposer::class => [
+        //     '*'
+        // ],
         \App\Http\View\Composers\PermissionModuleComposer::class => [
             'role.*'
         ],

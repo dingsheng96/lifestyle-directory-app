@@ -10,10 +10,12 @@ use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\DataTables\MemberDataTable;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MemberRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Support\Facades\MemberFacade;
+use App\Support\Services\MemberService;
 
 class MemberController extends Controller
 {
@@ -42,9 +44,7 @@ class MemberController extends Controller
      */
     public function create()
     {
-        $statuses = (new Status())->activeStatus();
-
-        return view('member.create', compact('statuses'));
+        return view('member.create');
     }
 
     /**
@@ -53,7 +53,7 @@ class MemberController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(MemberRequest $request)
+    public function store(MemberRequest $request, MemberService $member_service)
     {
         DB::beginTransaction();
 
@@ -64,32 +64,25 @@ class MemberController extends Controller
 
         try {
 
-            $member = MemberFacade::setRequest($request)->storeData()->getModel();
-
-            DB::commit();
+            $member_service->setRequest($request)->store();
 
             $status  = 'success';
             $message = Message::instance()->format($action, $module, $status);
 
-            activity()->useLog('web')
-                ->causedBy(Auth::user())
-                ->performedOn($member)
-                ->withProperties($request->all())
-                ->log($message);
-
-            return redirect()->route('members.index')->withSuccess($message);
+            DB::commit();
         } catch (\Error | \Exception $e) {
 
             DB::rollBack();
-
-            activity()->useLog('web')
-                ->causedBy(Auth::user())
-                ->performedOn(new User())
-                ->withProperties($request->all())
-                ->log($e->getMessage());
-
-            return redirect()->back()->withErrors($message)->withInput();
+            Log::error($e);
         }
+
+        activity()->useLog('web')
+            ->causedBy(Auth::user())
+            ->performedOn(new User())
+            ->withProperties($request->all())
+            ->log($message);
+
+        return redirect()->route('members.index')->with($status, $message);
     }
 
     /**
@@ -100,7 +93,7 @@ class MemberController extends Controller
      */
     public function show(User $member)
     {
-        $member->load(['address']);
+        $member->load(['media']);
 
         return view('member.show', compact('member'));
     }
@@ -113,11 +106,9 @@ class MemberController extends Controller
      */
     public function edit(User $member)
     {
-        $member->load(['address']);
+        $member->load(['media']);
 
-        $statuses = (new Status())->activeStatus();
-
-        return view('member.edit', compact('member', 'statuses'));
+        return view('member.edit', compact('member'));
     }
 
     /**
@@ -127,7 +118,7 @@ class MemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(MemberRequest $request, User $member)
+    public function update(MemberRequest $request, User $member, MemberService $member_service)
     {
         DB::beginTransaction();
 
@@ -138,37 +129,27 @@ class MemberController extends Controller
 
         try {
 
-            $member->load(['media', 'address']);
+            $member->load(['media']);
 
-            $member = MemberFacade::setModel($member)
-                ->setRequest($request)
-                ->storeData()
-                ->getModel();
-
-            DB::commit();
+            $member_service->setModel($member)->setRequest($request)->store();
 
             $status  = 'success';
             $message = Message::instance()->format($action, $module, $status);
 
-            activity()->useLog('web')
-                ->causedBy(Auth::user())
-                ->performedOn($member)
-                ->withProperties($request->all())
-                ->log($message);
-
-            return redirect()->route('members.index')->withSuccess($message);
+            DB::commit();
         } catch (\Error | \Exception $e) {
 
             DB::rollBack();
-
-            activity()->useLog('web')
-                ->causedBy(Auth::user())
-                ->performedOn(new User())
-                ->withProperties($request->all())
-                ->log($e->getMessage());
-
-            return redirect()->back()->withErrors($message)->withInput();
+            Log::error($e);
         }
+
+        activity()->useLog('web')
+            ->causedBy(Auth::user())
+            ->performedOn($member)
+            ->withProperties($request->all())
+            ->log($message);
+
+        return redirect()->route('members.index')->with($status, $message);
     }
 
     /**
@@ -184,30 +165,15 @@ class MemberController extends Controller
         $status     =   'fail';
         $message    =   Message::instance()->format($action, $module);
 
-        DB::beginTransaction();
+        $member->delete();
 
-        try {
+        $message = Message::instance()->format($action, $module, 'success');
+        $status = 'success';
 
-            $member->delete();
-
-            DB::commit();
-
-            $message = Message::instance()->format($action, $module, 'success');
-            $status = 'success';
-
-            activity()->useLog('web')
-                ->causedBy(Auth::user())
-                ->performedOn($member)
-                ->log($message);
-        } catch (\Error | \Exception $e) {
-
-            DB::rollBack();
-
-            activity()->useLog('web')
-                ->causedBy(Auth::user())
-                ->performedOn($member)
-                ->log($e->getMessage());
-        }
+        activity()->useLog('web')
+            ->causedBy(Auth::user())
+            ->performedOn($member)
+            ->log($message);
 
         return Response::instance()
             ->withStatusCode('modules.member', 'actions.' . $action . $status)

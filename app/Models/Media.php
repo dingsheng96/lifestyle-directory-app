@@ -6,19 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Media extends Model
 {
-    const TYPE_THUMBNAIL        =   'thumbnail';
-    const TYPE_IMAGE            =   'image';
-    const TYPE_SSM              =   'ssm';
-    const TYPE_LOGO             =   'logo';
-    const DEFAULT_IMAGE         =   'nopreview.png';
-    const MAX_IMAGE_BRANCH      =   10;
-
     protected $table = 'media';
 
     protected $fillable = [
         'mediable_type', 'mediable_id', 'type', 'original_filename',
         'filename', 'path', 'extension', 'size', 'mime', 'properties'
     ];
+
+    // Constants
+    const TYPE_SSM              =   'ssm';
+    const TYPE_IMAGE            =   'image';
+    const TYPE_LOGO             =   'logo';
+    const TYPE_PROFILE_IMAGE    =   'profile';
+    const TYPE_COVER_PHOTO      =   'cover';
+    const DEFAULT_IMAGE         =   'nopreview.png';
+    const MAX_IMAGE_BRANCH      =   10;
 
     // Relationships
     public function mediable()
@@ -32,11 +34,6 @@ class Media extends Model
         return $query->where('type', self::TYPE_SSM);
     }
 
-    public function scopeThumbnail($query)
-    {
-        return $query->where('type', self::TYPE_THUMBNAIL);
-    }
-
     public function scopeLogo($query)
     {
         return $query->where('type', self::TYPE_LOGO);
@@ -45,6 +42,16 @@ class Media extends Model
     public function scopeImage($query)
     {
         return $query->where('type', self::TYPE_IMAGE);
+    }
+
+    public function scopeProfileImage($query)
+    {
+        return $query->where('type', self::TYPE_PROFILE_IMAGE);
+    }
+
+    public function scopeCoverPhoto($query)
+    {
+        return $query->where('type', self::TYPE_COVER_PHOTO);
     }
 
     // Attributes

@@ -92,22 +92,17 @@ $(function() {
     });
 
     // image-reader and preview
-    $(".custom-img-input").on("change", function(e) {
-        let file = e.target.files[0];
+    $("body").on("change", ".custom-img-input", function(e) {
+        let file    =   e.target.files[0];
+        let input   =   $(this);
 
         if (file) {
             let reader = new FileReader();
             reader.onload = function() {
-                $(".custom-img-preview").attr("src", reader.result);
+                input.parent().find(".custom-img-preview").attr("src", reader.result);
             };
             reader.readAsDataURL(file);
         }
-    });
-
-    $(".custom-file-input").on("change", function(e) {
-        let fileName = e.target.files[0].name;
-        $(this).next(".custom-file-label")
-            .text(fileName);
     });
 
     // price

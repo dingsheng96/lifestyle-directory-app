@@ -174,7 +174,11 @@ return [
         'merchant' => 'merchant',
         'new_version' => 'new version',
         'current_version' => 'current version',
-        'permission' => 'permission'
+        'permission' => 'permission',
+        'status' => 'status',
+        'password' => 'password',
+        'profile_image' => 'profile image',
+        'cover_photo' => 'cover photo'
     ],
 
 ];
