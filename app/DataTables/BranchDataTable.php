@@ -23,6 +23,17 @@ class BranchDataTable extends DataTable
             ->eloquent($query)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
+
+                if ($this->view_only) {
+                    return view('components.action', [
+                        'no_action' => $this->no_action ?: null,
+                        'view' => [
+                            'permission' => 'merchant.read',
+                            'route' => route('merchants.branches.show', ['merchant' => $this->merchant->id, 'branch' => $data->id])
+                        ]
+                    ])->render();
+                }
+
                 return view('components.action', [
                     'no_action' => $this->no_action ?: null,
                     'view' => [

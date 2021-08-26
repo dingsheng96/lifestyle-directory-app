@@ -37,6 +37,6 @@ class AppServiceProvider extends ServiceProvider
 
     private function registerObservers()
     {
-        // \App\Models\User::observe(\App\Observers\UserObserver::class);
+        \App\Models\User::observe(\App\Observers\UserObserver::class);
     }
 }

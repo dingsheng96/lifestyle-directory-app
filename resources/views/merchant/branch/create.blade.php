@@ -29,14 +29,15 @@
 
                     <div class="card-body">
 
-                        <div class="tab-content" id="nav-tabContent">
+                        <span class="h5">{{ __('labels.merchant_branch', ['merchant' => $merchant->name]) }}</span>
 
+                        <div class="tab-content mt-3" id="nav-tabContent">
                             <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
 
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label for="name" class="col-form-label">{{ __('labels.name') }} <span class="text-danger">*</span></label>
+                                            <label for="name" class="col-form-label">{{ __('labels.branch_name') }} <span class="text-danger">*</span></label>
                                             <input type="text" name="name" id="name" value="{{ old('name') }}" class="form-control ucfirst @error('name') is-invalid @enderror">
                                             @error('name')
                                             <span class="invalid-feedback" role="alert">

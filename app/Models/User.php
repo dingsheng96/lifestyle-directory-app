@@ -177,20 +177,6 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->attributes['mobile_no'] = $value;
     }
 
-    public function getFullAddressAttribute()
-    {
-        if ($this->address) {
-            $full_address  =    $this->address->address_1 . ', ';
-            $full_address  .=   $this->address->address_2 . ', ';
-            $full_address  .=   $this->address->postcode . ', ';
-            $full_address  .=   $this->address->city->name . ', ';
-            $full_address  .=   $this->address->city->country_state_name . ', ';
-            $full_address  .=   'Malaysia';
-        }
-
-        return $full_address ?? null;
-    }
-
     public function getStatusLabelAttribute()
     {
         $label = (new Status())->statusLabel($this->status);
@@ -277,6 +263,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getThumbnailAttribute()
     {
         return collect($this->media)->where('type', Media::TYPE_THUMBNAIL)->first();
+    }
+
+    public function getSsmCertAttribute()
+    {
+        return collect($this->media)->where('type', Media::TYPE_SSM)->first();
     }
 
     public function getBranchStatusLabelAttribute()

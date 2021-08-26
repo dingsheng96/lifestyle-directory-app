@@ -36,7 +36,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label for="name" class="col-form-label">{{ __('labels.name') }} <span class="text-danger">*</span></label>
+                                            <label for="name" class="col-form-label">{{ __('labels.company_name') }} <span class="text-danger">*</span></label>
                                             <input type="text" name="name" id="name" value="{{ old('name') }}" class="form-control ucfirst @error('name') is-invalid @enderror">
                                             @error('name')
                                             <span class="invalid-feedback" role="alert">

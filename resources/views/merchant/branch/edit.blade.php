@@ -29,14 +29,17 @@
                     @method('put')
 
                     <div class="card-body">
-                        <div class="tab-content" id="nav-tabContent">
+
+                        <span class="h5">{{ __('labels.merchant_branch', ['merchant' => $merchant->name]) }}</span>
+
+                        <div class="tab-content mt-3" id="nav-tabContent">
 
                             <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
 
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label for="name" class="col-form-label">{{ __('labels.name') }} <span class="text-danger">*</span></label>
+                                            <label for="name" class="col-form-label">{{ __('labels.branch_name') }} <span class="text-danger">*</span></label>
                                             <input type="text" name="name" id="name" value="{{ old('name', $branch->name) }}" class="form-control ucfirst @error('name') is-invalid @enderror">
                                             @error('name')
                                             <span class="invalid-feedback" role="alert">
@@ -92,13 +95,22 @@
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label for="file" class="col-form-label">{{ __('labels.change_ssm_cert') }}</label>
-                                            <input type="file" name="ssm_cert" id="ssm_cert" value="{{ old('ssm_cert') }}" class="form-control-file @error('ssm_cert') is-invalid @enderror" accept="application/pdf">
-                                            @error('ssm_cert')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                            <ul class="pl-3 mt-3">{!! trans_choice('messages.upload_file_rules', 1, ['maxsize' => '2mb', 'extensions' => 'PDF']) !!}</ul>
+                                            <div class="row">
+                                                <div class="col-12 col-md-6">
+                                                    <input type="file" name="ssm_cert" id="ssm_cert" value="{{ old('ssm_cert') }}" class="form-control-file @error('ssm_cert') is-invalid @enderror" accept="application/pdf">
+                                                    @error('ssm_cert')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                    @enderror
+                                                    <ul class="pl-3 mt-3">{!! trans_choice('messages.upload_file_rules', 1, ['maxsize' => '2mb', 'extensions' => 'PDF']) !!}</ul>
+                                                </div>
+                                                <div class="col-12 col-md-6">
+                                                    <span>
+                                                        <a href="{{ $branch->ssm_cert->full_file_path ?? null }}" download rel="noopener noreferrer"><i class="fas fa-external-link-alt mr-2"></i>{{ $merchant->ssm_cert->original_filename ?? '-' }}</a>
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

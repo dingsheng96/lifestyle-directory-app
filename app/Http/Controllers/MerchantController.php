@@ -99,19 +99,15 @@ class MerchantController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $merchant)
+    public function show(User $merchant, BranchDataTable $dataTable)
     {
-        $user_details = $merchant->branchDetail()
-            ->approvedDetails()
-            ->with(['media'])
-            ->first();
+        $merchant->load([
+            'branchDetail', 'address.city', 'media', 'subBranches'
+        ]);
 
-        $documents = $merchant->media()
-            ->ssmCert()
-            ->orderBy('created_at', 'asc')
-            ->get();
+        $image_and_thumbnail = collect($merchant->media)->whereNotIn('type', [Media::TYPE_LOGO, Media::TYPE_SSM]);
 
-        return view('merchant.show', compact('merchant', 'documents', 'user_details'));
+        return $dataTable->with(['merchant' => $merchant, 'view_only' => true])->render('merchant.show', compact('merchant', 'image_and_thumbnail'));
     }
 
     /**
@@ -123,7 +119,7 @@ class MerchantController extends Controller
     public function edit(User $merchant, BranchDataTable $dataTable)
     {
         $merchant->load([
-            'branchDetail', 'address', 'media'
+            'branchDetail', 'address.city', 'media', 'subBranches'
         ]);
 
         $image_and_thumbnail = collect($merchant->media)->whereNotIn('type', [Media::TYPE_LOGO, Media::TYPE_SSM]);

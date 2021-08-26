@@ -38,7 +38,7 @@ class UserObserver
     {
         $user->branchDetail()->delete();
         $user->address()->delete();
-        $user->media()->delete();
+        $user->subBranches()->delete();
     }
 
     /**

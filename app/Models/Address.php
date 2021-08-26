@@ -33,4 +33,16 @@ class Address extends Model
     {
         return $this->hasOneThrough(CountryState::class, City::class, 'id', 'id', 'city_id', 'country_state_id');
     }
+
+    public function getFullAddressAttribute()
+    {
+        $full_address  =    $this->address_1 . ', ';
+        $full_address  .=   $this->address_2 . ', ';
+        $full_address  .=   $this->postcode . ', ';
+        $full_address  .=   $this->city->name . ', ';
+        $full_address  .=   $this->city->country_state_name . ', ';
+        $full_address  .=   'Malaysia';
+
+        return $full_address;
+    }
 }

@@ -132,6 +132,7 @@ return [
     'reg_no' => 'Registration No.',
     'admin_section' => 'Admin Section',
     'company_name' => 'Company Name',
+    'branch_name' => 'Branch Name',
     'info' => 'Info',
     'view_details' => 'View Details',
     'user_account' => 'User Account',
@@ -142,6 +143,7 @@ return [
 
     'change_profile_pic' => 'Change Profile Picture',
     'change_logo' => 'Change Logo',
-    'change_ssm_cert' => 'Change SSM Cert',
-    'branch' => 'Branch|Branches'
+    'change_ssm_cert' => 'Change SSM Certificate',
+    'branch' => 'Branch|Branches',
+    'merchant_branch' => ":merchant's Branch"
 ];

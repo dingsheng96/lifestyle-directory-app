@@ -16,7 +16,7 @@ class BranchDetail extends Model
     protected $table = 'branch_details';
 
     protected $fillable = [
-        'branch_id', 'reg_no', 'pic_name', 'pic_phone', 'pic_email',
+        'branch_id', 'reg_no', 'pic_name', 'pic_contact', 'pic_email',
         'description', 'services', 'website', 'facebook', 'whatsapp', 'instagram'
     ];
 
@@ -53,11 +53,11 @@ class BranchDetail extends Model
 
     public function getFormattedPicPhoneAttribute()
     {
-        if (empty($this->pic_phone)) {
+        if (empty($this->pic_contact)) {
             return null;
         }
 
-        return (new Misc())->addTagsToPhone($this->pic_phone);
+        return (new Misc())->addTagsToPhone($this->pic_contact);
     }
 
     public function getFormattedWhatsappAttribute()

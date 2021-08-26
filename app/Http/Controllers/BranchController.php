@@ -95,9 +95,15 @@ class BranchController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(User $merchant, User $branch)
     {
-        //
+        $branch->load([
+            'branchDetail', 'address.city', 'media'
+        ]);
+
+        $image_and_thumbnail = collect($branch->media)->whereNotIn('type', [Media::TYPE_LOGO, Media::TYPE_SSM]);
+
+        return view('merchant.branch.show', compact('merchant', 'branch', 'image_and_thumbnail'));
     }
 
     /**
@@ -109,7 +115,7 @@ class BranchController extends Controller
     public function edit(User $merchant, User $branch)
     {
         $branch->load([
-            'branchDetail', 'address', 'media'
+            'branchDetail', 'address.city', 'media'
         ]);
 
         $image_and_thumbnail = collect($branch->media)->whereNotIn('type', [Media::TYPE_LOGO, Media::TYPE_SSM]);
@@ -178,8 +184,27 @@ class BranchController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(User $merchant, User $branch)
     {
-        //
+        $action     =   Permission::ACTION_DELETE;
+        $module     =   strtolower(trans_choice('labels.branch', 1));
+        $status     =   'success';
+        $message    =   Message::instance()->format($action, $module, $status);
+
+        $branch->delete();
+
+        activity()->useLog('web')
+            ->causedBy(Auth::user())
+            ->performedOn($branch)
+            ->log($message);
+
+        return Response::instance()
+            ->withStatusCode('modules.merchant', 'actions.' . $action . $status)
+            ->withStatus($status)
+            ->withMessage($message, true)
+            ->withData([
+                'redirect_to' => route('merchants.edit', ['merchant' => $merchant->id])
+            ])
+            ->sendJson();
     }
 }
