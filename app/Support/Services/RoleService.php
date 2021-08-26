@@ -22,8 +22,6 @@ class RoleService extends BaseService
             $this->model->save();
         }
 
-
-
         $this->storePermissions();
 
         return $this;

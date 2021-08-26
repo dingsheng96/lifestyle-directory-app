@@ -97,6 +97,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->morphedByMany(self::class, 'rateable', Rateable::class)->withPivot('scale')->withTimestamps();
     }
 
+    public function categories()
+    {
+        return $this->morphToMany(Category::class, 'categorizable', Categorizable::class);
+    }
+
     // Functions
     public function sendEmailVerificationNotification()
     {

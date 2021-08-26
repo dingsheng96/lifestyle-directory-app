@@ -20,6 +20,32 @@ class MerchantService extends BaseService
         parent::__construct(User::class);
     }
 
+    public function storeMainMerchant()
+    {
+        $this->store()
+            ->assignRole(Role::ROLE_MERCHANT_1)
+            ->setApplicationStatus(User::APPLICATION_STATUS_APPROVED)
+            ->assignCategory();
+
+        return $this;
+    }
+
+    public function storeBranch(User $main_branch)
+    {
+        $this->store()
+            ->assignRole(Role::ROLE_MERCHANT_2)
+            ->setApplicationStatus(User::APPLICATION_STATUS_APPROVED);
+
+        // sync to main branch
+        $main_branch->subBranches()->syncWithoutDetaching([
+            $this->model->id => [
+                'status' => $this->request->get('branch_status', User::STATUS_BRANCH_PUBLISH)
+            ]
+        ]);
+
+        return $this;
+    }
+
     public function store()
     {
         $this->model->name      =   $this->request->get('name');
@@ -30,34 +56,15 @@ class MerchantService extends BaseService
             ? Hash::make($this->request->get('password'))
             : $this->model->password;
 
-        $this->model->application_status = User::APPLICATION_STATUS_PENDING;
-
         if ($this->model->isDirty()) {
             $this->model->save();
         }
 
-        $this->assignRole(Role::ROLE_MERCHANT_1);
         $this->storeDetails();
         $this->storeAddress();
         $this->storeLogo();
         $this->storeSsmCert();
         $this->storeImage();
-
-        return $this;
-    }
-
-    public function storeBranch(User $main_branch)
-    {
-        $this->store();
-
-        $this->assignRole(Role::ROLE_MERCHANT_2); // assign role
-
-        // sync to main branch
-        $main_branch->subBranches()->syncWithoutDetaching([
-            $this->model->id => [
-                'status' => $this->request->get('branch_status', User::STATUS_BRANCH_PUBLISH)
-            ]
-        ]);
 
         return $this;
     }
@@ -215,6 +222,16 @@ class MerchantService extends BaseService
         if ($this->model->isDirty()) {
 
             $this->model->save();
+        }
+
+        return $this;
+    }
+
+    public function assignCategory()
+    {
+        if ($this->model->is_main_merchant) {
+
+            $this->model->categories()->syncWithoutDetaching([$this->request->get('category')]);
         }
 
         return $this;

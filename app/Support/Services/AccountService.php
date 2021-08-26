@@ -22,16 +22,14 @@ class AccountService extends BaseService
 
         if (Auth::user()->is_merchant) {
 
-            $this->storeDetails();
-            $this->storeAddress();
-            $this->storeImage();
+            $this->storeDetails()->storeAddress()->storeImage();
 
             return $this;
         }
 
         if (Auth::user()->is_member) {
-            $this->storeAddress();
-            $this->storeImage();
+
+            $this->storeAddress()->storeImage();
 
             return $this;
         }

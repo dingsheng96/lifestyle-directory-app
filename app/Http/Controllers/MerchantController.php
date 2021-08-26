@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Media;
-use App\Helpers\Status;
-use App\Models\Package;
-use App\Models\Product;
 use App\Helpers\Message;
 use App\Helpers\Response;
 use App\Models\Permission;
-use App\Models\ProductCategory;
-use App\Models\ProductAttribute;
 use Illuminate\Support\Facades\DB;
 use App\DataTables\BranchDataTable;
 use Illuminate\Support\Facades\Log;
@@ -19,9 +15,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\DataTables\MerchantDataTable;
 use App\Http\Requests\MerchantRequest;
-use App\Support\Facades\MerchantFacade;
 use App\Support\Services\MerchantService;
-use App\DataTables\SubscriptionLogsDataTable;
 
 class MerchantController extends Controller
 {
@@ -72,7 +66,7 @@ class MerchantController extends Controller
 
         try {
 
-            $merchant_service->setRequest($request)->store()->setApplicationStatus(User::APPLICATION_STATUS_APPROVED);
+            $merchant_service->setRequest($request)->storeMainMerchant();
 
             $status  = 'success';
             $message = Message::instance()->format($action, $module, $status);
@@ -102,7 +96,7 @@ class MerchantController extends Controller
     public function show(User $merchant, BranchDataTable $dataTable)
     {
         $merchant->load([
-            'branchDetail', 'address.city', 'media', 'subBranches'
+            'branchDetail', 'address.city', 'media', 'subBranches', 'categories'
         ]);
 
         $image_and_thumbnail = collect($merchant->media)->whereNotIn('type', [Media::TYPE_LOGO, Media::TYPE_SSM]);
@@ -119,7 +113,7 @@ class MerchantController extends Controller
     public function edit(User $merchant, BranchDataTable $dataTable)
     {
         $merchant->load([
-            'branchDetail', 'address.city', 'media', 'subBranches'
+            'branchDetail', 'address.city', 'media', 'subBranches', 'categories'
         ]);
 
         $image_and_thumbnail = collect($merchant->media)->whereNotIn('type', [Media::TYPE_LOGO, Media::TYPE_SSM]);
@@ -147,9 +141,9 @@ class MerchantController extends Controller
 
         try {
 
-            $merchant->load(['media', 'address', 'branchDetail']);
+            $merchant->load(['media', 'address', 'branchDetail', 'categories']);
 
-            $merchant_service->setModel($merchant)->setRequest($request)->store();
+            $merchant_service->setModel($merchant)->setRequest($request)->storeMainMerchant();
 
             $status  = 'success';
             $message = Message::instance()->format($action, $module, $status);

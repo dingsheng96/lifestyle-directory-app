@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Helpers\Status;
-use App\Models\Category;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;

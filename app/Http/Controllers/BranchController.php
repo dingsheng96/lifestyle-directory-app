@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Media;
 use App\Helpers\Status;
@@ -57,8 +58,7 @@ class BranchController extends Controller
 
         try {
 
-            $merchant_service->setRequest($request)
-                ->storeBranch($merchant)->setApplicationStatus(User::APPLICATION_STATUS_APPROVED);
+            $merchant_service->setRequest($request)->storeBranch($merchant);
 
             $status  = 'success';
             $message = Message::instance()->format($action, $module, $status);
@@ -144,8 +144,7 @@ class BranchController extends Controller
 
             $branch->load(['media', 'address', 'branchDetail']);
 
-            $merchant_service->setModel($branch)->setRequest($request)
-                ->storeBranch($merchant)->setApplicationStatus(User::APPLICATION_STATUS_APPROVED);
+            $merchant_service->setModel($branch)->setRequest($request)->storeBranch($merchant);
 
             $status  = 'success';
             $message = Message::instance()->format($action, $module, $status);

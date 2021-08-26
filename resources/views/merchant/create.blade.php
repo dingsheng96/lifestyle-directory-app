@@ -106,6 +106,23 @@
                                 <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
+                                            <label for="category" class="col-form-label">{{ __('labels.category') }} <span class="text-danger">*</span></label>
+                                            <select name="category" id="category" class="form-control select2 @error('category') is-invalid @enderror">
+                                                <option value="0" disabled selected>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(__('labels.category'))]) }} ---</option>
+                                                @forelse ($categories as $category)
+                                                <option value="{{ $category->id }}" {{ old('category') == $category->id ? 'selected' : null }}>{{ $category->name }}</option>
+                                                @empty
+                                                @endforelse
+                                            </select>
+                                            @error('status')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
                                             <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-danger">*</span></label>
                                             <select name="status" id="status" class="form-control select2 @error('status') is-invalid @enderror">
                                                 @foreach ($active_statuses as $status => $display)
@@ -119,7 +136,9 @@
                                             @enderror
                                         </div>
                                     </div>
+                                </div>
 
+                                <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label for="logo" class="col-form-label">{{ __('labels.logo') }} <span class="text-danger">*</span></label>

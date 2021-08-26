@@ -36,11 +36,13 @@ class MerchantRequest extends FormRequest
      */
     public function rules()
     {
+        $merchant = $this->route('branch') ?? $this->route('merchant');
+
         return [
             'name'              =>  ['required', 'min:3', 'max:255'],
             'phone'             =>  ['required', new PhoneFormat],
-            'email'             =>  ['required', 'email', new UniqueMerchant('email', $this->route('branch') ?? $this->route('merchant'))],
-            'password'          =>  [Rule::requiredIf(empty($this->route('merchant'))), 'nullable', new PasswordFormat, 'confirmed'],
+            'email'             =>  ['required', 'email', new UniqueMerchant('email', $merchant)],
+            'password'          =>  [Rule::requiredIf(empty($merchant)), 'nullable', new PasswordFormat, 'confirmed'],
             'status'            =>  ['required', Rule::in(array_keys((new Status())->activeStatus()))],
             'branch_status'     =>  [Rule::requiredIf($this->route('branch')), 'nullable', Rule::in(array_keys((new Status())->publishStatus()))],
 
@@ -53,8 +55,7 @@ class MerchantRequest extends FormRequest
             'reg_no'            =>  [
                 'required',
                 Rule::unique(BranchDetail::class, 'reg_no')
-                    ->ignore(optional($this->route('branch'))->id ?? $this->route('merchant')->id, 'branch_id')
-                    ->whereNull('deleted_at')
+                    ->ignore($merchant->id, 'branch_id')->whereNull('deleted_at')
             ],
             'website'           =>  ['nullable', 'url'],
             'facebook'          =>  ['nullable', 'url'],
@@ -64,11 +65,13 @@ class MerchantRequest extends FormRequest
             'pic_phone'         =>  ['required', new PhoneFormat],
             'pic_email'         =>  ['required', 'email'],
 
-            'logo'              =>  [Rule::requiredIf((empty($this->route('branch')) || empty($this->route('merchant')))), 'nullable', 'image', 'max:2000', 'mimes:jpg,jpeg,png'],
-            'ssm_cert'          =>  [Rule::requiredIf((empty($this->route('branch')) || empty($this->route('merchant')))), 'nullable', 'file', 'max:2000', 'mimes:pdf'],
+            'logo'              =>  [Rule::requiredIf(empty($merchant)), 'nullable', 'image', 'max:2000', 'mimes:jpg,jpeg,png'],
+            'ssm_cert'          =>  [Rule::requiredIf(empty($merchant)), 'nullable', 'file', 'max:2000', 'mimes:pdf'],
             'files'             =>  ['nullable'],
             'files.*'           =>  ['image', 'mimes:jpg,jpeg,png'],
-            'thumbnail'         =>  ['nullable', 'exists:' . Media::class . ',id']
+            'thumbnail'         =>  ['nullable', 'exists:' . Media::class . ',id'],
+
+            // 'category'          =>  [Rule::requiredIf()]
         ];
     }
 
