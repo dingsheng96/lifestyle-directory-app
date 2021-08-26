@@ -40,5 +40,11 @@ class AuthServiceProvider extends ServiceProvider
         Passport::personalAccessClientSecret(
             config('passport.personal_access_client.secret')
         );
+
+        Passport::setDefaultScope(['member']);
+
+        Passport::tokensCan([
+            'member' => 'User as member',
+        ]);
     }
 }
