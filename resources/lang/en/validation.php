@@ -180,6 +180,11 @@ return [
         'profile_image' => 'profile image',
         'cover_photo' => 'cover photo',
         'file' => 'file',
+        'job_title' => 'job title',
+        'min_salary' => 'min salary',
+        'max_salary' => 'max salary',
+        'benefit' => 'benefit',
+        'company' => 'company'
     ],
 
 ];

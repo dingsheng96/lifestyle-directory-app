@@ -109,7 +109,7 @@
                                             <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-danger">*</span></label>
                                             <select name="status" id="status" class="form-control select2 @error('status') is-invalid @enderror">
                                                 @foreach ($statuses as $status => $display)
-                                                <option value="{{ $status }}" {{ old('status', 'active') == $status }}>{{ $display }}</option>
+                                                <option value="{{ $status }}" {{ old('status', 'active') == $status ? 'selected' : null }}>{{ $display }}</option>
                                                 @endforeach
                                             </select>
                                             @error('status')

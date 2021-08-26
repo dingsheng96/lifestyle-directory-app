@@ -40,9 +40,14 @@ class Address extends Model
         $full_address  .=   $this->address_2 . ', ';
         $full_address  .=   $this->postcode . ', ';
         $full_address  .=   $this->city->name . ', ';
-        $full_address  .=   $this->city->country_state_name . ', ';
+        $full_address  .=   $this->country_state_name . ', ';
         $full_address  .=   'Malaysia';
 
         return $full_address;
+    }
+
+    public function getLocationCityStateAttribute()
+    {
+        return $this->city->name . ', ' . $this->countryState->name;
     }
 }

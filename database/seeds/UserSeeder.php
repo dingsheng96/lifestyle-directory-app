@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
             'email'             =>  'superadmin@bizboo.com',
             'password'          =>  Hash::make('password'),
             'status'            =>  User::STATUS_ACTIVE,
+            'application_status' =>  User::APPLICATION_STATUS_APPROVED,
             'email_verified_at' =>  now()
         ]);
 

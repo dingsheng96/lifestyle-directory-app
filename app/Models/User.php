@@ -125,6 +125,14 @@ class User extends Authenticatable implements MustVerifyEmail
         });
     }
 
+    public function scopeMerchant($query)
+    {
+        return $query->mainMerchant()
+            ->orWhere(function ($query) {
+                $query->subMerchant();
+            });
+    }
+
     public function scopeMember($query)
     {
         return $query->whereHas('roles', function ($query) {

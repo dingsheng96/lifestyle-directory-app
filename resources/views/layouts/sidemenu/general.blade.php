@@ -7,6 +7,15 @@
     </a>
 </li>
 
+@canany(['career.create', 'career.read', 'career.update', 'career.delete'])
+<li class="nav-item">
+    <a href="{{ route('careers.index') }}" class="nav-link {{ Nav::hasSegment('careers', 1, 'active') }}">
+        <i class="nav-icon fas fa-briefcase"></i>
+        <p>{{ trans_choice('modules.career', 2) }}</p>
+    </a>
+</li>
+@endcanany
+
 @canany(['category.create', 'category.read', 'category.update', 'category.delete'])
 <li class="nav-item">
     <a href="{{ route('categories.index') }}" class="nav-link {{ Nav::hasSegment('categories', 1, 'active') }}">

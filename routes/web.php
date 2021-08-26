@@ -38,6 +38,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::resource('categories', 'CategoryController');
 
+    Route::resource('careers', 'CareerController');
+
     Route::group(['prefix' => 'locale', 'as' => 'locale.'], function () {
         Route::resource('country-states', 'CountryStateController');
         Route::resource('country-states.cities', 'CityController');

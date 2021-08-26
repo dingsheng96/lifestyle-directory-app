@@ -42,7 +42,7 @@ class MerchantRequest extends FormRequest
             'email'             =>  ['required', 'email', new UniqueMerchant('email', $this->route('branch') ?? $this->route('merchant'))],
             'password'          =>  [Rule::requiredIf(empty($this->route('merchant'))), 'nullable', new PasswordFormat, 'confirmed'],
             'status'            =>  ['required', Rule::in(array_keys((new Status())->activeStatus()))],
-            'branch_status'     =>  ['required', Rule::in(array_keys((new Status())->publishStatus()))],
+            'branch_status'     =>  [Rule::requiredIf($this->route('branch')), 'nullable', Rule::in(array_keys((new Status())->publishStatus()))],
 
             'address_1'         =>  ['required', 'min:3', 'max:255'],
             'address_2'         =>  ['nullable'],

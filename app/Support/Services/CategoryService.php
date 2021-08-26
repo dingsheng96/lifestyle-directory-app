@@ -23,8 +23,6 @@ class CategoryService extends BaseService
             $this->model->save();
         }
 
-
-
         $this->storeImage();
 
         return $this;

@@ -145,5 +145,11 @@ return [
     'change_logo' => 'Change Logo',
     'change_ssm_cert' => 'Change SSM Certificate',
     'branch' => 'Branch|Branches',
-    'merchant_branch' => ":merchant's Branch"
+    'merchant_branch' => ":merchant's Branch",
+
+    'job_title' => 'Job Title',
+    'salary' => 'Salary',
+    'company' => 'Company',
+    'benefits' => 'Benefits',
+    'show_salary' => 'Show Salary'
 ];

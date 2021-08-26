@@ -30,12 +30,14 @@ $(function() {
 
     // initialize summernote
     $(".summernote").summernote({
-        height: 300
-    });
-
-    $(".summernote-plain, .summernote-disabled").summernote({
-        height: 300,
-        toolbar: false
+        height: 200,
+        toolbar: [
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['fontsize', ['fontsize']],
+            ['fontname', ['fontname']],
+            ['para', ['ul', 'ol', 'paragraph']],
+        ],
+        fontNames: ['Poppins']
     });
 
     $(".summernote-disabled").summernote("disable");

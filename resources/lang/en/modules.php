@@ -15,12 +15,13 @@ return [
 
     'general' => 'General',
     'dashboard' => 'Dashboard',
+    'category' => 'Category|Categories',
+    'career' => 'Career|Careers',
 
     'users' => 'Users',
     'verification' => 'Verification|Verifications',
     'admin' => 'Admin|Admins',
     'merchant' => 'Merchant|Merchants',
-    'category' => 'Category|Categories',
     'member' => 'Member|Members',
 
     'settings' => 'Settings',
