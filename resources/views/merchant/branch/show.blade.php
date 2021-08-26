@@ -21,13 +21,12 @@
 
         <div class="col-12 col-md-9">
             <div class="card shadow-lg">
+                <div class="card-header bg-transparent border-0">
+                    <span class="h5">{{ __('labels.merchant_branch', ['merchant' => $merchant->name]) }}</span>
+                </div>
 
                 <div class="card-body">
-
-                    <span class="h5">{{ __('labels.merchant_branch', ['merchant' => $merchant->name]) }}</span>
-
-                    <div class="tab-content mt-3" id="nav-tabContent">
-
+                    <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
                             <div class="form-group row">
                                 <label for="branch_name" class="col-form-label col-sm-2">{{ __('labels.branch_name') }}</label>
@@ -67,7 +66,7 @@
                             <div class="form-group row">
                                 <label for="status" class="col-form-label col-sm-2">{{ __('labels.status') }}</label>
                                 <div class="col-sm-10">
-                                    <p class="form-control-plaintext" id="status">{!! $branch->status_label !!}</p>
+                                    <p class="form-control-plaintext" id="status">{!! $branch->branch_status_label !!}</p>
                                 </div>
                             </div>
 

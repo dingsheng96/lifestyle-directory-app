@@ -7,7 +7,7 @@
         <div class="col-12">
             <div class="card shadow-lg">
                 <div class="card-header bg-transparent border-0">
-                    <span class="h5">{{ __('modules.create', ['module' => trans_choice('modules.member', 1)]) }}</span>
+                    <span class="h5">{{ __('modules.edit', ['module' => trans_choice('modules.member', 1)]) }}</span>
                 </div>
 
                 <form action="{{ route('members.update', ['member' => $member->id]) }}" method="post" role="form" enctype="multipart/form-data">

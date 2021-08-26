@@ -24,15 +24,16 @@
         <div class="col-12 col-md-9">
             <div class="card shadow-lg">
 
+                <div class="card-header bg-transparent border-0">
+                    <span class="h5">{{ __('labels.merchant_branch', ['merchant' => $merchant->name]) }}</span>
+                </div>
+
                 <form action="{{ route('merchants.branches.update', ['merchant' => $merchant->id, 'branch' => $branch->id]) }}" method="post" role="form" enctype="multipart/form-data">
                     @csrf
                     @method('put')
 
                     <div class="card-body">
-
-                        <span class="h5">{{ __('labels.merchant_branch', ['merchant' => $merchant->name]) }}</span>
-
-                        <div class="tab-content mt-3" id="nav-tabContent">
+                        <div class="tab-content" id="nav-tabContent">
 
                             <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
 
