@@ -1,13 +1,14 @@
 {
     "modules":{
         "language": 100,
+        "banner": 110,
         "member": 120,
         "merchant": 130,
         "admin": 140,
         "career": 150,
+        "category": 160,
         "country_state": 190,
         "city": 191,
-        "category": 200,
         "system": 900
     },
     "actions": {

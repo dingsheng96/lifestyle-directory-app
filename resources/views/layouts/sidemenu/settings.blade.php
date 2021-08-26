@@ -37,13 +37,4 @@
 </li>
 @endcanany
 
-@canany(['activity_log.create', 'activity_log.read', 'activity_log.update', 'activity_log.delete'])
-<li class="nav-item">
-    <a href="{{ route('activity-logs.index') }}" class="nav-link {{ Nav::hasSegment('activity-logs', 1, 'active') }}">
-        <i class="nav-icon fas fa-stream"></i>
-        <p>{{ __('modules.activity_logs') }}</p>
-    </a>
-</li>
-@endcanany
-
 @endcanany

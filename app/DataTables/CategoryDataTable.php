@@ -47,7 +47,10 @@ class CategoryDataTable extends DataTable
             ->editColumn('created_at', function ($data) {
                 return $data->created_at->toDateTimeString();
             })
-            ->rawColumns(['action']);
+            ->editColumn('status', function ($data) {
+                return $data->status_label;
+            })
+            ->rawColumns(['action', 'status']);
     }
 
     /**
@@ -89,6 +92,7 @@ class CategoryDataTable extends DataTable
         return [
             Column::computed('DT_RowIndex', '#'),
             Column::make('name')->title(__('labels.name')),
+            Column::make('status')->title(__('labels.status')),
             Column::make('description')->title(__('labels.description')),
             Column::make('created_at')->title(__('labels.created_at')),
             Column::computed('action', __('labels.action'))

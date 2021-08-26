@@ -8,7 +8,7 @@ class ViewServiceProvider extends ServiceProvider
 {
     protected $composers = [
         \App\Http\View\Composers\DefaultPreviewComposer::class => [
-            'merchant.*', 'category.*', 'member.*'
+            'merchant.*', 'category.*', 'member.*', 'banner.*'
         ],
         \App\Http\View\Composers\CategoryComposer::class => [
             'merchant.*'
@@ -16,8 +16,8 @@ class ViewServiceProvider extends ServiceProvider
         \App\Http\View\Composers\CountryStateComposer::class => [
             'merchant.*'
         ],
-        \App\Http\View\Composers\ActiveStatusComposer::class => [
-            'merchant.*', 'admin.*', 'member.*'
+        \App\Http\View\Composers\StatusComposer::class => [
+            'merchant.*', 'admin.*', 'member.*', 'banner.*', 'category.*', 'career.*'
         ],
         // \App\Http\View\Composers\MerchantComposer::class => [
         //     '*'

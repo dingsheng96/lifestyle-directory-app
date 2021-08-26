@@ -110,7 +110,7 @@
                                         <div class="form-group">
                                             <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-danger">*</span></label>
                                             <select name="status" id="status" class="form-control select2 @error('status') is-invalid @enderror">
-                                                @forelse ($statuses as $status => $display)
+                                                @forelse ($active_statuses as $status => $display)
                                                 <option value="{{ $status }}" {{ old('status', 'active') == $status ? 'selected' : null }}>{{ $display }}</option>
                                                 @empty
                                                 @endforelse
@@ -126,7 +126,7 @@
                                         <div class="form-group">
                                             <label for="branch_status" class="col-form-label">{{ __('labels.branch_status') }} <span class="text-danger">*</span></label>
                                             <select name="branch_status" id="branch_status" class="form-control select2 @error('branch_status') is-invalid @enderror">
-                                                @forelse ($branch_statuses as $status => $display)
+                                                @forelse ($publish_statuses as $status => $display)
                                                 <option value="{{ $status }}" {{ old('branch_status', 'publish') == $status ? 'selected' : null }}>{{ $display }}</option>
                                                 @empty
                                                 @endforelse

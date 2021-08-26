@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CategoryRequest extends FormRequest
+class BannerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,7 +19,7 @@ class CategoryRequest extends FormRequest
     public function authorize()
     {
         return Auth::guard('web')->check()
-            && Gate::any(['category.create', 'category.update']);
+            && Gate::any(['banner.create', 'banner.update']);
     }
 
     /**
@@ -30,10 +30,10 @@ class CategoryRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'          =>  ['required', Rule::unique(Category::class, 'name')->ignore($this->route('category'), 'id')->whereNull('deleted_at')],
-            'image'         =>  [Rule::requiredIf(empty($this->route('category'))), 'nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2000'],
-            'description'   =>  ['nullable'],
-            'status'        =>  ['required', Rule::in(array_keys((new Status())->publishStatus()))]
+            'title'         =>  ['required'],
+            'status'        =>  ['required', Rule::in(array_keys((new Status())->publishStatus()))],
+            'image'         =>  [Rule::requiredIf(empty($this->route('banner'))), 'nullable', 'image', 'mimes:jpg,jpeg,png', 'max:2000'],
+            'description'   =>  ['nullable']
         ];
     }
 

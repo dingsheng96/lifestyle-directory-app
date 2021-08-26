@@ -40,7 +40,7 @@
                         <div class="form-group">
                             <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-danger">*</span></label>
                             <select name="status" id="status" class="form-control select2 @error('status') is-invalid @enderror">
-                                @foreach ($statuses as $index => $status)
+                                @foreach ($active_statuses as $index => $status)
                                 <option value="{{ $index }}" {{ old('status', $admin->status) == $index ? 'selected' : null }}>{{ $status}}</option>
                                 @endforeach
                             </select>

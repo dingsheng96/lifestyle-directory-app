@@ -2,35 +2,27 @@
 
 namespace App\Models;
 
-use App\Models\User;
 use App\Models\Media;
 use App\Helpers\Status;
-use App\Models\Categorizable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Category extends Model
+class Banner extends Model
 {
     use SoftDeletes;
 
-    const STORE_PATH = '/categories';
-
-    protected $table = 'categories';
+    protected $table = 'banners';
 
     protected $fillable = [
-        'name', 'description', 'status'
+        'title', 'description', 'status'
     ];
 
-    // Constants
+    // constants
+    const STORE_PATH        = '/banners';
     const STATUS_PUBLISH    = 'publish';
     const STATUS_DRAFT      = 'draft';
 
     // Relationships
-    public function merchants()
-    {
-        return $this->morphedByMany(User::class, 'categorizable', Categorizable::class);
-    }
-
     public function media()
     {
         return $this->morphOne(Media::class, 'mediable');

@@ -24,6 +24,12 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::get('dashboard', 'HomeController@index')->name('dashboard');
 
+    Route::resource('banners', 'BannerController');
+
+    Route::resource('careers', 'CareerController');
+
+    Route::resource('categories', 'CategoryController');
+
     Route::resource('account', 'AccountController');
 
     Route::resource('admins', 'AdminController');
@@ -36,10 +42,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::resource('roles', 'RoleController');
 
-    Route::resource('categories', 'CategoryController');
-
-    Route::resource('careers', 'CareerController');
-
     Route::group(['prefix' => 'locale', 'as' => 'locale.'], function () {
         Route::resource('country-states', 'CountryStateController');
         Route::resource('country-states.cities', 'CityController');
@@ -48,8 +50,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::post('languages/{language}/translations/import', 'TranslationController@import')->name('languages.translations.import');
         Route::get('languages/{language}/translations/export', 'TranslationController@export')->name('languages.translations.export');
     });
-
-    Route::get('activity-logs', 'ActivityLogController')->name('activity-logs.index');
 
     Route::delete('media/{media}', 'MediaController')->name('media.destroy');
 });

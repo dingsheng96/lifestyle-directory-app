@@ -7,7 +7,7 @@ use App\Models\Service;
 use App\Models\Category;
 use Illuminate\View\View;
 
-class ActiveStatusComposer
+class StatusComposer
 {
     /**
      * Create a new categories composer.
@@ -28,6 +28,7 @@ class ActiveStatusComposer
      */
     public function compose(View $view)
     {
-        $view->with('statuses', (new Status())->activeStatus());
+        $view->with('active_statuses', (new Status())->activeStatus());
+        $view->with('publish_statuses', (new Status())->publishStatus());
     }
 }

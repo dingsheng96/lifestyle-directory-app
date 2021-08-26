@@ -36,9 +36,8 @@ class BranchController extends Controller
     public function create(User $merchant)
     {
         $max_files = Media::MAX_BRANCH_IMAGE_UPLOAD;
-        $branch_statuses = (new Status())->publishStatus();
 
-        return view('merchant.branch.create', compact('max_files', 'merchant', 'branch_statuses'));
+        return view('merchant.branch.create', compact('max_files', 'merchant'));
     }
 
     /**
@@ -122,9 +121,7 @@ class BranchController extends Controller
 
         $max_files = Media::MAX_BRANCH_IMAGE_UPLOAD - (clone $image_and_thumbnail)->count();
 
-        $branch_statuses = (new Status())->publishStatus();
-
-        return view('merchant.branch.edit', compact('merchant', 'branch', 'max_files', 'image_and_thumbnail', 'branch_statuses'));
+        return view('merchant.branch.edit', compact('merchant', 'branch', 'max_files', 'image_and_thumbnail'));
     }
 
     /**

@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => trans_choice('modules.category', 2)])
+@extends('layouts.master', ['title' => trans_choice('modules.banner', 2)])
 
 @section('content')
 
@@ -9,16 +9,16 @@
             <div class="card shadow-lg">
 
                 <div class="card-header bg-transparent border-0">
-                    <span class="h5">{{ __('modules.create', ['module' => trans_choice('modules.category', 1)]) }}</span>
+                    <span class="h5">{{ __('modules.create', ['module' => trans_choice('modules.banner', 1)]) }}</span>
                 </div>
 
-                <form action="{{ route('categories.store') }}" method="POST" role="form" enctype="multipart/form-data">
+                <form action="{{ route('banners.store') }}" method="POST" role="form" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="name" class="col-form-label">{{ __('labels.name') }} <span class="text-danger">*</span></label>
-                            <input type="text" id="name" name="name" value="{{ old('name') }}" class="form-control ucfirst @error('name') is-invalid @enderror">
-                            @error('name')
+                            <label for="title" class="col-form-label">{{ __('labels.title') }} <span class="text-danger">*</span></label>
+                            <input type="text" id="title" name="title" value="{{ old('title') }}" class="form-control ucfirst @error('title') is-invalid @enderror">
+                            @error('title')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -70,7 +70,7 @@
                     </div>
 
                     <div class="card-footer bg-transparent text-md-right text-center">
-                        <a role="button" href="{{ route('categories.index') }}" class="btn btn-light mx-2">
+                        <a role="button" href="{{ route('banners.index') }}" class="btn btn-light mx-2">
                             <i class="fas fa-caret-left"></i>
                             {{ __('labels.back') }}
                         </a>

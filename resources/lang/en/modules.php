@@ -15,6 +15,7 @@ return [
 
     'general' => 'General',
     'dashboard' => 'Dashboard',
+    'banner' => 'Banner|Banners',
     'category' => 'Category|Categories',
     'career' => 'Career|Careers',
 

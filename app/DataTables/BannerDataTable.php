@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Career;
+use App\Models\Banner;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
@@ -11,7 +11,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class CareerDataTable extends DataTable
+class BannerDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -28,37 +28,27 @@ class CareerDataTable extends DataTable
                 return view('components.action', [
                     'no_action' => $this->no_action ?: null,
                     'view' => [
-                        'permission' => 'career.read',
-                        'route' => route('careers.show', ['career' => $data->id]),
-                        'attribute' => 'target="_blank"'
+                        'permission' => 'banner.read',
+                        'route' => route('banners.show', ['banner' => $data->id]),
                     ],
                     'update' => [
-                        'permission' => 'career.update',
-                        'route' => route('careers.edit', ['career' => $data->id]),
+                        'permission' => 'banner.update',
+                        'route' => route('banners.edit', ['banner' => $data->id]),
                     ],
                     'delete' => [
-                        'permission' => 'career.delete',
-                        'route' => route('careers.destroy', ['career' => $data->id])
+                        'permission' => 'banner.delete',
+                        'route' => route('banners.destroy', ['banner' => $data->id])
                     ]
                 ])->render();
             })
-            ->addColumn('company', function ($data) {
-
-                return $data->branch->name;
-            })
-            ->addColumn('salary', function ($data) {
-
-                return $data->salary_range;
-            })
-            ->addColumn('location', function ($data) {
-
-                return $data->branch->address->location_city_state;
-            })
-            ->editColumn('status', function ($data) {
-                return $data->status_label;
+            ->editColumn('description', function ($data) {
+                return Str::limit($data->description);
             })
             ->editColumn('created_at', function ($data) {
                 return $data->created_at->toDateTimeString();
+            })
+            ->editColumn('status', function ($data) {
+                return $data->status_label;
             })
             ->rawColumns(['action', 'status']);
     }
@@ -66,12 +56,12 @@ class CareerDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Career $model
+     * @param \App\Models\Banner $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Career $model)
+    public function query(Banner $model)
     {
-        return $model->with(['branch.address'])->newQuery();
+        return $model->newQuery();
     }
 
     /**
@@ -82,7 +72,7 @@ class CareerDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('career-table')
+            ->setTableId('banner-table')
             ->addTableClass('table-hover table w-100')
             ->columns($this->getColumns())
             ->minifiedAjax()
@@ -101,11 +91,9 @@ class CareerDataTable extends DataTable
     {
         return [
             Column::computed('DT_RowIndex', '#'),
-            Column::make('position')->title(__('labels.job_title')),
-            Column::make('salary')->title(__('labels.salary') . ' (MYR)'),
-            Column::make('company')->title(__('labels.company')),
-            Column::make('location')->title(__('labels.location')),
+            Column::make('title')->title(__('labels.title')),
             Column::make('status')->title(__('labels.status')),
+            Column::make('description')->title(__('labels.description')),
             Column::make('created_at')->title(__('labels.created_at')),
             Column::computed('action', __('labels.action'))
                 ->exportable(false)
@@ -120,6 +108,6 @@ class CareerDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Career_' . date('YmdHis');
+        return 'Banner_' . date('YmdHis');
     }
 }

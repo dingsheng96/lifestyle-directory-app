@@ -27,6 +27,21 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-danger">*</span></label>
+                            <select name="status" id="status" class="form-control select2 @error('status') is-invalid @enderror">
+                                @forelse ($publish_statuses as $status => $display)
+                                <option value="{{ $status }}" {{ old('status', $category->status) == $status ? 'selected' : null }}>{{ $display }}</option>
+                                @empty
+                                @endforelse
+                            </select>
+                            @error('status')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label for="image" class="col-form-label">{{ trans_choice('labels.upload_image', 1) }} <span class="text-danger">*</span></label>
                             <div class="row">
                                 <div class="col-12 col-sm-6 col-lg-3">

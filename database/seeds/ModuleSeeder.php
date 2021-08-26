@@ -36,8 +36,8 @@ class ModuleSeeder extends Seeder
             ['name' => 'merchant', 'display' => 'Merchant', 'description' => 'Merchant Module'],
             ['name' => 'admin', 'display' => 'Admin', 'description' => 'Admin Module'],
             ['name' => 'category', 'display' => 'Category', 'description' => 'Category Module'],
-            ['name' => 'activity_log', 'display' => 'Activity Log', 'description' => 'Activity Log Module'],
             ['name' => 'career', 'display' => 'Career', 'description' => 'Career Module'],
+            ['name' => 'banner', 'display' => 'Banner', 'description' => 'Banner Module'],
         ];
     }
 }

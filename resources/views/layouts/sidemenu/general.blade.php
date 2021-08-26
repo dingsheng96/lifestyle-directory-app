@@ -7,6 +7,15 @@
     </a>
 </li>
 
+@canany(['banner.create', 'banner.read', 'banner.update', 'banner.delete'])
+<li class="nav-item">
+    <a href="{{ route('banners.index') }}" class="nav-link {{ Nav::hasSegment('banners', 1, 'active') }}">
+        <i class="nav-icon fas fa-image"></i>
+        <p>{{ trans_choice('modules.banner', 2) }}</p>
+    </a>
+</li>
+@endcanany
+
 @canany(['career.create', 'career.read', 'career.update', 'career.delete'])
 <li class="nav-item">
     <a href="{{ route('careers.index') }}" class="nav-link {{ Nav::hasSegment('careers', 1, 'active') }}">

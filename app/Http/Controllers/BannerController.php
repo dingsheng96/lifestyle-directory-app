@@ -2,38 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Models\Career;
-use App\Helpers\Status;
+use App\Models\Banner;
 use App\Helpers\Message;
 use App\Helpers\Response;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\DataTables\CareerDataTable;
+use App\DataTables\BannerDataTable;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BannerRequest;
 use Illuminate\Support\Facades\Auth;
-use App\Support\Services\CareerService;
+use App\Support\Services\BannerService;
 
-class CareerController extends Controller
+class BannerController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(CareerDataTable $dataTable)
+    public function index(BannerDataTable $dataTable)
     {
-        $user = Auth::user();
-
-        abort_if($user->is_member, 404);
-
-        if ($user->is_admin) {
-            return $dataTable->render('career.index');
-        }
-
-        return $dataTable->with(['merchant' => $user])->render('career.index');
+        return $dataTable->render('banner.index');
     }
 
     /**
@@ -43,9 +34,7 @@ class CareerController extends Controller
      */
     public function create()
     {
-        $merchants = User::merchant()->orderBy('name')->get();
-
-        return view('career.create', compact('merchants'));
+        return view('banner.create');
     }
 
     /**
@@ -54,18 +43,18 @@ class CareerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, CareerService $career_service)
+    public function store(BannerRequest $request, BannerService $banner_service)
     {
         DB::beginTransaction();
 
         $action     =   Permission::ACTION_CREATE;
-        $module     =   strtolower(trans_choice('modules.career', 1));
+        $module     =   strtolower(trans_choice('modules.banner', 1));
         $message    =   Message::instance()->format($action, $module);
         $status     =   'fail';
 
         try {
 
-            $career_service->setRequest($request)->store();
+            $banner_service->setRequest($request)->store();
 
             $status     =   'success';
             $message    =   Message::instance()->format($action, $module, $status);
@@ -79,59 +68,58 @@ class CareerController extends Controller
 
         activity()->useLog('web')
             ->causedBy(Auth::user())
-            ->performedOn(new Career())
+            ->performedOn(new Banner())
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('careers.index')->with($status, $message);
+        return redirect()->route('banners.index')->with($status, $message);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Career  $career
+     * @param  \App\Models\Banner  $banner
      * @return \Illuminate\Http\Response
      */
-    public function show(Career $career)
+    public function show(Banner $banner)
     {
-        $career->load(['branch.address']);
+        $banner->load(['media']);
 
-        return view('career.show', compact('career'));
+        return view('banner.show', compact('banner'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Career  $career
+     * @param  \App\Models\Banner  $banner
      * @return \Illuminate\Http\Response
      */
-    public function edit(Career $career)
+    public function edit(Banner $banner)
     {
-        $career->load(['branch.address']);
-        $merchants = User::merchant()->orderBy('name')->get();
+        $banner->load(['media']);
 
-        return view('career.edit', compact('career', 'merchants'));
+        return view('banner.edit', compact('banner'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Career  $career
+     * @param  \App\Models\Banner  $banner
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Career $career, CareerService $career_service)
+    public function update(Request $request, Banner $banner, BannerService $banner_service)
     {
         DB::beginTransaction();
 
         $action     =   Permission::ACTION_UPDATE;
-        $module     =   strtolower(trans_choice('modules.career', 1));
+        $module     =   strtolower(trans_choice('modules.banner', 1));
         $message    =   Message::instance()->format($action, $module);
         $status     =   'fail';
 
         try {
 
-            $career_service->setModel($career)->setRequest($request)->store();
+            $banner_service->setModel($banner)->setRequest($request)->store();
 
             $status     =   'success';
             $message    =   Message::instance()->format($action, $module, $status);
@@ -145,39 +133,39 @@ class CareerController extends Controller
 
         activity()->useLog('web')
             ->causedBy(Auth::user())
-            ->performedOn($career)
+            ->performedOn($banner)
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('careers.index')->with($status, $message);
+        return redirect()->route('banners.index')->with($status, $message);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Career  $career
+     * @param  \App\Models\Banner  $banner
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Career $career)
+    public function destroy(Banner $banner)
     {
         $action     =   Permission::ACTION_DELETE;
-        $module     =   strtolower(trans_choice('modules.career', 1));
+        $module     =   strtolower(trans_choice('modules.banner', 1));
         $status     =   'success';
         $message    =   Message::instance()->format($action, $module, 'success');
 
-        $career->delete();
+        $banner->delete();
 
         activity()->useLog('web')
             ->causedBy(Auth::user())
-            ->performedOn($career)
+            ->performedOn($banner)
             ->log($message);
 
         return Response::instance()
-            ->withStatusCode('modules.career', 'actions.' . $action . $status)
+            ->withStatusCode('modules.banner', 'actions.' . $action . $status)
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('careers.index')
+                'redirect_to' => route('banners.index')
             ])
             ->sendJson();
     }
