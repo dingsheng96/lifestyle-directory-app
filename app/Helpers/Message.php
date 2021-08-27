@@ -23,4 +23,9 @@ class Message
     {
         return __('messages.login_' . $status);
     }
+
+    public function register($status = 'success')
+    {
+        return __('messages.register_' . $status);
+    }
 }
