@@ -12,6 +12,7 @@ use App\Models\Favourable;
 use App\Models\BranchDetail;
 use App\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\DB;
+use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -20,7 +21,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use Notifiable, SoftDeletes, HasRoles;
+    use Notifiable, SoftDeletes, HasRoles, HasApiTokens;
 
     protected $table = 'users';
 
@@ -106,6 +107,15 @@ class User extends Authenticatable implements MustVerifyEmail
     public function sendEmailVerificationNotification()
     {
         $this->notify(new VerifyEmail());
+    }
+
+    public function revokeTokens()
+    {
+        foreach ($this->tokens as $token) {
+            $token->revoke();
+        }
+
+        return;
     }
 
     // Scopes

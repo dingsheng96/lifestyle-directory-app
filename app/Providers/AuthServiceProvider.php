@@ -44,7 +44,9 @@ class AuthServiceProvider extends ServiceProvider
         Passport::setDefaultScope(['member']);
 
         Passport::tokensCan([
-            'member' => 'User as member',
+            'member' => 'User as member permission',
         ]);
+
+        Passport::personalAccessTokensExpireIn(now()->addCentury());
     }
 }

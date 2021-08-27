@@ -3,6 +3,8 @@
 namespace App\Exceptions;
 
 use Throwable;
+use App\Helpers\Response;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
@@ -59,5 +61,26 @@ class Handler extends ExceptionHandler
         }
 
         return parent::render($request, $exception);
+    }
+
+    /**
+     * Convert an authentication exception into a response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        return $request->expectsJson()
+            ? response()->json(
+                Response::instance()
+                    ->withStatusCode('modules.member', 'actions.authenticate.fail')
+                    ->withStatus('fail')
+                    ->withMessage($exception->getMessage())
+                    ->getResponse(),
+                401
+            )
+            : redirect()->guest($exception->redirectTo() ?? route('login'));
     }
 }

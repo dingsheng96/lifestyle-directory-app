@@ -166,7 +166,7 @@ class RoleController extends Controller
         $action     =   Permission::ACTION_DELETE;
         $module     =   strtolower(trans_choice('modules.role', 1));
         $status     =   'success';
-        $message    =   Message::instance()->format($action, $module, 'success');
+        $message    =   Message::instance()->format($action, $module, $status);
 
         $role->syncPermissions([]);
         $role->delete();

@@ -13,4 +13,14 @@ class Message
     {
         return __('messages.' . $action . '.' . $status, ['module' => $module]);
     }
+
+    public function logout($status = 'success')
+    {
+        return __('messages.logout_' . $status);
+    }
+
+    public function login($status = 'success')
+    {
+        return __('messages.login_' . $status);
+    }
 }
