@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Rules\ExistLanguageTranslationVersionRule;
+use App\Rules\ExistLanguageTranslationVersion;
 
 class LanguageTranslationRequest extends FormRequest
 {
@@ -30,7 +30,7 @@ class LanguageTranslationRequest extends FormRequest
         return [
             'version' => [
                 'required',
-                new ExistLanguageTranslationVersionRule($this->route('language'))
+                new ExistLanguageTranslationVersion($this->route('language'))
             ]
         ];
     }

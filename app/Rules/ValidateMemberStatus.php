@@ -2,21 +2,21 @@
 
 namespace App\Rules;
 
-use App\Models\Translation;
+use App\Models\User;
 use Illuminate\Contracts\Validation\Rule;
 
-class ExistLanguageTranslationVersionRule implements Rule
+class ValidateMemberStatus implements Rule
 {
-    private $language;
+    public $column;
 
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct($language)
+    public function __construct(string $column = 'id')
     {
-        $this->language = $language;
+        $this->column = $column;
     }
 
     /**
@@ -28,9 +28,9 @@ class ExistLanguageTranslationVersionRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        return Translation::where('language_id', $this->language->id)
-            ->where('version', $value)
-            ->exists();
+        return User::member()
+            ->active()->where($this->column, $value)
+            ->whereNull('deleted_at')->exists();
     }
 
     /**
@@ -40,6 +40,6 @@ class ExistLanguageTranslationVersionRule implements Rule
      */
     public function message()
     {
-        return __('validation.exists');
+        return __('validation.custom.inactive', ['attribute' => __('validation.attributes.account')]);
     }
 }

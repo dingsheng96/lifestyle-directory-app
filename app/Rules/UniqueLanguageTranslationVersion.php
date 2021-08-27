@@ -5,7 +5,7 @@ namespace App\Rules;
 use App\Models\Translation;
 use Illuminate\Contracts\Validation\Rule;
 
-class UniqueLanguageTranslationVersionRule implements Rule
+class UniqueLanguageTranslationVersion implements Rule
 {
     private $language;
 

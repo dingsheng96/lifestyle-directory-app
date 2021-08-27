@@ -133,6 +133,8 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+
+        'inactive' => "The :attribute is inactive."
     ],
 
     /*
@@ -184,7 +186,8 @@ return [
         'min_salary' => 'min salary',
         'max_salary' => 'max salary',
         'benefit' => 'benefit',
-        'company' => 'company'
+        'company' => 'company',
+        'account' => 'account',
     ],
 
 ];

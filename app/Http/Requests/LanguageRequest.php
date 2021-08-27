@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Rules\UniqueLanguageTranslationVersionRule;
+use App\Rules\UniqueLanguageTranslationVersion;
 
 class LanguageRequest extends FormRequest
 {
@@ -36,7 +36,7 @@ class LanguageRequest extends FormRequest
             'code'              =>  ['required', Rule::unique(Language::class, 'code')->ignore($this->route('language'), 'id')->whereNull('deleted_at')],
             'new_version'       =>  [
                 Rule::requiredIf(!empty($this->get('file'))), 'nullable',
-                new UniqueLanguageTranslationVersionRule($this->route('language'))
+                new UniqueLanguageTranslationVersion($this->route('language'))
             ],
             'file'              =>  [
                 Rule::requiredIf(!empty($this->get('new_version'))), 'nullable', 'max:2000',
