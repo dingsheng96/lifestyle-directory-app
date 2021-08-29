@@ -134,7 +134,8 @@ return [
             'rule-name' => 'custom-message',
         ],
 
-        'inactive' => "The :attribute is inactive."
+        'inactive' => "The :attribute is inactive.",
+        'pagination' => 'The selected :attribute is invalid.',
     ],
 
     /*
@@ -188,6 +189,8 @@ return [
         'benefit' => 'benefit',
         'company' => 'company',
         'account' => 'account',
+        'page' => 'page',
+        'longitude' => 'longitude',
+        'latitude' => 'latitude'
     ],
-
 ];

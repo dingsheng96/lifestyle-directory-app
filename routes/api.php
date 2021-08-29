@@ -24,6 +24,14 @@ Route::group(['prefix' => 'v1', 'as' => 'v1', 'namespace' => 'v1'], function () 
 
     Route::post('languages/translations', 'LanguageController@translations');
 
+    Route::post('home', 'HomeController@index');
+
+    Route::post('categories', 'CategoryController@index');
+
+    Route::post('merchants', 'MerchantController@index');
+
+    Route::post('merchants/show', 'MerchantController@show');
+
     Route::group(['middleware' => ['auth:api', 'scope:member']], function () {
 
         Route::post('logout', 'AuthController@logout');

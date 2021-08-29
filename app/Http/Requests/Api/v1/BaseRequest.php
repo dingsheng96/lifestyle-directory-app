@@ -10,8 +10,17 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 class BaseRequest extends FormRequest
 {
-    protected $module, $action;
-    protected $log = '';
+    protected $module, $action, $log = '';
+
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
 
     /**
      * Handle a failed validation attempt.
