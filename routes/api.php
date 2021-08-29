@@ -16,10 +16,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'v1', 'as' => 'v1', 'namespace' => 'v1'], function () {
 
-    Route::post('login', 'Auth\LoginController@login');
+    Route::post('login', 'AuthController@login');
+
+    Route::post('register', 'AuthController@register');
+
+    Route::post('languages', 'LanguageController@languages');
+
+    Route::post('languages/translations', 'LanguageController@translations');
 
     Route::group(['middleware' => ['auth:api', 'scope:member']], function () {
 
-        Route::post('logout', 'Auth\LoginController@logout');
+        Route::post('logout', 'AuthController@logout');
     });
 });

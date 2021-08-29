@@ -19,6 +19,12 @@ return [
 
     'logout_success' => 'Logout successfully.',
     'login_success' => 'Login successfully.',
+    'register_success' => 'Register successfully.',
+
+    'logout_fail' => 'Unable to logout.',
+    'login_fail' => 'Unable to login',
+    'register_fail' => 'Unable to register',
+
     'confirm_question' => 'Are you sure?',
     'empty_list' => "You don't have any :list yet",
     'delete_info' => 'You will not be able to revert this!',
@@ -31,7 +37,7 @@ return [
     'no_records' => 'No records found.',
     'errors_found' => 'Errors found!',
     'no_subscription' => 'You have not subscribe any plan yet.',
-    'register_success' => 'We have sent an email with a confirmation link to your email address. In order to complete the application process, please click the confirmation link. <br><br> If you do not receive a confirmation email, please check your spam folder. Also, please verify that you entered a valid email address in our application form. <br><br> If you need assistance, please contact us at info@rhinosite.com.my or call us at 016-303 1808.',
+
     'contact_support' => 'Errors found! Please contact customer support.',
     'compare_list_reached_limit' => 'Compare list has reached the maximum limit.',
     'wishlist_empty' => 'Your wishlist is empty',

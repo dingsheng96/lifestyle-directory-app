@@ -1,42 +1,17 @@
 <?php
 
-namespace App\Http\Requests\Api\v1\Auth;
+namespace App\Http\Requests\Api\v1;
 
 use App\Helpers\Response;
-use App\Rules\ExistMember;
-use App\Rules\ValidateMemberStatus;
-use App\Rules\ValidateMemberPassword;
-use App\Http\Requests\Api\v1\BaseRequest;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class LoginRequest extends BaseRequest
+class BaseRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
-
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
-     */
-    public function rules()
-    {
-        $this->setModule('member')->setAction('authenticate')->isAuth();
-
-        return [
-            'phone'     =>  ['required', new ExistMember('mobile_no'), new ValidateMemberStatus('mobile_no')],
-            'password'  =>  ['required', new ValidateMemberPassword('mobile_no', $this->get('phone'))]
-        ];
-    }
+    protected $module, $action;
+    protected $log = '';
 
     /**
      * Handle a failed validation attempt.
@@ -55,11 +30,11 @@ class LoginRequest extends BaseRequest
 
         $response = Response::instance()
             ->withStatus('fail')
-            ->withStatusCode('modules.member', 'actions.authenticate.validation')
+            ->withStatusCode('modules.' . $this->module, 'actions.' . $this->action . '.validation')
             ->withMessage($error->first())
             ->getResponse();
 
-        activity()->useLog('api:auth')
+        activity()->useLog('api' . $this->log)
             ->withProperties($response)
             ->log($error->first());
 
@@ -68,5 +43,28 @@ class LoginRequest extends BaseRequest
         );
 
         parent::failedValidation($validator);
+    }
+
+    protected function setModule(string $module)
+    {
+        $this->module = $module;
+
+        return $this;
+    }
+
+    protected function setAction(string $action)
+    {
+        $this->action = $action;
+
+        return $this;
+    }
+
+    protected function isAuth(bool $status = true)
+    {
+        if ($status) {
+            $this->log = ':auth';
+        }
+
+        return $this;
     }
 }
