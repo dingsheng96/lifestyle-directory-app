@@ -15,8 +15,8 @@ class LanguageTranslationResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'label_version' => $this->groupBy('version')->keys()->unique()->first(),
-            'label'         => $this->mapWithKeys(function ($value) {
+            'version'   => $this->groupBy('version')->keys()->unique()->first(),
+            'labels'    => $this->mapWithKeys(function ($value) {
                 return [$value->key => $value->value ?? ''];
             }),
         ];
