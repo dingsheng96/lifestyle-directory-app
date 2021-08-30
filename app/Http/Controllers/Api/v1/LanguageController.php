@@ -19,12 +19,10 @@ class LanguageController extends Controller
 
         $languages = Language::with(['translations'])->orderBy('name')->get();
 
-        $data = $languages->mapWithKeys(function ($item) use ($request) {
-
-            return [$item['code'] => (new LanguageResource($item))->toArray($request)];
-        })->merge([
-            'supported_locale' => $languages->pluck('code')->toArray()
-        ])->toArray();
+        $data = collect(['supported_locale' => (clone $languages)->pluck('code')->toArray()])
+            ->merge($languages->mapWithKeys(function ($item) use ($request) {
+                return [$item['code'] => (new LanguageResource($item))->toArray($request)];
+            }))->toArray();
 
         return Response::instance()
             ->withStatusCode('modules.language', 'actions.index.' . $status)

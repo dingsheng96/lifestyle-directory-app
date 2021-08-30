@@ -5,11 +5,16 @@ namespace App\Models;
 use App\Models\Role;
 use App\Helpers\Misc;
 use App\Models\Media;
+use App\Models\Branch;
+use App\Models\Career;
 use App\Helpers\Status;
 use App\Models\Address;
+use App\Models\Category;
 use App\Models\Rateable;
 use App\Models\Favourable;
 use App\Models\BranchDetail;
+use App\Models\Categorizable;
+use App\Models\DeviceSetting;
 use App\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
@@ -90,17 +95,27 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function ratings()
     {
-        return $this->morphToMany(self::class, 'rateable', Rateable::class)->withPivot('scale')->withTimestamps();
+        return $this->morphToMany(self::class, 'rateable', Rateable::class)->withPivot(['scale', 'review'])->withTimestamps();
     }
 
     public function ratedBy()
     {
-        return $this->morphedByMany(self::class, 'rateable', Rateable::class)->withPivot('scale')->withTimestamps();
+        return $this->morphedByMany(self::class, 'rateable', Rateable::class)->withPivot(['scale', 'review'])->withTimestamps();
     }
 
     public function categories()
     {
         return $this->morphToMany(Category::class, 'categorizable', Categorizable::class);
+    }
+
+    public function deviceSettings()
+    {
+        return $this->hasMany(DeviceSetting::class, 'user_id', 'id');
+    }
+
+    public function careers()
+    {
+        return $this->hasMany(Career::class, 'branch_id', 'id');
     }
 
     // Functions
@@ -160,6 +175,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $query->where('status', self::STATUS_ACTIVE);
     }
 
+    public function scopeApprovedApplication($query)
+    {
+        return $query->where('application_status', self::APPLICATION_STATUS_APPROVED);
+    }
+
     public function scopeFilterMerchantByRating($query, $value)
     {
         $tbl_user   =   $this->getTable();
@@ -188,6 +208,13 @@ class User extends Authenticatable implements MustVerifyEmail
             ->groupBy($tbl_users . '.id', $tbl_users . '.name', $tbl_users . '.status')
             ->having('ratings', '>', 0)
             ->orderByDesc('ratings');
+    }
+
+    public function scopeFilterByLocationDistance($query, $latitude, $longitude)
+    {
+        return $query->whereHas('address', function ($query) use ($latitude, $longitude) {
+            $query->filterByCoordinates($latitude, $longitude);
+        });
     }
 
     // Attributes
@@ -258,9 +285,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->categories->first();
     }
 
-    public function getRatingAttribute(): int
+    public function getRatingAttribute()
     {
-        return round($this->ratings()->avg('scale'));
+        return number_format($this->ratings->avg('scale'), 1);
     }
 
     public function getProfileImageAttribute()

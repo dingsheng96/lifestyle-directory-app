@@ -37,7 +37,9 @@ class Response
 
     public function withData(array $data = [])
     {
-        $this->data = $data;
+        if (!empty($data)) {
+            $this->data = $this->convertNullDataToEmptyString($data);
+        };
 
         return $this;
     }
@@ -73,5 +75,14 @@ class Response
             'message'   =>  $this->message,
             'data'      =>  $this->data
         ];
+    }
+
+    protected function convertNullDataToEmptyString($array)
+    {
+        $array = array_map(function ($v) {
+            return (is_null($v)) ? "" : $v;
+        }, $array);
+
+        return $array;
     }
 }

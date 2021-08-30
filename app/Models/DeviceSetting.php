@@ -20,4 +20,14 @@ class DeviceSetting extends Model
         'enable_push_messaging' => 'boolean',
         'enable_notification_sound' => 'boolean'
     ];
+
+    // Constants
+    const STATUS_ACTIVE = 'active';
+    const STATUS_INACTIVE = 'inactive';
+
+    // Relationships
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }
