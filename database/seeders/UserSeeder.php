@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -20,12 +22,12 @@ class UserSeeder extends Seeder
 
         // create super admin
         $superadmin = User::create([
-            'name'              =>  'Super Admin',
-            'email'             =>  'superadmin@bizboo.com',
-            'password'          =>  Hash::make('password'),
-            'status'            =>  User::STATUS_ACTIVE,
-            'application_status' =>  User::APPLICATION_STATUS_APPROVED,
-            'email_verified_at' =>  now()
+            'name'                  =>  'Super Admin',
+            'email'                 =>  'superadmin@bizboo.com',
+            'password'              =>  Hash::make('password'),
+            'status'                =>  User::STATUS_ACTIVE,
+            'application_status'    =>  User::APPLICATION_STATUS_APPROVED,
+            'email_verified_at'     =>  now()
         ]);
 
         $superadmin->assignRole(Role::ROLE_SUPER_ADMIN);
