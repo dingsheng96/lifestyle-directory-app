@@ -31,7 +31,6 @@ use App\Http\Controllers\CountryStateController;
 */
 
 Route::get('/', function () {
-
     return redirect()->route('login');
 });
 

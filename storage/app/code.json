@@ -1,0 +1,52 @@
+{
+    "modules":{
+        "language": 100,
+        "banner": 110,
+        "member": 120,
+        "merchant": 130,
+        "admin": 140,
+        "career": 150,
+        "category": 160,
+        "country_state": 190,
+        "city": 191,
+        "system": 900
+    },
+    "actions": {
+        "index": {
+            "success": 10,
+            "fail": 11,
+            "validation": 12
+        },
+        "create": {
+            "success": 20,
+            "fail": 21,
+            "validation": 22
+        },
+        "read": {
+            "success": 30,
+            "fail": 31,
+            "validation": 32
+        },
+        "update": {
+            "success": 40,
+            "fail": 41,
+            "validation": 42
+        },
+        "delete": {
+            "success": 50,
+            "fail": 51,
+            "validation": 52
+        },
+        "authenticate": {
+            "success": 60,
+            "fail": 61,
+            "validation": 62
+        },
+        "force_update": {
+            "app": 999,
+            "label": 998,
+            "logout": 996,
+            "login": 995
+        }
+    }
+}
