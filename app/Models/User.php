@@ -294,7 +294,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getRatingAttribute()
     {
-        return number_format($this->ratings->avg('scale'), 1);
+        return number_format($this->ratings()->avg('scale'), 1);
     }
 
     public function getProfileImageAttribute()

@@ -27,8 +27,7 @@ class MerchantController extends Controller
             'address' => function ($query) use ($latitude, $longitude) {
                 $query->getDistanceByCoordinates($latitude, $longitude);
             }
-        ])
-            ->merchant()->active()->approvedApplication()
+        ])->merchant()->active()->approvedApplication()
             ->filterByLocationDistance($latitude, $longitude)
             ->orderBy('name')
             ->paginate(15, ['*'], 'page', $request->get('page'));
@@ -100,7 +99,7 @@ class MerchantController extends Controller
             ->active()->approvedApplication()->first();
 
         return Response::instance()
-            ->withStatusCode('modules.merchant', 'actions.index.' . $status)
+            ->withStatusCode('modules.rating', 'actions.index.' . $status)
             ->withStatus($status)
             ->withData((new RatingResource($merchant))->toArray($request))
             ->sendJson();
