@@ -38,7 +38,5 @@ class AuthServiceProvider extends ServiceProvider
         Passport::tokensCan([
             'member' => 'User as member permission',
         ]);
-
-        Passport::personalAccessTokensExpireIn(now()->addCentury());
     }
 }
