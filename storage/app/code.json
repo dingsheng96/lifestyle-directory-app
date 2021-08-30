@@ -4,6 +4,7 @@
         "banner": 110,
         "member": 120,
         "merchant": 130,
+        "rating": 131,
         "admin": 140,
         "career": 150,
         "category": 160,

@@ -8,6 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class MerchantResource extends JsonResource
 {
     protected $listing = true;
+    protected $similar_merchants = [];
 
     /**
      * Transform the resource into an array.
@@ -44,7 +45,8 @@ class MerchantResource extends JsonResource
                     'longitude'     => $this->address->longitude,
                     'latitude'      => $this->address->latitude
                 ],
-                'has_career'    => (bool) $this->careers_count > 0
+                'has_career'    => (bool) $this->careers_count > 0,
+                'similar_merchants' => parent::collection($this->similar_merchants)->toArray($request)
             ]);
         }
 
@@ -54,6 +56,13 @@ class MerchantResource extends JsonResource
     public function listing(bool $status = true)
     {
         $this->listing = $status;
+
+        return $this;
+    }
+
+    public function similarMerchant($similar_merchants)
+    {
+        $this->similar_merchants = $similar_merchants;
 
         return $this;
     }

@@ -14,11 +14,19 @@ class RatingResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'ratedBy'   =>  $this->name,
-            'scale'     =>  number_format($this->pivot->scale, 0),
-            'rated_at'  =>  $this->pivot->created_at,
-            'review'    =>  $this->pivot->review,
-        ];
+        $ratings = $this->ratings()->paginate(15, ['*'], 'page', $request->get('page'));
+
+        $data = [];
+
+        foreach ($ratings as $rating) {
+            $data[] = [
+                'rater'     => (new MemberResource($rating))->toArray($request),
+                'scale'     => number_format($rating->pivot->scale, 0),
+                'rated_at'  => $rating->pivot->created_at,
+                'review'    => $rating->pivot->review,
+            ];
+        }
+
+        return $data;
     }
 }

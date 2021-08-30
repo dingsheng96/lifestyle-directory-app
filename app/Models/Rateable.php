@@ -9,6 +9,6 @@ class Rateable extends MorphPivot
     protected $table = 'rateables';
 
     protected $fillable = [
-        'user_id', 'rateable_type', 'rateable_id', 'scale', 'created_at'
+        'user_id', 'rateable_type', 'rateable_id', 'scale', 'review', 'created_at'
     ];
 }

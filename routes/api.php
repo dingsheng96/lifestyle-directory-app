@@ -1,6 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\v1\AuthController;
+use App\Http\Controllers\Api\v1\HomeController;
+use App\Http\Controllers\Api\v1\RatingController;
+use App\Http\Controllers\Api\v1\CategoryController;
+use App\Http\Controllers\Api\v1\LanguageController;
+use App\Http\Controllers\Api\v1\MerchantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,26 +19,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['prefix' => 'v1', 'as' => 'v1', 'namespace' => 'v1'], function () {
 
-    Route::post('login', 'AuthController@login');
+Route::prefix('v1')->namespace('v1')->group(function () {
 
-    Route::post('register', 'AuthController@register');
+    Route::post('login', [AuthController::class, 'login']);
 
-    Route::post('languages', 'LanguageController@languages');
+    Route::post('register', [AuthController::class, 'register']);
 
-    Route::post('languages/translations', 'LanguageController@translations');
+    Route::post('languages', [LanguageController::class, 'languages']);
+    Route::post('languages/translations', [LanguageController::class, 'translations']);
 
-    Route::post('home', 'HomeController@index');
+    Route::middleware(['auth:api', 'scope:member'])->group(function () {
 
-    Route::post('categories', 'CategoryController@index');
+        Route::post('home', [HomeController::class, 'index']);
 
-    Route::post('merchants', 'MerchantController@index');
+        Route::post('categories', [CategoryController::class, 'index']);
 
-    Route::post('merchants/show', 'MerchantController@show');
+        Route::post('merchants', [MerchantController::class, 'index']);
+        Route::post('merchants/show', [MerchantController::class, 'show']);
+        Route::post('merchants/ratings', [MerchantController::class, 'ratings']);
+        Route::post('merchants/ratings/store', [MerchantController::class, 'storeRatings']);
 
-    Route::group(['middleware' => ['auth:api', 'scope:member']], function () {
-
-        Route::post('logout', 'AuthController@logout');
+        Route::post('logout', [AuthController::class, 'logout']);
     });
 });

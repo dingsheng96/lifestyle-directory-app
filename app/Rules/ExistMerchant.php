@@ -7,16 +7,17 @@ use Illuminate\Contracts\Validation\Rule;
 
 class ExistMerchant implements Rule
 {
-    public $column;
+    public $column, $valid;
 
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct(string $column = 'id')
+    public function __construct(string $column = 'id', bool $valid = true)
     {
         $this->column = $column;
+        $this->valid = $valid;
     }
 
     /**
@@ -29,6 +30,9 @@ class ExistMerchant implements Rule
     public function passes($attribute, $value)
     {
         return User::merchant()
+            ->when($this->valid, function ($query) {
+                $query->active()->approvedApplication();
+            })
             ->where($this->column, $value)
             ->whereNull('deleted_at')
             ->exists();

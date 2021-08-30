@@ -98,7 +98,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->morphToMany(self::class, 'rateable', Rateable::class)->withPivot(['scale', 'review'])->withTimestamps();
     }
 
-    public function ratedBy()
+    public function raters()
     {
         return $this->morphedByMany(self::class, 'rateable', Rateable::class)->withPivot(['scale', 'review'])->withTimestamps();
     }
@@ -214,6 +214,13 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $query->whereHas('address', function ($query) use ($latitude, $longitude) {
             $query->filterByCoordinates($latitude, $longitude);
+        });
+    }
+
+    public function scopeFilterByCategories($query, $categories)
+    {
+        return $query->whereHas('categories', function ($query) use ($categories) {
+            $query->whereIn('id', $categories);
         });
     }
 

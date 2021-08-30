@@ -3,9 +3,14 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Models\User;
+use App\Helpers\Message;
 use App\Helpers\Response;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\RatingResource;
 use App\Http\Resources\MerchantResource;
+use App\Http\Requests\Api\v1\Merchant\RatingRequest;
+use App\Http\Requests\Api\v1\Merchant\RatingListRequest;
 use App\Http\Requests\Api\v1\Merchant\MerchantListRequest;
 use App\Http\Requests\Api\v1\Merchant\MerchantDetailsRequest;
 
@@ -13,18 +18,18 @@ class MerchantController extends Controller
 {
     public function index(MerchantListRequest $request)
     {
-        $status = 'success';
-
-        $lat = $request->get('latitude');
-        $lng = $request->get('longitude');
+        $status     =   'success';
+        $latitude   =   $request->get('latitude', 0);
+        $longitude  =   $request->get('longitude', 0);
 
         $merchants = User::with([
             'media', 'ratings',
-            'address' => function ($query) use ($lat, $lng) {
-                $query->getDistanceByCoordinates($lat, $lng);
+            'address' => function ($query) use ($latitude, $longitude) {
+                $query->getDistanceByCoordinates($latitude, $longitude);
             }
-        ])->merchant()->active()->approvedApplication()
-            ->filterByLocationDistance($lat, $lng)
+        ])
+            ->merchant()->active()->approvedApplication()
+            ->filterByLocationDistance($latitude, $longitude)
             ->orderBy('name')
             ->paginate(15, ['*'], 'page', $request->get('page'));
 
@@ -38,24 +43,39 @@ class MerchantController extends Controller
     public function show(MerchantDetailsRequest $request)
     {
         $status     =   'fail';
-        $data       =   [];
-        $lat        =   $request->get('latitude');
-        $lng        =   $request->get('longitude');
         $message    =   '';
+        $data       =   [];
+
+        $merchant_id    = $request->get('merchant_id');
+        $latitude       = $request->get('latitude', 0);
+        $longitude      = $request->get('longitude', 0);
 
         try {
 
             $merchant = User::with([
-                'media', 'ratings', 'branchDetail', 'ratedBy',
-                'address' => function ($query) use ($lat, $lng) {
-                    $query->getDistanceByCoordinates($lat, $lng);
+                'media', 'ratings', 'branchDetail', 'raters', 'categories',
+                'address' => function ($query) use ($latitude, $longitude) {
+                    $query->getDistanceByCoordinates($latitude, $longitude);
                 }
             ])->withCount(['careers'])
                 ->merchant()->active()->approvedApplication()
-                ->where('id', $request->get('merchant_id'))
+                ->where('id', $merchant_id)
                 ->firstOrFail();
 
-            $data       =   (new MerchantResource($merchant))->listing(false)->toArray($request);
+            $similar_merchants = User::with([
+                'media', 'ratings',
+                'address' => function ($query) use ($latitude, $longitude) {
+                    $query->getDistanceByCoordinates($latitude, $longitude);
+                }
+            ])->merchant()->active()->approvedApplication()
+                ->where('id', '!=', $merchant_id)
+                ->filterByLocationDistance($latitude, $longitude)
+                ->filterByCategories($merchant->categories->pluck('id')->toArray())
+                ->inRandomOrder()
+                ->limit(6)
+                ->get();
+
+            $data       =   (new MerchantResource($merchant))->listing(false)->similarMerchant($similar_merchants)->toArray($request);
             $status     =   'success';
             $message    =   'Ok';
         } catch (\Error | \Exception $ex) {
@@ -67,6 +87,67 @@ class MerchantController extends Controller
             ->withMessage($message)
             ->withStatus($status)
             ->withData($data)
+            ->sendJson();
+    }
+
+    public function ratings(RatingListRequest $request)
+    {
+        $status         =   'success';
+        $merchant_id    =   $request->get('merchant_id');
+
+        $merchant = User::with(['ratings'])->merchant()
+            ->where('id', $merchant_id)
+            ->active()->approvedApplication()->first();
+
+        return Response::instance()
+            ->withStatusCode('modules.merchant', 'actions.index.' . $status)
+            ->withStatus($status)
+            ->withData((new RatingResource($merchant))->toArray($request))
+            ->sendJson();
+    }
+
+    public function storeRatings(RatingRequest $request)
+    {
+        DB::beginTransaction();
+
+        $status         =   'success';
+        $message        =   'Ok';
+        $merchant_id    =   $request->get('merchant_id');
+        $scale          =   $request->get('scale');
+        $review         =   $request->get('review');
+        $merchant       =   new User();
+
+        try {
+
+            $merchant = User::where('id', $merchant_id)->merchant()
+                ->active()->approvedApplication()->first();
+
+            $merchant->ratings()->attach([
+                $request->user()->id => [
+                    'scale' => $scale,
+                    'review' => $review
+                ]
+            ]);
+
+            DB::commit();
+        } catch (\Error | \Exception $ex) {
+
+            DB::rollBack();
+
+            $message    =   $ex->getMessage();
+            $status     =   'fail';
+        }
+
+        activity()->useLog('api')
+            ->causedBy($request->user())
+            ->performedOn($merchant)
+            ->withProperties($request->all())
+            ->log($message);
+
+        return Response::instance()
+            ->withStatusCode('modules.rating', 'actions.create.' . $status)
+            ->withStatus($status)
+            ->withMessage($message)
             ->sendJson();
     }
 }

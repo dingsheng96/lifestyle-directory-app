@@ -23,7 +23,7 @@ class AuthController extends Controller
         $data       =   [];
 
         $user = User::with(['media'])->member()
-            ->where('mobile_no', (new Misc())->phoneStoreFormat($request->get('mobile_no')))
+            ->where('mobile_no', (new Misc())->phoneStoreFormat($request->get('phone')))
             ->first();
 
         $user->revokeTokens();
