@@ -331,7 +331,7 @@
 
                                 <div class="form-group">
                                     <label for="tbl_oprating_hour" class="col-form-label">{{ __('labels.operating_hour') }}</label>
-                                    @include('components.operating_table')
+                                    @include('components.operating_table', ['operation_hours' => []])
                                 </div>
 
                                 <hr>
@@ -405,7 +405,7 @@
                                 </div>
                             </div>
 
-                            <div class="tab-pane fade" id="list-gallery" role="tabpanel" aria-labelledby="list-gallery-list">
+                            <div class="tab-pane fade" id="list-gallery" role="tabpanel" aria-labelledby="list-messages-list">
 
                                 <div class="form-group">
                                     <label for="files" class="col-form-label">{{ trans_choice('labels.upload_image', 2) }}</label>

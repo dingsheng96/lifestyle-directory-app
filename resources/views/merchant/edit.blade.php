@@ -116,6 +116,40 @@
                                 <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
+                                            <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-danger">*</span></label>
+                                            <select name="status" id="status" class="form-control select2 @error('status') is-invalid @enderror">
+                                                @foreach ($active_statuses as $status => $display)
+                                                <option value="{{ $status }}" {{ old('status', $merchant->status) == $status ? 'selected' : null }}>{{ $display }}</option>
+                                                @endforeach
+                                            </select>
+                                            @error('status')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="listing_status" class="col-form-label">{{ __('labels.listing_status') }} <span class="text-danger">*</span></label>
+                                            <select name="listing_status" id="listing_status" class="form-control select2 @error('listing_status') is-invalid @enderror">
+                                                @forelse ($publish_statuses as $status => $display)
+                                                <option value="{{ $status }}" {{ old('listing_status', $merchant->listing_status) == $status ? 'selected' : null }}>{{ $display }}</option>
+                                                @empty
+                                                @endforelse
+                                            </select>
+                                            @error('listing_status')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
                                             <label for="category" class="col-form-label">{{ __('labels.category') }} <span class="text-danger">*</span></label>
                                             <select name="category" id="category" class="form-control select2 @error('category') is-invalid @enderror">
                                                 <option value="0" disabled selected>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(__('labels.category'))]) }} ---</option>
@@ -131,24 +165,6 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-danger">*</span></label>
-                                            <select name="status" id="status" class="form-control select2 @error('status') is-invalid @enderror">
-                                                @foreach ($active_statuses as $status => $display)
-                                                <option value="{{ $status }}" {{ old('status', $merchant->status) == $status ? 'selected' : null }}>{{ $display }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('status')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
                                             <label for="logo" class="col-form-label">{{ __('labels.change_logo') }}</label>
@@ -340,7 +356,7 @@
 
                                 <div class="form-group">
                                     <label for="tbl_oprating_hour" class="col-form-label">{{ __('labels.operating_hour') }}</label>
-                                    @include('components.operating_table', ['target' => $merchant->operationHours])
+                                    @include('components.operating_table', ['operation_hours' => $merchant->operationHours])
                                 </div>
 
                                 <hr>

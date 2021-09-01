@@ -134,14 +134,14 @@
                                     </div>
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
-                                            <label for="branch_status" class="col-form-label">{{ __('labels.branch_status') }} <span class="text-danger">*</span></label>
-                                            <select name="branch_status" id="branch_status" class="form-control select2 @error('branch_status') is-invalid @enderror">
+                                            <label for="listing_status" class="col-form-label">{{ __('labels.listing_status') }} <span class="text-danger">*</span></label>
+                                            <select name="listing_status" id="listing_status" class="form-control select2 @error('listing_status') is-invalid @enderror">
                                                 @forelse ($publish_statuses as $status => $display)
-                                                <option value="{{ $status }}" {{ old('branch_status', $branch->main_branch->pivot->status) == $status ? 'selected' : null }}>{{ $display }}</option>
+                                                <option value="{{ $status }}" {{ old('listing_status', $branch->listing_status) == $status ? 'selected' : null }}>{{ $display }}</option>
                                                 @empty
                                                 @endforelse
                                             </select>
-                                            @error('branch_status')
+                                            @error('listing_status')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
                                             </span>
@@ -341,7 +341,7 @@
 
                                 <div class="form-group">
                                     <label for="tbl_oprating_hour" class="col-form-label">{{ __('labels.operating_hour') }}</label>
-                                    @include('components.operating_table', ['target' => $branch->operationHours])
+                                    @include('components.operating_table', ['operation_hours' => $branch->operationHours])
                                 </div>
 
                                 <hr>

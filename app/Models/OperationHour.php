@@ -39,4 +39,11 @@ class OperationHour extends Model
     {
         $this->attributes['end'] = Carbon::parse($value)->toTimeString();
     }
+
+    public function getDayNameAttribute()
+    {
+        $day_names = Carbon::getDays();
+
+        return $day_names[$this->days_of_week];
+    }
 }

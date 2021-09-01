@@ -65,7 +65,7 @@ return [
     'permissions' => 'Permissions',
     'select_all' => 'Select All',
     'status' => 'Status',
-    'branch_status' => 'Branch Status',
+    'listing_status' => 'Listing Status',
     'contact_no' => 'Contact No.',
     'address_1' => 'Address 1',
     'address_2' => 'Address 2',
