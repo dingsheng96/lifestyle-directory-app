@@ -15,7 +15,7 @@ class MerchantDetailsRequest extends BaseRequest
      */
     public function rules()
     {
-        $this->setModule('merchant')->setAction('read');
+        $this->setModule('merchant')->setAction('read')->setLog('merchant');
 
         return [
             'merchant_id'   => ['required', 'integer', new ExistMerchant()],

@@ -38,11 +38,7 @@ class UniqueMerchant implements Rule
                 } else {
                     $query->where($this->ignore_column, '!=', $this->ignore_id);
                 }
-            })->where(function ($query) {
-                $query->mainMerchant()->orWhere(function ($query) {
-                    $query->subMerchant();
-                });
-            })->exists();
+            })->merchant()->exists();
     }
 
     /**

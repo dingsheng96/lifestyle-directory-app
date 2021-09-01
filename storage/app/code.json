@@ -3,6 +3,7 @@
         "language": 100,
         "banner": 110,
         "member": 120,
+        "guest": 121,
         "merchant": 130,
         "rating": 131,
         "admin": 140,

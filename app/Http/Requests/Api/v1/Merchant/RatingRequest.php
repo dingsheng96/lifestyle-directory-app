@@ -9,22 +9,14 @@ use App\Http\Requests\Api\v1\BaseRequest;
 class RatingRequest extends BaseRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return Passport::hasScope('member');
-    }
-
-    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
      */
     public function rules()
     {
+        $this->setModule('rating')->setAction('index')->setLog('rating');
+
         return [
             'merchant_id'   =>  ['required', new ExistMerchant()],
             'scale'         =>  ['required', 'integer', 'in:1,2,3,4,5'],

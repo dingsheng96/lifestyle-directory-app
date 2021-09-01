@@ -16,7 +16,7 @@ class CategoryRequest extends BaseRequest
      */
     public function rules()
     {
-        $this->setModule('category')->setAction('index');
+        $this->setModule('category')->setAction('index')->setLog('category');
 
         return $this->setPaginationRules();
     }

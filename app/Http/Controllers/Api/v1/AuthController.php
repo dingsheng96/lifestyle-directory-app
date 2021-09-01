@@ -9,6 +9,7 @@ use App\Helpers\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\LoginResource;
 use App\Support\Services\MemberService;
 use App\Http\Requests\Api\v1\Auth\LoginRequest;
@@ -16,6 +17,43 @@ use App\Http\Requests\Api\v1\Auth\RegisterRequest;
 
 class AuthController extends Controller
 {
+    public function preRegister(Request $request, MemberService $member_service)
+    {
+        DB::beginTransaction();
+
+        $status     =   'fail';
+        $message    =   'Ok';
+        $data       =   [];
+
+        try {
+
+            $guest = $member_service->storeGuest()->getModel();
+
+            $status =   'success';
+            $data   =   (new LoginResource($guest))->toArray($request);
+
+            DB::commit();
+        } catch (\Error | \Exception $ex) {
+
+            DB::rollBack();
+
+            $message = $ex->getMessage();
+        }
+
+        activity()->useLog('api:pre_register')
+            ->causedByAnonymous()
+            ->performedOn(new User())
+            ->withProperties($request->all())
+            ->log($message);
+
+        return Response::instance()
+            ->withStatusCode('modules.guest', 'actions.create.' . $status)
+            ->withStatus($status)
+            ->withMessage($message)
+            ->withData($data)
+            ->sendJson();
+    }
+
     public function login(LoginRequest $request)
     {
         $status     =   'success';
@@ -30,7 +68,7 @@ class AuthController extends Controller
 
         $data = (new LoginResource($user))->toArray($request);
 
-        activity()->useLog('api:auth')
+        activity()->useLog('api:login')
             ->causedByAnonymous()
             ->performedOn($user)
             ->withProperties($request->all())
@@ -54,7 +92,7 @@ class AuthController extends Controller
 
         $user->token()->revoke();
 
-        activity()->useLog('api:auth')
+        activity()->useLog('api:logout')
             ->causedBy($user)
             ->withProperties($request->all())
             ->log($user->name . ' ' . strtolower($message));
@@ -75,7 +113,11 @@ class AuthController extends Controller
 
         try {
 
-            $member_service->setRequest($request)->store();
+            if (Auth::guard('api')->check()) {
+                $member_service->setModel($request->user())->setRequest($request)->store();
+            } else {
+                $member_service->setRequest($request)->store();
+            }
 
             $status     = 'success';
             $message    =   Message::instance()->register($status);
@@ -88,7 +130,7 @@ class AuthController extends Controller
             $message = $ex->getMessage();
         }
 
-        activity()->useLog('api:auth')
+        activity()->useLog('api:register')
             ->causedByAnonymous()
             ->performedOn(new User())
             ->withProperties($request->all())

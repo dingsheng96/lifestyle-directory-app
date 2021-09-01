@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Models\User;
-use App\Helpers\Message;
 use App\Helpers\Response;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -27,7 +26,7 @@ class MerchantController extends Controller
             'address' => function ($query) use ($latitude, $longitude) {
                 $query->getDistanceByCoordinates($latitude, $longitude);
             }
-        ])->merchant()->active()->approvedApplication()
+        ])->merchant()->active()->approvedApplication()->publish()
             ->filterByLocationDistance($latitude, $longitude)
             ->orderBy('name')
             ->paginate(15, ['*'], 'page', $request->get('page'));
@@ -52,12 +51,12 @@ class MerchantController extends Controller
         try {
 
             $merchant = User::with([
-                'media', 'ratings', 'branchDetail', 'raters', 'categories',
+                'media', 'ratings', 'branchDetail', 'raters', 'categories', 'operationHours',
                 'address' => function ($query) use ($latitude, $longitude) {
                     $query->getDistanceByCoordinates($latitude, $longitude);
                 }
             ])->withCount(['careers'])
-                ->merchant()->active()->approvedApplication()
+                ->merchant()->active()->approvedApplication()->publish()
                 ->where('id', $merchant_id)
                 ->firstOrFail();
 
@@ -95,7 +94,7 @@ class MerchantController extends Controller
         $merchant_id    =   $request->get('merchant_id');
 
         $merchant = User::with(['ratings'])->merchant()
-            ->where('id', $merchant_id)
+            ->where('id', $merchant_id)->publish()
             ->active()->approvedApplication()->first();
 
         return Response::instance()
@@ -119,7 +118,7 @@ class MerchantController extends Controller
         try {
 
             $merchant = User::where('id', $merchant_id)->merchant()
-                ->active()->approvedApplication()->first();
+                ->active()->approvedApplication()->publish()->firstOrFail();
 
             $merchant->ratings()->attach([
                 $request->user()->id => [

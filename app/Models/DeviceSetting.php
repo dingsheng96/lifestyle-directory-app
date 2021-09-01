@@ -12,8 +12,9 @@ class DeviceSetting extends Model
     protected $table = 'device_settings';
 
     protected $fillable = [
-        'user_id', 'model', 'serial_no', 'manufacturer', 'status',
-        'push_messaging_provider', 'push_messaging_token', 'enable_push_messaging', 'enable_notification_sound'
+        'user_id', 'device_id', 'status',
+        'push_messaging_provider', 'push_messaging_token',
+        'enable_push_messaging', 'enable_notification_sound'
     ];
 
     protected $casts = [

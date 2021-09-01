@@ -17,7 +17,7 @@ class LoginResource extends JsonResource
     {
         return [
             'account'   => (new MemberResource($this))->toArray($request),
-            'token'     => $this->createToken("{$this->name}'s Token", ['member'])->accessToken,
+            'token'     => $this->createToken("{$this->name}'s Token")->accessToken,
         ];
     }
 }

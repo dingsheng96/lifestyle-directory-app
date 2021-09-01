@@ -14,7 +14,7 @@ class LanguageTranslationRequest extends BaseRequest
      */
     public function rules()
     {
-        $this->setModule('language')->setAction('index');
+        $this->setModule('language')->setAction('index')->setLog('language');
 
         return [
             'code'  => ['required', 'exists:' . Language::class . ',code']

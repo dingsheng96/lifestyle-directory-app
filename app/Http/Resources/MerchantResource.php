@@ -30,22 +30,30 @@ class MerchantResource extends JsonResource
         if (!$this->listing) {
 
             $data = array_merge($data, [
-                'images'        => collect($this->image)
+                'images'            => collect($this->image)
                     ->map(function ($value) {
                         return $value->full_file_path;
                     })->flatten(),
-                'about'         => $this->branchDetail->description,
-                'services'      => $this->branchDetail->services,
-                'website'       => $this->branchDetail->website,
-                'facebook'      => $this->branchDetail->facebook,
-                'whatsapp'      => $this->branchDetail->whatsapp,
-                'instagram'     => $this->branchDetail->instagram,
-                'address'       => [
+                'about'             => $this->branchDetail->description,
+                'services'          => $this->branchDetail->services,
+                'business_hours'    => $this->operationHours->map(function ($value) {
+                    return [
+                        'days_of_week'  =>  $value->day_name,
+                        'off_day'       =>  $value->day_off,
+                        'start_from'    =>  $value->start,
+                        'end_at'        =>  $value->end
+                    ];
+                }),
+                'website'           => $this->branchDetail->website,
+                'facebook'          => $this->branchDetail->facebook,
+                'whatsapp'          => $this->branchDetail->whatsapp,
+                'instagram'         => $this->branchDetail->instagram,
+                'address'           => [
                     'full_address'  => $this->address->full_address,
                     'longitude'     => $this->address->longitude,
                     'latitude'      => $this->address->latitude
                 ],
-                'has_career'    => (bool) $this->careers_count > 0,
+                'has_career'        => (bool) $this->careers_count > 0,
                 'similar_merchants' => parent::collection($this->similar_merchants)->toArray($request)
             ]);
         }

@@ -150,6 +150,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $query->where('type', self::USER_TYPE_ADMIN);;
     }
 
+    public function scopeMerchant($query)
+    {
+        return $query->whereIn('type', [self::USER_TYPE_MERCHANT, self::USER_TYPE_BRANCH]);
+    }
+
     public function scopeMainMerchant($query)
     {
         return $query->where('type', self::USER_TYPE_MERCHANT);;
@@ -158,11 +163,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function scopeSubMerchant($query)
     {
         return $query->where('type', self::USER_TYPE_BRANCH);;
-    }
-
-    public function scopeMerchant($query)
-    {
-        return $query->where('type', self::USER_TYPE_MERCHANT);
     }
 
     public function scopeMember($query)
@@ -215,11 +215,16 @@ class User extends Authenticatable implements MustVerifyEmail
         $tbl_user   =   $this->getTable();
         $tbl_rating =   app(Rateable::class)->getTable();
 
-        return $query->select($tbl_user . '.id', DB::raw('AVG(' . $tbl_rating . '.scale) AS ratings'))
-            ->join($tbl_rating, $tbl_user . '.id', '=', $tbl_rating . '.rateable_id')
-            ->where($tbl_rating . '.rateable_type', self::class)
-            ->groupBy($tbl_user . '.id')
-            ->having('ratings', 'like', "{$value}%");
+        // return $query->selectRaw($tbl_user . '.id, AVG(' . $tbl_rating . '.scale) AS ratings')
+        //     ->join($tbl_rating, $tbl_user . '.id', '=', $tbl_rating . '.rateable_id')
+        //     ->where($tbl_rating . '.rateable_type', self::class)
+        //     ->active()->merchant()->approvedApplication()
+        //     ->groupBy($tbl_user . '.id')
+        //     ->having('ratings', 'like', "{$value}%");
+
+        return $query->whereHas('ratings', function ($query) {
+            $query->avg('scale');
+        });
     }
 
     public function scopeSortMerchantByRating($query)
@@ -230,11 +235,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $query->select($tbl_users . '.id', $tbl_users . '.name', $tbl_users . '.status', DB::raw('AVG(' . $tbl_ratings . '.scale) AS ratings'))
             ->join($tbl_ratings, $tbl_users . '.id', '=', $tbl_ratings . '.rateable_id')
             ->where($tbl_ratings . '.rateable_type', self::class)
-            ->active()
-            ->mainMerchant()
-            ->orWhere(function ($query) {
-                $query->subMerchant();
-            })
+            ->active()->merchant()->approvedApplication()
             ->groupBy($tbl_users . '.id', $tbl_users . '.name', $tbl_users . '.status')
             ->having('ratings', '>', 0)
             ->orderByDesc('ratings');

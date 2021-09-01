@@ -79,8 +79,8 @@ class Response
 
     protected function convertNullDataToEmptyString($array)
     {
-        $array = array_map(function ($v) {
-            return (is_null($v)) ? "" : $v;
+        $array = array_map(function ($value) {
+            return (is_null($value)) ? "" : $value;
         }, $array);
 
         return $array;

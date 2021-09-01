@@ -18,7 +18,7 @@ class MerchantListRequest extends BaseRequest
      */
     public function rules()
     {
-        $this->setModule('merchant')->setAction('index');
+        $this->setModule('merchant')->setAction('index')->setLog('merchant');
 
         return $this->setPaginationRules([
             'longitude'     => ['required', new ValidateCoordinates],

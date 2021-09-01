@@ -22,18 +22,21 @@ use App\Http\Controllers\Api\v1\MerchantController;
 
 Route::prefix('v1')->namespace('v1')->group(function () {
 
-    Route::post('login', [AuthController::class, 'login']);
+    Route::post('pre-register', [AuthController::class, 'preRegister']);
 
-    Route::post('register', [AuthController::class, 'register']);
+    Route::middleware(['auth:api'])->group(function () {
 
-    Route::post('languages', [LanguageController::class, 'languages']);
-    Route::post('languages/translations', [LanguageController::class, 'translations']);
+        Route::post('languages', [LanguageController::class, 'languages']);
+        Route::post('languages/translations', [LanguageController::class, 'translations']);
 
-    Route::middleware(['auth:api', 'scope:member'])->group(function () {
+        Route::post('login', [AuthController::class, 'login']);
+
+        Route::post('register', [AuthController::class, 'register']);
 
         Route::post('home', [HomeController::class, 'index']);
 
         Route::post('categories', [CategoryController::class, 'index']);
+        Route::post('categories/populars', [CategoryController::class, 'popular']);
 
         Route::post('merchants', [MerchantController::class, 'index']);
         Route::post('merchants/show', [MerchantController::class, 'show']);

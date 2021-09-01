@@ -2,7 +2,6 @@
 
 namespace App\Support\Services;
 
-use App\Models\Role;
 use App\Models\User;
 use App\Models\Media;
 use App\Helpers\FileManager;
@@ -31,8 +30,7 @@ class MemberService extends BaseService
 
         if (!$this->model->exists) { // new User
 
-            $this->model->email_verified_at =   now();
-            $this->model->assignRole(Role::ROLE_MEMBER);
+            $this->model->email_verified_at = now();
         }
 
         if ($this->model->isDirty()) {
@@ -92,6 +90,27 @@ class MemberService extends BaseService
     public function setUserType(string $type = User::USER_TYPE_MEMBER)
     {
         $this->model->type = $type;
+
+        if ($this->model->isDirty()) {
+            $this->model->save();
+        }
+
+        return $this;
+    }
+
+    public function storeGuest()
+    {
+        $this->model->name                  =   'Guest_' . time();
+        $this->model->email                 =   'guest' . time() . '@guest.com';
+        $this->model->status                =   User::STATUS_ACTIVE;
+        $this->model->type                  =   User::USER_TYPE_GUEST;
+        $this->model->password              =   Hash::make('password' . time());
+        $this->model->application_status    =   User::APPLICATION_STATUS_APPROVED;
+
+        if (!$this->model->exists) { // new User
+
+            $this->model->email_verified_at = now();
+        }
 
         if ($this->model->isDirty()) {
             $this->model->save();

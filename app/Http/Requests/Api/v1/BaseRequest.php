@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api\v1;
 
 use App\Helpers\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
@@ -19,7 +20,7 @@ class BaseRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return Auth::guard('api')->check();
     }
 
     /**
@@ -43,7 +44,7 @@ class BaseRequest extends FormRequest
             ->withMessage($error->first())
             ->getResponse();
 
-        activity()->useLog('api' . $this->log)
+        activity()->useLog('api:' . $this->log)
             ->withProperties($response)
             ->log($error->first());
 
@@ -68,12 +69,9 @@ class BaseRequest extends FormRequest
         return $this;
     }
 
-    protected function isAuth(bool $status = true)
+    protected function setLog(string $log)
     {
-        if ($status) {
-            $this->log = ':auth';
-        }
-
+        $this->log = $log;
         return $this;
     }
 }

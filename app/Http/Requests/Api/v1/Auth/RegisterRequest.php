@@ -3,12 +3,9 @@
 namespace App\Http\Requests\Api\v1\Auth;
 
 use App\Models\User;
-use App\Helpers\Response;
 use App\Rules\PasswordFormat;
+use Illuminate\Validation\Rule;
 use App\Http\Requests\Api\v1\BaseRequest;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Http\Exceptions\HttpResponseException;
 
 class RegisterRequest extends BaseRequest
 {
@@ -19,12 +16,12 @@ class RegisterRequest extends BaseRequest
      */
     public function rules()
     {
-        $this->setModule('member')->setAction('create')->isAuth();
+        $this->setModule('member')->setAction('create')->setLog('register');
 
         return [
-            'name'      =>  ['required', 'unique:' . User::class . ',name'],
-            'phone'     =>  ['required', 'unique:' . User::class . ',mobile_no'],
-            'email'     =>  ['required', 'unique:' . User::class . ',email'],
+            'name'      =>  ['required', Rule::unique(User::class, 'name')->where('type', User::USER_TYPE_MEMBER)->whereNull('deleted_at')],
+            'phone'     =>  ['required', Rule::unique(User::class, 'mobile_no')->where('type', User::USER_TYPE_MEMBER)->whereNull('deleted_at')],
+            'email'     =>  ['required', Rule::unique(User::class, 'email')->where('type', User::USER_TYPE_MEMBER)->whereNull('deleted_at')],
             'password'  =>  ['required', 'confirmed', new PasswordFormat]
         ];
     }

@@ -24,7 +24,7 @@ class MerchantService extends BaseService
     public function storeMainMerchant()
     {
         $this->store()
-            ->assignRole(Role::ROLE_MERCHANT_1)
+            ->setUserType(User::USER_TYPE_MERCHANT)
             ->setApplicationStatus(User::APPLICATION_STATUS_APPROVED)
             ->assignCategory();
 
@@ -34,7 +34,7 @@ class MerchantService extends BaseService
     public function storeBranch(User $main_branch)
     {
         $this->store()
-            ->assignRole(Role::ROLE_MERCHANT_2)
+            ->setUserType(User::USER_TYPE_BRANCH)
             ->setApplicationStatus(User::APPLICATION_STATUS_APPROVED);
 
         // sync to main branch
@@ -208,9 +208,13 @@ class MerchantService extends BaseService
         return $this;
     }
 
-    public function assignRole(string $role)
+    public function setUserType(string $type = User::USER_TYPE_MERCHANT)
     {
-        $this->model->syncRoles([$role]);
+        $this->model->type = $type;
+
+        if ($this->model->isDirty()) {
+            $this->model->save();
+        }
 
         return $this;
     }
