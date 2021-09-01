@@ -38,6 +38,22 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="role" class="col-form-label">{{ __('labels.role') }} <span class="text-danger">*</span></label>
+                            <select name="status" id="status" class="form-control select2 @error('status') is-invalid @enderror">
+                                <option value="0" disabled selected>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(__('labels.role'))]) }} ---</option>
+                                @forelse ($roles as $role)
+                                <option value="{{ $role->id }}" {{ old('role') == $role->id || $admin->hasRole($role->name) ? 'selected' : null }}>{{ $role->name }}</option>
+                                @empty
+                                @endforelse
+                            </select>
+                            @error('role')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-danger">*</span></label>
                             <select name="status" id="status" class="form-control select2 @error('status') is-invalid @enderror">
                                 @foreach ($active_statuses as $index => $status)

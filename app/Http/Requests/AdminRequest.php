@@ -53,7 +53,8 @@ class AdminRequest extends FormRequest
                 'nullable',
                 'confirmed',
                 new PasswordFormat()
-            ]
+            ],
+            'role' =>  ['required', 'exist:' . Role::class . ',id'],
         ];
     }
 

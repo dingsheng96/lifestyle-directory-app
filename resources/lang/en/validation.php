@@ -200,6 +200,7 @@ return [
         'latitude' => 'latitude',
         'start_from' => 'start from',
         'end_at' => 'end at',
-        'off_day' => 'off day'
+        'off_day' => 'off day',
+        'role' => 'role'
     ],
 ];

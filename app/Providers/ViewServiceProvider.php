@@ -19,9 +19,9 @@ class ViewServiceProvider extends ServiceProvider
         \App\Http\View\Composers\StatusComposer::class => [
             'merchant.*', 'admin.*', 'member.*', 'banner.*', 'category.*', 'career.*'
         ],
-        // \App\Http\View\Composers\MerchantComposer::class => [
-        //     '*'
-        // ],
+        \App\Http\View\Composers\RoleComposer::class => [
+            'admin.*'
+        ],
         \App\Http\View\Composers\PermissionModuleComposer::class => [
             'role.*'
         ],

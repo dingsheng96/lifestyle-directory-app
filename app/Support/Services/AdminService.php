@@ -26,16 +26,24 @@ class AdminService extends BaseService
 
         $this->model->application_status = User::APPLICATION_STATUS_APPROVED;
 
-        if (!$this->model->exists) { // new User
+        if (!$this->model->exists) { // new Admin
 
-            $this->model->email_verified_at =   now();
-            $this->model->assignRole(Role::ROLE_SUPER_ADMIN);
+            $this->model->email_verified_at = now();
         }
 
         if ($this->model->isDirty()) {
             $this->model->save();
         }
 
+        $this->assignRole();
+
         return $this;
+    }
+
+    public function assignRole()
+    {
+        $role = Role::where('id', $this->request->get('role'))->first();
+
+        $this->model->syncRoles($role->name);
     }
 }

@@ -32,10 +32,7 @@ class RoleSeeder extends Seeder
     private function getData()
     {
         return [
-            ['name' => Role::ROLE_SUPER_ADMIN, 'guard_name' => config('auth.defaults.guard'), 'description' => 'System Admin.'],
-            ['name' => Role::ROLE_MERCHANT_1, 'guard_name' => config('auth.defaults.guard'), 'description' => 'Main merchant'],
-            ['name' => Role::ROLE_MERCHANT_2, 'guard_name' => config('auth.defaults.guard'), 'description' => 'Sub merchant branch'],
-            ['name' => Role::ROLE_MEMBER, 'guard_name' => config('auth.defaults.guard'), 'description' => 'Normal member'],
+            ['name' => Role::ROLE_SUPER_ADMIN, 'guard_name' => config('auth.defaults.guard'), 'description' => 'System Admin.']
         ];
     }
 }
