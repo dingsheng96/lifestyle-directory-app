@@ -13,9 +13,9 @@
                 <div class="card-body">
                     <div class="list-group list-group-flush" id="list-tab" role="tablist">
                         <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">{{ __('labels.general') }}</a>
-                        <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">{{ __('labels.location') }}</a>
+                        <a class="list-group-item list-group-item-action" id="list-location-list" data-toggle="list" href="#list-location" role="tab" aria-controls="location">{{ __('labels.location') }}</a>
                         <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">{{ __('labels.settings') }}</a>
-                        <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">{{ __('labels.gallery') }}</a>
+                        <a class="list-group-item list-group-item-action" id="list-gallery-list" data-toggle="list" href="#list-gallery" role="tab" aria-controls="gallery">{{ __('labels.gallery') }}</a>
                     </div>
                 </div>
             </div>
@@ -221,7 +221,7 @@
 
                             </div>
 
-                            <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+                            <div class="tab-pane fade" id="list-location" role="tabpanel" aria-labelledby="list-location-list">
 
                                 <div class="form-group">
                                     <label for="address_1" class="col-form-label">{{ __('labels.address_1') }} <span class="text-danger">*</span></label>
@@ -330,6 +330,13 @@
                             <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
 
                                 <div class="form-group">
+                                    <label for="tbl_oprating_hour" class="col-form-label">{{ __('labels.operating_hour') }}</label>
+                                    @include('components.operating_table')
+                                </div>
+
+                                <hr>
+
+                                <div class="form-group">
                                     <label for="pic_name" class="col-form-label">{{ __('labels.pic_name') }} <span class="text-danger">*</span></label>
                                     <input type="text" name="pic_name" id="pic_name" value="{{ old('pic_name') }}" class="form-control @error('pic_name') is-invalid @enderror">
                                     @error('pic_name')
@@ -398,7 +405,7 @@
                                 </div>
                             </div>
 
-                            <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+                            <div class="tab-pane fade" id="list-gallery" role="tabpanel" aria-labelledby="list-gallery-list">
 
                                 <div class="form-group">
                                     <label for="files" class="col-form-label">{{ trans_choice('labels.upload_image', 2) }}</label>

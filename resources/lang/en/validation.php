@@ -197,6 +197,9 @@ return [
         'account' => 'account',
         'page' => 'page',
         'longitude' => 'longitude',
-        'latitude' => 'latitude'
+        'latitude' => 'latitude',
+        'start_from' => 'start from',
+        'end_at' => 'end at',
+        'off_day' => 'off day'
     ],
 ];

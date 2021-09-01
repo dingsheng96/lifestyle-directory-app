@@ -118,6 +118,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Career::class, 'branch_id', 'id');
     }
 
+    public function operationHours()
+    {
+        return $this->hasMany(OperationHour::class, 'branch_id', 'id');
+    }
+
     // Functions
     public function sendEmailVerificationNotification()
     {

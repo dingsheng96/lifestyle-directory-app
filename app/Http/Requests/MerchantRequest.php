@@ -6,6 +6,7 @@ use App\Models\City;
 use App\Models\Media;
 use App\Helpers\Status;
 use App\Models\Country;
+use App\Models\Category;
 use App\Rules\PhoneFormat;
 use App\Models\BranchDetail;
 use App\Models\CountryState;
@@ -43,6 +44,7 @@ class MerchantRequest extends FormRequest
             'phone'             =>  ['required', new PhoneFormat],
             'email'             =>  ['required', 'email', new UniqueMerchant('email', $merchant)],
             'password'          =>  [Rule::requiredIf(empty($merchant)), 'nullable', new PasswordFormat, 'confirmed'],
+            'category'          =>  ['required_without:branch_status', 'nullable', 'exists:' . Category::class . ',id'],
             'status'            =>  ['required', Rule::in(array_keys((new Status())->activeStatus()))],
             'branch_status'     =>  [Rule::requiredIf($this->route('branch')), 'nullable', Rule::in(array_keys((new Status())->publishStatus()))],
 
@@ -71,7 +73,10 @@ class MerchantRequest extends FormRequest
             'files.*'           =>  ['image', 'mimes:jpg,jpeg,png'],
             'thumbnail'         =>  ['nullable', 'exists:' . Media::class . ',id'],
 
-            // 'category'          =>  [Rule::requiredIf()]
+            'operation.*'               =>  ['required', 'array'],
+            'operation.*.start_from'    =>  ['required', 'date_format:H:i'],
+            'operation.*.end_at'        =>  ['required', 'date_format:H:i'],
+            'operation.*.off_day'       =>  ['nullable', 'in:on'],
         ];
     }
 
@@ -93,8 +98,12 @@ class MerchantRequest extends FormRequest
     public function attributes()
     {
         return [
-            'files' => __('validation.attributes.file'),
-            'files.*' => __('validation.attributes.file'),
+            'files'         => __('validation.attributes.file'),
+            'files.*'       => __('validation.attributes.file'),
+
+            'operation.*.start_from'  => __('validation.attributes.start_from'),
+            'operation.*.end_at'      => __('validation.attributes.end_at'),
+            'operation.*.off_day'     => __('validation.attributes.off_day'),
         ];
     }
 }

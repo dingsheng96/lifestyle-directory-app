@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Media;
@@ -38,7 +39,9 @@ class BranchController extends Controller
     {
         $max_files = Media::MAX_BRANCH_IMAGE_UPLOAD;
 
-        return view('merchant.branch.create', compact('max_files', 'merchant'));
+        $days_of_week = Carbon::getDays();
+
+        return view('merchant.branch.create', compact('max_files', 'merchant', 'days_of_week'));
     }
 
     /**
@@ -97,7 +100,7 @@ class BranchController extends Controller
     public function show(User $merchant, User $branch)
     {
         $branch->load([
-            'branchDetail', 'address.city', 'media'
+            'branchDetail', 'address.city', 'media', 'operationHours'
         ]);
 
         $image_and_thumbnail = collect($branch->media)->whereNotIn('type', [Media::TYPE_LOGO, Media::TYPE_SSM]);
@@ -114,14 +117,16 @@ class BranchController extends Controller
     public function edit(User $merchant, User $branch)
     {
         $branch->load([
-            'branchDetail', 'address.city', 'media'
+            'branchDetail', 'address.city', 'media', 'operationHours'
         ]);
 
         $image_and_thumbnail = collect($branch->media)->whereNotIn('type', [Media::TYPE_LOGO, Media::TYPE_SSM]);
 
         $max_files = Media::MAX_BRANCH_IMAGE_UPLOAD - (clone $image_and_thumbnail)->count();
 
-        return view('merchant.branch.edit', compact('merchant', 'branch', 'max_files', 'image_and_thumbnail'));
+        $days_of_week = Carbon::getDays();
+
+        return view('merchant.branch.edit', compact('merchant', 'branch', 'max_files', 'image_and_thumbnail', 'days_of_week'));
     }
 
     /**

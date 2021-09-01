@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Media;
 use App\Helpers\FileManager;
 use App\Models\BranchDetail;
+use App\Models\OperationHour;
 use Illuminate\Support\Facades\Hash;
 use App\Support\Services\BaseService;
 
@@ -65,6 +66,7 @@ class MerchantService extends BaseService
         $this->storeLogo();
         $this->storeSsmCert();
         $this->storeImage();
+        $this->storeOperatingHour();
 
         return $this;
     }
@@ -232,6 +234,34 @@ class MerchantService extends BaseService
         if ($this->model->is_main_merchant) {
 
             $this->model->categories()->syncWithoutDetaching([$this->request->get('category')]);
+        }
+
+        return $this;
+    }
+
+    public function storeOperatingHour()
+    {
+        if ($this->request->has('operation')) {
+
+            $operations = $this->request->get('operation');
+
+            foreach ($operations as $day_of_week => $operation) {
+
+                $operation_hour = $this->model->operationHours()
+                    ->where('days_of_week', $day_of_week)
+                    ->firstOr(function () {
+                        return new OperationHour();
+                    });
+
+                $operation_hour->days_of_week   = $day_of_week;
+                $operation_hour->day_off        = isset($operation['off_day']);
+                $operation_hour->start          = $operation['start_from'];
+                $operation_hour->end            = $operation['end_at'];
+
+                if ($operation_hour->isDirty()) {
+                    $this->model->operationHours()->save($operation_hour);
+                }
+            }
         }
 
         return $this;

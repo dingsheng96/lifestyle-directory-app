@@ -10,3 +10,4 @@ require('admin-lte/plugins/datatables-bs4/js/dataTables.bootstrap4.js');
 require('admin-lte/plugins/datatables-responsive/js/dataTables.responsive.min.js');
 require('admin-lte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js');
 require('admin-lte/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js');
+// require('admin-lte/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js');

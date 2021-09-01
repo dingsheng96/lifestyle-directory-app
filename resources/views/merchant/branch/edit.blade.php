@@ -340,6 +340,13 @@
                             <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
 
                                 <div class="form-group">
+                                    <label for="tbl_oprating_hour" class="col-form-label">{{ __('labels.operating_hour') }}</label>
+                                    @include('components.operating_table', ['target' => $branch->operationHours])
+                                </div>
+
+                                <hr>
+
+                                <div class="form-group">
                                     <label for="pic_name" class="col-form-label">{{ __('labels.pic_name') }} <span class="text-danger">*</span></label>
                                     <input type="text" name="pic_name" id="pic_name" value="{{ old('pic_name', $branch->branchDetail->pic_name ?? null) }}" class="form-control @error('pic_name') is-invalid @enderror">
                                     @error('pic_name')

@@ -149,5 +149,13 @@ $(function() {
             input.val(value+1);
         });
     }
+
+    $('.timepicker').datetimepicker({
+        format: 'HH:mm',
+        pickDate: false,
+        pickSeconds: false,
+        pick12HourFormat: false,
+        ignoreReadonly: true,
+    })
 });
 

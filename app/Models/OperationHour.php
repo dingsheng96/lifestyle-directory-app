@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use App\Casts\Time;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -26,5 +27,16 @@ class OperationHour extends Model
     public function branch()
     {
         return $this->belongsTo(User::class, 'branch_id', 'id');
+    }
+
+    // Attributes
+    public function setStartAttribute($value)
+    {
+        $this->attributes['start'] = Carbon::parse($value)->toTimeString();
+    }
+
+    public function setEndAttribute($value)
+    {
+        $this->attributes['end'] = Carbon::parse($value)->toTimeString();
     }
 }

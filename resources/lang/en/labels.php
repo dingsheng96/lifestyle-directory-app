@@ -146,10 +146,15 @@ return [
     'change_ssm_cert' => 'Change SSM Certificate',
     'branch' => 'Branch|Branches',
     'merchant_branch' => ":merchant's Branch",
+    'operating_hour' => 'Operating Hour',
+    'days_of_week' => 'Days of Week',
+    'off_day' => 'Off Day',
+    'start_from' => 'Start From',
+    'end_at' => 'End At',
 
     'job_title' => 'Job Title',
     'salary' => 'Salary',
     'company' => 'Company',
     'benefits' => 'Benefits',
-    'show_salary' => 'Show Salary'
+    'show_salary' => 'Show Salary',
 ];
