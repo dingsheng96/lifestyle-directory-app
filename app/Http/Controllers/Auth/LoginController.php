@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -61,6 +63,20 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
+        if ($user->is_member || $user->is_guest) {
+
+            $this->guard()->logout();
+
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            throw ValidationException::withMessages([
+                $this->username() => [trans('auth.failed')],
+            ]);
+
+            return redirect()->route('login');
+        }
+
         $message =  $user->name . ' ' . strtolower(__('messages.login_success'));
 
         activity()->useLog('web:auth')
@@ -100,7 +116,7 @@ class LoginController extends Controller
         }
 
         return $request->wantsJson()
-            ? response()->json([], 204)
+            ? new JsonResponse([], 204)
             : redirect()->route('login')->withSuccess($message);
     }
 }

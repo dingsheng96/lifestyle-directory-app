@@ -46,7 +46,7 @@ class MemberDataTable extends DataTable
                 return $data->formatted_phone_number;
             })
             ->editColumn('status', function ($data) {
-                return '<span>' . $data->status_label . '</span>';
+                return '<span>' . $data->active_status_label . '</span>';
             })
             ->filterColumn('status', function ($query, $keyword) {
                 $query->where('status', strtolower($keyword));

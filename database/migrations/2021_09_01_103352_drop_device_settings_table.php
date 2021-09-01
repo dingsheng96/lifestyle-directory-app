@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class DropRateablesTable extends Migration
+class DropDeviceSettingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class DropRateablesTable extends Migration
      */
     public function up()
     {
-        // Schema::
+        Schema::dropIfExists('device_settings');
     }
 
     /**

@@ -44,9 +44,9 @@ class MerchantRequest extends FormRequest
             'phone'             =>  ['required', new PhoneFormat],
             'email'             =>  ['required', 'email', new UniqueMerchant('email', $merchant)],
             'password'          =>  [Rule::requiredIf(empty($merchant)), 'nullable', new PasswordFormat, 'confirmed'],
-            'category'          =>  ['required_without:branch_status', 'nullable', 'exists:' . Category::class . ',id'],
+            'category'          =>  [Rule::requiredIf(empty($this->route('merchant'))), 'nullable', 'exists:' . Category::class . ',id'],
             'status'            =>  ['required', Rule::in(array_keys((new Status())->activeStatus()))],
-            'branch_status'     =>  [Rule::requiredIf($this->route('branch')), 'nullable', Rule::in(array_keys((new Status())->publishStatus()))],
+            'listing_status'    =>  [Rule::requiredIf($this->route('branch')), 'nullable', Rule::in(array_keys((new Status())->publishStatus()))],
 
             'address_1'         =>  ['required', 'min:3', 'max:255'],
             'address_2'         =>  ['nullable'],
@@ -57,7 +57,7 @@ class MerchantRequest extends FormRequest
             'reg_no'            =>  [
                 'required',
                 Rule::unique(BranchDetail::class, 'reg_no')
-                    ->ignore($merchant->id, 'branch_id')->whereNull('deleted_at')
+                    ->ignore($merchant, 'branch_id')->whereNull('deleted_at')
             ],
             'website'           =>  ['nullable', 'url'],
             'facebook'          =>  ['nullable', 'url'],

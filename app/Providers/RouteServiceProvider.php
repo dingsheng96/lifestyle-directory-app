@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -68,28 +67,28 @@ class RouteServiceProvider extends ServiceProvider
     protected function routeBindings()
     {
         Route::bind('admin', function ($value) {
-            return User::where('id', $value)
-                ->whereHas('roles', function ($query) {
-                    $query->where('name', Role::ROLE_SUPER_ADMIN);
-                })
-                ->firstOrFail();
+
+            return User::where('id', $value)->where('type', User::USER_TYPE_ADMIN)->firstOrFail();
         });
 
         Route::bind('merchant', function ($value) {
-            return User::where('id', $value)
-                ->whereHas('roles', function ($query) {
-                    $query->where('name', Role::ROLE_MERCHANT_1)
-                        ->orWhere('name', Role::ROLE_MERCHANT_2);
-                })
-                ->firstOrFail();
+
+            return User::where('id', $value)->where('type', User::USER_TYPE_MERCHANT)->firstOrFail();
+        });
+
+        Route::bind('branch', function ($value) {
+
+            return User::where('id', $value)->where('type', User::USER_TYPE_BRANCH)->firstOrFail();
         });
 
         Route::bind('member', function ($value) {
-            return User::where('id', $value)
-                ->whereHas('roles', function ($query) {
-                    $query->where('name', Role::ROLE_MEMBER);
-                })
-                ->firstOrFail();
+
+            return User::where('id', $value)->where('type', User::USER_TYPE_MEMBER)->firstOrFail();
+        });
+
+        Route::bind('guest', function ($value) {
+
+            return User::where('id', $value)->where('type', User::USER_TYPE_GUEST)->firstOrFail();
         });
     }
 }

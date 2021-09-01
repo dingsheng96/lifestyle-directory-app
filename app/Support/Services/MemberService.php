@@ -22,6 +22,7 @@ class MemberService extends BaseService
         $this->model->mobile_no =   $this->request->get('phone');
         $this->model->email     =   $this->request->get('email');
         $this->model->status    =   $this->request->get('status', User::STATUS_ACTIVE);
+        $this->model->type      =   User::USER_TYPE_MEMBER;
         $this->model->password  =   !empty($this->request->get('password'))
             ? Hash::make($this->request->get('password'))
             : $this->model->password;
@@ -84,6 +85,17 @@ class MemberService extends BaseService
 
             $this->storeMedia($media, $config, $cover_photo);
         };
+
+        return $this;
+    }
+
+    public function setUserType(string $type = User::USER_TYPE_MEMBER)
+    {
+        $this->model->type = $type;
+
+        if ($this->model->isDirty()) {
+            $this->model->save();
+        }
 
         return $this;
     }

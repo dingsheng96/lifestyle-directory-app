@@ -39,9 +39,7 @@ class BranchController extends Controller
     {
         $max_files = Media::MAX_BRANCH_IMAGE_UPLOAD;
 
-        $days_of_week = Carbon::getDays();
-
-        return view('merchant.branch.create', compact('max_files', 'merchant', 'days_of_week'));
+        return view('merchant.branch.create', compact('max_files', 'merchant'));
     }
 
     /**
@@ -124,9 +122,7 @@ class BranchController extends Controller
 
         $max_files = Media::MAX_BRANCH_IMAGE_UPLOAD - (clone $image_and_thumbnail)->count();
 
-        $days_of_week = Carbon::getDays();
-
-        return view('merchant.branch.edit', compact('merchant', 'branch', 'max_files', 'image_and_thumbnail', 'days_of_week'));
+        return view('merchant.branch.edit', compact('merchant', 'branch', 'max_files', 'image_and_thumbnail'));
     }
 
     /**

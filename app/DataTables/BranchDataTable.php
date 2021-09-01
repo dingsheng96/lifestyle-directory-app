@@ -54,7 +54,7 @@ class BranchDataTable extends DataTable
                 return $data->created_at->toDateTimeString();
             })
             ->editColumn('status', function ($data) {
-                return $data->branch_status_label;
+                return $data->status_label;
             })
             ->rawColumns(['action', 'status', 'profile']);
     }

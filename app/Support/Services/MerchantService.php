@@ -38,11 +38,7 @@ class MerchantService extends BaseService
             ->setApplicationStatus(User::APPLICATION_STATUS_APPROVED);
 
         // sync to main branch
-        $main_branch->subBranches()->syncWithoutDetaching([
-            $this->model->id => [
-                'status' => $this->request->get('branch_status', User::STATUS_BRANCH_PUBLISH)
-            ]
-        ]);
+        $main_branch->subBranches()->syncWithoutDetaching([$this->model->id]);
 
         return $this;
     }
@@ -51,11 +47,13 @@ class MerchantService extends BaseService
     {
         $this->model->name      =   $this->request->get('name');
         $this->model->email     =   $this->request->get('email');
-        $this->model->status    =   $this->request->get('status', User::STATUS_INACTIVE);
         $this->model->mobile_no =   $this->request->get('phone');
+        $this->model->status    =   $this->request->get('status', User::STATUS_INACTIVE);
+        $this->model->type      =   User::USER_TYPE_MERCHANT;
         $this->model->password  =   !empty($this->request->get('password'))
             ? Hash::make($this->request->get('password'))
             : $this->model->password;
+        $this->model->listing_status   =   $this->request->get('listing_status', User::LISTING_STATUS_PUBLISH);
 
         if ($this->model->isDirty()) {
             $this->model->save();

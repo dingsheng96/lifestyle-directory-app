@@ -18,7 +18,7 @@ class Time implements CastsAttributes
      */
     public function get($model, $key, $value, $attributes)
     {
-        return Carbon::createFromFormat('H:i:s', $value)->format('H:i');
+        return Carbon::createFromFormat('H:i:s', $value)->format('H:i:s');
     }
 
     /**

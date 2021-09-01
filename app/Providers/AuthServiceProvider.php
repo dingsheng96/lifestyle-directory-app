@@ -32,11 +32,5 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Passport::routes();
-
-        Passport::setDefaultScope(['member']);
-
-        Passport::tokensCan([
-            'member' => 'User as member permission',
-        ]);
     }
 }

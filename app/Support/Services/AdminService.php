@@ -22,6 +22,7 @@ class AdminService extends BaseService
         $this->model->password  =   !empty($this->request->get('password'))
             ? Hash::make($this->request->get('password'))
             : $this->model->password;
+        $this->model->type      =   User::USER_TYPE_ADMIN;
 
         $this->model->application_status = User::APPLICATION_STATUS_APPROVED;
 
