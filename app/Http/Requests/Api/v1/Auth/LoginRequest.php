@@ -30,7 +30,8 @@ class LoginRequest extends BaseRequest
 
         return [
             'phone'     =>  ['required', new ExistMember('mobile_no'), new ValidateMemberStatus('mobile_no')],
-            'password'  =>  ['required', new ValidateMemberPassword('mobile_no', $this->get('phone'))]
+            'password'  =>  ['required', new ValidateMemberPassword('mobile_no', $this->get('phone'))],
+            'device_id' =>  ['required']
         ];
     }
 }

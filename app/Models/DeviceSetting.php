@@ -12,8 +12,7 @@ class DeviceSetting extends Model
     protected $table = 'device_settings';
 
     protected $fillable = [
-        'user_id', 'device_id', 'status',
-        'push_messaging_provider', 'push_messaging_token',
+        'user_id', 'device_id', 'device_os', 'push_messaging_token',
         'enable_push_messaging', 'enable_notification_sound'
     ];
 
@@ -30,5 +29,16 @@ class DeviceSetting extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    // Scopes
+    public function scopeActive($query)
+    {
+        return $query->where('status', self::STATUS_ACTIVE);
+    }
+
+    public function scopeInactive($query)
+    {
+        return $query->where('status', self::STATUS_INACTIVE);
     }
 }

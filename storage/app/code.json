@@ -9,6 +9,7 @@
         "admin": 140,
         "career": 150,
         "category": 160,
+        "device": 170,
         "country_state": 190,
         "city": 191,
         "system": 900

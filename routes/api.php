@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\AuthController;
 use App\Http\Controllers\Api\v1\HomeController;
 use App\Http\Controllers\Api\v1\RatingController;
+use App\Http\Controllers\Api\v1\AccountController;
 use App\Http\Controllers\Api\v1\CategoryController;
 use App\Http\Controllers\Api\v1\LanguageController;
 use App\Http\Controllers\Api\v1\MerchantController;
@@ -22,16 +23,20 @@ use App\Http\Controllers\Api\v1\MerchantController;
 
 Route::prefix('v1')->namespace('v1')->group(function () {
 
+    Route::post('languages', [LanguageController::class, 'languages']);
+
     Route::post('pre-register', [AuthController::class, 'preRegister']);
+
+    Route::post('login', [AuthController::class, 'login']);
+    Route::post('register', [AuthController::class, 'register']);
 
     Route::middleware(['auth:api'])->group(function () {
 
-        Route::post('languages', [LanguageController::class, 'languages']);
         Route::post('languages/translations', [LanguageController::class, 'translations']);
 
-        Route::post('login', [AuthController::class, 'login']);
-
-        Route::post('register', [AuthController::class, 'register']);
+        Route::post('profile', [AccountController::class, 'profile']);
+        Route::post('profile/update', [AccountController::class, 'updateProfile']);
+        Route::post('device/settings', [AccountController::class, 'deviceSettings']);
 
         Route::post('home', [HomeController::class, 'index']);
 

@@ -18,8 +18,8 @@ class CreateNewDeviceSettingsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->index();
             $table->string('device_id')->index();
+            $table->string('device_os', 45)->index();
             $table->enum('status', ['active', 'inactive']);
-            $table->string('push_messaging_provider');
             $table->string('push_messaging_token');
             $table->boolean('enable_push_messaging')->default(1);
             $table->boolean('enable_notification_sound')->default(1);

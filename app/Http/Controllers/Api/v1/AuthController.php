@@ -54,7 +54,7 @@ class AuthController extends Controller
             ->sendJson();
     }
 
-    public function login(LoginRequest $request)
+    public function login(LoginRequest $request, MemberService $member_service)
     {
         $status     =   'success';
         $message    =   Message::instance()->login();
@@ -63,6 +63,14 @@ class AuthController extends Controller
         $user = User::with(['media'])->member()
             ->where('mobile_no', (new Misc())->phoneStoreFormat($request->get('phone')))
             ->first();
+
+        $user = $member_service->setModel($user)->setRequest($request)->changeActiveDevice()->getModel();
+
+        $user->load([
+            'deviceSettings' => function ($query) {
+                return $query->active();
+            }
+        ]);
 
         $user->revokeTokens();
 

@@ -5,6 +5,7 @@ namespace App\Support\Services;
 use App\Models\User;
 use App\Models\Media;
 use App\Helpers\FileManager;
+use App\Models\DeviceSetting;
 use Illuminate\Support\Facades\Hash;
 use App\Support\Services\BaseService;
 
@@ -114,6 +115,47 @@ class MemberService extends BaseService
 
         if ($this->model->isDirty()) {
             $this->model->save();
+        }
+
+        return $this;
+    }
+
+    public function storeDevice()
+    {
+        $device = $this->model->deviceSettings()
+            ->where('device_id', $this->request->get('device_id'))
+            ->firstOr(function () {
+                return new DeviceSetting();
+            });
+
+        $device->device_id                  =   $this->request->get('device_id');
+        $device->device_os                  =   $this->request->get('device_os');
+        $device->push_messaging_token       =   $this->request->get('push_messaging_token');
+        $device->enable_push_messaging      =   $this->request->get('enable_push_messaging');
+        $device->enable_notification_sound  =   $this->request->get('enable_notification_sound');
+
+        if ($device->isDirty()) {
+
+            $this->model->deviceSettings()->save($device);
+        }
+
+        return $this;
+    }
+
+    public function changeActiveDevice()
+    {
+        $user_devices   = $this->model->deviceSettings();
+        $active_device  = (clone $user_devices)->active()->first();
+        $target_device  = (clone $user_devices)->where('device_id', $this->request->get('device_id'))->first();
+
+        if ($active_device) {
+            $active_device->status = DeviceSetting::STATUS_INACTIVE;
+            $this->model->deviceSettings()->save($active_device);
+        }
+
+        if ($target_device) {
+            $target_device->status = DeviceSetting::STATUS_ACTIVE;
+            $this->model->deviceSettings()->save($target_device);
         }
 
         return $this;

@@ -14,13 +14,21 @@ class MemberResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $data = [
             'id'            =>  $this->id,
             'name'          =>  $this->name,
             'mobile_no'     =>  $this->mobile_no,
             'status'        =>  $this->status,
             'profile_image' =>  $this->profile_image->full_file_path ?? "",
-            'cover_photo'   =>  $this->cover_photo->full_file_path ?? ""
+            'cover_photo'   =>  $this->cover_photo->full_file_path ?? "",
+            'device'        =>  []
         ];
+
+        if ($this->deviceSettings->first()) {
+
+            $data['device'] = (new DeviceResource($this->deviceSettings->first()))->toArray($request);
+        }
+
+        return $data;
     }
 }
