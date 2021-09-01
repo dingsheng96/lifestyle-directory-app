@@ -28,11 +28,12 @@ Route::prefix('v1')->namespace('v1')->group(function () {
     Route::post('pre-register', [AuthController::class, 'preRegister']);
 
     Route::post('login', [AuthController::class, 'login']);
-    Route::post('register', [AuthController::class, 'register']);
 
     Route::middleware(['auth:api'])->group(function () {
 
         Route::post('languages/translations', [LanguageController::class, 'translations']);
+
+        Route::post('register', [AuthController::class, 'register']);
 
         Route::post('profile', [AccountController::class, 'profile']);
         Route::post('profile/update', [AccountController::class, 'updateProfile']);

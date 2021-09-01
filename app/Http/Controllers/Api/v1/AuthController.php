@@ -57,7 +57,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request, MemberService $member_service)
     {
         $status     =   'success';
-        $message    =   Message::instance()->login();
+        $message    =   'Ok';
         $data       =   [];
 
         $user = User::with(['media'])->member()
@@ -80,7 +80,7 @@ class AuthController extends Controller
             ->causedByAnonymous()
             ->performedOn($user)
             ->withProperties($request->all())
-            ->log($user->name . ' ' . $message);
+            ->log($user->name . ' login');
 
         return Response::instance()
             ->withStatusCode('modules.member', 'actions.authenticate.' . $status)
@@ -90,51 +90,24 @@ class AuthController extends Controller
             ->sendJson();
     }
 
-    public function logout(Request $request)
-    {
-        $status     =   'success';
-
-        $message    =   Message::instance()->logout();
-
-        $user = $request->user();
-
-        $user->token()->revoke();
-
-        activity()->useLog('api:logout')
-            ->causedBy($user)
-            ->withProperties($request->all())
-            ->log($user->name . ' ' . strtolower($message));
-
-        return Response::instance()
-            ->withStatusCode('modules.member', 'actions.authenticate.' . $status)
-            ->withStatus($status)
-            ->withMessage($message)
-            ->sendJson();
-    }
-
     public function register(RegisterRequest $request, MemberService $member_service)
     {
         DB::beginTransaction();
 
-        $status     =   'fail';
-        $message    =   Message::instance()->register($status);
+        $status  = 'success';
+        $message = 'Ok';
 
         try {
 
-            if (Auth::guard('api')->check()) {
-                $member_service->setModel($request->user())->setRequest($request)->store();
-            } else {
-                $member_service->setRequest($request)->store();
-            }
+            $member_service->setModel($request->user())->setRequest($request)->store();
 
-            $status     = 'success';
-            $message    =   Message::instance()->register($status);
 
             DB::commit();
         } catch (\Error | \Exception $ex) {
 
             DB::rollBack();
 
+            $status = 'fail';
             $message = $ex->getMessage();
         }
 
@@ -146,6 +119,26 @@ class AuthController extends Controller
 
         return Response::instance()
             ->withStatusCode('modules.member', 'actions.create.' . $status)
+            ->withStatus($status)
+            ->withMessage($message)
+            ->sendJson();
+    }
+
+    public function logout(Request $request)
+    {
+        $status     =   'success';
+        $message    =   'Ok';
+        $user       =   $request->user();
+
+        $user->token()->revoke();
+
+        activity()->useLog('api:logout')
+            ->causedBy($user)
+            ->withProperties($request->all())
+            ->log($user->name . ' logout');
+
+        return Response::instance()
+            ->withStatusCode('modules.member', 'actions.authenticate.' . $status)
             ->withStatus($status)
             ->withMessage($message)
             ->sendJson();
