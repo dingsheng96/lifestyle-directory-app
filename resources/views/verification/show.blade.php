@@ -5,7 +5,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <div class="card">
+            <div class="card shadow">
                 <div class="card-header bg-transparent">
                     <h3 class="card-title">{{ __('modules.view', ['module' => trans_choice('modules.verification', 1)]) }}</h3>
                 </div>

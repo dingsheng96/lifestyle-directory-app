@@ -6,7 +6,7 @@
     <div class="row">
 
         <div class="col-12 col-md-3">
-            <div class="card shadow-lg">
+            <div class="card shadow">
                 <div class="card-header bg-transparent border-0">
                     <span class="h5">{{ __('modules.edit', ['module' => trans_choice('modules.merchant', 1)]) }}</span>
                 </div>
@@ -23,7 +23,7 @@
         </div>
 
         <div class="col-12 col-md-9">
-            <div class="card shadow-lg">
+            <div class="card shadow">
 
                 <form action="{{ route('merchants.update', ['merchant' => $merchant->id]) }}" method="post" role="form" enctype="multipart/form-data">
                     @csrf

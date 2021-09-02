@@ -9,7 +9,6 @@ use App\Models\Country;
 use App\Rules\PhoneFormat;
 use App\Models\CountryState;
 use Illuminate\Http\Request;
-use App\Rules\PasswordFormat;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -17,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
@@ -64,7 +64,7 @@ class RegisterController extends Controller
             'name'          =>  ['required', 'string', 'max:255', Rule::unique(User::class, 'name')->whereNull('deleted_at')],
             'email'         =>  ['required', 'string', 'email', 'max:255', Rule::unique(User::class, 'email')->whereNull('deleted_at')],
             'phone'         =>  ['required', 'string', new PhoneFormat],
-            'password'      =>  ['required', 'string', new PasswordFormat, 'confirmed'],
+            'password'      =>  ['required', 'string', 'confirmed', Password::defaults()],
             'address_1'     =>  ['required', 'string', 'min:3', 'max:255'],
             'address_2'     =>  ['nullable', 'string', 'min:3', 'max:255'],
             'country'       =>  ['required', 'exists:' . Country::class . ',id'],

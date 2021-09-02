@@ -44,10 +44,6 @@ class BaseRequest extends FormRequest
             ->withMessage($error->first())
             ->getResponse();
 
-        activity()->useLog('api:' . $this->log)
-            ->withProperties($response)
-            ->log($error->first());
-
         throw new HttpResponseException(
             response()->json($response, 422)
         );
@@ -66,12 +62,6 @@ class BaseRequest extends FormRequest
     {
         $this->action = $action;
 
-        return $this;
-    }
-
-    protected function setLog(string $log)
-    {
-        $this->log = $log;
         return $this;
     }
 }

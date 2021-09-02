@@ -8,6 +8,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -41,26 +42,8 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
-    }
 
-    /**
-     * Render an exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Throwable  $exception
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Throwable
-     */
-    public function render($request, Throwable $exception)
-    {
-        if ($exception instanceof TokenMismatchException) {
-            return redirect()->route('login')->with('info', __('messages.session_expired'));
-        } elseif ($exception instanceof InvalidSignatureException) {
-            return redirect()->route('login')->with('info', __('messages.email_verification_link_expired'));
-        }
-
-        return parent::render($request, $exception);
+        $this->customRenderables();
     }
 
     /**
@@ -82,5 +65,31 @@ class Handler extends ExceptionHandler
                 401
             )
             : redirect()->guest($exception->redirectTo() ?? route('login'));
+    }
+
+    protected function customRenderables()
+    {
+        $this->renderable(function (AccessDeniedHttpException $e, $request) {
+            return $request->expectsJson()
+                ? response()->json(
+                    Response::instance()
+                        ->withStatusCode('modules.scope', 'actions.authenticate.fail')
+                        ->withStatus('fail')
+                        ->withMessage($e->getMessage())
+                        ->getResponse(),
+                    403
+                )
+                : redirect()->route('login')->with('info', $e->getMessage());
+        });
+
+        $this->renderable(function (TokenMismatchException $e, $request) {
+
+            return redirect()->route('login')->with('info', __('messages.session_expired'));
+        });
+
+        $this->renderable(function (InvalidSignatureException $e, $request) {
+
+            return redirect()->route('login')->with('info', __('messages.email_verification_link_expired'));
+        });
     }
 }

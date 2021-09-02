@@ -13,11 +13,11 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right">
                 <a href="{{ route('account.index') }}" class="dropdown-item">
-                    <i class="fas fa-user mr-2 text-cyan"></i>
+                    <i class="fas fa-user mr-2 text-purple"></i>
                     <span>{{ __('labels.user_account') }}</span>
                 </a>
                 <a href="#" class="dropdown-item" onclick="event.preventDefault(); logoutAlert('{{ __('messages.confirm_question') }}');">
-                    <i class="fas fa-sign-out-alt mr-2 text-red"></i>
+                    <i class="fas fa-sign-out-alt mr-2 text-danger"></i>
                     <span>{{ __('labels.logout') }}</span>
                 </a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

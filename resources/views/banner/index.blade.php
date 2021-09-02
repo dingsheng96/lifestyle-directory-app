@@ -17,7 +17,7 @@
 
     <div class="row mb-3">
         <div class="col-12">
-            <div class="card">
+            <div class="card shadow">
                 <div class="card-body table-responsive">
                     {!! $dataTable->table() !!}
                 </div>

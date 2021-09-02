@@ -6,7 +6,7 @@
 
     <div class="row mb-3">
         <div class="col-12">
-            <div class="card shadow-lg">
+            <div class="card shadow">
 
                 <div class="card-header bg-transparent border-0">
                     <span class="h5">{{ __('modules.view', ['module' => trans_choice('modules.category', 1)]) }}</span>

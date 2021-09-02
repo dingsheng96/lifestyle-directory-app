@@ -1,9 +1,9 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\AuthController;
 use App\Http\Controllers\Api\v1\HomeController;
-use App\Http\Controllers\Api\v1\RatingController;
 use App\Http\Controllers\Api\v1\AccountController;
 use App\Http\Controllers\Api\v1\CategoryController;
 use App\Http\Controllers\Api\v1\LanguageController;
@@ -31,24 +31,40 @@ Route::prefix('v1')->namespace('v1')->group(function () {
 
     Route::middleware(['auth:api'])->group(function () {
 
-        Route::post('languages/translations', [LanguageController::class, 'translations']);
+        // routes for either Member or Guest scopes
+        Route::middleware(['scope:' . User::USER_TYPE_GUEST . ',' . User::USER_TYPE_MEMBER])->group(function () {
 
-        Route::post('register', [AuthController::class, 'register']);
+            Route::post('home', [HomeController::class, 'index']);
 
-        Route::post('profile', [AccountController::class, 'profile']);
-        Route::post('profile/update', [AccountController::class, 'updateProfile']);
-        Route::post('device/settings', [AccountController::class, 'deviceSettings']);
+            Route::post('languages/translations', [LanguageController::class, 'translations']);
 
-        Route::post('home', [HomeController::class, 'index']);
+            Route::post('device/settings', [AccountController::class, 'deviceSettings']);
 
-        Route::post('categories', [CategoryController::class, 'index']);
-        Route::post('categories/populars', [CategoryController::class, 'popular']);
+            Route::post('profile', [AccountController::class, 'profile']);
 
-        Route::post('merchants', [MerchantController::class, 'index']);
-        Route::post('merchants/show', [MerchantController::class, 'show']);
-        Route::post('merchants/ratings', [MerchantController::class, 'ratings']);
-        Route::post('merchants/ratings/store', [MerchantController::class, 'storeRatings']);
+            Route::post('categories', [CategoryController::class, 'index']);
+            Route::post('categories/populars', [CategoryController::class, 'popular']);
 
-        Route::post('logout', [AuthController::class, 'logout']);
+            Route::post('merchants', [MerchantController::class, 'index']);
+            Route::post('merchants/show', [MerchantController::class, 'show']);
+            Route::post('merchants/ratings', [MerchantController::class, 'ratings']);
+            Route::post('merchants/ratings/store', [MerchantController::class, 'storeRatings']);
+        });
+
+        // routes for Guest scope only
+        Route::middleware(['scope:' . User::USER_TYPE_GUEST])->group(function () {
+
+            Route::post('register', [AuthController::class, 'register']);
+        });
+
+        // routes for Member scope only
+        Route::middleware(['scope:' . User::USER_TYPE_MEMBER])->group(function () {
+
+            Route::post('profile/update', [AccountController::class, 'updateProfile']);
+
+            Route::post('password/change', [AccountController::class, 'changePassword']);
+
+            Route::post('logout', [AuthController::class, 'logout']);
+        });
     });
 });

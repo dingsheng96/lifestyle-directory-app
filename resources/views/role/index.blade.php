@@ -17,7 +17,7 @@
 
     <div class="row py-2">
         <div class="col-12">
-            <div class="card shadow-lg">
+            <div class="card shadow">
 
                 <div class="card-body table-responsive">
                     {!! $dataTable->table() !!}

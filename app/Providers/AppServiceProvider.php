@@ -2,10 +2,9 @@
 
 namespace App\Providers;
 
-use App\Models\User;
-use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Rules\Password;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,11 +32,9 @@ class AppServiceProvider extends ServiceProvider
         // set default string length
         Schema::defaultStringLength(255);
 
-        $this->observers();
-    }
+        Password::defaults(function () {
 
-    protected function observers()
-    {
-        User::observe(UserObserver::class);
+            return Password::min(8)->mixedCase()->numbers()->symbols();
+        });
     }
 }

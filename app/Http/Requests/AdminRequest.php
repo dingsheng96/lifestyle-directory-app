@@ -2,12 +2,13 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Role;
 use App\Models\User;
 use App\Helpers\Status;
-use App\Rules\PasswordFormat;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AdminRequest extends FormRequest
@@ -52,7 +53,7 @@ class AdminRequest extends FormRequest
                 Rule::requiredIf(empty($this->route('admin'))),
                 'nullable',
                 'confirmed',
-                new PasswordFormat()
+                Password::defaults()
             ],
             'role' =>  ['required', 'exist:' . Role::class . ',id'],
         ];

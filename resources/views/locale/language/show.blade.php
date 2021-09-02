@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col-12 col-md-5">
-            <div class="card">
+            <div class="card shadow">
                 <div class="card-header bg-transparent">
                     <h3 class="card-title">{{ __('modules.view', ['module' => trans_choice('modules.country', 1)]) }}</h3>
                 </div>
@@ -35,7 +35,7 @@
         </div>
 
         <div class="col-12 col-md-7">
-            <div class="card">
+            <div class="card shadow">
                 <div class="card-header bg-transparent">
                     <h3 class="card-title">{{ trans_choice('labels.country_state', 2) }}</h3>
                 </div>

@@ -17,7 +17,7 @@ class RatingListRequest extends BaseRequest
      */
     public function rules()
     {
-        $this->setModule('rating')->setAction('index')->setLog('rating');
+        $this->setModule('rating')->setAction('index');
 
         return $this->setPaginationRules([
             'merchant_id'   => ['required', new ExistMerchant()],

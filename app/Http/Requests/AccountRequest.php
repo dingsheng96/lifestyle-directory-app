@@ -7,9 +7,9 @@ use App\Models\User;
 use App\Models\Country;
 use App\Rules\PhoneFormat;
 use App\Models\CountryState;
-use App\Rules\PasswordFormat;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AccountRequest extends FormRequest
@@ -45,7 +45,7 @@ class AccountRequest extends FormRequest
             'email' => [
                 'required', 'email', Rule::unique(User::class, 'email')->ignore(Auth::id(), 'id')->whereNull('deleted_at')
             ],
-            'new_password' => ['nullable', new PasswordFormat, 'confirmed'],
+            'new_password' => ['nullable', 'confirmed', Password::defaults()],
             'pic_name' => [Rule::requiredIf($is_merchant), 'nullable', 'max:255'],
             'pic_phone' => [Rule::requiredIf($is_merchant), 'nullable', new PhoneFormat],
             'pic_email' => [Rule::requiredIf($is_merchant), 'nullable', 'email'],

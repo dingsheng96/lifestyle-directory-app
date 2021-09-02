@@ -12,6 +12,7 @@
         "device": 170,
         "country_state": 190,
         "city": 191,
+        "scope": 800,
         "system": 900
     },
     "actions": {

@@ -79,7 +79,7 @@ class AuthController extends Controller
         activity()->useLog('api:login')
             ->causedByAnonymous()
             ->performedOn($user)
-            ->withProperties($request->all())
+            ->withProperties($request->except('password'))
             ->log($user->name . ' login');
 
         return Response::instance()
@@ -94,13 +94,18 @@ class AuthController extends Controller
     {
         DB::beginTransaction();
 
-        $status  = 'success';
-        $message = 'Ok';
+        $status     =   'success';
+        $message    =   'Ok';
+        $data       =   [];
+        $user       =   $request->user();
 
         try {
 
-            $member_service->setModel($request->user())->setRequest($request)->store();
+            $user = $member_service->setModel($user)->setRequest($request)->store()->getModel();
 
+            $user->revokeTokens();
+
+            $data = (new LoginResource($user))->toArray($request);
 
             DB::commit();
         } catch (\Error | \Exception $ex) {
@@ -112,15 +117,16 @@ class AuthController extends Controller
         }
 
         activity()->useLog('api:register')
-            ->causedByAnonymous()
-            ->performedOn(new User())
-            ->withProperties($request->all())
+            ->causedBy($user)
+            ->performedOn($user)
+            ->withProperties($request->except(['password', 'password_confirmation']))
             ->log($message);
 
         return Response::instance()
             ->withStatusCode('modules.member', 'actions.create.' . $status)
             ->withStatus($status)
             ->withMessage($message)
+            ->withData($data)
             ->sendJson();
     }
 
@@ -134,7 +140,6 @@ class AuthController extends Controller
 
         activity()->useLog('api:logout')
             ->causedBy($user)
-            ->withProperties($request->all())
             ->log($user->name . ' logout');
 
         return Response::instance()

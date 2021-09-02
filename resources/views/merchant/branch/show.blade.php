@@ -6,7 +6,7 @@
     <div class="row">
 
         <div class="col-12 col-md-3">
-            <div class="card shadow-lg">
+            <div class="card shadow">
                 <div class="card-header bg-transparent border-0">
                     <span class="h5">{{ __('modules.view', ['module' => trans_choice('labels.branch', 1)]) }}</span>
                 </div>
@@ -20,7 +20,7 @@
         </div>
 
         <div class="col-12 col-md-9">
-            <div class="card shadow-lg">
+            <div class="card shadow">
                 <div class="card-header bg-transparent border-0">
                     <span class="h5">{{ __('labels.merchant_branch', ['merchant' => $merchant->name]) }}</span>
                 </div>

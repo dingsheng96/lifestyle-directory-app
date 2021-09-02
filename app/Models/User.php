@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Role;
 use App\Helpers\Misc;
 use App\Models\Media;
 use App\Models\Branch;
@@ -15,9 +14,11 @@ use App\Models\Favourable;
 use App\Models\BranchDetail;
 use App\Models\Categorizable;
 use App\Models\DeviceSetting;
+use App\Observers\UserObserver;
 use App\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -62,6 +63,26 @@ class User extends Authenticatable implements MustVerifyEmail
     const STORE_BASE_DIRECTORY      =   '/users';
     const STORE_MEMBER_PATH         =   self::STORE_BASE_DIRECTORY . '/members';
     const STORE_MERCHANT_PATH       =   self::STORE_BASE_DIRECTORY . '/merchants';
+
+    // Functions
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::observe(UserObserver::class);
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmail());
+    }
+
+    public function revokeTokens(): void
+    {
+        foreach ($this->tokens as $token) {
+            $token->revoke();
+        }
+    }
 
     // Relationships
     public function subBranches()
@@ -127,21 +148,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function operationHours()
     {
         return $this->hasMany(OperationHour::class, 'branch_id', 'id');
-    }
-
-    // Functions
-    public function sendEmailVerificationNotification()
-    {
-        $this->notify(new VerifyEmail());
-    }
-
-    public function revokeTokens()
-    {
-        foreach ($this->tokens as $token) {
-            $token->revoke();
-        }
-
-        return;
     }
 
     // Scopes
@@ -256,6 +262,11 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     // Attributes
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = (!empty($value)) ? Hash::make(trim($value)) : $this->password;
+    }
+
     public function setMobileNoAttribute($value)
     {
         if (!empty($value)) {

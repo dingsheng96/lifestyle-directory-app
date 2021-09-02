@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Role;
+use App\Models\User;
 use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -32,5 +33,10 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Passport::routes();
+
+        Passport::tokensCan([
+            User::USER_TYPE_GUEST => 'Guest user',
+            User::USER_TYPE_MEMBER => 'Registered user',
+        ]);
     }
 }

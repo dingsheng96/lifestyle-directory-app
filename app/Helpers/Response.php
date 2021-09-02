@@ -38,7 +38,13 @@ class Response
     public function withData(array $data = [])
     {
         if (!empty($data)) {
-            $this->data = $this->convertNullDataToEmptyString($data);
+
+            array_walk_recursive($data, function (&$value, $key) {
+
+                $value = is_null($value) ? "" : $value;
+            });
+
+            $this->data = $data;
         };
 
         return $this;
@@ -75,14 +81,5 @@ class Response
             'message'   =>  $this->message,
             'data'      =>  $this->data
         ];
-    }
-
-    protected function convertNullDataToEmptyString($array)
-    {
-        $array = array_map(function ($value) {
-            return (is_null($value)) ? "" : $value;
-        }, $array);
-
-        return $array;
     }
 }

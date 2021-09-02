@@ -15,7 +15,7 @@ class UpdateProfileRequest extends BaseRequest
      */
     public function rules()
     {
-        $this->setModule('member')->setAction('update')->setLog('profile');
+        $this->setModule('member')->setAction('update');
 
         return [
             'name'          =>  ['required', Rule::unique(User::class, 'name')->ignore($this->user()->id, 'id')->where('type', User::USER_TYPE_MEMBER)->whereNull('deleted_at')],

@@ -13,7 +13,7 @@ class DeviceRequest extends BaseRequest
      */
     public function rules()
     {
-        $this->setModule('guest')->setAction('create')->setLog('pre_register');
+        $this->setModule('guest')->setAction('create');
 
         return [
             'device_id'     =>  ['required'],

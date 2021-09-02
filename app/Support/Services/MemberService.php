@@ -23,9 +23,7 @@ class MemberService extends BaseService
         $this->model->email     =   $this->request->get('email');
         $this->model->status    =   $this->request->get('status', User::STATUS_ACTIVE);
         $this->model->type      =   User::USER_TYPE_MEMBER;
-        $this->model->password  =   !empty($this->request->get('password'))
-            ? Hash::make($this->request->get('password'))
-            : $this->model->password;
+        $this->model->password  =   $this->request->get('password');
 
         $this->model->application_status = User::APPLICATION_STATUS_APPROVED;
 
@@ -144,19 +142,29 @@ class MemberService extends BaseService
 
     public function changeActiveDevice()
     {
-        $user_devices   = $this->model->deviceSettings();
-        $active_device  = (clone $user_devices)->active()->first();
-        $target_device  = (clone $user_devices)->where('device_id', $this->request->get('device_id'))->first();
+        if ($active_device = $this->model->deviceSettings()->active()->first()) {
 
-        if ($active_device) {
-            $active_device->status = DeviceSetting::STATUS_INACTIVE;
+            $active_device->status  =   DeviceSetting::STATUS_INACTIVE;
+
             $this->model->deviceSettings()->save($active_device);
         }
 
-        if ($target_device) {
-            $target_device->status = DeviceSetting::STATUS_ACTIVE;
+        if ($target_device = DeviceSetting::where('device_id', $this->request->get('device_id'))->first()) {
+
+            $target_device->user_id =   $this->model->id;
+            $target_device->status  =   DeviceSetting::STATUS_ACTIVE;
+
             $this->model->deviceSettings()->save($target_device);
         }
+
+        return $this;
+    }
+
+    public function resetPassword()
+    {
+        $this->model->password = $this->request->get('new_password');
+
+        $this->model->save();
 
         return $this;
     }

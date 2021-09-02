@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col-12">
-            <div class="card">
+            <div class="card shadow">
                 <div class="card-header bg-transparent border-0">
                     <span class="h5">{{ __('modules.edit', ['module' => trans_choice('modules.role', 1)]) }}</span>
                 </div>

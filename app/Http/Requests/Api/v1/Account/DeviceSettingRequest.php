@@ -15,7 +15,7 @@ class DeviceSettingRequest extends BaseRequest
      */
     public function rules()
     {
-        $this->setModule('member')->setAction('update')->setLog('profile');
+        $this->setModule('member')->setAction('update');
 
         return [
             'device_id'                 =>  ['required'],

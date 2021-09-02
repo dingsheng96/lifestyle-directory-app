@@ -26,7 +26,7 @@ class LoginRequest extends BaseRequest
      */
     public function rules()
     {
-        $this->setModule('member')->setAction('authenticate')->setLog('login');
+        $this->setModule('member')->setAction('authenticate');
 
         return [
             'phone'     =>  ['required', new ExistMember('mobile_no'), new ValidateMemberStatus('mobile_no')],

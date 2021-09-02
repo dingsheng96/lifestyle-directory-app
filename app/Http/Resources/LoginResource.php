@@ -16,7 +16,7 @@ class LoginResource extends JsonResource
     public function toArray($request)
     {
         $data = [
-            'token'     => $this->createToken("{$this->name}'s Access Token")->accessToken,
+            'token'     => $this->createToken("{$this->name}'s Access Token", [$this->type])->accessToken,
             'account'   => (new MemberResource($this))->toArray($request)
         ];
 

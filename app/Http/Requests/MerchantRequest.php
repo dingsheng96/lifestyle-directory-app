@@ -5,16 +5,15 @@ namespace App\Http\Requests;
 use App\Models\City;
 use App\Models\Media;
 use App\Helpers\Status;
-use App\Models\Country;
 use App\Models\Category;
 use App\Rules\PhoneFormat;
 use App\Models\BranchDetail;
 use App\Models\CountryState;
-use App\Rules\PasswordFormat;
 use App\Rules\UniqueMerchant;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
 
 class MerchantRequest extends FormRequest
@@ -43,7 +42,7 @@ class MerchantRequest extends FormRequest
             'name'              =>  ['required', 'min:3', 'max:255'],
             'phone'             =>  ['required', new PhoneFormat],
             'email'             =>  ['required', 'email', new UniqueMerchant('email', $merchant)],
-            'password'          =>  [Rule::requiredIf(empty($merchant)), 'nullable', new PasswordFormat, 'confirmed'],
+            'password'          =>  [Rule::requiredIf(empty($merchant)), 'nullable', 'confirmed', Password::defaults()],
             'category'          =>  [Rule::requiredIf(empty($this->route('merchant'))), 'nullable', 'exists:' . Category::class . ',id'],
             'status'            =>  ['required', Rule::in(array_keys((new Status())->activeStatus()))],
             'listing_status'    =>  [Rule::requiredIf($this->route('branch')), 'nullable', Rule::in(array_keys((new Status())->publishStatus()))],

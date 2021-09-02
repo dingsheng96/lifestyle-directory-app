@@ -201,6 +201,8 @@ return [
         'start_from' => 'start from',
         'end_at' => 'end at',
         'off_day' => 'off day',
-        'role' => 'role'
+        'role' => 'role',
+        'old_password' => 'old password',
+        'new_password' => 'new password'
     ],
 ];
