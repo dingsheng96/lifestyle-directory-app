@@ -3,11 +3,12 @@
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\AuthController;
-use App\Http\Controllers\Api\v1\HomeController;
+use App\Http\Controllers\Api\v1\BannerController;
 use App\Http\Controllers\Api\v1\AccountController;
 use App\Http\Controllers\Api\v1\CategoryController;
 use App\Http\Controllers\Api\v1\LanguageController;
 use App\Http\Controllers\Api\v1\MerchantController;
+use App\Http\Controllers\Api\v1\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,7 @@ use App\Http\Controllers\Api\v1\MerchantController;
 */
 
 
-Route::prefix('v1')->namespace('v1')->group(function () {
+Route::prefix('v1')->namespace('v1')->name('v1.')->group(function () {
 
     Route::post('languages', [LanguageController::class, 'languages']);
 
@@ -34,7 +35,7 @@ Route::prefix('v1')->namespace('v1')->group(function () {
         // routes for either Member or Guest scopes
         Route::middleware(['scope:' . User::USER_TYPE_GUEST . ',' . User::USER_TYPE_MEMBER])->group(function () {
 
-            Route::post('home', [HomeController::class, 'index']);
+            Route::post('dashboard', [DashboardController::class, 'index']);
 
             Route::post('languages/translations', [LanguageController::class, 'translations']);
 
@@ -49,6 +50,10 @@ Route::prefix('v1')->namespace('v1')->group(function () {
             Route::post('merchants/show', [MerchantController::class, 'show']);
             Route::post('merchants/ratings', [MerchantController::class, 'ratings']);
             Route::post('merchants/ratings/store', [MerchantController::class, 'storeRatings']);
+
+            Route::post('banners/show', [BannerController::class, 'show'])->name('banners.show');
+
+            // Route::post('notifications', []);
         });
 
         // routes for Guest scope only

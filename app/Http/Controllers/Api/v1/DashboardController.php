@@ -1,0 +1,60 @@
+<?php
+
+namespace App\Http\Controllers\Api\v1;
+
+use App\Models\User;
+use App\Models\Banner;
+use App\Models\Category;
+use App\Helpers\Response;
+use App\Http\Controllers\Controller;
+use App\Models\BranchVisitorHistory;
+use App\Http\Resources\BannerResource;
+use App\Http\Resources\CategoryResource;
+use App\Http\Resources\MerchantResource;
+use App\Http\Requests\Api\v1\HomeRequest;
+
+class DashboardController extends Controller
+{
+    public function index(HomeRequest $request)
+    {
+        $status     =   'success';
+        $data       =   [];
+        $latitude   =   $request->get('latitude', 0);
+        $longitude  =   $request->get('longitude', 0);
+        $user       =   $request->user();
+
+        $banners    = Banner::with(['media'])->publish()->orderByDesc('created_at')->get();
+
+        $categories = Category::with(['media'])->inRandomOrder()->limit(6)->get();
+
+        $merchants  = User::with([
+            'media', 'ratings', 'address' => function ($query) use ($latitude, $longitude) {
+                $query->getDistanceByCoordinates($latitude, $longitude);
+            }
+        ])->merchant()->active()->approvedApplication()->publish();
+
+        $popular_merchants = (clone $merchants)->filterByLocationDistance($latitude, $longitude)->orderBy('name')->limit(5)->get();
+
+        $recent_visit_merchants = (clone $merchants)->with(['visitorHistories'])
+            ->whereHas('visitorHistories', function ($query) use ($user) {
+                $query->where('visitor_id', $user->id);
+            })->orderBy(
+                BranchVisitorHistory::select('updated_at')
+                    ->where('visitor_id', $user->id)
+                    ->latest('updated_at')
+            )->paginate(15, ['*'], 'page', $request->get('page'));
+
+        $data = [
+            'banners' => BannerResource::collection($banners)->toArray($request),
+            'categories' => CategoryResource::collection($categories)->toArray($request),
+            'popular_merchants' =>  MerchantResource::collection($popular_merchants)->toArray($request),
+            'recent_visit_merchants' =>  MerchantResource::collection($recent_visit_merchants)->toArray($request)
+        ];
+
+        return Response::instance()
+            ->withStatusCode('modules.dashboard', 'actions.index.' . $status)
+            ->withStatus($status)
+            ->withData($data)
+            ->sendJson();
+    }
+}

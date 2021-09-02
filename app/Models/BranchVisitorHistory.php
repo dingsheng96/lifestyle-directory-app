@@ -18,11 +18,11 @@ class BranchVisitorHistory extends Model
     // Relationships
     public function branch()
     {
-        return $this->belongsTo(User::class, 'id', 'branch_id');
+        return $this->belongsTo(User::class, 'branch_id', 'id');
     }
 
     public function visitor()
     {
-        return $this->belongsTo(User::class, 'id', 'visitor_id');
+        return $this->belongsTo(User::class, 'visitor_id', 'id');
     }
 }

@@ -75,7 +75,3 @@ Route::group(['prefix' => 'data', 'as' => 'data.'], function () {
 
     Route::post('country-states/{country_state}/cities', [DataController::class, 'getCityFromCountryState'])->name('country-states.cities');
 });
-
-Route::group(['prefix' => 'app'], function ($query) {
-    //
-});
