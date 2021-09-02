@@ -98,6 +98,16 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="about" class="col-form-label">{{ __('labels.about') }}</label>
+                            <textarea type="text" id="about" name="about" class="form-control summernote @error('about') is-invalid @enderror" cols="100" rows="7">{!! old('about', $career->about) !!}</textarea>
+                            @error('about')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+
+                        <div class="form-group">
                             <label for="benefit" class="col-form-label">{{ __('labels.benefits') }}</label>
                             <textarea type="text" id="benefit" name="benefit" class="form-control summernote @error('benefit') is-invalid @enderror" cols="100" rows="7">{!! old('benefit', $career->benefit) !!}</textarea>
                             @error('benefit')
@@ -105,6 +115,69 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                             @enderror
+                        </div>
+
+                        <hr>
+                        <p class="h5">{{ __('labels.applicant_can_apply_via') }}</p>
+
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="phone" class="col-form-label">{{ __('labels.contact_no') }}</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-white">+</span>
+                                        </div>
+                                        <input type="text" name="phone" id="phone" value="{{ old('phone', $career->contact_no) }}" class="form-control @error('phone') is-invalid @enderror">
+                                    </div>
+                                    @error('phone')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="email" class="col-form-label">{{ __('labels.email') }}</label>
+                                    <input type="email" name="email" id="email" value="{{ old('email', $career->email) }}" class="form-control @error('email') is-invalid @enderror">
+                                    @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="whatsapp" class="col-form-label">{{ __('labels.whatsapp') }}</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-white">+</span>
+                                        </div>
+                                        <input type="text" name="whatsapp" id="whatsapp" value="{{ old('whatsapp', $career->whatsapp) }}" class="form-control @error('whatsapp') is-invalid @enderror">
+                                    </div>
+                                    @error('whatsapp')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-group">
+                                    <label for="website" class="col-form-label">{{ __('labels.website') }}</label>
+                                    <input type="url" name="website" id="website" value="{{ old('website', $career->website) }}" class="form-control @error('website') is-invalid @enderror">
+                                    @error('website')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+                            </div>
                         </div>
                     </div>
 

@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RatingResource;
 use App\Support\Services\MemberService;
-use App\Http\Resources\UserRatingResource;
 use App\Http\Requests\Api\v1\Rating\RatingRequest;
 use App\Http\Requests\Api\v1\Rating\RatingListRequest;
 

@@ -30,7 +30,6 @@ class CareerDataTable extends DataTable
                     'view' => [
                         'permission' => 'career.read',
                         'route' => route('careers.show', ['career' => $data->id]),
-                        'attribute' => 'target="_blank"'
                     ],
                     'update' => [
                         'permission' => 'career.update',

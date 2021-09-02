@@ -157,4 +157,6 @@ return [
     'company' => 'Company',
     'benefits' => 'Benefits',
     'show_salary' => 'Show Salary',
+    'about' => 'About',
+    'applicant_can_apply_via' => 'Applicants can apply via'
 ];

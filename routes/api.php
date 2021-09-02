@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\AuthController;
 use App\Http\Controllers\Api\v1\BannerController;
+use App\Http\Controllers\Api\v1\CareerController;
 use App\Http\Controllers\Api\v1\RatingController;
 use App\Http\Controllers\Api\v1\AccountController;
 use App\Http\Controllers\Api\v1\CategoryController;
@@ -46,6 +47,8 @@ Route::prefix('v1')->namespace('v1')->name('v1.')->group(function () {
 
             Route::post('profile', [AccountController::class, 'profile']);
 
+            Route::post('banners/show', [BannerController::class, 'show'])->name('banners.show');
+
             Route::post('categories', [CategoryController::class, 'index']);
             Route::post('categories/populars', [CategoryController::class, 'popular']);
 
@@ -61,7 +64,8 @@ Route::prefix('v1')->namespace('v1')->name('v1.')->group(function () {
             Route::post('notifications', [NotificationController::class, 'index']);
             Route::post('notifications/show', [NotificationController::class, 'show'])->name('notifications.show');
 
-            Route::post('banners/show', [BannerController::class, 'show'])->name('banners.show');
+            Route::post('careers', [CareerController::class, 'index']);
+            Route::post('careers/show', [CareerController::class, 'show']);
         });
 
         // routes for Guest scope only

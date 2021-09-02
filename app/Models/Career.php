@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Helpers\Misc;
 use App\Helpers\Status;
 use App\Helpers\Currency;
 use Illuminate\Database\Eloquent\Model;
@@ -15,8 +16,8 @@ class Career extends Model
     protected $table = 'careers';
 
     protected $fillable = [
-        'branch_id', 'position', 'description', 'min_salary',
-        'max_salary', 'show_salary', 'status'
+        'branch_id', 'position', 'about', 'description', 'benefit',
+        'min_salary', 'max_salary', 'show_salary', 'status'
     ];
 
     protected $casts = [
@@ -33,6 +34,17 @@ class Career extends Model
         return $this->belongsTo(User::class, 'branch_id', 'id');
     }
 
+    // Scopes
+    public function scopePublish($query)
+    {
+        return $query->where('status', self::STATUS_PUBLISH);
+    }
+
+    public function scopeDraft($query)
+    {
+        return $query->where('status', self::STATUS_DRAFT);
+    }
+
     // Attributes
     public function setMinSalaryAttribute($value)
     {
@@ -42,6 +54,24 @@ class Career extends Model
     public function setMaxSalaryAttribute($value)
     {
         $this->attributes['max_salary'] = Currency::instance()->convertPriceFromFloatToInt($value);
+    }
+
+    public function setContactNoAttribute($value)
+    {
+        if (!empty($value)) {
+            $value = (new Misc())->phoneStoreFormat($value);
+        }
+
+        $this->attributes['contact_no'] = $value;
+    }
+
+    public function setWhatsappAttribute($value)
+    {
+        if (!empty($value)) {
+            $value = (new Misc())->phoneStoreFormat($value);
+        }
+
+        $this->attributes['whatsapp'] = $value;
     }
 
     public function getFormattedMinSalaryAttribute()
@@ -76,5 +106,23 @@ class Career extends Model
         }
 
         return number_format($min_salary, 2) . ' - ' . number_format($max_salary, 2);
+    }
+
+    public function getFormattedPhoneNumberAttribute()
+    {
+        if (empty($this->contact_no)) {
+            return null;
+        }
+
+        return (new Misc())->addTagsToPhone($this->contact_no);
+    }
+
+    public function getFormattedWhatsappNumberAttribute()
+    {
+        if (empty($this->whatsapp)) {
+            return null;
+        }
+
+        return (new Misc())->addTagsToPhone($this->whatsapp);
     }
 }

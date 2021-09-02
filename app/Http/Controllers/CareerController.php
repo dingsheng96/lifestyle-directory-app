@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\DB;
 use App\DataTables\CareerDataTable;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CareerRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Support\Services\CareerService;
 
@@ -54,7 +55,7 @@ class CareerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, CareerService $career_service)
+    public function store(CareerRequest $request, CareerService $career_service)
     {
         DB::beginTransaction();
 
@@ -120,7 +121,7 @@ class CareerController extends Controller
      * @param  \App\Models\Career  $career
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Career $career, CareerService $career_service)
+    public function update(CareerRequest $request, Career $career, CareerService $career_service)
     {
         DB::beginTransaction();
 

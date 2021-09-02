@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Helpers\Status;
+use App\Rules\PhoneFormat;
 use App\Rules\ExistMerchant;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
@@ -35,8 +36,13 @@ class CareerRequest extends FormRequest
             'status'        =>  ['required', Rule::in(array_keys((new Status())->publishStatus()))],
             'min_salary'    =>  ['required', 'numeric'],
             'max_salary'    =>  ['required', 'numeric', 'gte:min_salary'],
+            'about'         =>  ['nullable'],
             'description'   =>  ['required'],
-            'benefit'       =>  ['nullable']
+            'benefit'       =>  ['nullable'],
+            'phone'         =>  ['nullable', new PhoneFormat],
+            'email'         =>  ['nullable', 'email'],
+            'whatsapp'      =>  ['nullable', new PhoneFormat],
+            'website'       =>  ['nullable', 'url'],
         ];
     }
 
