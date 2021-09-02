@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\v1\LanguageController;
 use App\Http\Controllers\Api\v1\MerchantController;
 use App\Http\Controllers\Api\v1\WishlistController;
 use App\Http\Controllers\Api\v1\DashboardController;
+use App\Http\Controllers\Api\v1\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,9 +58,10 @@ Route::prefix('v1')->namespace('v1')->name('v1.')->group(function () {
             Route::post('wishlist', [WishlistController::class, 'index']);
             Route::post('wishlist/update', [WishlistController::class, 'update']);
 
-            Route::post('banners/show', [BannerController::class, 'show'])->name('banners.show');
+            Route::post('notifications', [NotificationController::class, 'index']);
+            Route::post('notifications/show', [NotificationController::class, 'show'])->name('notifications.show');
 
-            // Route::post('notifications', []);
+            Route::post('banners/show', [BannerController::class, 'show'])->name('banners.show');
         });
 
         // routes for Guest scope only

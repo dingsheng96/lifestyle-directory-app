@@ -20,7 +20,7 @@ class MerchantController extends Controller
         $longitude  =   $request->get('longitude', 0);
 
         $merchants = User::with([
-            'media', 'ratings',
+            'media', 'ratings', 'favouriteBy',
             'address' => function ($query) use ($latitude, $longitude) {
                 $query->getDistanceByCoordinates($latitude, $longitude);
             }
@@ -51,7 +51,7 @@ class MerchantController extends Controller
         try {
 
             $merchant = User::with([
-                'media', 'ratings', 'branchDetail', 'raters', 'categories', 'operationHours',
+                'media', 'ratings', 'branchDetail', 'raters', 'categories', 'operationHours', 'favouriteBy',
                 'address' => function ($query) use ($latitude, $longitude) {
                     $query->getDistanceByCoordinates($latitude, $longitude);
                 }

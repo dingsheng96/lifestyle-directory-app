@@ -15,7 +15,7 @@ class RatingRequest extends BaseRequest
      */
     public function rules()
     {
-        $this->setModule('rating')->setAction('index');
+        $this->setModule('rating')->setAction('create');
 
         return [
             'merchant_id'   =>  ['required', new ExistMerchant()],

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RatingResource;
 use App\Support\Services\MemberService;
+use App\Http\Resources\UserRatingResource;
 use App\Http\Requests\Api\v1\Rating\RatingRequest;
 use App\Http\Requests\Api\v1\Rating\RatingListRequest;
 
@@ -16,14 +17,25 @@ class RatingController extends Controller
 {
     public function index(RatingListRequest $request)
     {
-        $status     =   'success';
+        $status         =   'success';
+        $data           =   [];
+        $user           =   $request->user();
+        $merchant_id    =   $request->get('merchant_id');
 
-        $merchant   =   User::with(['ratings'])->validMerchant()->where('id', $request->get('merchant_id'))->first();
+        if (!empty($merchant_id)) { // from merchant perspective
+
+            $merchant   =   User::with(['ratings'])->validMerchant()->where('id', $request->get('merchant_id'))->first();
+            $data       =   $merchant->ratings()->orderByDesc('pivot_created_at')->paginate(15, ['*'], 'page', $request->get('page'));
+        } else {
+
+            // from user perspective
+            $data       =   $user->raters()->orderByDesc('pivot_created_at')->paginate(15, ['*'], 'page', $request->get('page'));
+        }
 
         return Response::instance()
             ->withStatusCode('modules.rating', 'actions.index.' . $status)
             ->withStatus($status)
-            ->withData((new RatingResource($merchant))->toArray($request))
+            ->withData(RatingResource::collection($data)->toArray($request))
             ->sendJson();
     }
 

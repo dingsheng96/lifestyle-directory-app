@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Api\v1\Rating;
+namespace App\Http\Requests\Api\v1\Notification;
 
 use App\Rules\ExistMerchant;
 use App\Traits\HasPaginationRequest;
 use App\Http\Requests\Api\v1\BaseRequest;
 
-class RatingListRequest extends BaseRequest
+class NotificationListRequest extends BaseRequest
 {
     use HasPaginationRequest;
 
@@ -17,10 +17,8 @@ class RatingListRequest extends BaseRequest
      */
     public function rules()
     {
-        $this->setModule('rating')->setAction('index');
+        $this->setModule('notification')->setAction('index');
 
-        return $this->setPaginationRules([
-            'merchant_id'   => ['nullable', new ExistMerchant()],
-        ]);
+        return $this->setPaginationRules();
     }
 }

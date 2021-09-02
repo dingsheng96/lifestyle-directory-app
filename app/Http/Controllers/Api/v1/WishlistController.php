@@ -31,7 +31,7 @@ class WishlistController extends Controller
         })->orderBy('name')->paginate(15, ['*'], 'page', $request->get('page'));
 
         return Response::instance()
-            ->withStatusCode('modules.merchant', 'actions.index.' . $status)
+            ->withStatusCode('modules.wishlist', 'actions.index.' . $status)
             ->withStatus($status)
             ->withData(MerchantResource::collection($merchants)->toArray($request))
             ->sendJson();

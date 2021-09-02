@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
+use App\Models\Rateable;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class RatingResource extends JsonResource
@@ -14,16 +16,19 @@ class RatingResource extends JsonResource
      */
     public function toArray($request)
     {
-        $ratings = $this->ratings()->paginate(15, ['*'], 'page', $request->get('page'));
-
-        $data = [];
-
-        foreach ($ratings as $rating) {
-            $data[] = [
-                'rater'     => (new MemberResource($rating))->withDevice(false)->toArray($request),
-                'scale'     => number_format($rating->pivot->scale, 0),
-                'rated_at'  => $rating->pivot->created_at,
-                'review'    => $rating->pivot->review,
+        if ($this->type == User::USER_TYPE_MERCHANT) {
+            $data = [
+                'scale'         => number_format($this->pivot->scale, 0),
+                'created_at'    => $this->pivot->created_at->format('d M Y'),
+                'review'        => $this->pivot->review,
+                'merchant'      => (new MerchantResource($this))->toArray($request),
+            ];
+        } else {
+            $data = [
+                'scale'         => number_format($this->pivot->scale, 0),
+                'created_at'    => $this->pivot->created_at->format('d M Y'),
+                'review'        => $this->pivot->review,
+                'rater'         => (new MemberResource($this))->withDevice(false)->toArray($request),
             ];
         }
 

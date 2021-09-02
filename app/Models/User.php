@@ -84,6 +84,11 @@ class User extends Authenticatable implements MustVerifyEmail
         }
     }
 
+    public function checkUserFavouriteStatus(self $user)
+    {
+        return (bool) $this->favouriteBy->contains('id', $user->id);
+    }
+
     // Relationships
     public function subBranches()
     {
@@ -158,6 +163,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function branchVisitHistories()
     {
         return $this->hasMany(BranchVisitorHistory::class, 'visitor_id', 'id');
+    }
+
+    public function userNotifications()
+    {
+        return $this->hasMany(UserNotification::class, 'user_id', 'id');
     }
 
     // Scopes

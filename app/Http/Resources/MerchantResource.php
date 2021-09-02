@@ -24,7 +24,8 @@ class MerchantResource extends JsonResource
             'thumbnail' =>  $this->thumbnail->full_file_path ?? app(Media::class)->default_preview_image,
             'location'  =>  $this->address->location_city_state,
             'rating'    =>  $this->rating,
-            'distance'  =>  $this->address->formatted_distance
+            'distance'  =>  $this->address->formatted_distance,
+            'favourite' =>  $this->checkUserFavouriteStatus($request->user())
         ];
 
         if (!$this->listing) {
