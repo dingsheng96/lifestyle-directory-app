@@ -4,10 +4,12 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\AuthController;
 use App\Http\Controllers\Api\v1\BannerController;
+use App\Http\Controllers\Api\v1\RatingController;
 use App\Http\Controllers\Api\v1\AccountController;
 use App\Http\Controllers\Api\v1\CategoryController;
 use App\Http\Controllers\Api\v1\LanguageController;
 use App\Http\Controllers\Api\v1\MerchantController;
+use App\Http\Controllers\Api\v1\WishlistController;
 use App\Http\Controllers\Api\v1\DashboardController;
 
 /*
@@ -48,8 +50,12 @@ Route::prefix('v1')->namespace('v1')->name('v1.')->group(function () {
 
             Route::post('merchants', [MerchantController::class, 'index']);
             Route::post('merchants/show', [MerchantController::class, 'show']);
-            Route::post('merchants/ratings', [MerchantController::class, 'ratings']);
-            Route::post('merchants/ratings/store', [MerchantController::class, 'storeRatings']);
+
+            Route::post('ratings', [RatingController::class, 'index']);
+            Route::post('ratings/store', [RatingController::class, 'store']);
+
+            Route::post('wishlist', [WishlistController::class, 'index']);
+            Route::post('wishlist/update', [WishlistController::class, 'update']);
 
             Route::post('banners/show', [BannerController::class, 'show'])->name('banners.show');
 

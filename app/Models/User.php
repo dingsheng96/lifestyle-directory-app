@@ -110,14 +110,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->morphMany(Media::class, 'mediable');
     }
 
-    public function favourites()
+    public function favourites() // user's favourite list
     {
         return $this->morphedByMany(self::class, 'favourable', Favourable::class);
     }
 
-    public function favouriteBy()
+    public function favouriteBy() // branch favourite by user
     {
-        return $this->morphedByMany(self::class, 'favourable', Favourable::class);
+        return $this->morphToMany(self::class, 'favourable', Favourable::class);
     }
 
     public function ratings()
@@ -224,6 +224,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function scopeDraft($query)
     {
         return $query->where('listing_status', self::LISTING_STATUS_DRAFT);
+    }
+
+    public function scopeValidMerchant($query)
+    {
+        return $query->merchant()->active()->approvedApplication()->publish();
     }
 
     public function scopeFilterMerchantByRating($query, $value)

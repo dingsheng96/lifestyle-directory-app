@@ -6,6 +6,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class MemberResource extends JsonResource
 {
+    protected $with_device = true;
+
     /**
      * Transform the resource into an array.
      *
@@ -21,14 +23,20 @@ class MemberResource extends JsonResource
             'status'        =>  $this->status,
             'profile_image' =>  $this->profile_image->full_file_path ?? "",
             'cover_photo'   =>  $this->cover_photo->full_file_path ?? "",
-            'device'        =>  []
         ];
 
-        if ($this->deviceSettings->first()) {
+        if ($this->with_device) {
 
-            $data['device'] = (new DeviceResource($this->deviceSettings->first()))->toArray($request);
+            $data['device'] = $this->deviceSettings->first() ? (new DeviceResource($this->deviceSettings->first()))->toArray($request) : [];
         }
 
         return $data;
+    }
+
+    public function withDevice(bool $with_device = true)
+    {
+        $this->with_device = $with_device;
+
+        return $this;
     }
 }

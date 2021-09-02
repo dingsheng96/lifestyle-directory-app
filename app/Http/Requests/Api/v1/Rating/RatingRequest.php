@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Api\v1\Merchant;
+namespace App\Http\Requests\Api\v1\Rating;
 
 use App\Rules\ExistMerchant;
 use Laravel\Passport\Passport;

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Api\v1\Merchant;
+namespace App\Http\Requests\Api\v1\Wishlist;
 
-use App\Rules\ExistMerchant;
+use App\Rules\ValidateCoordinates;
 use App\Traits\HasPaginationRequest;
 use App\Http\Requests\Api\v1\BaseRequest;
 
-class RatingListRequest extends BaseRequest
+class WishlistRequest extends BaseRequest
 {
     use HasPaginationRequest;
 
@@ -17,10 +17,11 @@ class RatingListRequest extends BaseRequest
      */
     public function rules()
     {
-        $this->setModule('rating')->setAction('index');
+        $this->setModule('wishlist')->setAction('index');
 
         return $this->setPaginationRules([
-            'merchant_id'   => ['required', new ExistMerchant()],
+            'longitude'     => ['required', new ValidateCoordinates],
+            'latitude'      => ['required', new ValidateCoordinates],
         ]);
     }
 }

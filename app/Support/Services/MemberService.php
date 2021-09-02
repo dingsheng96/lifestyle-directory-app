@@ -168,4 +168,27 @@ class MemberService extends BaseService
 
         return $this;
     }
+
+    public function storeWishlist()
+    {
+        $merchant = User::validMerchant()->where('id', $this->request->get('merchant_id'))->firstOrFail();
+
+        $this->model->favourites()->toggle([$merchant->id]);
+
+        return $this;
+    }
+
+    public function storeMerchantRating()
+    {
+        $merchant = User::validMerchant()->where('id', $this->request->get('merchant_id'))->firstOrFail();
+
+        $this->model->raters()->attach([
+            $merchant->id => [
+                'scale'     => $this->request->get('scale'),
+                'review'    => $this->request->get('review')
+            ]
+        ]);
+
+        return $this;
+    }
 }

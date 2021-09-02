@@ -6,11 +6,8 @@ use App\Models\User;
 use App\Helpers\Response;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\RatingResource;
 use App\Http\Resources\MerchantResource;
 use App\Support\Services\MerchantService;
-use App\Http\Requests\Api\v1\Merchant\RatingRequest;
-use App\Http\Requests\Api\v1\Merchant\RatingListRequest;
 use App\Http\Requests\Api\v1\Merchant\MerchantListRequest;
 use App\Http\Requests\Api\v1\Merchant\MerchantDetailsRequest;
 
@@ -94,67 +91,6 @@ class MerchantController extends Controller
             ->withMessage($message)
             ->withStatus($status)
             ->withData($data)
-            ->sendJson();
-    }
-
-    public function ratings(RatingListRequest $request)
-    {
-        $status         =   'success';
-        $merchant_id    =   $request->get('merchant_id');
-
-        $merchant = User::with(['ratings'])->merchant()
-            ->where('id', $merchant_id)->publish()
-            ->active()->approvedApplication()->first();
-
-        return Response::instance()
-            ->withStatusCode('modules.rating', 'actions.index.' . $status)
-            ->withStatus($status)
-            ->withData((new RatingResource($merchant))->toArray($request))
-            ->sendJson();
-    }
-
-    public function storeRatings(RatingRequest $request)
-    {
-        DB::beginTransaction();
-
-        $status         =   'success';
-        $message        =   'Ok';
-        $merchant_id    =   $request->get('merchant_id');
-        $scale          =   $request->get('scale');
-        $review         =   $request->get('review');
-        $merchant       =   new User();
-
-        try {
-
-            $merchant = User::where('id', $merchant_id)->merchant()
-                ->active()->approvedApplication()->publish()->firstOrFail();
-
-            $merchant->ratings()->attach([
-                $request->user()->id => [
-                    'scale' => $scale,
-                    'review' => $review
-                ]
-            ]);
-
-            DB::commit();
-        } catch (\Error | \Exception $ex) {
-
-            DB::rollBack();
-
-            $message    =   $ex->getMessage();
-            $status     =   'fail';
-        }
-
-        activity()->useLog('api')
-            ->causedBy($request->user())
-            ->performedOn($merchant)
-            ->withProperties($request->all())
-            ->log($message);
-
-        return Response::instance()
-            ->withStatusCode('modules.rating', 'actions.create.' . $status)
-            ->withStatus($status)
-            ->withMessage($message)
             ->sendJson();
     }
 }
