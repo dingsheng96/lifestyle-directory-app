@@ -176,7 +176,6 @@ class MemberController extends Controller
             ->log($message);
 
         return Response::instance()
-            ->withStatusCode('modules.member', 'actions.' . $action . $status)
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([

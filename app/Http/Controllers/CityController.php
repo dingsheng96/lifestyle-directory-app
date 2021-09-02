@@ -138,7 +138,6 @@ class CityController extends Controller
             ->log($message);
 
         return Response::instance()
-            ->withStatusCode('modules.city', 'actions.' . $action . $status)
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([

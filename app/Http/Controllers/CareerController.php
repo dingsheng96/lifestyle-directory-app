@@ -173,7 +173,6 @@ class CareerController extends Controller
             ->log($message);
 
         return Response::instance()
-            ->withStatusCode('modules.career', 'actions.' . $action . $status)
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([

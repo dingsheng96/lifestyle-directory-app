@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Message;
 use App\Models\Language;
+use App\Helpers\Response;
 use App\Models\Permission;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -159,6 +160,28 @@ class LanguageController extends Controller
      */
     public function destroy(Language $language)
     {
-        //
+        $action     =   Permission::ACTION_DELETE;
+        $module     =   strtolower(trans_choice('modules.language', 1));
+        $status     =   'fail';
+        $message    =   Message::instance()->format($action, $module);
+
+        $language->translations()->delete();
+        $language->delete();
+
+        $message = Message::instance()->format($action, $module, 'success');
+        $status = 'success';
+
+        activity()->useLog('web')
+            ->causedBy(Auth::user())
+            ->performedOn($language)
+            ->log($message);
+
+        return Response::instance()
+            ->withStatus($status)
+            ->withMessage($message, true)
+            ->withData([
+                'redirect_to' => route('languages.index')
+            ])
+            ->sendJson();
     }
 }

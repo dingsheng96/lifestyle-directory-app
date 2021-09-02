@@ -177,7 +177,6 @@ class RoleController extends Controller
             ->log($message);
 
         return Response::instance()
-            ->withStatusCode('modules.role', 'actions.' . $action . $status)
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([

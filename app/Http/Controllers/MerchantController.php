@@ -199,7 +199,6 @@ class MerchantController extends Controller
             ->log($message);
 
         return Response::instance()
-            ->withStatusCode('modules.merchant', 'actions.' . $action . $status)
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([

@@ -164,7 +164,6 @@ class AdminController extends Controller
             ->log($message);
 
         return Response::instance()
-            ->withStatusCode('modules.admin', 'actions.' . $action . $status)
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([

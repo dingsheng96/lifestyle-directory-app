@@ -6,10 +6,10 @@ use Illuminate\Support\Facades\Storage;
 
 class Response
 {
-    public $code;
-    public $message = 'Ok';
-    public $data = [];
-    public $status = 'success';
+    public $code    =   '';
+    public $data    =   [];
+    public $message =   'Ok';
+    public $status  =   'success';
 
     public static function instance()
     {
@@ -21,6 +21,17 @@ class Response
         $this->code = $this->getCode(strtolower($status_code_prefix), strtolower($status_code_suffix));
 
         return $this;
+    }
+
+    protected function getCode(string $prefix_path, string $suffix_path): int
+    {
+        $file       =   Storage::disk('local')->get('code.json');
+        $contents   =   json_decode($file, true);
+        $prefix     =   strval(data_get($contents, $prefix_path));
+        $suffix     =   str_pad(data_get($contents, $suffix_path), 3, '0', STR_PAD_LEFT);
+        $code       =   $prefix . $suffix;
+
+        return (int) $code;
     }
 
     public function withMessage(string $message = 'Ok', bool $flash = false)
@@ -60,17 +71,6 @@ class Response
     public function sendJson()
     {
         return response()->json($this->getResponse());
-    }
-
-    protected function getCode(string $prefix_path, string $suffix_path): int
-    {
-        $file       =   Storage::disk('local')->get('code.json');
-        $contents   =   json_decode($file, true);
-        $prefix     =   strval(data_get($contents, $prefix_path));
-        $suffix     =   str_pad(data_get($contents, $suffix_path), 3, '0', STR_PAD_LEFT);
-        $code       =   $prefix . $suffix;
-
-        return (int) $code;
     }
 
     public function getResponse(): array

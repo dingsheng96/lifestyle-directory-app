@@ -161,7 +161,6 @@ class BannerController extends Controller
             ->log($message);
 
         return Response::instance()
-            ->withStatusCode('modules.banner', 'actions.' . $action . $status)
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([

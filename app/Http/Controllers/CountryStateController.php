@@ -166,7 +166,6 @@ class CountryStateController extends Controller
             ->log($message);
 
         return Response::instance()
-            ->withStatusCode('modules.country_state', 'actions.' . $action . $status)
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
