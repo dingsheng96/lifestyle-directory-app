@@ -28,7 +28,7 @@
             <form action="{{ route('account.store') }}" method="post" role="form" enctype="multipart/form-data">
                 @csrf
                 <div class="card card-outline card-secondary">
-                    <div class="card-header bg-transparent">
+                    <div class="card-header bg-transparent border-0">
                         <h3 class="card-title">{{ __('labels.profile') }}</h3>
                     </div>
 

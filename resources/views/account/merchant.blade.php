@@ -128,7 +128,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card shadow">
-                        <div class="card-header bg-transparent p-2">
+                        <div class="card-header bg-transparent border-0 p-2">
                             <ul class="nav nav-pills">
                                 <li class="nav-item"><a class="nav-link active" href="#profile" data-toggle="tab">{{ __('labels.profile') }}</a></li>
                                 <li class="nav-item"><a class="nav-link" href="#location" data-toggle="tab">{{ __('labels.location') }}</a></li>

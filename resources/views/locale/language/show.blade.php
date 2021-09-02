@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-12 col-md-5">
             <div class="card shadow">
-                <div class="card-header bg-transparent">
+                <div class="card-header bg-transparent border-0">
                     <h3 class="card-title">{{ __('modules.view', ['module' => trans_choice('modules.country', 1)]) }}</h3>
                 </div>
 

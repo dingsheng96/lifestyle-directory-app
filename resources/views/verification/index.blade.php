@@ -7,7 +7,7 @@
     <div class="row py-2">
         <div class="col-12">
             <div class="card shadow">
-                <div class="card-header bg-transparent">
+                <div class="card-header bg-transparent border-0">
                     <h3 class="card-title">
                         {{ __('modules.list', ['module' => trans_choice('modules.verification', 1)]) }}
                     </h3>
