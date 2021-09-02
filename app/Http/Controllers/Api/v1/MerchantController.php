@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RatingResource;
 use App\Http\Resources\MerchantResource;
+use App\Support\Services\MerchantService;
 use App\Http\Requests\Api\v1\Merchant\RatingRequest;
 use App\Http\Requests\Api\v1\Merchant\RatingListRequest;
 use App\Http\Requests\Api\v1\Merchant\MerchantListRequest;
@@ -38,10 +39,12 @@ class MerchantController extends Controller
             ->sendJson();
     }
 
-    public function show(MerchantDetailsRequest $request)
+    public function show(MerchantDetailsRequest $request, MerchantService $merchant_service)
     {
-        $status     =   'fail';
-        $message    =   '';
+        DB::beginTransaction();
+
+        $status     =   'success';
+        $message    =   'Ok';
         $data       =   [];
 
         $merchant_id    = $request->get('merchant_id');
@@ -60,6 +63,8 @@ class MerchantController extends Controller
                 ->where('id', $merchant_id)
                 ->firstOrFail();
 
+            $merchant_service->setModel($merchant)->setRequest($request)->storeVisitorHistory();
+
             $similar_merchants = User::with([
                 'media', 'ratings',
                 'address' => function ($query) use ($latitude, $longitude) {
@@ -73,10 +78,14 @@ class MerchantController extends Controller
                 ->limit(6)
                 ->get();
 
-            $data       =   (new MerchantResource($merchant))->listing(false)->similarMerchant($similar_merchants)->toArray($request);
-            $status     =   'success';
-            $message    =   'Ok';
+            $data = (new MerchantResource($merchant))->listing(false)->similarMerchant($similar_merchants)->toArray($request);
+
+            DB::commit();
         } catch (\Error | \Exception $ex) {
+
+            DB::rollBack();
+
+            $status  = 'fail';
             $message = $ex->getMessage();
         }
 

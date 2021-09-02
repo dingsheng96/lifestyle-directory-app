@@ -150,6 +150,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(OperationHour::class, 'branch_id', 'id');
     }
 
+    public function visitorHistories()
+    {
+        return $this->hasMany(BranchVisitorHistory::class, 'branch_id', 'id');
+    }
+
+    public function branchVisitHistories()
+    {
+        return $this->hasMany(BranchVisitorHistory::class, 'visitor_id', 'id');
+    }
+
     // Scopes
     public function scopeAdmin($query)
     {

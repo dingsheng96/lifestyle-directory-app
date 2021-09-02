@@ -9,6 +9,7 @@ use App\Models\Media;
 use App\Helpers\FileManager;
 use App\Models\BranchDetail;
 use App\Models\OperationHour;
+use App\Models\BranchVisitorHistory;
 use Illuminate\Support\Facades\Hash;
 use App\Support\Services\BaseService;
 
@@ -264,6 +265,24 @@ class MerchantService extends BaseService
                     $this->model->operationHours()->save($operation_hour);
                 }
             }
+        }
+
+        return $this;
+    }
+
+    public function storeVisitorHistory()
+    {
+        $visitor_history = $this->model->visitorHistories()
+            ->where('visitor_id', $this->request->user()->id)
+            ->firstOr(function () {
+                return new BranchVisitorHistory();
+            });
+
+        $visitor_history->visitor_id    = $this->request->user()->id;
+        $visitor_history->visit_count   += 1;
+
+        if ($visitor_history->isDirty()) {
+            $this->model->visitorHistories()->save($visitor_history);
         }
 
         return $this;
