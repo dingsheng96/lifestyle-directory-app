@@ -25,13 +25,12 @@ class Response
 
     protected function getCode(string $prefix_path, string $suffix_path): int
     {
-        $file       =   Storage::disk('local')->get('code.json');
-        $contents   =   json_decode($file, true);
-        $prefix     =   strval(data_get($contents, $prefix_path));
-        $suffix     =   str_pad(data_get($contents, $suffix_path), 3, '0', STR_PAD_LEFT);
-        $code       =   $prefix . $suffix;
+        $file           =   Storage::disk('local')->get('code.json');
+        $contents       =   json_decode($file, true);
+        $prefix         =   strval(data_get($contents, $prefix_path));
+        $suffix         =   str_pad(data_get($contents, $suffix_path), 3, '0', STR_PAD_LEFT);
 
-        return (int) $code;
+        return (int) $prefix . $suffix;
     }
 
     public function withMessage(string $message = 'Ok', bool $flash = false)
@@ -68,9 +67,9 @@ class Response
         return $this;
     }
 
-    public function sendJson()
+    public function sendJson(int $status_code = 200)
     {
-        return response()->json($this->getResponse());
+        return response()->json($this->getResponse(), $status_code);
     }
 
     public function getResponse(): array

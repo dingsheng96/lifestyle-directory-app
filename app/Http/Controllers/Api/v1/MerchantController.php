@@ -20,12 +20,15 @@ class MerchantController extends Controller
         $longitude  =   $request->get('longitude', 0);
 
         $merchants = User::with([
-            'media', 'ratings', 'favouriteBy',
+            'media', 'ratings', 'favouriteBy', 'categories',
             'address' => function ($query) use ($latitude, $longitude) {
                 $query->getDistanceByCoordinates($latitude, $longitude);
             }
         ])->merchant()->active()->approvedApplication()->publish()
             ->filterByLocationDistance($latitude, $longitude)
+            ->whereHas('categories', function ($query) use ($request) {
+                $query->whereIn('id', [$request->get('category_id')]);
+            })
             ->orderBy('name')
             ->paginate(15, ['*'], 'page', $request->get('page'));
 

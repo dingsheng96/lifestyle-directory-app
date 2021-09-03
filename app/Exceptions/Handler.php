@@ -8,6 +8,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 class Handler extends ExceptionHandler
@@ -56,29 +57,35 @@ class Handler extends ExceptionHandler
     protected function unauthenticated($request, AuthenticationException $exception)
     {
         return $request->expectsJson()
-            ? response()->json(
-                Response::instance()
-                    ->withStatusCode('modules.member', 'actions.authenticate.fail')
-                    ->withStatus('fail')
-                    ->withMessage($exception->getMessage())
-                    ->getResponse(),
-                401
-            )
+            ? Response::instance()
+            ->withStatusCode('modules.member', 'actions.authenticate.fail')
+            ->withStatus('fail')
+            ->withMessage($exception->getMessage())
+            ->sendJson(401)
             : redirect()->guest($exception->redirectTo() ?? route('login'));
     }
 
     protected function customRenderables()
     {
         $this->renderable(function (AccessDeniedHttpException $e, $request) {
+
             return $request->expectsJson()
-                ? response()->json(
-                    Response::instance()
-                        ->withStatusCode('modules.scope', 'actions.authenticate.fail')
-                        ->withStatus('fail')
-                        ->withMessage($e->getMessage())
-                        ->getResponse(),
-                    403
-                )
+                ? Response::instance()
+                ->withStatusCode('modules.scope', 'actions.authenticate.fail')
+                ->withStatus('fail')
+                ->withMessage($e->getMessage())
+                ->sendJson(403)
+                : redirect()->route('login')->with('info', $e->getMessage());
+        });
+
+        $this->renderable(function (NotFoundHttpException $e, $request) {
+
+            return $request->expectsJson()
+                ? Response::instance()
+                ->withStatusCode('modules.route', 'actions.read.fail')
+                ->withStatus('fail')
+                ->withMessage('Not Found')
+                ->sendJson(404)
                 : redirect()->route('login')->with('info', $e->getMessage());
         });
 
