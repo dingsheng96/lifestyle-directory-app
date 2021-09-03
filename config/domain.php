@@ -33,7 +33,7 @@ return [
             'version' => 'v1',
             'route' => [
                 'name' => 'api',
-                'file' => 'guest.php'
+                'file' => 'api.php'
             ]
         ],
         'member' => [
@@ -43,7 +43,7 @@ return [
             'version' => 'v1',
             'route' => [
                 'name' => 'api',
-                'file' => 'member.php'
+                'file' => 'api.php'
             ]
         ]
     ]

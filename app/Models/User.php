@@ -45,6 +45,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    protected $guard_name = 'web';
+
     // Constants
     const STATUS_ACTIVE                 =   'active';
     const STATUS_INACTIVE               =   'inactive';
@@ -56,7 +58,6 @@ class User extends Authenticatable implements MustVerifyEmail
 
     const USER_TYPE_ADMIN       =   'admin';
     const USER_TYPE_MERCHANT    =   'merchant';
-    const USER_TYPE_BRANCH      =   'branch';
     const USER_TYPE_MEMBER      =   'member';
     const USER_TYPE_GUEST       =   'guest';
 
@@ -306,14 +307,19 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->type == self::USER_TYPE_ADMIN;
     }
 
-    public function getIsMainMerchantAttribute()
+    public function getIsMerchantAttribute()
     {
         return $this->type == self::USER_TYPE_MERCHANT;
     }
 
+    public function getIsMainMerchantAttribute()
+    {
+        return count($this->subBranches) > 0 && count($this->mainBranch) < 1;
+    }
+
     public function getIsSubMerchantAttribute()
     {
-        return $this->type == self::USER_TYPE_BRANCH;
+        return count($this->mainBranch) > 0 && count($this->subBranches) < 1;
     }
 
     public function getIsMemberAttribute()
@@ -324,17 +330,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getIsGuestAttribute()
     {
         return $this->type == self::USER_TYPE_GUEST;
-    }
-
-    public function getFolderNameAttribute()
-    {
-        $folders = [
-            self::USER_TYPE_ADMIN       =>  'admin',
-            self::USER_TYPE_MERCHANT    =>  'merchant',
-            self::USER_TYPE_BRANCH      =>  'merchant',
-        ];
-
-        return $folders[$this->type];
     }
 
     public function getFormattedPhoneNumberAttribute()

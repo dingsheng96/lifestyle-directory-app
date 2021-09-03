@@ -24,8 +24,6 @@ class AdminService extends BaseService
             : $this->model->password;
         $this->model->type      =   User::USER_TYPE_ADMIN;
 
-        $this->model->application_status = User::APPLICATION_STATUS_APPROVED;
-
         if (!$this->model->exists) { // new Admin
 
             $this->model->email_verified_at = now();
@@ -44,6 +42,6 @@ class AdminService extends BaseService
     {
         $role = Role::where('id', $this->request->get('role'))->first();
 
-        $this->model->syncRoles($role->name);
+        $this->model->assignRole($role->name);
     }
 }

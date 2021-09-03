@@ -17,13 +17,11 @@ class CareerController extends Controller
         $status     =   'success';
         $merchant   =   User::with(['mainBranch.subBranches', 'subBranches'])->validMerchant()->where('id', $request->get('merchant_id'))->firstOrFail();
 
-        if ($merchant->type == User::USER_TYPE_MERCHANT) {
+        $mainBranch     =   optional(optional($merchant->mainBranch)->pluck('id'))->toArray() ?? [];
+        $subBranches    =   optional(optional($merchant->subBranches)->pluck('id'))->toArray() ?? [];
 
-            $branches = array_merge($merchant->subBranches->pluck('id')->toArray(), [$merchant->id]);
-        } elseif ($merchant->type == User::USER_TYPE_BRANCH) {
-
-            $branches = array_merge($merchant->mainBranch->subBranches->pluck('id')->toArray(), [$merchant->id]);
-        }
+        $branches   =   array_merge($mainBranch, $subBranches);
+        $branches   =   array_merge($branches, [$merchant->id]);
 
         $careers = Career::with(['branch.address'])->whereIn('branch_id', collect($branches)->unique()->values())
             ->publish()->orderByDesc('created_at')

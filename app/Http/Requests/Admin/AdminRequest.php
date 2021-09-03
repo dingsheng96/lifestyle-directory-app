@@ -55,7 +55,7 @@ class AdminRequest extends FormRequest
                 'confirmed',
                 Password::defaults()
             ],
-            'role' =>  ['required', 'exist:' . Role::class . ',id'],
+            'role' =>  ['required', 'exists:' . Role::class . ',id'],
         ];
     }
 
