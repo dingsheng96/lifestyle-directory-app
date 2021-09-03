@@ -15,15 +15,17 @@ class CareerController extends Controller
     public function index(CareerListRequest $request)
     {
         $status     =   'success';
-        $merchant   =   User::with(['mainBranch.subBranches', 'subBranches'])->validMerchant()->where('id', $request->get('merchant_id'))->firstOrFail();
+        $merchant   =   User::with(['mainBranch', 'subBranches'])
+            ->validMerchant()
+            ->where('id', $request->get('merchant_id'))
+            ->firstOrFail();
 
-        $mainBranch     =   optional(optional($merchant->mainBranch)->pluck('id'))->toArray() ?? [];
-        $subBranches    =   optional(optional($merchant->subBranches)->pluck('id'))->toArray() ?? [];
+        $branches = collect([$merchant])
+            ->merge([$merchant->mainBranch])
+            ->merge($merchant->subBranches)
+            ->pluck('id')->unique();
 
-        $branches   =   array_merge($mainBranch, $subBranches);
-        $branches   =   array_merge($branches, [$merchant->id]);
-
-        $careers = Career::with(['branch.address'])->whereIn('branch_id', collect($branches)->unique()->values())
+        $careers = Career::with(['branch.address'])->whereIn('branch_id', $branches)
             ->publish()->orderByDesc('created_at')
             ->paginate(15, ['*'], 'page', $request->get('page'));
 

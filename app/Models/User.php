@@ -280,10 +280,17 @@ class User extends Authenticatable implements MustVerifyEmail
         });
     }
 
-    public function scopeFilterByCategories($query, $categories)
+    public function scopeFilterByCategories($query, array $categories)
     {
         return $query->whereHas('categories', function ($query) use ($categories) {
             $query->whereIn('id', $categories);
+        });
+    }
+
+    public function scopeSearchByAddress($query, $keyword)
+    {
+        return $query->whereHas('address', function ($query) use ($keyword) {
+            $query->searchByAddress($keyword);
         });
     }
 

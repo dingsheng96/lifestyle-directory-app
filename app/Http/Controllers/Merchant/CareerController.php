@@ -2,9 +2,18 @@
 
 namespace App\Http\Controllers\Merchant;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Career;
-use Illuminate\Http\Request;
+use App\Helpers\Message;
+use App\Helpers\Response;
+use App\Models\Permission;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Support\Services\CareerService;
+use App\DataTables\Merchant\CareerDataTable;
+use App\Http\Requests\Merchant\CareerRequest;
 
 class CareerController extends Controller
 {
@@ -13,9 +22,9 @@ class CareerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(CareerDataTable $dataTable)
     {
-        //
+        return $dataTable->render('merchant.career.index');
     }
 
     /**
@@ -25,7 +34,16 @@ class CareerController extends Controller
      */
     public function create()
     {
-        //
+        $merchant = Auth::user()->load(['mainBranch', 'subBranches']);
+
+        $merchants = collect([$merchant])
+            ->merge([$merchant->mainBranch])
+            ->merge($merchant->subBranches)
+            ->filter(function ($item) {
+                return !is_null($item);
+            });
+
+        return view('merchant.career.create', compact('merchants'));
     }
 
     /**
@@ -34,9 +52,36 @@ class CareerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CareerRequest $request, CareerService $career_service)
     {
-        //
+        DB::beginTransaction();
+
+        $action     =   Permission::ACTION_CREATE;
+        $module     =   strtolower(trans_choice('modules.career', 1));
+        $message    =   Message::instance()->format($action, $module);
+        $status     =   'fail';
+
+        try {
+
+            $career_service->setRequest($request)->store();
+
+            $status     =   'success';
+            $message    =   Message::instance()->format($action, $module, $status);
+
+            DB::commit();
+        } catch (\Error | \Exception $e) {
+
+            DB::rollBack();
+            Log::error($e);
+        }
+
+        activity()->useLog('merchant:career')
+            ->causedBy(Auth::user())
+            ->performedOn(new Career())
+            ->withProperties($request->all())
+            ->log($message);
+
+        return redirect()->route('merchant.careers.index')->with($status, $message);
     }
 
     /**
@@ -47,7 +92,9 @@ class CareerController extends Controller
      */
     public function show(Career $career)
     {
-        //
+        $career->load(['branch.address']);
+
+        return view('merchant.career.show', compact('career'));
     }
 
     /**
@@ -58,7 +105,18 @@ class CareerController extends Controller
      */
     public function edit(Career $career)
     {
-        //
+        $career->load(['branch.address']);
+
+        $merchant = Auth::user()->load(['mainBranch', 'subBranches']);
+
+        $merchants = collect([$merchant])
+            ->merge([$merchant->mainBranch])
+            ->merge($merchant->subBranches)
+            ->filter(function ($item) {
+                return !is_null($item);
+            });
+
+        return view('merchant.career.edit', compact('career', 'merchants'));
     }
 
     /**
@@ -68,9 +126,36 @@ class CareerController extends Controller
      * @param  \App\Models\Career  $career
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Career $career)
+    public function update(CareerRequest $request, Career $career, CareerService $career_service)
     {
-        //
+        DB::beginTransaction();
+
+        $action     =   Permission::ACTION_UPDATE;
+        $module     =   strtolower(trans_choice('modules.career', 1));
+        $message    =   Message::instance()->format($action, $module);
+        $status     =   'fail';
+
+        try {
+
+            $career_service->setModel($career)->setRequest($request)->store();
+
+            $status     =   'success';
+            $message    =   Message::instance()->format($action, $module, $status);
+
+            DB::commit();
+        } catch (\Error | \Exception $e) {
+
+            DB::rollBack();
+            Log::error($e);
+        }
+
+        activity()->useLog('merchant:career')
+            ->causedBy(Auth::user())
+            ->performedOn($career)
+            ->withProperties($request->all())
+            ->log($message);
+
+        return redirect()->route('merchant.careers.index')->with($status, $message);
     }
 
     /**
@@ -81,6 +166,24 @@ class CareerController extends Controller
      */
     public function destroy(Career $career)
     {
-        //
+        $action     =   Permission::ACTION_DELETE;
+        $module     =   strtolower(trans_choice('modules.career', 1));
+        $status     =   'success';
+        $message    =   Message::instance()->format($action, $module, 'success');
+
+        $career->delete();
+
+        activity()->useLog('merchant:career')
+            ->causedBy(Auth::user())
+            ->performedOn($career)
+            ->log($message);
+
+        return Response::instance()
+            ->withStatus($status)
+            ->withMessage($message, true)
+            ->withData([
+                'redirect_to' => route('merchant.careers.index')
+            ])
+            ->sendJson();
     }
 }

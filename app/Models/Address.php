@@ -54,6 +54,19 @@ class Address extends Model
         );
     }
 
+    public function scopeSearchByAddress($query, $keyword)
+    {
+        return $query->where('address_1', 'like', "%{$keyword}%")
+            ->orWhere('address_2', 'like', "%{$keyword}%")
+            ->orWhere('postcode', 'like', "%{$keyword}%")
+            ->orWhereHas('city', function ($query) use ($keyword) {
+                $query->where('name', 'like', "%{$keyword}%")
+                    ->orWhereHas('countryState', function ($query) use ($keyword) {
+                        $query->where('name', 'like', "%{$keyword}%");
+                    });
+            });
+    }
+
     // Attributes
     public function getFullAddressAttribute()
     {
