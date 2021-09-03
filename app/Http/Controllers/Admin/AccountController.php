@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\AccountRequest;
 use App\Support\Facades\AccountFacade;
+use App\Http\Requests\Admin\AccountRequest;
 
 class AccountController extends Controller
 {
@@ -77,24 +77,24 @@ class AccountController extends Controller
             DB::commit();
 
             if ($request->get('new_password')) {
-                Auth::guard('web')->login($account);
+                Auth::guard(User::USER_TYPE_ADMIN)->login($account);
             }
 
             $message =  Message::instance()->format($action, $module, 'success');
             $status  =  'success';
 
-            activity()->useLog('web')
+            activity()->useLog('admin:profile')
                 ->causedBy(Auth::user())
                 ->performedOn($account)
                 ->withProperties($request->all())
                 ->log($message);
 
-            return redirect()->route('account.index')->withSuccess($message);
+            return redirect()->route('admin.account.index')->withSuccess($message);
         } catch (\Error | \Exception $e) {
 
             DB::rollBack();
 
-            activity()->useLog('web')
+            activity()->useLog('admin:profile')
                 ->causedBy(Auth::user())
                 ->performedOn($user)
                 ->withProperties($request->all())

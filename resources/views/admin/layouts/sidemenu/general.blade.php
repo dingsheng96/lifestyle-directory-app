@@ -1,7 +1,7 @@
 <li class="nav-header">{{ __('modules.general') }}</li>
 
 <li class="nav-item">
-    <a href="{{ route('dashboard') }}" class="nav-link {{ Nav::hasSegment('dashboard', 1, 'active') }}">
+    <a href="{{ route('admin.dashboard') }}" class="nav-link {{ Nav::hasSegment('dashboard', 1, 'active') }}">
         <i class="nav-icon fas fa-tachometer-alt"></i>
         <p>{{ __('modules.dashboard') }}</p>
     </a>

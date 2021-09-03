@@ -8,11 +8,11 @@ use App\Helpers\Response;
 use App\Models\Permission;
 use App\Models\CountryState;
 use Illuminate\Http\Request;
-use App\Http\Requests\CityRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\Admin\CityRequest;
 use App\Support\Services\CountryStateService;
 
 class CityController extends Controller
@@ -74,7 +74,7 @@ class CityController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:city')
             ->causedBy(Auth::user())
             ->performedOn(new City())
             ->withProperties($request->all())
@@ -132,7 +132,7 @@ class CityController extends Controller
 
         $city->delete();
 
-        activity()->useLog('web')
+        activity()->useLog('admin:city')
             ->causedBy(Auth::user())
             ->performedOn($city)
             ->log($message);

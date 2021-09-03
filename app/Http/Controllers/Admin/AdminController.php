@@ -6,13 +6,13 @@ use App\Models\User;
 use App\Helpers\Message;
 use App\Helpers\Response;
 use App\Models\Permission;
-use App\DataTables\AdminDataTable;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\AdminRequest;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Support\Services\AdminService;
+use App\DataTables\Admin\AdminDataTable;
+use App\Http\Requests\Admin\AdminRequest;
 
 class AdminController extends Controller
 {
@@ -31,7 +31,7 @@ class AdminController extends Controller
      */
     public function index(AdminDataTable $dataTable)
     {
-        return $dataTable->render('admin.index');
+        return $dataTable->render('admin.admin.index');
     }
 
     /**
@@ -41,7 +41,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        return view('admin.create');
+        return view('admin.admin.create');
     }
 
     /**
@@ -73,7 +73,7 @@ class AdminController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:admin')
             ->causedBy(Auth::user())
             ->performedOn(new User())
             ->withProperties($request->all())
@@ -90,7 +90,7 @@ class AdminController extends Controller
      */
     public function show(User $admin)
     {
-        return view('admin.show', compact('admin'));
+        return view('admin.admin.show', compact('admin'));
     }
 
     /**
@@ -101,7 +101,7 @@ class AdminController extends Controller
      */
     public function edit(User $admin)
     {
-        return view('admin.edit', compact('admin'));
+        return view('admin.admin.edit', compact('admin'));
     }
 
     /**
@@ -134,7 +134,7 @@ class AdminController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:admin')
             ->causedBy(Auth::user())
             ->performedOn(new User())
             ->withProperties($request->all())
@@ -158,7 +158,7 @@ class AdminController extends Controller
 
         $admin->delete();
 
-        activity()->useLog('web')
+        activity()->useLog('admin:admin')
             ->causedBy(Auth::user())
             ->performedOn($admin)
             ->log($message);

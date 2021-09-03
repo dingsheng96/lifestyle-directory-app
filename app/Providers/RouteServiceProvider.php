@@ -28,7 +28,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string|null
      */
-    // protected $namespace = 'App\\Http\\Controllers';
+    protected $namespace = 'App\\Http\\Controllers';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -97,7 +97,7 @@ class RouteServiceProvider extends ServiceProvider
             Route::domain($value['url'])
                 ->middleware('web')
                 ->namespace($this->namespace . '\\' . $value['namespace'])
-                ->name($value['route']['name'])
+                ->name($value['route']['name'] . '.')
                 ->group(base_path('routes/web/' . $value['route']['file']));
         }
 
@@ -116,27 +116,27 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::bind('admin', function ($value) {
 
-            return User::where('id', $value)->where('type', User::USER_TYPE_ADMIN)->firstOrFail();
+            return User::where('id', $value)->admin()->firstOrFail();
         });
 
         Route::bind('merchant', function ($value) {
 
-            return User::where('id', $value)->where('type', User::USER_TYPE_MERCHANT)->firstOrFail();
+            return User::where('id', $value)->merchant()->mainMerchant()->firstOrFail();
         });
 
         Route::bind('branch', function ($value) {
 
-            return User::where('id', $value)->where('type', User::USER_TYPE_BRANCH)->firstOrFail();
+            return User::where('id', $value)->merchant()->subMerchant()->firstOrFail();
         });
 
         Route::bind('member', function ($value) {
 
-            return User::where('id', $value)->where('type', User::USER_TYPE_MEMBER)->firstOrFail();
+            return User::where('id', $value)->member()->firstOrFail();
         });
 
         Route::bind('guest', function ($value) {
 
-            return User::where('id', $value)->where('type', User::USER_TYPE_GUEST)->firstOrFail();
+            return User::where('id', $value)->guest()->firstOrFail();
         });
     }
 }

@@ -279,7 +279,7 @@
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
                                             <label for="city" class="col-form-label">{{ trans_choice('labels.city', 1) }} <span class="text-danger">*</span></label>
-                                            <select name="city" id="city" class="form-control select2 @error('city') is-invalid @enderror city-dropdown" data-selected="{{ old('city', 0) }}" data-city-route="{{ route('data.country-states.cities', ['__REPLACE__']) }}">
+                                            <select name="city" id="city" class="form-control select2 @error('city') is-invalid @enderror city-dropdown" data-selected="{{ old('city', 0) }}" data-city-route="{{ route('admin.data.country-states.cities', ['__REPLACE__']) }}">
                                                 <option value="0" selected disabled>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(trans_choice('labels.city', 1))]) }} ---</option>
                                             </select>
                                             @error('city')

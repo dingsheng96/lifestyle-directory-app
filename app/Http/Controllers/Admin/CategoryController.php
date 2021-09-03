@@ -10,9 +10,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\DataTables\CategoryDataTable;
-use App\Http\Requests\CategoryRequest;
 use App\Support\Services\CategoryService;
+use App\DataTables\Admin\CategoryDataTable;
+use App\Http\Requests\Admin\CategoryRequest;
 
 class CategoryController extends Controller
 {
@@ -31,7 +31,7 @@ class CategoryController extends Controller
      */
     public function index(CategoryDataTable $dataTable)
     {
-        return $dataTable->render('category.index');
+        return $dataTable->render('admin.category.index');
     }
 
     /**
@@ -41,7 +41,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('category.create');
+        return view('admin.category.create');
     }
 
     /**
@@ -73,7 +73,7 @@ class CategoryController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:category')
             ->causedBy(Auth::user())
             ->performedOn(new Category())
             ->withProperties($request->all())
@@ -92,7 +92,7 @@ class CategoryController extends Controller
     {
         $category->load(['media']);
 
-        return view('category.show', compact('category'));
+        return view('admin.category.show', compact('category'));
     }
 
     /**
@@ -105,7 +105,7 @@ class CategoryController extends Controller
     {
         $category->load(['media']);
 
-        return view('category.edit', compact('category'));
+        return view('admin.category.edit', compact('category'));
     }
 
     /**
@@ -138,7 +138,7 @@ class CategoryController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:category')
             ->causedBy(Auth::user())
             ->performedOn($category)
             ->withProperties($request->all())
@@ -162,7 +162,7 @@ class CategoryController extends Controller
 
         $category->delete();
 
-        activity()->useLog('web')
+        activity()->useLog('admin:category')
             ->causedBy(Auth::user())
             ->performedOn($category)
             ->log($message);

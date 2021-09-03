@@ -8,13 +8,13 @@ use App\Helpers\Message;
 use App\Helpers\Response;
 use App\Models\Permission;
 use Illuminate\Support\Facades\DB;
-use App\DataTables\BranchDataTable;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\DataTables\MerchantDataTable;
-use App\Http\Requests\MerchantRequest;
+use App\DataTables\Admin\BranchDataTable;
 use App\Support\Services\MerchantService;
+use App\DataTables\Admin\MerchantDataTable;
+use App\Http\Requests\Admin\MerchantRequest;
 
 class MerchantController extends Controller
 {
@@ -33,7 +33,7 @@ class MerchantController extends Controller
      */
     public function index(MerchantDataTable $dataTable)
     {
-        return $dataTable->render('merchant.index');
+        return $dataTable->render('admin.merchant.index');
     }
 
     /**
@@ -45,7 +45,7 @@ class MerchantController extends Controller
     {
         $max_files = Media::MAX_BRANCH_IMAGE_UPLOAD;
 
-        return view('merchant.create', compact('max_files'));
+        return view('admin.merchant.create', compact('max_files'));
     }
 
     /**
@@ -77,7 +77,7 @@ class MerchantController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:merchant')
             ->causedBy(Auth::user())
             ->performedOn(new User())
             ->withProperties($request->all())
@@ -100,7 +100,7 @@ class MerchantController extends Controller
 
         $image_and_thumbnail = collect($merchant->media)->whereNotIn('type', [Media::TYPE_LOGO, Media::TYPE_SSM]);
 
-        return $dataTable->with(['merchant' => $merchant, 'view_only' => true])->render('merchant.show', compact('merchant', 'image_and_thumbnail'));
+        return $dataTable->with(['merchant' => $merchant, 'view_only' => true])->render('admin.merchant.show', compact('merchant', 'image_and_thumbnail'));
     }
 
     /**
@@ -125,7 +125,7 @@ class MerchantController extends Controller
 
         $max_files = Media::MAX_BRANCH_IMAGE_UPLOAD - (clone $image_and_thumbnail)->count();
 
-        return $dataTable->with(['merchant' => $merchant])->render('merchant.edit', compact('merchant', 'image_and_thumbnail', 'max_files'));
+        return $dataTable->with(['merchant' => $merchant])->render('admin.merchant.edit', compact('merchant', 'image_and_thumbnail', 'max_files'));
     }
 
     /**
@@ -160,7 +160,7 @@ class MerchantController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:merchant')
             ->causedBy(Auth::user())
             ->performedOn($merchant)
             ->withProperties($request->all())
@@ -193,7 +193,7 @@ class MerchantController extends Controller
 
         $merchant->delete();
 
-        activity()->useLog('web')
+        activity()->useLog('admin:merchant')
             ->causedBy(Auth::user())
             ->performedOn($merchant)
             ->log($message);

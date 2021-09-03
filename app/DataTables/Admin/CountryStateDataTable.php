@@ -1,17 +1,15 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Admin;
 
-use App\Models\Banner;
-use Illuminate\Support\Str;
+use App\Models\CountryState;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class BannerDataTable extends DataTable
+class CountryStateDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -25,43 +23,34 @@ class BannerDataTable extends DataTable
             ->eloquent($query)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
+
                 return view('components.action', [
                     'no_action' => $this->no_action ?: null,
-                    'view' => [
-                        'permission' => 'banner.read',
-                        'route' => route('admin.banners.show', ['banner' => $data->id]),
-                    ],
                     'update' => [
-                        'permission' => 'banner.update',
-                        'route' => route('admin.banners.edit', ['banner' => $data->id]),
+                        'permission' => 'locale.update',
+                        'route' => route('admin.locales.country-states.edit', ['country_state' => $data->id])
                     ],
                     'delete' => [
-                        'permission' => 'banner.delete',
-                        'route' => route('admin.banners.destroy', ['banner' => $data->id])
+                        'permission' => 'locale.delete',
+                        'route' => route('admin.locales.country-states.destroy', ['country_state' => $data->id])
                     ]
                 ])->render();
-            })
-            ->editColumn('description', function ($data) {
-                return Str::limit($data->description);
             })
             ->editColumn('created_at', function ($data) {
                 return $data->created_at->toDateTimeString();
             })
-            ->editColumn('status', function ($data) {
-                return $data->status_label;
-            })
-            ->rawColumns(['action', 'status']);
+            ->rawColumns(['action']);
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Banner $model
+     * @param \App\Models\CountryState $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Banner $model)
+    public function query(CountryState $model)
     {
-        return $model->newQuery();
+        return $model->withCount(['cities'])->newQuery();
     }
 
     /**
@@ -72,7 +61,7 @@ class BannerDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('banner-table')
+            ->setTableId('country-state-table')
             ->addTableClass('table-hover table w-100')
             ->columns($this->getColumns())
             ->minifiedAjax()
@@ -91,9 +80,10 @@ class BannerDataTable extends DataTable
     {
         return [
             Column::computed('DT_RowIndex', '#'),
-            Column::make('title')->title(__('labels.title')),
-            Column::make('status')->title(__('labels.status')),
-            Column::make('description')->title(__('labels.description')),
+            Column::make('name')->title(__('labels.name')),
+            Column::make('cities_count')
+                ->searchable(false)
+                ->title(trans_choice('labels.city', 2)),
             Column::make('created_at')->title(__('labels.created_at')),
             Column::computed('action', __('labels.action'))
                 ->exportable(false)
@@ -108,6 +98,6 @@ class BannerDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Banner_' . date('YmdHis');
+        return 'CountryState_' . date('YmdHis');
     }
 }

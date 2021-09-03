@@ -23,10 +23,10 @@
             </li>
             <div class="collapse" id="userdirectory">
                 <li class="{{ Nav::hasSegment('dashboard', 1, 'active') }}">
-                    <a href="{{ route('dashboard') }}">{{ __('app.user_dashboard_sidebar_profile') }}</a>
+                    <a href="{{ route('admin.dashboard') }}">{{ __('app.user_dashboard_sidebar_profile') }}</a>
                 </li>
                 <li class="{{ Nav::hasSegment('account', 1, 'active') }}">
-                    <a href="{{ route('account.index') }}">{{ __('app.user_dashboard_sidebar_profile') }}</a>
+                    <a href="{{ route('admin.account.index') }}">{{ __('app.user_dashboard_sidebar_profile') }}</a>
                 </li>
                 <li class="{{ Nav::hasSegment('wishlist', 1, 'active') }}">
                     <a href="{{ route('app.wishlist.index') }}">{{ __('app.user_dashboard_sidebar_wishlist') }}</a>
@@ -43,10 +43,10 @@
                 <ul class="account">
                     <li class="title">{{ __('app.user_dashboard_sidebar_title') }}</li>
                     <li class="{{ Nav::hasSegment('dashboard', 1, 'active') }}">
-                        <a href="{{ route('dashboard') }}">{{ __('app.user_dashboard_sidebar_dashboard') }}</a>
+                        <a href="{{ route('admin.dashboard') }}">{{ __('app.user_dashboard_sidebar_dashboard') }}</a>
                     </li>
                     <li class="{{ Nav::hasSegment('account', 1, 'active') }}">
-                        <a href="{{ route('account.index') }}">{{ __('app.user_dashboard_sidebar_profile') }}</a>
+                        <a href="{{ route('admin.account.index') }}">{{ __('app.user_dashboard_sidebar_profile') }}</a>
                     </li>
                     <li class="{{ Nav::hasSegment('wishlist', 1, 'active') }}">
                         <a href="{{ route('app.wishlist.index') }}">{{ __('app.user_dashboard_sidebar_wishlist') }}</a>
@@ -71,7 +71,7 @@
                     @endif
 
                     <!-- forms start here -->
-                    <form action="{{ route('account.store') }}" method="POST" role="form" enctype="multipart/form-data">
+                    <form action="{{ route('admin.account.store') }}" method="POST" role="form" enctype="multipart/form-data">
                         @csrf
 
                         <div class="input-group mb-3">
@@ -173,7 +173,7 @@
                                 <div class="input-group mb-3">
                                     <label class="font-medium" for="country_state">{{ trans_choice('labels.country_state', 1) }} <span class="text-danger">*</span></label>
                                     <select name="country_state" id="country_state" class="@error('country_state') is-invalid @enderror country-state-dropdown city-filter" data-selected="{{ old('country_state', $address->countryState->id) }}"
-                                        data-country-state-route="{{ route('data.countries.country-states', ['__REPLACE__']) }}">
+                                        data-country-state-route="{{ route('admin.data.countries.country-states', ['__REPLACE__']) }}">
                                         <option value="0" selected disabled>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(trans_choice('labels.country_state', 1))]) }} ---</option>
                                     </select>
                                     @error('country_state')
@@ -186,7 +186,7 @@
                             <div class="col-12 col-md-6">
                                 <div class="input-group mb-3">
                                     <label class="font-medium" for="city">{{ trans_choice('labels.city', 1) }} <span class="text-danger">*</span></label>
-                                    <select name="city" id="city" class="@error('city') is-invalid @enderror city-dropdown" data-selected="{{ old('city', $address->city->id) }}" data-city-route="{{ route('data.countries.country-states.cities', ['__FIRST_REPLACE__', '__SECOND_REPLACE__']) }}">
+                                    <select name="city" id="city" class="@error('city') is-invalid @enderror city-dropdown" data-selected="{{ old('city', $address->city->id) }}" data-city-route="{{ route('admin.data.countries.country-states.cities', ['__FIRST_REPLACE__', '__SECOND_REPLACE__']) }}">
                                         <option value="0" selected disabled>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(trans_choice('labels.city', 1))]) }} ---</option>
                                     </select>
                                     @error('city')

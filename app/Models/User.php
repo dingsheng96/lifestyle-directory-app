@@ -173,27 +173,27 @@ class User extends Authenticatable implements MustVerifyEmail
     // Scopes
     public function scopeAdmin($query)
     {
-        return $query->where('type', self::USER_TYPE_ADMIN);;
+        return $query->where('type', self::USER_TYPE_ADMIN);
     }
 
     public function scopeMerchant($query)
     {
-        return $query->whereIn('type', [self::USER_TYPE_MERCHANT, self::USER_TYPE_BRANCH]);
+        return $query->where('type', self::USER_TYPE_MERCHANT);
     }
 
     public function scopeMainMerchant($query)
     {
-        return $query->where('type', self::USER_TYPE_MERCHANT);;
+        return $query->has('subBranches')->doesntHave('mainBranch');
     }
 
     public function scopeSubMerchant($query)
     {
-        return $query->where('type', self::USER_TYPE_BRANCH);;
+        return $query->has('mainBranch')->doesntHave('subBranches');
     }
 
     public function scopeMember($query)
     {
-        return $query->where('type', self::USER_TYPE_MEMBER);;
+        return $query->where('type', self::USER_TYPE_MEMBER);
     }
 
     public function scopeGuest($query)

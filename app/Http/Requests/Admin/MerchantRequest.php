@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
 use App\Models\City;
+use App\Models\User;
 use App\Models\Media;
 use App\Helpers\Status;
 use App\Models\Category;
@@ -25,7 +26,7 @@ class MerchantRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::guard('web')->check()
+        return Auth::guard(User::USER_TYPE_ADMIN)->check()
             && Gate::any(['merchant.create', 'merchant.update']);
     }
 
@@ -53,11 +54,7 @@ class MerchantRequest extends FormRequest
             'country_state'     =>  ['required', Rule::exists(CountryState::class, 'id')],
             'city'              =>  ['required', Rule::exists(City::class, 'id')->where('country_state_id', $this->get('country_state'))],
 
-            'reg_no'            =>  [
-                'required',
-                Rule::unique(BranchDetail::class, 'reg_no')
-                    ->ignore($merchant, 'branch_id')->whereNull('deleted_at')
-            ],
+            'reg_no'            =>  ['required', Rule::unique(BranchDetail::class, 'reg_no')->ignore($merchant->id, 'branch_id')->whereNull('deleted_at')],
             'website'           =>  ['nullable', 'url'],
             'facebook'          =>  ['nullable', 'url'],
             'instagram'         =>  ['nullable', 'url'],

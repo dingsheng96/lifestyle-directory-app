@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
 use App\Models\Role;
 use App\Models\User;
@@ -20,7 +20,7 @@ class AdminRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::guard('web')->check()
+        return Auth::guard(User::USER_TYPE_ADMIN)->check()
             && Gate::any(['admin.create', 'admin.update']);
     }
 

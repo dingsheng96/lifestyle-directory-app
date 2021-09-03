@@ -1,16 +1,15 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Admin;
 
-use App\Models\Role;
+use App\Models\User;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class RoleDataTable extends DataTable
+class MemberDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -25,36 +24,45 @@ class RoleDataTable extends DataTable
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
                 return view('components.action', [
-                    'no_action' => $this->no_action ?: ($data->name == Role::ROLE_SUPER_ADMIN),
+                    'no_action' => $this->no_action ?: null,
                     'view' => [
-                        'permission' => 'role.read',
-                        'route' => route('admin.roles.show', ['role' => $data->id])
+                        'permission' => 'member.read',
+                        'route' => route('admin.members.show', ['member' => $data->id])
                     ],
                     'update' => [
-                        'permission' => 'role.update',
-                        'route' => route('admin.roles.edit', ['role' => $data->id]),
+                        'permission' => 'member.update',
+                        'route' => route('admin.members.edit', ['member' => $data->id])
                     ],
                     'delete' => [
-                        'permission' => 'role.delete',
-                        'route' => route('admin.roles.destroy', ['role' => $data->id])
+                        'permission' => 'member.delete',
+                        'route' => route('admin.members.destroy', ['member' => $data->id])
                     ]
                 ])->render();
             })
             ->editColumn('created_at', function ($data) {
                 return $data->created_at->toDateTimeString();
             })
-            ->rawColumns(['action']);
+            ->editColumn('mobile_no', function ($data) {
+                return $data->formatted_phone_number;
+            })
+            ->editColumn('status', function ($data) {
+                return '<span>' . $data->active_status_label . '</span>';
+            })
+            ->filterColumn('status', function ($query, $keyword) {
+                $query->where('status', strtolower($keyword));
+            })
+            ->rawColumns(['action', 'status']);
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Role $model
+     * @param \App\Models\User $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Role $model)
+    public function query(User $model)
     {
-        return $model->newQuery();
+        return $model->member()->newQuery();
     }
 
     /**
@@ -65,11 +73,11 @@ class RoleDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('role-table')
+            ->setTableId('member-table')
             ->addTableClass('table-hover table w-100')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->orderBy(0, 'asc')
+            ->orderBy(5, 'desc')
             ->responsive(true)
             ->autoWidth(true)
             ->processing(false);
@@ -83,11 +91,13 @@ class RoleDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::computed('DT_RowIndex', '#')->width('5%'),
-            Column::make('name')->title(__('labels.name'))->width('30%'),
-            Column::make('description')->title(__('labels.description'))->width('40%'),
-            Column::make('created_at')->title(__('labels.created_at'))->width('15%'),
-            Column::computed('action', __('labels.action'))->width('10%')
+            Column::computed('DT_RowIndex', '#'),
+            Column::make('name')->title(__('labels.name')),
+            Column::make('mobile_no')->title(__('labels.contact_no')),
+            Column::make('email')->title(__('labels.email')),
+            Column::make('status')->title(__('labels.status')),
+            Column::make('created_at')->title(__('labels.created_at')),
+            Column::computed('action', __('labels.action'))
                 ->exportable(false)
                 ->printable(false),
         ];
@@ -100,6 +110,6 @@ class RoleDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Role_' . date('YmdHis');
+        return 'Member_' . date('YmdHis');
     }
 }

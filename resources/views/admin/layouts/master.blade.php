@@ -23,18 +23,20 @@
 
     @auth
     <div class="wrapper">
-        @include('layouts.topnav')
-        @include('layouts.sidenav')
+        @include('admin.layouts.topnav')
+        @include('admin.layouts.sidenav')
 
         <div class="content-wrapper">
-            @include('layouts.header')
+
+            @include('admin.layouts.header')
+
             <div class="content">
                 @includeWhen(Session::has('success') || Session::has('fail') ||$errors->any(), 'components.alert')
                 @yield('content')
             </div>
         </div>
 
-        @include('layouts.footer') {{-- auth footer --}}
+        @include('admin.layouts.footer') {{-- auth footer --}}
 
         @include('components.loader')
     </div>

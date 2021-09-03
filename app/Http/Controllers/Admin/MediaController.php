@@ -23,7 +23,7 @@ class MediaController extends Controller
 
         $media->delete();
 
-        activity()->useLog('web')
+        activity()->useLog('admin:media')
             ->causedBy(Auth::user())
             ->performedOn($media)
             ->log($message);

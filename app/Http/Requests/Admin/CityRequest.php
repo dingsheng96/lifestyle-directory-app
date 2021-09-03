@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
 use App\Models\City;
+use App\Models\User;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -17,7 +18,7 @@ class CityRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::guard('web')->check()
+        return Auth::guard(User::USER_TYPE_ADMIN)->check()
             && Gate::any(['locale.create', 'locale.update']);
     }
 

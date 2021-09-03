@@ -48,7 +48,7 @@
             "fail": 61,
             "validation": 62
         },
-        "force_update": {
+        "force": {
             "app": 999,
             "label": 998,
             "logout": 996,

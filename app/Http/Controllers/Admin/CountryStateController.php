@@ -6,14 +6,14 @@ use App\Helpers\Message;
 use App\Helpers\Response;
 use App\Models\Permission;
 use App\Models\CountryState;
-use App\DataTables\CityDataTable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\DataTables\CountryStateDataTable;
-use App\Http\Requests\CountryStateRequest;
+use App\DataTables\Admin\CityDataTable;
 use App\Support\Services\CountryStateService;
+use App\DataTables\Admin\CountryStateDataTable;
+use App\Http\Requests\Admin\CountryStateRequest;
 
 class CountryStateController extends Controller
 {
@@ -32,7 +32,7 @@ class CountryStateController extends Controller
      */
     public function index(CountryStateDataTable $dataTable)
     {
-        return $dataTable->render('locale.country_state.index');
+        return $dataTable->render('admin.locale.country_state.index');
     }
 
     /**
@@ -74,7 +74,7 @@ class CountryStateController extends Controller
             $message = $e->getMessage();
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:country_state')
             ->causedBy(Auth::user())
             ->performedOn(new CountryState())
             ->withProperties($request->all())
@@ -102,7 +102,7 @@ class CountryStateController extends Controller
      */
     public function edit(CountryState $country_state, CityDataTable $dataTable)
     {
-        return $dataTable->with(['country_state_id' => $country_state->id])->render('locale.country_state.edit', compact('country_state'));
+        return $dataTable->with(['country_state_id' => $country_state->id])->render('admin.locale.country_state.edit', compact('country_state'));
     }
 
     /**
@@ -135,7 +135,7 @@ class CountryStateController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:country_state')
             ->causedBy(Auth::user())
             ->performedOn($country_state)
             ->withProperties($request->all())
@@ -160,7 +160,7 @@ class CountryStateController extends Controller
         $country_state->cities()->delete();
         $country_state->delete();
 
-        activity()->useLog('web')
+        activity()->useLog('admin:country_state')
             ->causedBy(Auth::user())
             ->performedOn($country_state)
             ->log($message);

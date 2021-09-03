@@ -1,17 +1,15 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Admin;
 
-use App\Models\Career;
-use Illuminate\Support\Str;
+use App\Models\City;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class CareerDataTable extends DataTable
+class CityDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -25,52 +23,30 @@ class CareerDataTable extends DataTable
             ->eloquent($query)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
+
                 return view('components.action', [
                     'no_action' => $this->no_action ?: null,
-                    'view' => [
-                        'permission' => 'career.read',
-                        'route' => route('admin.careers.show', ['career' => $data->id]),
-                    ],
-                    'update' => [
-                        'permission' => 'career.update',
-                        'route' => route('admin.careers.edit', ['career' => $data->id]),
-                    ],
                     'delete' => [
-                        'permission' => 'career.delete',
-                        'route' => route('admin.careers.destroy', ['career' => $data->id])
+                        'permission' => 'locale.delete',
+                        'route' => route('admin.locales.country-states.cities.destroy', ['country_state' => $this->country_state_id, 'city' => $data->id])
                     ]
                 ])->render();
-            })
-            ->addColumn('company', function ($data) {
-
-                return $data->branch->name;
-            })
-            ->addColumn('salary', function ($data) {
-
-                return $data->salary_range;
-            })
-            ->addColumn('location', function ($data) {
-
-                return $data->branch->address->location_city_state;
-            })
-            ->editColumn('status', function ($data) {
-                return $data->status_label;
             })
             ->editColumn('created_at', function ($data) {
                 return $data->created_at->toDateTimeString();
             })
-            ->rawColumns(['action', 'status']);
+            ->rawColumns(['action']);
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Career $model
+     * @param \App\Models\City $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Career $model)
+    public function query(City $model)
     {
-        return $model->with(['branch.address'])->newQuery();
+        return $model->where('country_state_id', $this->country_state_id)->newQuery();
     }
 
     /**
@@ -81,11 +57,11 @@ class CareerDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('career-table')
+            ->setTableId('city-table')
             ->addTableClass('table-hover table w-100')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->orderBy(0, 'asc')
+            ->orderBy(1, 'asc')
             ->responsive(true)
             ->autoWidth(true)
             ->processing(false);
@@ -100,11 +76,7 @@ class CareerDataTable extends DataTable
     {
         return [
             Column::computed('DT_RowIndex', '#'),
-            Column::make('position')->title(__('labels.job_title')),
-            Column::make('salary')->title(__('labels.salary') . ' (MYR)'),
-            Column::make('company')->title(__('labels.company')),
-            Column::make('location')->title(__('labels.location')),
-            Column::make('status')->title(__('labels.status')),
+            Column::make('name')->title(__('labels.name')),
             Column::make('created_at')->title(__('labels.created_at')),
             Column::computed('action', __('labels.action'))
                 ->exportable(false)
@@ -119,6 +91,6 @@ class CareerDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Career_' . date('YmdHis');
+        return 'City_' . date('YmdHis');
     }
 }

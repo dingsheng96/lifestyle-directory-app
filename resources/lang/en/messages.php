@@ -17,6 +17,11 @@ return [
         'fail' => 'The :module unable to delete!',
     ],
 
+    'import' => [
+        'success' => 'The :module imported successfully!',
+        'fail' => 'The :module unable to import!',
+    ],
+
     'logout_success' => 'Logout successfully.',
     'login_success' => 'Login successfully.',
     'register_success' => 'Register successfully.',
@@ -54,5 +59,6 @@ return [
     'whatsapp_message' => "Hi :name, I found your project listing (:link) on " . config('app.url') . " and am interested to find out more.",
     'no_slot_available' => 'No slot available',
     'insufficient_quota' => 'Insufficient Quota',
-    'complete_fields' => 'Please complete the fields below.'
+    'complete_fields' => 'Please complete the fields below.',
+    'unauthenticated' => 'Unauthenticated',
 ];

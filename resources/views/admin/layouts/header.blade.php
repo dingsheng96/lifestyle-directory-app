@@ -5,9 +5,9 @@
                 <h1 class="m-0 text-dark">{{ $title ?? '-' }}</h1>
             </div>
             <div class="col-sm-6 col-12">
-                @if(!Nav::isRoute('dashboard'))
+                @if(!Nav::isroute('admin.dashboard'))
                 <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">{{ __('modules.dashboard') }}</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">{{ __('modules.dashboard') }}</a></li>
                     @if (isset($parent_title) && !empty($parent_title))
                     <li class="breadcrumb-item active">{{ $parent_title ?? '-' }}</li>
                     @endif

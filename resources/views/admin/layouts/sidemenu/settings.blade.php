@@ -12,8 +12,8 @@
 @endcanany
 
 @canany(['locale.create', 'locale.read', 'locale.update', 'locale.delete'])
-<li class="nav-item {{ Nav::hasSegment('locale', 1, 'menu-open') }}">
-    <a href="#" class="nav-link {{ Nav::hasSegment('locale', 1, 'active') }}">
+<li class="nav-item {{ Nav::hasSegment('locales', 1, 'menu-open') }}">
+    <a href="#" class="nav-link {{ Nav::hasSegment('locales', 1, 'active') }}">
         <i class="nav-icon fas fa-globe-asia"></i>
         <p>
             {{ trans_choice('modules.locale', 2) }}

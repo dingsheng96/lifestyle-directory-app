@@ -11,7 +11,7 @@
 
         <p class="login-box-msg">{{ __('app.login_title_main') }}</p>
 
-        <form action="{{ route('login') }}" method="post" role="form" enctype="multipart/form-data">
+        <form action="{{ route('admin.login') }}" method="post" role="form" enctype="multipart/form-data">
             @csrf
 
             <div class="input-group mb-3">
@@ -60,11 +60,7 @@
         </form>
 
         <p class="mb-1">
-            <a href="{{ route('password.request') }}">{{ __('app.login_btn_forgot_password') }}</a>
-        </p>
-
-        <p class="mb-0">
-            <a href="{{ route('register') }}" class="text-center">{{ __('app.login_btn_register_merchant') }}</a>
+            <a href="{{ route('admin.password.request') }}">{{ __('app.login_btn_forgot_password') }}</a>
         </p>
 
     </div>

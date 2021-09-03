@@ -28,6 +28,13 @@
                     </div>
 
                     <div class="form-group row">
+                        <label for="role" class="col-form-label col-sm-2">{{ __('labels.role') }}</label>
+                        <div class="col-sm-10">
+                            <p id="role" class="form-control-plaintext">{{ $admin->roles->first()->name }}</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
                         <label for="status" class="col-form-label col-sm-2">{{ __('labels.status') }}</label>
                         <div class="col-sm-10">
                             <p id="status" class="form-control-plaintext">{!! $admin->status_label !!}</p>

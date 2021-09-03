@@ -1,9 +1,8 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Admin;
 
-use App\Models\Category;
-use Illuminate\Support\Str;
+use App\Models\Role;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Illuminate\Support\Facades\Auth;
@@ -11,7 +10,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class CategoryDataTable extends DataTable
+class RoleDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -26,40 +25,34 @@ class CategoryDataTable extends DataTable
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
                 return view('components.action', [
-                    'no_action' => $this->no_action ?: null,
+                    'no_action' => $this->no_action ?: ($data->name == Role::ROLE_SUPER_ADMIN),
                     'view' => [
-                        'permission' => 'category.read',
-                        'route' => route('admin.categories.show', ['category' => $data->id]),
+                        'permission' => 'role.read',
+                        'route' => route('admin.roles.show', ['role' => $data->id])
                     ],
                     'update' => [
-                        'permission' => 'category.update',
-                        'route' => route('admin.categories.edit', ['category' => $data->id]),
+                        'permission' => 'role.update',
+                        'route' => route('admin.roles.edit', ['role' => $data->id]),
                     ],
                     'delete' => [
-                        'permission' => 'category.delete',
-                        'route' => route('admin.categories.destroy', ['category' => $data->id])
+                        'permission' => 'role.delete',
+                        'route' => route('admin.roles.destroy', ['role' => $data->id])
                     ]
                 ])->render();
-            })
-            ->editColumn('description', function ($data) {
-                return Str::limit($data->description);
             })
             ->editColumn('created_at', function ($data) {
                 return $data->created_at->toDateTimeString();
             })
-            ->editColumn('status', function ($data) {
-                return $data->status_label;
-            })
-            ->rawColumns(['action', 'status']);
+            ->rawColumns(['action']);
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Category $model
+     * @param \App\Models\Role $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Category $model)
+    public function query(Role $model)
     {
         return $model->newQuery();
     }
@@ -72,7 +65,7 @@ class CategoryDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('category-table')
+            ->setTableId('role-table')
             ->addTableClass('table-hover table w-100')
             ->columns($this->getColumns())
             ->minifiedAjax()
@@ -90,12 +83,11 @@ class CategoryDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            Column::computed('DT_RowIndex', '#'),
-            Column::make('name')->title(__('labels.name')),
-            Column::make('status')->title(__('labels.status')),
-            Column::make('description')->title(__('labels.description')),
-            Column::make('created_at')->title(__('labels.created_at')),
-            Column::computed('action', __('labels.action'))
+            Column::computed('DT_RowIndex', '#')->width('5%'),
+            Column::make('name')->title(__('labels.name'))->width('30%'),
+            Column::make('description')->title(__('labels.description'))->width('40%'),
+            Column::make('created_at')->title(__('labels.created_at'))->width('15%'),
+            Column::computed('action', __('labels.action'))->width('10%')
                 ->exportable(false)
                 ->printable(false),
         ];
@@ -108,6 +100,6 @@ class CategoryDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Category_' . date('YmdHis');
+        return 'Role_' . date('YmdHis');
     }
 }

@@ -24,19 +24,14 @@ class MerchantService extends BaseService
 
     public function storeMainMerchant()
     {
-        $this->store()
-            ->setUserType(User::USER_TYPE_MERCHANT)
-            ->setApplicationStatus(User::APPLICATION_STATUS_APPROVED)
-            ->assignCategory();
+        $this->store()->setApplicationStatus(User::APPLICATION_STATUS_APPROVED)->assignCategory();
 
         return $this;
     }
 
     public function storeBranch(User $main_branch)
     {
-        $this->store()
-            ->setUserType(User::USER_TYPE_BRANCH)
-            ->setApplicationStatus(User::APPLICATION_STATUS_APPROVED);
+        $this->store()->setApplicationStatus(User::APPLICATION_STATUS_APPROVED);
 
         // sync to main branch
         $main_branch->subBranches()->syncWithoutDetaching([$this->model->id]);

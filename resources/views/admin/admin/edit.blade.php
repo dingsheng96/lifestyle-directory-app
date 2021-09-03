@@ -39,7 +39,7 @@
 
                         <div class="form-group">
                             <label for="role" class="col-form-label">{{ __('labels.role') }} <span class="text-danger">*</span></label>
-                            <select name="status" id="status" class="form-control select2 @error('status') is-invalid @enderror">
+                            <select name="role" id="role" class="form-control select2 @error('role') is-invalid @enderror">
                                 <option value="0" disabled selected>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(__('labels.role'))]) }} ---</option>
                                 @forelse ($roles as $role)
                                 <option value="{{ $role->id }}" {{ old('role') == $role->id || $admin->hasRole($role->name) ? 'selected' : null }}>{{ $role->name }}</option>

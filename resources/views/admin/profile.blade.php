@@ -25,7 +25,7 @@
         </div>
 
         <div class="col-12 col-md-9">
-            <form action="{{ route('account.store') }}" method="post" role="form" enctype="multipart/form-data">
+            <form action="{{ route('admin.account.store') }}" method="post" role="form" enctype="multipart/form-data">
                 @csrf
                 <div class="card card-outline card-secondary">
                     <div class="card-header bg-transparent border-0">

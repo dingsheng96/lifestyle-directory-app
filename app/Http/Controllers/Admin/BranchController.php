@@ -2,21 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Carbon\Carbon;
-use App\Models\Role;
 use App\Models\User;
 use App\Models\Media;
-use App\Helpers\Status;
 use App\Helpers\Message;
 use App\Helpers\Response;
 use App\Models\Permission;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\MerchantRequest;
 use App\Support\Services\MerchantService;
+use App\Http\Requests\Admin\MerchantRequest;
 
 class BranchController extends Controller
 {
@@ -39,7 +35,7 @@ class BranchController extends Controller
     {
         $max_files = Media::MAX_BRANCH_IMAGE_UPLOAD;
 
-        return view('merchant.branch.create', compact('max_files', 'merchant'));
+        return view('admin.merchant.branch.create', compact('max_files', 'merchant'));
     }
 
     /**
@@ -71,7 +67,7 @@ class BranchController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:merchant_branch')
             ->causedBy(Auth::user())
             ->performedOn(new User())
             ->withProperties($request->all())
@@ -103,7 +99,7 @@ class BranchController extends Controller
 
         $image_and_thumbnail = collect($branch->media)->whereNotIn('type', [Media::TYPE_LOGO, Media::TYPE_SSM]);
 
-        return view('merchant.branch.show', compact('merchant', 'branch', 'image_and_thumbnail'));
+        return view('admin.merchant.branch.show', compact('merchant', 'branch', 'image_and_thumbnail'));
     }
 
     /**
@@ -122,7 +118,7 @@ class BranchController extends Controller
 
         $max_files = Media::MAX_BRANCH_IMAGE_UPLOAD - (clone $image_and_thumbnail)->count();
 
-        return view('merchant.branch.edit', compact('merchant', 'branch', 'max_files', 'image_and_thumbnail'));
+        return view('admin.merchant.branch.edit', compact('merchant', 'branch', 'max_files', 'image_and_thumbnail'));
     }
 
     /**
@@ -157,7 +153,7 @@ class BranchController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:merchant_branch')
             ->causedBy(Auth::user())
             ->performedOn($branch)
             ->withProperties($request->all())
@@ -189,7 +185,7 @@ class BranchController extends Controller
 
         $branch->delete();
 
-        activity()->useLog('web')
+        activity()->useLog('admin:merchant_branch')
             ->causedBy(Auth::user())
             ->performedOn($branch)
             ->log($message);

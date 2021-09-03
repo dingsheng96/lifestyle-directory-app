@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
+use App\Models\User;
 use App\Helpers\Status;
 use App\Models\Category;
 use Illuminate\Validation\Rule;
@@ -18,7 +19,7 @@ class CategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::guard('web')->check()
+        return Auth::guard(User::USER_TYPE_ADMIN)->check()
             && Gate::any(['category.create', 'category.update']);
     }
 

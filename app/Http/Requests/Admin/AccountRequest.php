@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
 use App\Models\City;
 use App\Models\User;
@@ -21,7 +21,7 @@ class AccountRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::guard('web')->check();
+        return Auth::guard(User::USER_TYPE_ADMIN)->check();
     }
 
     /**

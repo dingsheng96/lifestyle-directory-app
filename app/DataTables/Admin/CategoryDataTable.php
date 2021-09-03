@@ -1,8 +1,9 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Admin;
 
-use App\Models\User;
+use App\Models\Category;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +11,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class AdminDataTable extends DataTable
+class CategoryDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -25,29 +26,29 @@ class AdminDataTable extends DataTable
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
                 return view('components.action', [
-                    'no_action' => $this->no_action ?: $data->id == Auth::id(),
+                    'no_action' => $this->no_action ?: null,
                     'view' => [
-                        'permission' => 'admin.read',
-                        'route' => route('admin.admins.show', ['admin' => $data->id])
+                        'permission' => 'category.read',
+                        'route' => route('admin.categories.show', ['category' => $data->id]),
                     ],
                     'update' => [
-                        'permission' => 'admin.update',
-                        'route' => route('admin.admins.edit', ['admin' => $data->id])
+                        'permission' => 'category.update',
+                        'route' => route('admin.categories.edit', ['category' => $data->id]),
                     ],
                     'delete' => [
-                        'permission' => 'admin.delete',
-                        'route' => route('admin.admins.destroy', ['admin' => $data->id])
+                        'permission' => 'category.delete',
+                        'route' => route('admin.categories.destroy', ['category' => $data->id])
                     ]
                 ])->render();
+            })
+            ->editColumn('description', function ($data) {
+                return Str::limit($data->description);
             })
             ->editColumn('created_at', function ($data) {
                 return $data->created_at->toDateTimeString();
             })
             ->editColumn('status', function ($data) {
-                return '<span>' . $data->active_status_label . '</span>';
-            })
-            ->filterColumn('status', function ($query, $keyword) {
-                $query->where('status', strtolower($keyword));
+                return $data->status_label;
             })
             ->rawColumns(['action', 'status']);
     }
@@ -55,12 +56,12 @@ class AdminDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\User $model
+     * @param \App\Models\Category $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(User $model)
+    public function query(Category $model)
     {
-        return $model->admin()->newQuery();
+        return $model->newQuery();
     }
 
     /**
@@ -71,7 +72,7 @@ class AdminDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('admin-table')
+            ->setTableId('category-table')
             ->addTableClass('table-hover table w-100')
             ->columns($this->getColumns())
             ->minifiedAjax()
@@ -91,12 +92,12 @@ class AdminDataTable extends DataTable
         return [
             Column::computed('DT_RowIndex', '#'),
             Column::make('name')->title(__('labels.name')),
-            Column::make('email')->title(__('labels.email')),
             Column::make('status')->title(__('labels.status')),
+            Column::make('description')->title(__('labels.description')),
             Column::make('created_at')->title(__('labels.created_at')),
             Column::computed('action', __('labels.action'))
                 ->exportable(false)
-                ->printable(false)
+                ->printable(false),
         ];
     }
 
@@ -107,6 +108,6 @@ class AdminDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Admin_' . date('YmdHis');
+        return 'Category_' . date('YmdHis');
     }
 }

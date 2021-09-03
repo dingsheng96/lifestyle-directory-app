@@ -1,17 +1,17 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Admin;
 
-use App\Models\Translation;
+use App\Models\Banner;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class LanguageVersionDataTable extends DataTable
+class BannerDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -27,40 +27,41 @@ class LanguageVersionDataTable extends DataTable
             ->addColumn('action', function ($data) {
                 return view('components.action', [
                     'no_action' => $this->no_action ?: null,
-                    'download' => [
-                        'route' => route('admin.locales.languages.translations.export', ['language' => $this->language->id, 'version' => $data->version]),
+                    'view' => [
+                        'permission' => 'banner.read',
+                        'route' => route('admin.banners.show', ['banner' => $data->id]),
                     ],
-                    'upload' => [
-                        'route' => '#importTranslationModal',
-                        'attribute' => 'data-toggle="modal" data-version="' . $data->version . '"'
+                    'update' => [
+                        'permission' => 'banner.update',
+                        'route' => route('admin.banners.edit', ['banner' => $data->id]),
+                    ],
+                    'delete' => [
+                        'permission' => 'banner.delete',
+                        'route' => route('admin.banners.destroy', ['banner' => $data->id])
                     ]
                 ])->render();
             })
-            ->addColumn('current_version', function ($data) {
-                return '<div class="icheck-purple">
-                            <input type="radio" name="current_version" id="current_version_' . $data->version . '" ' . ($this->language->current_version == $data->version ? 'checked' : null) . ' value="' . $data->version . '">
-                            <label for="current_version_' . $data->version . '"></label>
-                        </div>';
+            ->editColumn('description', function ($data) {
+                return Str::limit($data->description);
             })
-            ->addColumn('last_updated_at', function ($data) {
-
-                return $data->updated_at->toDateTimeString();
+            ->editColumn('created_at', function ($data) {
+                return $data->created_at->toDateTimeString();
             })
-            ->rawColumns(['action', 'current_version']);
+            ->editColumn('status', function ($data) {
+                return $data->status_label;
+            })
+            ->rawColumns(['action', 'status']);
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Translation $model
+     * @param \App\Models\Banner $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Translation $model)
+    public function query(Banner $model)
     {
-        return $model->select('version', DB::raw('MAX(updated_at) AS updated_at'))
-            ->where('language_id', $this->language->id)
-            ->groupBy('version')
-            ->newQuery();
+        return $model->newQuery();
     }
 
     /**
@@ -71,11 +72,11 @@ class LanguageVersionDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('language-version-table')
+            ->setTableId('banner-table')
             ->addTableClass('table-hover table w-100')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->orderBy(1, 'desc')
+            ->orderBy(0, 'asc')
             ->responsive(true)
             ->autoWidth(true)
             ->processing(false);
@@ -90,9 +91,10 @@ class LanguageVersionDataTable extends DataTable
     {
         return [
             Column::computed('DT_RowIndex', '#'),
-            Column::make('version')->title(__('labels.version')),
-            Column::make('current_version')->title(__('labels.current_version')),
-            Column::make('last_updated_at')->title(__('labels.last_updated_at')),
+            Column::make('title')->title(__('labels.title')),
+            Column::make('status')->title(__('labels.status')),
+            Column::make('description')->title(__('labels.description')),
+            Column::make('created_at')->title(__('labels.created_at')),
             Column::computed('action', __('labels.action'))
                 ->exportable(false)
                 ->printable(false),
@@ -106,6 +108,6 @@ class LanguageVersionDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Language_' . date('YmdHis');
+        return 'Banner_' . date('YmdHis');
     }
 }

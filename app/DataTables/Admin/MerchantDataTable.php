@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Admin;
 
 use App\Models\User;
 use Yajra\DataTables\Html\Button;
@@ -9,7 +9,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class MemberDataTable extends DataTable
+class MerchantDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -26,32 +26,29 @@ class MemberDataTable extends DataTable
                 return view('components.action', [
                     'no_action' => $this->no_action ?: null,
                     'view' => [
-                        'permission' => 'member.read',
-                        'route' => route('admin.members.show', ['member' => $data->id])
+                        'permission' => 'merchant.read',
+                        'route' => route('admin.merchants.show', ['merchant' => $data->id])
                     ],
                     'update' => [
-                        'permission' => 'member.update',
-                        'route' => route('admin.members.edit', ['member' => $data->id])
+                        'permission' => 'merchant.update',
+                        'route' => route('admin.merchants.edit', ['merchant' => $data->id])
                     ],
                     'delete' => [
-                        'permission' => 'member.delete',
-                        'route' => route('admin.members.destroy', ['member' => $data->id])
+                        'permission' => 'merchant.delete',
+                        'route' => route('admin.merchants.destroy', ['merchant' => $data->id])
                     ]
                 ])->render();
             })
             ->editColumn('created_at', function ($data) {
                 return $data->created_at->toDateTimeString();
             })
+            ->editColumn('status', function ($data) {
+                return $data->status_label;
+            })
             ->editColumn('mobile_no', function ($data) {
                 return $data->formatted_phone_number;
             })
-            ->editColumn('status', function ($data) {
-                return '<span>' . $data->active_status_label . '</span>';
-            })
-            ->filterColumn('status', function ($query, $keyword) {
-                $query->where('status', strtolower($keyword));
-            })
-            ->rawColumns(['action', 'status']);
+            ->rawColumns(['action', 'status', 'profile']);
     }
 
     /**
@@ -62,7 +59,7 @@ class MemberDataTable extends DataTable
      */
     public function query(User $model)
     {
-        return $model->member()->newQuery();
+        return $model->mainMerchant()->withCount(['subBranches'])->newQuery();
     }
 
     /**
@@ -73,11 +70,11 @@ class MemberDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('member-table')
+            ->setTableId('merchant-table')
             ->addTableClass('table-hover table w-100')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->orderBy(5, 'desc')
+            ->orderBy(1, 'asc')
             ->responsive(true)
             ->autoWidth(true)
             ->processing(false);
@@ -93,8 +90,9 @@ class MemberDataTable extends DataTable
         return [
             Column::computed('DT_RowIndex', '#'),
             Column::make('name')->title(__('labels.name')),
-            Column::make('mobile_no')->title(__('labels.contact_no')),
             Column::make('email')->title(__('labels.email')),
+            Column::make('mobile_no')->title(__('labels.contact_no')),
+            Column::make('sub_branches_count')->title(__('labels.branches'))->searchable(false),
             Column::make('status')->title(__('labels.status')),
             Column::make('created_at')->title(__('labels.created_at')),
             Column::computed('action', __('labels.action'))
@@ -110,6 +108,6 @@ class MemberDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Member_' . date('YmdHis');
+        return 'Merchant_' . date('YmdHis');
     }
 }

@@ -1,15 +1,16 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Admin;
 
-use App\Models\City;
+use App\Models\Language;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class CityDataTable extends DataTable
+class LanguageDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -23,12 +24,15 @@ class CityDataTable extends DataTable
             ->eloquent($query)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
-
                 return view('components.action', [
                     'no_action' => $this->no_action ?: null,
+                    'update' => [
+                        'permission' => 'locale.update',
+                        'route' => route('admin.locales.languages.edit', ['language' => $data->id]),
+                    ],
                     'delete' => [
                         'permission' => 'locale.delete',
-                        'route' => route('admin.locales.country-states.cities.destroy', ['country_state' => $this->country_state_id, 'city' => $data->id])
+                        'route' => route('admin.locales.languages.destroy', ['language' => $data->id])
                     ]
                 ])->render();
             })
@@ -41,12 +45,12 @@ class CityDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\City $model
+     * @param \App\Models\Language $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(City $model)
+    public function query(Language $model)
     {
-        return $model->where('country_state_id', $this->country_state_id)->newQuery();
+        return $model->newQuery();
     }
 
     /**
@@ -57,11 +61,11 @@ class CityDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('city-table')
+            ->setTableId('language-table')
             ->addTableClass('table-hover table w-100')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->orderBy(1, 'asc')
+            ->orderBy(0, 'asc')
             ->responsive(true)
             ->autoWidth(true)
             ->processing(false);
@@ -77,6 +81,8 @@ class CityDataTable extends DataTable
         return [
             Column::computed('DT_RowIndex', '#'),
             Column::make('name')->title(__('labels.name')),
+            Column::make('code')->title(__('labels.code')),
+            Column::make('current_version')->title(__('labels.current_version')),
             Column::make('created_at')->title(__('labels.created_at')),
             Column::computed('action', __('labels.action'))
                 ->exportable(false)
@@ -91,6 +97,6 @@ class CityDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'City_' . date('YmdHis');
+        return 'Language_' . date('YmdHis');
     }
 }

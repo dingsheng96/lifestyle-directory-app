@@ -25,22 +25,26 @@
                 @csrf
                 <div class="modal-body">
 
-                    <div class="form-group">
-                        <label for="version" class="col-form-label">{{ __('labels.version') }}</label>
-                        <input id="version" name="version" class="form-control-plaintext" readonly>
+                    <div class="form-group row">
+                        <label for="version" class="col-form-label col-sm-2">{{ __('labels.version') }}</label>
+                        <div class="col-sm-10">
+                            <input id="version" name="version" class="form-control-plaintext" readonly>
+                        </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="file" class="col-form-label">{{ trans_choice('labels.upload_file', 1) }}</label>
-                        <input type="file" id="file" name="file" class="form-control-file @error('file') is-invalid @enderror">
-                        @error('file')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                        <ul class="pl-3 mt-3">
-                            {!! trans_choice('messages.upload_file_rules', 1, ['maxsize' => '2mb', 'extensions' => 'JPG,JPEG, PNG']) !!}
-                        </ul>
+                    <div class="form-group row">
+                        <label for="file" class="col-form-label col-sm-2">{{ trans_choice('labels.upload_file', 1) }}</label>
+                        <div class="col-sm-10">
+                            <input type="file" id="file" name="file" class="form-control-file @error('file') is-invalid @enderror">
+                            @error('file')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                            <ul class="pl-3 mt-3">
+                                {!! trans_choice('messages.upload_file_rules', 1, ['maxsize' => '2mb', 'extensions' => 'JPG,JPEG, PNG']) !!}
+                            </ul>
+                        </div>
                     </div>
 
                 </div>

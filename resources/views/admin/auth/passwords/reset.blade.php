@@ -9,7 +9,7 @@
 
                 <h5 class="text-center mb-5">{{ __('Reset Password') }}</h5>
 
-                <form method="POST" action="{{ route('password.update') }}" role="form" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('admin.password.update') }}" role="form" enctype="multipart/form-data">
                     @csrf
 
                     <input type="hidden" name="token" value="{{ $token }}">

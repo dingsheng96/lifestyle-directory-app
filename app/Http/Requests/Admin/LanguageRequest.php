@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
+use App\Models\User;
 use App\Models\Language;
 use App\Models\Translation;
 use App\Helpers\FileManager;
@@ -20,7 +21,7 @@ class LanguageRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::guard('web')->check()
+        return Auth::guard(User::USER_TYPE_ADMIN)->check()
             && Gate::any(['locale.create', 'locale.update']);
     }
 

@@ -8,12 +8,12 @@ use App\Helpers\Response;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\DataTables\BannerDataTable;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\BannerRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Support\Services\BannerService;
+use App\DataTables\Admin\BannerDataTable;
+use App\Http\Requests\Admin\BannerRequest;
 
 class BannerController extends Controller
 {
@@ -24,7 +24,7 @@ class BannerController extends Controller
      */
     public function index(BannerDataTable $dataTable)
     {
-        return $dataTable->render('banner.index');
+        return $dataTable->render('admin.banner.index');
     }
 
     /**
@@ -34,7 +34,7 @@ class BannerController extends Controller
      */
     public function create()
     {
-        return view('banner.create');
+        return view('admin.banner.create');
     }
 
     /**
@@ -66,7 +66,7 @@ class BannerController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:banner')
             ->causedBy(Auth::user())
             ->performedOn(new Banner())
             ->withProperties($request->all())
@@ -85,7 +85,7 @@ class BannerController extends Controller
     {
         $banner->load(['media']);
 
-        return view('banner.show', compact('banner'));
+        return view('admin.banner.show', compact('banner'));
     }
 
     /**
@@ -98,7 +98,7 @@ class BannerController extends Controller
     {
         $banner->load(['media']);
 
-        return view('banner.edit', compact('banner'));
+        return view('admin.banner.edit', compact('banner'));
     }
 
     /**
@@ -131,7 +131,7 @@ class BannerController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:banner')
             ->causedBy(Auth::user())
             ->performedOn($banner)
             ->withProperties($request->all())
@@ -155,7 +155,7 @@ class BannerController extends Controller
 
         $banner->delete();
 
-        activity()->useLog('web')
+        activity()->useLog('admin:banner')
             ->causedBy(Auth::user())
             ->performedOn($banner)
             ->log($message);

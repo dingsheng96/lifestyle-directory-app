@@ -9,13 +9,13 @@ use App\Helpers\Response;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\DataTables\MemberDataTable;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\MemberRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Support\Facades\MemberFacade;
 use App\Support\Services\MemberService;
+use App\DataTables\Admin\MemberDataTable;
+use App\Http\Requests\Admin\MemberRequest;
 
 class MemberController extends Controller
 {
@@ -34,7 +34,7 @@ class MemberController extends Controller
      */
     public function index(MemberDataTable $dataTable)
     {
-        return $dataTable->render('member.index');
+        return $dataTable->render('admin.member.index');
     }
 
     /**
@@ -44,7 +44,7 @@ class MemberController extends Controller
      */
     public function create()
     {
-        return view('member.create');
+        return view('admin.member.create');
     }
 
     /**
@@ -76,7 +76,7 @@ class MemberController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:member')
             ->causedBy(Auth::user())
             ->performedOn(new User())
             ->withProperties($request->all())
@@ -95,7 +95,7 @@ class MemberController extends Controller
     {
         $member->load(['media']);
 
-        return view('member.show', compact('member'));
+        return view('admin.member.show', compact('member'));
     }
 
     /**
@@ -108,7 +108,7 @@ class MemberController extends Controller
     {
         $member->load(['media']);
 
-        return view('member.edit', compact('member'));
+        return view('admin.member.edit', compact('member'));
     }
 
     /**
@@ -143,7 +143,7 @@ class MemberController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:member')
             ->causedBy(Auth::user())
             ->performedOn($member)
             ->withProperties($request->all())
@@ -170,7 +170,7 @@ class MemberController extends Controller
         $message = Message::instance()->format($action, $module, 'success');
         $status = 'success';
 
-        activity()->useLog('web')
+        activity()->useLog('admin:member')
             ->causedBy(Auth::user())
             ->performedOn($member)
             ->log($message);

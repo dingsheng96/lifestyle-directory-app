@@ -35,7 +35,17 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware('guest:' . User::USER_TYPE_ADMIN)->except('logout');
+    }
+
+    /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function showLoginForm()
+    {
+        return view('admin.auth.login');
     }
 
     /**
@@ -46,12 +56,10 @@ class LoginController extends Controller
      */
     protected function credentials(Request $request)
     {
-        $credentials = array_merge(
+        return array_merge(
             $request->only($this->username(), 'password'),
-            ['status' => User::STATUS_ACTIVE, 'application_status' => User::APPLICATION_STATUS_APPROVED]
+            ['status' => User::STATUS_ACTIVE, 'type' => User::USER_TYPE_ADMIN]
         );
-
-        return $credentials;
     }
 
     /**
@@ -63,29 +71,15 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        if ($user->is_member || $user->is_guest) {
-
-            $this->guard()->logout();
-
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
-            throw ValidationException::withMessages([
-                $this->username() => [trans('auth.failed')],
-            ]);
-
-            return redirect()->route('login');
-        }
-
         $message =  $user->name . ' ' . strtolower(__('messages.login_success'));
 
-        activity()->useLog('web:auth')
+        activity()->useLog('admin:login')
             ->causedByAnonymous()
             ->performedOn($user)
             ->withProperties($request->except(['password']))
             ->log($message);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('admin.dashboard');
     }
 
     /**
@@ -96,11 +90,10 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        $user = Auth::user();
+        $user       = $this->guard()->user();
+        $message    = $user->name . ' ' . strtolower(__('messages.logout_success'));
 
-        $message = $user->name . ' ' . strtolower(__('messages.logout_success'));
-
-        activity()->useLog('web:auth')
+        activity()->useLog('admin:logout')
             ->causedBy($user)
             ->withProperties($request->all())
             ->log($message);
@@ -117,6 +110,16 @@ class LoginController extends Controller
 
         return $request->wantsJson()
             ? new JsonResponse([], 204)
-            : redirect()->route('login')->withSuccess($message);
+            : redirect()->route('admin.login')->withSuccess($message);
+    }
+
+    /**
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard(User::USER_TYPE_ADMIN);
     }
 }

@@ -1,15 +1,16 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Admin;
 
-use App\Models\CountryState;
+use App\Models\User;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class CountryStateDataTable extends DataTable
+class AdminDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -23,34 +24,43 @@ class CountryStateDataTable extends DataTable
             ->eloquent($query)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
-
                 return view('components.action', [
-                    'no_action' => $this->no_action ?: null,
+                    'no_action' => $this->no_action ?: $data->id == Auth::id(),
+                    'view' => [
+                        'permission' => 'admin.read',
+                        'route' => route('admin.admins.show', ['admin' => $data->id])
+                    ],
                     'update' => [
-                        'permission' => 'locale.update',
-                        'route' => route('admin.locales.country-states.edit', ['country_state' => $data->id])
+                        'permission' => 'admin.update',
+                        'route' => route('admin.admins.edit', ['admin' => $data->id])
                     ],
                     'delete' => [
-                        'permission' => 'locale.delete',
-                        'route' => route('admin.locales.country-states.destroy', ['country_state' => $data->id])
+                        'permission' => 'admin.delete',
+                        'route' => route('admin.admins.destroy', ['admin' => $data->id])
                     ]
                 ])->render();
             })
             ->editColumn('created_at', function ($data) {
                 return $data->created_at->toDateTimeString();
             })
-            ->rawColumns(['action']);
+            ->editColumn('status', function ($data) {
+                return '<span>' . $data->active_status_label . '</span>';
+            })
+            ->filterColumn('status', function ($query, $keyword) {
+                $query->where('status', strtolower($keyword));
+            })
+            ->rawColumns(['action', 'status']);
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\CountryState $model
+     * @param \App\Models\User $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(CountryState $model)
+    public function query(User $model)
     {
-        return $model->withCount(['cities'])->newQuery();
+        return $model->admin()->newQuery();
     }
 
     /**
@@ -61,7 +71,7 @@ class CountryStateDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('country-state-table')
+            ->setTableId('admin-table')
             ->addTableClass('table-hover table w-100')
             ->columns($this->getColumns())
             ->minifiedAjax()
@@ -81,13 +91,12 @@ class CountryStateDataTable extends DataTable
         return [
             Column::computed('DT_RowIndex', '#'),
             Column::make('name')->title(__('labels.name')),
-            Column::make('cities_count')
-                ->searchable(false)
-                ->title(trans_choice('labels.city', 2)),
+            Column::make('email')->title(__('labels.email')),
+            Column::make('status')->title(__('labels.status')),
             Column::make('created_at')->title(__('labels.created_at')),
             Column::computed('action', __('labels.action'))
                 ->exportable(false)
-                ->printable(false),
+                ->printable(false)
         ];
     }
 
@@ -98,6 +107,6 @@ class CountryStateDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'CountryState_' . date('YmdHis');
+        return 'Admin_' . date('YmdHis');
     }
 }

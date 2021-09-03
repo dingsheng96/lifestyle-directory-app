@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
+use App\Models\User;
 use App\Helpers\Status;
 use App\Rules\PhoneFormat;
 use App\Rules\UniqueMember;
@@ -20,7 +21,7 @@ class MemberRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::guard('web')->check()
+        return Auth::guard(User::USER_TYPE_ADMIN)->check()
             && Gate::any(['member.create', 'member.update']);
     }
 

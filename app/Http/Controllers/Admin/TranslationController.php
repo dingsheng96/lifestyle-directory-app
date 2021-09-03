@@ -26,7 +26,7 @@ class TranslationController extends Controller
     {
         DB::beginTransaction();
 
-        $action     =   Permission::ACTION_UPDATE;
+        $action     =   'import';
         $module     =   strtolower(trans_choice('modules.language', 1));
         $message    =   Message::instance()->format($action, $module);
         $status     =   'fail';
@@ -47,7 +47,7 @@ class TranslationController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:language')
             ->causedBy(Auth::user())
             ->performedOn($language)
             ->withProperties($request->all())

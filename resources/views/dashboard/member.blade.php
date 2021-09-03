@@ -23,10 +23,10 @@
             </li>
             <div class="collapse" id="userdirectory">
                 <li class="{{ Nav::hasSegment('dashboard', 1, 'active') }}">
-                    <a href="{{ route('dashboard') }}">{{ __('app.user_dashboard_sidebar_profile') }}</a>
+                    <a href="{{ route('admin.dashboard') }}">{{ __('app.user_dashboard_sidebar_profile') }}</a>
                 </li>
                 <li class="{{ Nav::hasSegment('account', 1, 'active') }}">
-                    <a href="{{ route('account.index') }}">{{ __('app.user_dashboard_sidebar_profile') }}</a>
+                    <a href="{{ route('admin.account.index') }}">{{ __('app.user_dashboard_sidebar_profile') }}</a>
                 </li>
                 <li class="{{ Nav::hasSegment('wishlist', 1, 'active') }}">
                     <a href="{{ route('app.wishlist.index') }}">{{ __('app.user_dashboard_sidebar_wishlist') }}</a>
@@ -43,10 +43,10 @@
                 <ul class="account">
                     <li class="title">{{ __('app.user_dashboard_sidebar_title') }}</li>
                     <li class="{{ Nav::hasSegment('dashboard', 1, 'active') }}">
-                        <a href="{{ route('dashboard') }}">{{ __('app.user_dashboard_sidebar_dashboard') }}</a>
+                        <a href="{{ route('admin.dashboard') }}">{{ __('app.user_dashboard_sidebar_dashboard') }}</a>
                     </li>
                     <li class="{{ Nav::hasSegment('account', 1, 'active') }}">
-                        <a href="{{ route('account.index') }}">{{ __('app.user_dashboard_sidebar_profile') }}</a>
+                        <a href="{{ route('admin.account.index') }}">{{ __('app.user_dashboard_sidebar_profile') }}</a>
                     </li>
                     <li class="{{ Nav::hasSegment('wishlist', 1, 'active') }}">
                         <a href="{{ route('app.wishlist.index') }}">{{ __('app.user_dashboard_sidebar_wishlist') }}</a>

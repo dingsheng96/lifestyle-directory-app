@@ -3,22 +3,9 @@
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\CityController;
 use App\Http\Controllers\Admin\DataController;
 use App\Http\Controllers\Admin\HomeController;
-use App\Http\Controllers\Admin\RoleController;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\MediaController;
-use App\Http\Controllers\Admin\BannerController;
-use App\Http\Controllers\Admin\BranchController;
-use App\Http\Controllers\Admin\CareerController;
-use App\Http\Controllers\Admin\MemberController;
-use App\Http\Controllers\Admin\AccountController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\LanguageController;
-use App\Http\Controllers\Admin\MerchantController;
 use App\Http\Controllers\Admin\TranslationController;
-use App\Http\Controllers\Admin\CountryStateController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +19,7 @@ use App\Http\Controllers\Admin\CountryStateController;
 */
 
 Route::get('/', function () {
-    return redirect()->route('login');
+    return redirect()->route('admin.login');
 });
 
 Auth::routes(['verify' => false, 'register' => false]);

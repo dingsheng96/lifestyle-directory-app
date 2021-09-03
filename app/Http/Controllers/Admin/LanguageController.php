@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\DataTables\LanguageDataTable;
-use App\Http\Requests\LanguageRequest;
 use App\Support\Services\LanguageService;
-use App\DataTables\LanguageVersionDataTable;
+use App\DataTables\Admin\LanguageDataTable;
+use App\Http\Requests\Admin\LanguageRequest;
+use App\DataTables\Admin\LanguageVersionDataTable;
 
 class LanguageController extends Controller
 {
@@ -32,7 +32,7 @@ class LanguageController extends Controller
      */
     public function index(LanguageDataTable $dataTable)
     {
-        return $dataTable->render('locale.language.index');
+        return $dataTable->render('admin.locale.language.index');
     }
 
     /**
@@ -44,7 +44,7 @@ class LanguageController extends Controller
     {
         $excel = asset('storage/mobile_labels.xlsx');
 
-        return view('locale.language.create', compact('excel'));
+        return view('admin.locale.language.create', compact('excel'));
     }
 
     /**
@@ -76,7 +76,7 @@ class LanguageController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:language')
             ->causedBy(Auth::user())
             ->performedOn(new Language())
             ->withProperties($request->all())
@@ -108,7 +108,7 @@ class LanguageController extends Controller
 
         $excel = asset('storage/mobile_labels.xlsx');
 
-        return $dataTable->with(['language' => $language])->render('locale.language.edit', compact('language', 'excel'));
+        return $dataTable->with(['language' => $language])->render('admin.locale.language.edit', compact('language', 'excel'));
     }
 
     /**
@@ -143,7 +143,7 @@ class LanguageController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:language')
             ->causedBy(Auth::user())
             ->performedOn($language)
             ->withProperties($request->all())
@@ -171,7 +171,7 @@ class LanguageController extends Controller
         $message = Message::instance()->format($action, $module, 'success');
         $status = 'success';
 
-        activity()->useLog('web')
+        activity()->useLog('admin:language')
             ->causedBy(Auth::user())
             ->performedOn($language)
             ->log($message);

@@ -58,9 +58,8 @@ class Handler extends ExceptionHandler
     {
         return $request->expectsJson()
             ? Response::instance()
-            ->withStatusCode('modules.member', 'actions.authenticate.fail')
-            ->withStatus('fail')
-            ->withMessage($exception->getMessage())
+            ->withStatusCode('modules.system', 'actions.force.login')
+            ->withMessage(__('messages.unauthenticated'))
             ->sendJson(401)
             : redirect()->guest($exception->redirectTo() ?? route('login'));
     }

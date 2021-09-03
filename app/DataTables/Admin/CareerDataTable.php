@@ -1,8 +1,9 @@
 <?php
 
-namespace App\DataTables;
+namespace App\DataTables\Admin;
 
-use App\Models\Language;
+use App\Models\Career;
+use Illuminate\Support\Str;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +11,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class LanguageDataTable extends DataTable
+class CareerDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -26,31 +27,50 @@ class LanguageDataTable extends DataTable
             ->addColumn('action', function ($data) {
                 return view('components.action', [
                     'no_action' => $this->no_action ?: null,
+                    'view' => [
+                        'permission' => 'career.read',
+                        'route' => route('admin.careers.show', ['career' => $data->id]),
+                    ],
                     'update' => [
-                        'permission' => 'locale.update',
-                        'route' => route('admin.locales.languages.edit', ['language' => $data->id]),
+                        'permission' => 'career.update',
+                        'route' => route('admin.careers.edit', ['career' => $data->id]),
                     ],
                     'delete' => [
-                        'permission' => 'locale.delete',
-                        'route' => route('admin.locales.languages.destroy', ['language' => $data->id])
+                        'permission' => 'career.delete',
+                        'route' => route('admin.careers.destroy', ['career' => $data->id])
                     ]
                 ])->render();
+            })
+            ->addColumn('company', function ($data) {
+
+                return $data->branch->name;
+            })
+            ->addColumn('salary', function ($data) {
+
+                return $data->salary_range;
+            })
+            ->addColumn('location', function ($data) {
+
+                return $data->branch->address->location_city_state;
+            })
+            ->editColumn('status', function ($data) {
+                return $data->status_label;
             })
             ->editColumn('created_at', function ($data) {
                 return $data->created_at->toDateTimeString();
             })
-            ->rawColumns(['action']);
+            ->rawColumns(['action', 'status']);
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\Language $model
+     * @param \App\Models\Career $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Language $model)
+    public function query(Career $model)
     {
-        return $model->newQuery();
+        return $model->with(['branch.address'])->newQuery();
     }
 
     /**
@@ -61,7 +81,7 @@ class LanguageDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('language-table')
+            ->setTableId('career-table')
             ->addTableClass('table-hover table w-100')
             ->columns($this->getColumns())
             ->minifiedAjax()
@@ -80,9 +100,11 @@ class LanguageDataTable extends DataTable
     {
         return [
             Column::computed('DT_RowIndex', '#'),
-            Column::make('name')->title(__('labels.name')),
-            Column::make('code')->title(__('labels.code')),
-            Column::make('current_version')->title(__('labels.current_version')),
+            Column::make('position')->title(__('labels.job_title')),
+            Column::make('salary')->title(__('labels.salary') . ' (MYR)'),
+            Column::make('company')->title(__('labels.company')),
+            Column::make('location')->title(__('labels.location')),
+            Column::make('status')->title(__('labels.status')),
             Column::make('created_at')->title(__('labels.created_at')),
             Column::computed('action', __('labels.action'))
                 ->exportable(false)
@@ -97,6 +119,6 @@ class LanguageDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Language_' . date('YmdHis');
+        return 'Career_' . date('YmdHis');
     }
 }

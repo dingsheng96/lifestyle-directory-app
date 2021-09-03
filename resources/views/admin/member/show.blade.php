@@ -51,7 +51,7 @@
                             <div class="form-group row">
                                 <label for="status" class="col-form-label col-sm-2">{{ __('labels.status') }}</label>
                                 <div class="col-sm-10">
-                                    <p class="form-control-plaintext" id="status">{!! $member->status_label !!}</p>
+                                    <p class="form-control-plaintext" id="status">{!! $member->active_status_label !!}</p>
                                 </div>
                             </div>
 

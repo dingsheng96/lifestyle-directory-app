@@ -10,12 +10,12 @@ use App\Helpers\Response;
 use App\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\DataTables\CareerDataTable;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CareerRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Support\Services\CareerService;
+use App\DataTables\Admin\CareerDataTable;
+use App\Http\Requests\Admin\CareerRequest;
 
 class CareerController extends Controller
 {
@@ -31,10 +31,10 @@ class CareerController extends Controller
         abort_if($user->is_member, 404);
 
         if ($user->is_admin) {
-            return $dataTable->render('career.index');
+            return $dataTable->render('admin.career.index');
         }
 
-        return $dataTable->with(['merchant' => $user])->render('career.index');
+        return $dataTable->with(['merchant' => $user])->render('admin.career.index');
     }
 
     /**
@@ -46,7 +46,7 @@ class CareerController extends Controller
     {
         $merchants = User::merchant()->orderBy('name')->get();
 
-        return view('career.create', compact('merchants'));
+        return view('admin.career.create', compact('merchants'));
     }
 
     /**
@@ -78,7 +78,7 @@ class CareerController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:career')
             ->causedBy(Auth::user())
             ->performedOn(new Career())
             ->withProperties($request->all())
@@ -97,7 +97,7 @@ class CareerController extends Controller
     {
         $career->load(['branch.address']);
 
-        return view('career.show', compact('career'));
+        return view('admin.career.show', compact('career'));
     }
 
     /**
@@ -111,7 +111,7 @@ class CareerController extends Controller
         $career->load(['branch.address']);
         $merchants = User::merchant()->orderBy('name')->get();
 
-        return view('career.edit', compact('career', 'merchants'));
+        return view('admin.career.edit', compact('career', 'merchants'));
     }
 
     /**
@@ -144,7 +144,7 @@ class CareerController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:career')
             ->causedBy(Auth::user())
             ->performedOn($career)
             ->withProperties($request->all())
@@ -168,7 +168,7 @@ class CareerController extends Controller
 
         $career->delete();
 
-        activity()->useLog('web')
+        activity()->useLog('admin:career')
             ->causedBy(Auth::user())
             ->performedOn($career)
             ->log($message);

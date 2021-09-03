@@ -6,13 +6,13 @@ use App\Models\Role;
 use App\Helpers\Message;
 use App\Helpers\Response;
 use App\Models\Permission;
-use App\DataTables\RoleDataTable;
-use App\Http\Requests\RoleRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Support\Services\RoleService;
+use App\DataTables\Admin\RoleDataTable;
+use App\Http\Requests\Admin\RoleRequest;
 
 class RoleController extends Controller
 {
@@ -31,7 +31,7 @@ class RoleController extends Controller
      */
     public function index(RoleDataTable $dataTable)
     {
-        return $dataTable->render('role.index');
+        return $dataTable->render('admin.role.index');
     }
 
     /**
@@ -41,7 +41,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        return view('role.create');
+        return view('admin.role.create');
     }
 
     /**
@@ -73,7 +73,7 @@ class RoleController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:role')
             ->causedBy(Auth::user())
             ->performedOn(new Role())
             ->withProperties($request->all())
@@ -96,7 +96,7 @@ class RoleController extends Controller
             }
         ]);
 
-        return view('role.show', compact('role'));
+        return view('admin.role.show', compact('role'));
     }
 
     /**
@@ -113,7 +113,7 @@ class RoleController extends Controller
             }
         ]);
 
-        return view('role.edit', compact('role'));
+        return view('admin.role.edit', compact('role'));
     }
 
     /**
@@ -146,7 +146,7 @@ class RoleController extends Controller
             Log::error($e);
         }
 
-        activity()->useLog('web')
+        activity()->useLog('admin:role')
             ->causedBy(Auth::user())
             ->performedOn($role)
             ->withProperties($request->all())
@@ -171,7 +171,7 @@ class RoleController extends Controller
         $role->syncPermissions([]);
         $role->delete();
 
-        activity()->useLog('web')
+        activity()->useLog('admin:role')
             ->causedBy(Auth::user())
             ->performedOn($role)
             ->log($message);
