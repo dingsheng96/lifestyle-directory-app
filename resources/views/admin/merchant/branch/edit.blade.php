@@ -108,7 +108,7 @@
                                                 </div>
                                                 <div class="col-12 col-md-6">
                                                     <span>
-                                                        <a href="{{ $branch->ssm_cert->full_file_path ?? null }}" download rel="noopener noreferrer"><i class="fas fa-external-link-alt mr-2"></i>{{ $merchant->ssm_cert->original_filename ?? '-' }}</a>
+                                                        <a href="{{ $branch->ssm_cert->full_file_path ?? null }}" download rel="noopener noreferrer"><i class="fas fa-external-link-alt mr-2"></i>{{ $branch->ssm_cert->original_filename ?? '-' }}</a>
                                                     </span>
                                                 </div>
                                             </div>
@@ -342,7 +342,7 @@
 
                                 <div class="form-group">
                                     <label for="tbl_oprating_hour" class="col-form-label">{{ __('labels.operating_hour') }}</label>
-                                    @include('components.operating_table', ['operation_hours' => $branch->operationHours])
+                                    @include('components.tbl_operation', ['operation_hours' => $branch->operationHours])
                                 </div>
 
                                 <hr>
@@ -439,7 +439,7 @@
                                 @endif
 
                                 <div class="form-group">
-                                    @include('components.image_table', ['images' => $image_and_thumbnail, 'thumbnail' => true, 'action' => true])
+                                    @include('admin.components.tbl_image', ['images' => $image_and_thumbnail, 'thumbnail' => true, 'action' => true])
                                 </div>
 
                             </div>

@@ -25,7 +25,7 @@ class CareerDataTable extends DataTable
             ->eloquent($query)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
-                return view('components.action', [
+                return view('admin.components.btn_action', [
                     'no_action' => $this->no_action ?: null,
                     'view' => [
                         'permission' => 'career.read',
@@ -41,16 +41,10 @@ class CareerDataTable extends DataTable
                     ]
                 ])->render();
             })
-            ->addColumn('company', function ($data) {
-
+            ->addColumn('merchant', function ($data) {
                 return $data->branch->name;
             })
-            ->addColumn('salary', function ($data) {
-
-                return $data->salary_range;
-            })
             ->addColumn('location', function ($data) {
-
                 return $data->branch->address->location_city_state;
             })
             ->editColumn('status', function ($data) {
@@ -59,7 +53,17 @@ class CareerDataTable extends DataTable
             ->editColumn('created_at', function ($data) {
                 return $data->created_at->toDateTimeString();
             })
-            ->rawColumns(['action', 'status']);
+            ->rawColumns(['action', 'status'])
+            ->filterColumn('branch', function ($query, $keyword) {
+                return $query->whereHas('branch', function ($query) use ($keyword) {
+                    $query->where('name', 'like', "%{$keyword}%");
+                });
+            })
+            ->filterColumn('location', function ($query, $keyword) {
+                return $query->whereHas('branch', function ($query) use ($keyword) {
+                    $query->searchByAddress($keyword);
+                });
+            });
     }
 
     /**
@@ -101,8 +105,7 @@ class CareerDataTable extends DataTable
         return [
             Column::computed('DT_RowIndex', '#'),
             Column::make('position')->title(__('labels.job_title')),
-            Column::make('salary')->title(__('labels.salary') . ' (MYR)'),
-            Column::make('company')->title(__('labels.company')),
+            Column::make('merchant')->title(__('labels.merchant')),
             Column::make('location')->title(__('labels.location')),
             Column::make('status')->title(__('labels.status')),
             Column::make('created_at')->title(__('labels.created_at')),

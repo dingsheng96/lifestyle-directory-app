@@ -345,7 +345,7 @@
 
                                 <div class="form-group">
                                     <label for="tbl_oprating_hour" class="col-form-label">{{ __('labels.operating_hour') }}</label>
-                                    @include('components.operating_table', ['operation_hours' => []])
+                                    @include('components.tbl_operation', ['operation_hours' => []])
                                 </div>
 
                                 <hr>

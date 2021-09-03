@@ -66,7 +66,6 @@ class CareerRequest extends FormRequest
     {
         return [
             'position' => __('validation.attributes.job_title'),
-            'merchant' => __('validation.attributes.company')
         ];
     }
 }

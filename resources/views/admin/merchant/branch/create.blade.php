@@ -124,7 +124,7 @@
                                     </div>
                                     <div class="col-12 col-md-6">
                                         <div class="form-group">
-                                            <label for="branch_status" class="col-form-label">{{ __('labels.branch_status') }} <span class="text-danger">*</span></label>
+                                            <label for="branch_status" class="col-form-label">{{ __('labels.listing_status') }} <span class="text-danger">*</span></label>
                                             <select name="branch_status" id="branch_status" class="form-control select2 @error('branch_status') is-invalid @enderror">
                                                 @forelse ($publish_statuses as $status => $display)
                                                 <option value="{{ $status }}" {{ old('branch_status', 'publish') == $status ? 'selected' : null }}>{{ $display }}</option>
@@ -331,7 +331,7 @@
 
                                 <div class="form-group">
                                     <label for="tbl_oprating_hour" class="col-form-label">{{ __('labels.operating_hour') }}</label>
-                                    @include('components.operating_table', ['operation_hours' => []])
+                                    @include('components.tbl_operation', ['operation_hours' => []])
                                 </div>
 
                                 <hr>

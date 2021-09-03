@@ -25,7 +25,7 @@ class LanguageVersionDataTable extends DataTable
             ->eloquent($query)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
-                return view('components.action', [
+                return view('admin.components.btn_action', [
                     'no_action' => $this->no_action ?: null,
                     'download' => [
                         'route' => route('admin.locales.languages.translations.export', ['language' => $this->language->id, 'version' => $data->version]),

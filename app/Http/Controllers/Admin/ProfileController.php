@@ -21,7 +21,7 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $user = Auth::guard(User::USER_TYPE_ADMIN)->user();
+        $user = Auth::user();
 
         return view('admin.profile', compact('user'));
     }
@@ -39,7 +39,7 @@ class ProfileController extends Controller
         $action     =   Permission::ACTION_UPDATE;
         $module     =   strtolower(__('labels.profile'));
         $status     =   'fail';
-        $user       =   Auth::guard(User::USER_TYPE_ADMIN)->user();
+        $user       =   Auth::user();
 
         try {
 

@@ -2,11 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
-use App\Models\City;
 use App\Models\User;
-use App\Models\Country;
-use App\Rules\PhoneFormat;
-use App\Models\CountryState;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;

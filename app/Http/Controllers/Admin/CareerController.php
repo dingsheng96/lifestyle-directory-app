@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
 use App\Models\Career;
-use App\Helpers\Status;
 use App\Helpers\Message;
 use App\Helpers\Response;
 use App\Models\Permission;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -26,15 +24,7 @@ class CareerController extends Controller
      */
     public function index(CareerDataTable $dataTable)
     {
-        $user = Auth::user();
-
-        abort_if($user->is_member, 404);
-
-        if ($user->is_admin) {
-            return $dataTable->render('admin.career.index');
-        }
-
-        return $dataTable->with(['merchant' => $user])->render('admin.career.index');
+        return $dataTable->render('admin.career.index');
     }
 
     /**

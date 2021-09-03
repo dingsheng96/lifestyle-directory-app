@@ -28,9 +28,9 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label for="merchant" class="col-form-label">{{ __('labels.company') }} <span class="text-danger">*</span></label>
+                                    <label for="merchant" class="col-form-label">{{ __('labels.merchant') }} <span class="text-danger">*</span></label>
                                     <select name="merchant" id="merchant" class="form-control select2 @error('merchant') is-invalid @enderror">
-                                        <option value="0" disabled selected>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(__('labels.company'))]) }} ---</option>
+                                        <option value="0" disabled selected>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(__('labels.merchant'))]) }} ---</option>
                                         @foreach ($merchants as $merchant)
                                         <option value="{{ $merchant->id }}" {{ old('merchant') == $merchant->id ? 'selected' : null }}>{{ $merchant->name }}</option>
                                         @endforeach

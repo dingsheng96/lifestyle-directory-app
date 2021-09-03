@@ -25,7 +25,7 @@ class BranchDataTable extends DataTable
             ->addColumn('action', function ($data) {
 
                 if ($this->view_only) {
-                    return view('components.action', [
+                    return view('admin.components.btn_action', [
                         'no_action' => $this->no_action ?: null,
                         'view' => [
                             'permission' => 'merchant.read',
@@ -34,7 +34,7 @@ class BranchDataTable extends DataTable
                     ])->render();
                 }
 
-                return view('components.action', [
+                return view('admin.components.btn_action', [
                     'no_action' => $this->no_action ?: null,
                     'view' => [
                         'permission' => 'merchant.read',
@@ -56,7 +56,7 @@ class BranchDataTable extends DataTable
             ->editColumn('status', function ($data) {
                 return $data->status_label;
             })
-            ->rawColumns(['action', 'status', 'profile']);
+            ->rawColumns(['action', 'status']);
     }
 
     /**
@@ -117,6 +117,6 @@ class BranchDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Merchant_' . date('YmdHis');
+        return 'MerchantBranch_' . date('YmdHis');
     }
 }

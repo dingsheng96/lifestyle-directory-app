@@ -185,7 +185,7 @@
                         <div class="tab-pane fade" id="list-gallery" role="tabpanel" aria-labelledby="list-gallery-list">
 
                             <div class="form-group">
-                                @include('components.image_table', ['images' => $image_and_thumbnail, 'thumbnail' => false, 'action' => false])
+                                @include('admin.components.tbl_image', ['images' => $image_and_thumbnail, 'thumbnail' => false, 'action' => false])
                             </div>
 
                         </div>

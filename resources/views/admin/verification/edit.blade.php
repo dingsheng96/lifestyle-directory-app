@@ -152,7 +152,7 @@
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    @include('components.action', [
+                                                    @include('admin.components.btn_action', [
                                                     'download' => [
                                                     'route' => $document->full_file_path,
                                                     'attribute' => 'download'
