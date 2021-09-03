@@ -12,7 +12,7 @@
                 <img src="https://ui-avatars.com/api/?background=8D60D8&color=ffffff&size=35&rounded=true&name={{ urlencode(Auth::user()->name) }}" class="img-circle elevation-2" alt="user">
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a href="{{ route('admin.profile.index') }}" class="dropdown-item">
+                <a href="{{ route('merchant.profile.index') }}" class="dropdown-item">
                     <i class="fas fa-user mr-2 text-purple"></i>
                     <span>{{ __('labels.my_profile') }}</span>
                 </a>
@@ -20,7 +20,7 @@
                     <i class="fas fa-sign-out-alt mr-2 text-danger"></i>
                     <span>{{ __('labels.logout') }}</span>
                 </a>
-                <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+                <form id="logout-form" action="{{ route('merchant.logout') }}" method="POST" style="display: none;">
                     @csrf
                 </form>
             </div>

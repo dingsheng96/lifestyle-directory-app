@@ -66,8 +66,15 @@ $(function () {
                 formData.append(el.name, el.value);
             });
 
-            formData.append('logo', form.find('[name=logo]')[0].files[0]);
-            formData.append('ssm_cert', form.find('[name=ssm_cert]')[0].files[0]);
+            let logo = form.find('[name=logo]')[0].files[0];
+            if(logo) {
+                formData.append('logo', logo);
+            }
+
+            let ssm_cert = form.find('[name=ssm_cert]')[0].files[0];
+            if(ssm_cert) {
+                formData.append('ssm_cert', ssm_cert);
+            }
         });
 
         this.on('successmultiple', function (file, response) {
