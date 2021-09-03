@@ -79,7 +79,7 @@ class AdminController extends Controller
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('admins.index')->with($status, $message);
+        return redirect()->route('admin.admins.index')->with($status, $message);
     }
 
     /**
@@ -140,7 +140,7 @@ class AdminController extends Controller
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('admins.index')->with($status, $message);
+        return redirect()->route('admin.admins.index')->with($status, $message);
     }
 
     /**
@@ -167,7 +167,7 @@ class AdminController extends Controller
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('admins.index')
+                'redirect_to' => route('admin.admins.index')
             ])
             ->sendJson();
     }

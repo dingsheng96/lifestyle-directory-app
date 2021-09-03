@@ -79,7 +79,7 @@ class RoleController extends Controller
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('roles.index')->with($status, $message);
+        return redirect()->route('admin.roles.index')->with($status, $message);
     }
 
     /**
@@ -152,7 +152,7 @@ class RoleController extends Controller
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('roles.index')->with($status, $message);
+        return redirect()->route('admin.roles.index')->with($status, $message);
     }
 
     /**
@@ -180,7 +180,7 @@ class RoleController extends Controller
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('roles.index')
+                'redirect_to' => route('admin.roles.index')
             ])
             ->sendJson();
     }

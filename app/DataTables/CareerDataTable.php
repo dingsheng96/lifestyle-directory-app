@@ -29,15 +29,15 @@ class CareerDataTable extends DataTable
                     'no_action' => $this->no_action ?: null,
                     'view' => [
                         'permission' => 'career.read',
-                        'route' => route('careers.show', ['career' => $data->id]),
+                        'route' => route('admin.careers.show', ['career' => $data->id]),
                     ],
                     'update' => [
                         'permission' => 'career.update',
-                        'route' => route('careers.edit', ['career' => $data->id]),
+                        'route' => route('admin.careers.edit', ['career' => $data->id]),
                     ],
                     'delete' => [
                         'permission' => 'career.delete',
-                        'route' => route('careers.destroy', ['career' => $data->id])
+                        'route' => route('admin.careers.destroy', ['career' => $data->id])
                     ]
                 ])->render();
             })

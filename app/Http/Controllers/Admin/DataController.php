@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\City;
 use App\Helpers\Response;
-use App\Models\Permission;
 use App\Models\CountryState;
 use App\Http\Controllers\Controller;
 

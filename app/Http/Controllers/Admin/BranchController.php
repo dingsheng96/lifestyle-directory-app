@@ -83,10 +83,10 @@ class BranchController extends Controller
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('merchants.edit', ['merchant' => $merchant->id])
+                'redirect_to' => route('admin.merchants.edit', ['merchant' => $merchant->id])
             ])
             ->sendJson()
-            : redirect()->route('merchants.edit', ['merchant' => $merchant->id])->with($status, $message);
+            : redirect()->route('admin.merchants.edit', ['merchant' => $merchant->id])->with($status, $message);
     }
 
     /**
@@ -168,10 +168,10 @@ class BranchController extends Controller
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('merchants.edit', ['merchant' => $merchant->id])
+                'redirect_to' => route('admin.merchants.edit', ['merchant' => $merchant->id])
             ])
             ->sendJson()
-            : redirect()->route('merchants.edit', ['merchant' => $merchant->id])->with($status, $message);
+            : redirect()->route('admin.merchants.edit', ['merchant' => $merchant->id])->with($status, $message);
     }
 
     /**
@@ -198,7 +198,7 @@ class BranchController extends Controller
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('merchants.edit', ['merchant' => $merchant->id])
+                'redirect_to' => route('admin.merchants.edit', ['merchant' => $merchant->id])
             ])
             ->sendJson();
     }

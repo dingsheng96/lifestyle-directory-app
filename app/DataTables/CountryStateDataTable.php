@@ -28,11 +28,11 @@ class CountryStateDataTable extends DataTable
                     'no_action' => $this->no_action ?: null,
                     'update' => [
                         'permission' => 'locale.update',
-                        'route' => route('locale.country-states.edit', ['country_state' => $data->id])
+                        'route' => route('admin.locales.country-states.edit', ['country_state' => $data->id])
                     ],
                     'delete' => [
                         'permission' => 'locale.delete',
-                        'route' => route('locale.country-states.destroy', ['country_state' => $data->id])
+                        'route' => route('admin.locales.country-states.destroy', ['country_state' => $data->id])
                     ]
                 ])->render();
             })

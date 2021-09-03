@@ -82,7 +82,7 @@ class MemberController extends Controller
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('members.index')->with($status, $message);
+        return redirect()->route('admin.members.index')->with($status, $message);
     }
 
     /**
@@ -149,7 +149,7 @@ class MemberController extends Controller
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('members.index')->with($status, $message);
+        return redirect()->route('admin.members.index')->with($status, $message);
     }
 
     /**
@@ -179,7 +179,7 @@ class MemberController extends Controller
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('members.index')
+                'redirect_to' => route('admin.members.index')
             ])
             ->sendJson();
     }

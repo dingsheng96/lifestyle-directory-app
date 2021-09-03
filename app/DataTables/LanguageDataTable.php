@@ -28,11 +28,11 @@ class LanguageDataTable extends DataTable
                     'no_action' => $this->no_action ?: null,
                     'update' => [
                         'permission' => 'locale.update',
-                        'route' => route('locale.languages.edit', ['language' => $data->id]),
+                        'route' => route('admin.locales.languages.edit', ['language' => $data->id]),
                     ],
                     'delete' => [
                         'permission' => 'locale.delete',
-                        'route' => route('locale.languages.destroy', ['language' => $data->id])
+                        'route' => route('admin.locales.languages.destroy', ['language' => $data->id])
                     ]
                 ])->render();
             })

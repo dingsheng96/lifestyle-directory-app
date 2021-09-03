@@ -29,15 +29,15 @@ class BannerDataTable extends DataTable
                     'no_action' => $this->no_action ?: null,
                     'view' => [
                         'permission' => 'banner.read',
-                        'route' => route('banners.show', ['banner' => $data->id]),
+                        'route' => route('admin.banners.show', ['banner' => $data->id]),
                     ],
                     'update' => [
                         'permission' => 'banner.update',
-                        'route' => route('banners.edit', ['banner' => $data->id]),
+                        'route' => route('admin.banners.edit', ['banner' => $data->id]),
                     ],
                     'delete' => [
                         'permission' => 'banner.delete',
-                        'route' => route('banners.destroy', ['banner' => $data->id])
+                        'route' => route('admin.banners.destroy', ['banner' => $data->id])
                     ]
                 ])->render();
             })

@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => '', 'guest_view' => true, 'body' => 'enduser'])
+@extends('admin.layouts.master', ['title' => '', 'guest_view' => true, 'body' => 'enduser'])
 
 @section('content')
 

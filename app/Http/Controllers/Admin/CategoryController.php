@@ -79,7 +79,7 @@ class CategoryController extends Controller
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('categories.index')->with($status, $message);
+        return redirect()->route('admin.categories.index')->with($status, $message);
     }
 
     /**
@@ -144,7 +144,7 @@ class CategoryController extends Controller
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('categories.index')->with($status, $message);
+        return redirect()->route('admin.categories.index')->with($status, $message);
     }
 
     /**
@@ -171,7 +171,7 @@ class CategoryController extends Controller
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('categories.index')
+                'redirect_to' => route('admin.categories.index')
             ])
             ->sendJson();
     }

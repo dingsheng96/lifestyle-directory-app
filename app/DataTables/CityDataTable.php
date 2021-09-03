@@ -28,7 +28,7 @@ class CityDataTable extends DataTable
                     'no_action' => $this->no_action ?: null,
                     'delete' => [
                         'permission' => 'locale.delete',
-                        'route' => route('locale.country-states.cities.destroy', ['country_state' => $this->country_state_id, 'city' => $data->id])
+                        'route' => route('admin.locales.country-states.cities.destroy', ['country_state' => $this->country_state_id, 'city' => $data->id])
                     ]
                 ])->render();
             })

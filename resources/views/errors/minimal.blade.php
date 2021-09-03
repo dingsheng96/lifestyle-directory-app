@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => __('errors.title'), 'guest_view' =>true, 'body' => 'enduser'])
+@extends('admin.layouts.master', ['title' => __('errors.title'), 'guest_view' =>true, 'body' => 'enduser'])
 
 @section('content')
 <div class="d-flex justify-content-center align-items-center position-relative three-quarter-height">

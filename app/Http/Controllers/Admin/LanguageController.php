@@ -82,7 +82,7 @@ class LanguageController extends Controller
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('locale.languages.index')->with($status, $message);
+        return redirect()->route('admin.locales.languages.index')->with($status, $message);
     }
 
     /**
@@ -149,7 +149,7 @@ class LanguageController extends Controller
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('locale.languages.index')->with($status, $message);
+        return redirect()->route('admin.locales.languages.index')->with($status, $message);
     }
 
     /**

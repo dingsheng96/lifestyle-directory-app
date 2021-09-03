@@ -28,15 +28,15 @@ class AdminDataTable extends DataTable
                     'no_action' => $this->no_action ?: $data->id == Auth::id(),
                     'view' => [
                         'permission' => 'admin.read',
-                        'route' => route('admins.show', ['admin' => $data->id])
+                        'route' => route('admin.admins.show', ['admin' => $data->id])
                     ],
                     'update' => [
                         'permission' => 'admin.update',
-                        'route' => route('admins.edit', ['admin' => $data->id])
+                        'route' => route('admin.admins.edit', ['admin' => $data->id])
                     ],
                     'delete' => [
                         'permission' => 'admin.delete',
-                        'route' => route('admins.destroy', ['admin' => $data->id])
+                        'route' => route('admin.admins.destroy', ['admin' => $data->id])
                     ]
                 ])->render();
             })

@@ -27,15 +27,15 @@ class MerchantDataTable extends DataTable
                     'no_action' => $this->no_action ?: null,
                     'view' => [
                         'permission' => 'merchant.read',
-                        'route' => route('merchants.show', ['merchant' => $data->id])
+                        'route' => route('admin.merchants.show', ['merchant' => $data->id])
                     ],
                     'update' => [
                         'permission' => 'merchant.update',
-                        'route' => route('merchants.edit', ['merchant' => $data->id])
+                        'route' => route('admin.merchants.edit', ['merchant' => $data->id])
                     ],
                     'delete' => [
                         'permission' => 'merchant.delete',
-                        'route' => route('merchants.destroy', ['merchant' => $data->id])
+                        'route' => route('admin.merchants.destroy', ['merchant' => $data->id])
                     ]
                 ])->render();
             })

@@ -59,7 +59,7 @@ Route::middleware(['auth:' . User::USER_TYPE_ADMIN])->group(function () {
 
     Route::resource('roles', RoleController::class);
 
-    Route::group(['prefix' => 'locale', 'as' => 'locale.'], function () {
+    Route::group(['prefix' => 'locales', 'as' => 'locales.'], function () {
         Route::resource('country-states', CountryStateController::class);
         Route::resource('country-states.cities', CityController::class);
 

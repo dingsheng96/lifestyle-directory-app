@@ -84,7 +84,7 @@ class CareerController extends Controller
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('careers.index')->with($status, $message);
+        return redirect()->route('admin.careers.index')->with($status, $message);
     }
 
     /**
@@ -150,7 +150,7 @@ class CareerController extends Controller
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('careers.index')->with($status, $message);
+        return redirect()->route('admin.careers.index')->with($status, $message);
     }
 
     /**
@@ -177,7 +177,7 @@ class CareerController extends Controller
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('careers.index')
+                'redirect_to' => route('admin.careers.index')
             ])
             ->sendJson();
     }

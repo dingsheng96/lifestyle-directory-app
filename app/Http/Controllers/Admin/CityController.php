@@ -80,7 +80,7 @@ class CityController extends Controller
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('locale.country-states.edit', ['country_state' => $country_state->id])->with($status, $message);
+        return redirect()->route('admin.locales.country-states.edit', ['country_state' => $country_state->id])->with($status, $message);
     }
 
     /**
@@ -141,7 +141,7 @@ class CityController extends Controller
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('locale.country-states.edit', ['country_state' => $country_state->id])
+                'redirect_to' => route('admin.locales.country-states.edit', ['country_state' => $country_state->id])
             ])
             ->sendJson();
     }

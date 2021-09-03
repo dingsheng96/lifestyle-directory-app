@@ -29,7 +29,7 @@ class BranchDataTable extends DataTable
                         'no_action' => $this->no_action ?: null,
                         'view' => [
                             'permission' => 'merchant.read',
-                            'route' => route('merchants.branches.show', ['merchant' => $this->merchant->id, 'branch' => $data->id])
+                            'route' => route('admin.merchants.branches.show', ['merchant' => $this->merchant->id, 'branch' => $data->id])
                         ]
                     ])->render();
                 }
@@ -38,15 +38,15 @@ class BranchDataTable extends DataTable
                     'no_action' => $this->no_action ?: null,
                     'view' => [
                         'permission' => 'merchant.read',
-                        'route' => route('merchants.branches.show', ['merchant' => $this->merchant->id, 'branch' => $data->id])
+                        'route' => route('admin.merchants.branches.show', ['merchant' => $this->merchant->id, 'branch' => $data->id])
                     ],
                     'update' => [
                         'permission' => 'merchant.update',
-                        'route' => route('merchants.branches.edit', ['merchant' => $this->merchant->id, 'branch' => $data->id])
+                        'route' => route('admin.merchants.branches.edit', ['merchant' => $this->merchant->id, 'branch' => $data->id])
                     ],
                     'delete' => [
                         'permission' => 'merchant.delete',
-                        'route' => route('merchants.branches.destroy', ['merchant' => $this->merchant->id, 'branch' => $data->id])
+                        'route' => route('admin.merchants.branches.destroy', ['merchant' => $this->merchant->id, 'branch' => $data->id])
                     ]
                 ])->render();
             })

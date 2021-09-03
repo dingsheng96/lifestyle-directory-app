@@ -72,7 +72,7 @@ class BannerController extends Controller
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('banners.index')->with($status, $message);
+        return redirect()->route('admin.banners.index')->with($status, $message);
     }
 
     /**
@@ -137,7 +137,7 @@ class BannerController extends Controller
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('banners.index')->with($status, $message);
+        return redirect()->route('admin.banners.index')->with($status, $message);
     }
 
     /**
@@ -164,7 +164,7 @@ class BannerController extends Controller
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('banners.index')
+                'redirect_to' => route('admin.banners.index')
             ])
             ->sendJson();
     }

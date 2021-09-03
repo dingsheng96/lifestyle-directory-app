@@ -80,7 +80,7 @@ class CountryStateController extends Controller
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('locale.country-states.index')->with($status, $message);
+        return redirect()->route('admin.locales.country-states.index')->with($status, $message);
     }
 
     /**
@@ -141,7 +141,7 @@ class CountryStateController extends Controller
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('locale.country-states.index')->with($status, $message);
+        return redirect()->route('admin.locales.country-states.index')->with($status, $message);
     }
 
     /**
@@ -169,7 +169,7 @@ class CountryStateController extends Controller
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('locale.country-states.index')
+                'redirect_to' => route('admin.locales.country-states.index')
             ])
             ->sendJson();
     }

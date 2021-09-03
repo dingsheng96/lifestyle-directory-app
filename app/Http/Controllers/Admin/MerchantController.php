@@ -83,7 +83,7 @@ class MerchantController extends Controller
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('merchants.index')->with($status, $message);
+        return redirect()->route('admin.merchants.index')->with($status, $message);
     }
 
     /**
@@ -172,10 +172,10 @@ class MerchantController extends Controller
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('merchants.index')
+                'redirect_to' => route('admin.merchants.index')
             ])
             ->sendJson()
-            : redirect()->route('merchants.index')->with($status, $message);
+            : redirect()->route('admin.merchants.index')->with($status, $message);
     }
 
     /**
@@ -202,7 +202,7 @@ class MerchantController extends Controller
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('merchants.index')
+                'redirect_to' => route('admin.merchants.index')
             ])
             ->sendJson();
     }

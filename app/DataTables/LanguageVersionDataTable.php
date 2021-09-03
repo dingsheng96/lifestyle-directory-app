@@ -28,7 +28,7 @@ class LanguageVersionDataTable extends DataTable
                 return view('components.action', [
                     'no_action' => $this->no_action ?: null,
                     'download' => [
-                        'route' => route('locale.languages.translations.export', ['language' => $this->language->id, 'version' => $data->version]),
+                        'route' => route('admin.locales.languages.translations.export', ['language' => $this->language->id, 'version' => $data->version]),
                     ],
                     'upload' => [
                         'route' => '#importTranslationModal',
