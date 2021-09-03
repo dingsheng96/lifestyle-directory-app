@@ -6,7 +6,7 @@ return [
 
     'web' => [
         'admin' => [
-            'url' => env('WEB_ADMIN_URL'),
+            'url' => env('WEB_ADMIN_DOMAIN'),
             'prefix' => 'admin',
             'namespace' => 'Admin',
             'route' => [
@@ -15,7 +15,7 @@ return [
             ]
         ],
         'merchant' => [
-            'url' => env('WEB_MERCHANT_URL'),
+            'url' => env('WEB_MERCHANT_DOMAIN'),
             'prefix' => 'merchant',
             'namespace' => 'Merchant',
             'route' => [
@@ -27,7 +27,7 @@ return [
 
     'api' => [
         'guest' => [
-            'url' => env('API_DOMAIN_URL'),
+            'url' => env('API_DOMAIN'),
             'prefix' => 'api',
             'namespace' => 'Api',
             'version' => 'v1',
@@ -37,7 +37,7 @@ return [
             ]
         ],
         'member' => [
-            'url' => env('API_DOMAIN_URL'),
+            'url' => env('API_DOMAIN'),
             'prefix' => 'api',
             'namespace' => 'Api',
             'version' => 'v1',

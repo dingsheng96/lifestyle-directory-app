@@ -23,6 +23,7 @@ return [
     'verification' => 'Verification|Verifications',
     'admin' => 'Admin|Admins',
     'merchant' => 'Merchant|Merchants',
+    'branch' => 'Branch|Branches',
     'member' => 'Member|Members',
 
     'settings' => 'Settings',
