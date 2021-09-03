@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Helpers\Domain;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -39,11 +40,14 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::prefix('api')
-                ->middleware('api')
-                ->namespace($this->namespace . '\\Api')
-                ->name('api.')
-                ->group(base_path('routes/api.php'));
+
+            ['web' => $web, 'api' => $api, 'prefix' => $prefix] = (new Domain())->getConfig();
+
+            if ($prefix) {
+                $this->prefixApiRoutes($web, $api);
+            } else {
+                $this->domainRoutes($web, $api);
+            }
 
             Route::middleware('web')
                 ->namespace($this->namespace)
@@ -63,6 +67,49 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
         });
+    }
+
+    protected function prefixApiRoutes(array $web, array $api)
+    {
+        foreach ($web as $value) {
+
+            Route::prefix($value['prefix'])
+                ->middleware('web')
+                ->namespace($this->namespace . '\\' . $value['namespace'])
+                ->name($value['route']['name'])
+                ->group(base_path('routes/web/' . $value['route']['file']));
+        }
+
+        foreach ($api as $value) {
+
+            Route::prefix($value['prefix'] . '/' . $value['version'])
+                ->middleware('api')
+                ->namespace($this->namespace . '\\' . $value['namespace'] . '\\' . $value['version'])
+                ->name($value['route']['name'] . '.' . $value['version'] . '.')
+                ->group(base_path('routes/api/' . $value['version'] . '/' . $value['route']['file']));
+        }
+    }
+
+    protected function domainRoutes(array $web, array $api)
+    {
+        foreach ($web as $value) {
+
+            Route::domain($value['url'])
+                ->middleware('web')
+                ->namespace($this->namespace . '\\' . $value['namespace'])
+                ->name($value['route']['name'])
+                ->group(base_path('routes/web/' . $value['route']['file']));
+        }
+
+        foreach ($api as $value) {
+
+            Route::domain($value['url'])
+                ->prefix($value['version'])
+                ->middleware('api')
+                ->namespace($this->namespace . '\\' . $value['namespace'] . '\\' . $value['version'])
+                ->name($value['route']['name'] . '.' . $value['version'] . '.')
+                ->group(base_path('routes/api/' . $value['version'] . '/' . $value['route']['file']));
+        }
     }
 
     protected function routeBindings()

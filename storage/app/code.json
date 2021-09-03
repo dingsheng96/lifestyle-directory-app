@@ -14,6 +14,7 @@
         "rating": 131,
         "career": 132,
         "scope": 800,
+        "route": 801,
         "system": 900
     },
     "actions": {
