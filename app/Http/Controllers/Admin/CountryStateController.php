@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Message;
-use App\Models\Language;
 use App\Helpers\Response;
 use App\Models\Permission;
+use App\Models\CountryState;
+use App\DataTables\CityDataTable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\DataTables\LanguageDataTable;
-use App\Http\Requests\LanguageRequest;
-use App\Support\Services\LanguageService;
-use App\DataTables\LanguageVersionDataTable;
+use App\DataTables\CountryStateDataTable;
+use App\Http\Requests\CountryStateRequest;
+use App\Support\Services\CountryStateService;
 
-class LanguageController extends Controller
+class CountryStateController extends Controller
 {
     public function __construct()
     {
@@ -30,9 +30,9 @@ class LanguageController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(LanguageDataTable $dataTable)
+    public function index(CountryStateDataTable $dataTable)
     {
-        return $dataTable->render('locale.language.index');
+        return $dataTable->render('locale.country_state.index');
     }
 
     /**
@@ -42,9 +42,7 @@ class LanguageController extends Controller
      */
     public function create()
     {
-        $excel = asset('storage/mobile_labels.xlsx');
-
-        return view('locale.language.create', compact('excel'));
+        //
     }
 
     /**
@@ -53,18 +51,18 @@ class LanguageController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(LanguageRequest $request, LanguageService $language_service)
+    public function store(CountryStateRequest $request, CountryStateService $country_state_service)
     {
         DB::beginTransaction();
 
         $action     =   Permission::ACTION_CREATE;
-        $module     =   strtolower(trans_choice('modules.language', 1));
+        $module     =   strtolower(trans_choice('modules.country_state', 1));
         $message    =   Message::instance()->format($action, $module);
         $status     =   'fail';
 
         try {
 
-            $language_service->setRequest($request)->store();
+            $country_state_service->setRequest($request)->store();
 
             $status     =   'success';
             $message    =   Message::instance()->format($action, $module, $status);
@@ -73,25 +71,25 @@ class LanguageController extends Controller
         } catch (\Error | \Exception $e) {
 
             DB::rollBack();
-            Log::error($e);
+            $message = $e->getMessage();
         }
 
         activity()->useLog('web')
             ->causedBy(Auth::user())
-            ->performedOn(new Language())
+            ->performedOn(new CountryState())
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('locale.languages.index')->with($status, $message);
+        return redirect()->route('locale.country-states.index')->with($status, $message);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Language  $language
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Language $language)
+    public function show($id)
     {
         //
     }
@@ -99,39 +97,33 @@ class LanguageController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Language  $language
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Language $language, LanguageVersionDataTable $dataTable)
+    public function edit(CountryState $country_state, CityDataTable $dataTable)
     {
-        $language->load(['translations']);
-
-        $excel = asset('storage/mobile_labels.xlsx');
-
-        return $dataTable->with(['language' => $language])->render('locale.language.edit', compact('language', 'excel'));
+        return $dataTable->with(['country_state_id' => $country_state->id])->render('locale.country_state.edit', compact('country_state'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Language  $language
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(LanguageRequest $request, Language $language, LanguageService $language_service)
+    public function update(CountryStateRequest $request, CountryState $country_state, CountryStateService $country_state_service)
     {
         DB::beginTransaction();
 
         $action     =   Permission::ACTION_UPDATE;
-        $module     =   strtolower(trans_choice('modules.language', 1));
+        $module     =   strtolower(trans_choice('modules.country_state', 1));
         $message    =   Message::instance()->format($action, $module);
         $status     =   'fail';
 
         try {
 
-            $language->load(['translations']);
-
-            $language_service->setModel($language)->setRequest($request)->store();
+            $country_state_service->setModel($country_state)->setRequest($request)->store();
 
             $status     =   'success';
             $message    =   Message::instance()->format($action, $module, $status);
@@ -145,42 +137,39 @@ class LanguageController extends Controller
 
         activity()->useLog('web')
             ->causedBy(Auth::user())
-            ->performedOn($language)
+            ->performedOn($country_state)
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('locale.languages.index')->with($status, $message);
+        return redirect()->route('locale.country-states.index')->with($status, $message);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Language  $language
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Language $language)
+    public function destroy(CountryState $country_state)
     {
         $action     =   Permission::ACTION_DELETE;
-        $module     =   strtolower(trans_choice('modules.language', 1));
-        $status     =   'fail';
-        $message    =   Message::instance()->format($action, $module);
+        $module     =   strtolower(trans_choice('modules.country_state', 1));
+        $status     =   'success';
+        $message    =   Message::instance()->format($action, $module, 'success');
 
-        $language->translations()->delete();
-        $language->delete();
-
-        $message = Message::instance()->format($action, $module, 'success');
-        $status = 'success';
+        $country_state->cities()->delete();
+        $country_state->delete();
 
         activity()->useLog('web')
             ->causedBy(Auth::user())
-            ->performedOn($language)
+            ->performedOn($country_state)
             ->log($message);
 
         return Response::instance()
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('languages.index')
+                'redirect_to' => route('locale.country-states.index')
             ])
             ->sendJson();
     }

@@ -1,30 +1,28 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\User;
-use App\Helpers\Status;
 use App\Helpers\Message;
+use App\Models\Language;
 use App\Helpers\Response;
 use App\Models\Permission;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\DataTables\MemberDataTable;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\MemberRequest;
 use Illuminate\Support\Facades\Auth;
-use App\Support\Facades\MemberFacade;
-use App\Support\Services\MemberService;
+use App\DataTables\LanguageDataTable;
+use App\Http\Requests\LanguageRequest;
+use App\Support\Services\LanguageService;
+use App\DataTables\LanguageVersionDataTable;
 
-class MemberController extends Controller
+class LanguageController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['can:member.read']);
-        $this->middleware(['can:member.create'])->only(['create', 'store']);
-        $this->middleware(['can:member.update'])->only(['edit', 'update']);
-        $this->middleware(['can:member.delete'])->only(['delete']);
+        $this->middleware(['can:locale.read'])->only(['index', 'show']);
+        $this->middleware(['can:locale.create'])->only(['create', 'store']);
+        $this->middleware(['can:locale.update'])->only(['edit', 'update']);
+        $this->middleware(['can:locale.delete'])->only(['delete']);
     }
 
     /**
@@ -32,9 +30,9 @@ class MemberController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(MemberDataTable $dataTable)
+    public function index(LanguageDataTable $dataTable)
     {
-        return $dataTable->render('member.index');
+        return $dataTable->render('locale.language.index');
     }
 
     /**
@@ -44,7 +42,9 @@ class MemberController extends Controller
      */
     public function create()
     {
-        return view('member.create');
+        $excel = asset('storage/mobile_labels.xlsx');
+
+        return view('locale.language.create', compact('excel'));
     }
 
     /**
@@ -53,21 +53,21 @@ class MemberController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(MemberRequest $request, MemberService $member_service)
+    public function store(LanguageRequest $request, LanguageService $language_service)
     {
         DB::beginTransaction();
 
         $action     =   Permission::ACTION_CREATE;
-        $module     =   strtolower(trans_choice('modules.member', 1));
+        $module     =   strtolower(trans_choice('modules.language', 1));
         $message    =   Message::instance()->format($action, $module);
         $status     =   'fail';
 
         try {
 
-            $member_service->setRequest($request)->store();
+            $language_service->setRequest($request)->store();
 
-            $status  = 'success';
-            $message = Message::instance()->format($action, $module, $status);
+            $status     =   'success';
+            $message    =   Message::instance()->format($action, $module, $status);
 
             DB::commit();
         } catch (\Error | \Exception $e) {
@@ -78,63 +78,63 @@ class MemberController extends Controller
 
         activity()->useLog('web')
             ->causedBy(Auth::user())
-            ->performedOn(new User())
+            ->performedOn(new Language())
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('members.index')->with($status, $message);
+        return redirect()->route('locale.languages.index')->with($status, $message);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Language  $language
      * @return \Illuminate\Http\Response
      */
-    public function show(User $member)
+    public function show(Language $language)
     {
-        $member->load(['media']);
-
-        return view('member.show', compact('member'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Language  $language
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $member)
+    public function edit(Language $language, LanguageVersionDataTable $dataTable)
     {
-        $member->load(['media']);
+        $language->load(['translations']);
 
-        return view('member.edit', compact('member'));
+        $excel = asset('storage/mobile_labels.xlsx');
+
+        return $dataTable->with(['language' => $language])->render('locale.language.edit', compact('language', 'excel'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Language  $language
      * @return \Illuminate\Http\Response
      */
-    public function update(MemberRequest $request, User $member, MemberService $member_service)
+    public function update(LanguageRequest $request, Language $language, LanguageService $language_service)
     {
         DB::beginTransaction();
 
         $action     =   Permission::ACTION_UPDATE;
-        $module     =   strtolower(trans_choice('modules.member', 1));
+        $module     =   strtolower(trans_choice('modules.language', 1));
         $message    =   Message::instance()->format($action, $module);
         $status     =   'fail';
 
         try {
 
-            $member->load(['media']);
+            $language->load(['translations']);
 
-            $member_service->setModel($member)->setRequest($request)->store();
+            $language_service->setModel($language)->setRequest($request)->store();
 
-            $status  = 'success';
-            $message = Message::instance()->format($action, $module, $status);
+            $status     =   'success';
+            $message    =   Message::instance()->format($action, $module, $status);
 
             DB::commit();
         } catch (\Error | \Exception $e) {
@@ -145,41 +145,42 @@ class MemberController extends Controller
 
         activity()->useLog('web')
             ->causedBy(Auth::user())
-            ->performedOn($member)
+            ->performedOn($language)
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('members.index')->with($status, $message);
+        return redirect()->route('locale.languages.index')->with($status, $message);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Language  $language
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $member)
+    public function destroy(Language $language)
     {
         $action     =   Permission::ACTION_DELETE;
-        $module     =   strtolower(trans_choice('modules.member', 1));
+        $module     =   strtolower(trans_choice('modules.language', 1));
         $status     =   'fail';
         $message    =   Message::instance()->format($action, $module);
 
-        $member->delete();
+        $language->translations()->delete();
+        $language->delete();
 
         $message = Message::instance()->format($action, $module, 'success');
         $status = 'success';
 
         activity()->useLog('web')
             ->causedBy(Auth::user())
-            ->performedOn($member)
+            ->performedOn($language)
             ->log($message);
 
         return Response::instance()
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('members.index')
+                'redirect_to' => route('languages.index')
             ])
             ->sendJson();
     }

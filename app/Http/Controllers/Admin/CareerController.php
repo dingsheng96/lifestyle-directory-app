@@ -1,37 +1,40 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use App\Models\Career;
+use App\Helpers\Status;
 use App\Helpers\Message;
 use App\Helpers\Response;
 use App\Models\Permission;
-use App\DataTables\AdminDataTable;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Requests\AdminRequest;
+use App\DataTables\CareerDataTable;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CareerRequest;
 use Illuminate\Support\Facades\Auth;
-use App\Support\Services\AdminService;
+use App\Support\Services\CareerService;
 
-class AdminController extends Controller
+class CareerController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['can:admin.read'])->only(['index', 'show']);
-        $this->middleware(['can:admin.create'])->only(['create', 'store']);
-        $this->middleware(['can:admin.update'])->only(['edit', 'update']);
-        $this->middleware(['can:admin.delete'])->only(['delete']);
-    }
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(AdminDataTable $dataTable)
+    public function index(CareerDataTable $dataTable)
     {
-        return $dataTable->render('admin.index');
+        $user = Auth::user();
+
+        abort_if($user->is_member, 404);
+
+        if ($user->is_admin) {
+            return $dataTable->render('career.index');
+        }
+
+        return $dataTable->with(['merchant' => $user])->render('career.index');
     }
 
     /**
@@ -41,7 +44,9 @@ class AdminController extends Controller
      */
     public function create()
     {
-        return view('admin.create');
+        $merchants = User::merchant()->orderBy('name')->get();
+
+        return view('career.create', compact('merchants'));
     }
 
     /**
@@ -50,18 +55,18 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AdminRequest $request, AdminService $admin_service)
+    public function store(CareerRequest $request, CareerService $career_service)
     {
         DB::beginTransaction();
 
         $action     =   Permission::ACTION_CREATE;
-        $module     =   strtolower(trans_choice('modules.admin', 1));
+        $module     =   strtolower(trans_choice('modules.career', 1));
         $message    =   Message::instance()->format($action, $module);
         $status     =   'fail';
 
         try {
 
-            $admin_service->setRequest($request)->store();
+            $career_service->setRequest($request)->store();
 
             $status     =   'success';
             $message    =   Message::instance()->format($action, $module, $status);
@@ -75,54 +80,59 @@ class AdminController extends Controller
 
         activity()->useLog('web')
             ->causedBy(Auth::user())
-            ->performedOn(new User())
+            ->performedOn(new Career())
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('admins.index')->with($status, $message);
+        return redirect()->route('careers.index')->with($status, $message);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Career  $career
      * @return \Illuminate\Http\Response
      */
-    public function show(User $admin)
+    public function show(Career $career)
     {
-        return view('admin.show', compact('admin'));
+        $career->load(['branch.address']);
+
+        return view('career.show', compact('career'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Career  $career
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $admin)
+    public function edit(Career $career)
     {
-        return view('admin.edit', compact('admin'));
+        $career->load(['branch.address']);
+        $merchants = User::merchant()->orderBy('name')->get();
+
+        return view('career.edit', compact('career', 'merchants'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Career  $career
      * @return \Illuminate\Http\Response
      */
-    public function update(AdminRequest $request, User $admin, AdminService $admin_service)
+    public function update(CareerRequest $request, Career $career, CareerService $career_service)
     {
         DB::beginTransaction();
 
         $action     =   Permission::ACTION_UPDATE;
-        $module     =   strtolower(trans_choice('modules.admin', 1));
+        $module     =   strtolower(trans_choice('modules.career', 1));
         $message    =   Message::instance()->format($action, $module);
         $status     =   'fail';
 
         try {
 
-            $admin_service->setModel($admin)->setRequest($request)->store();
+            $career_service->setModel($career)->setRequest($request)->store();
 
             $status     =   'success';
             $message    =   Message::instance()->format($action, $module, $status);
@@ -136,38 +146,38 @@ class AdminController extends Controller
 
         activity()->useLog('web')
             ->causedBy(Auth::user())
-            ->performedOn(new User())
+            ->performedOn($career)
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('admins.index')->with($status, $message);
+        return redirect()->route('careers.index')->with($status, $message);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Career  $career
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $admin)
+    public function destroy(Career $career)
     {
         $action     =   Permission::ACTION_DELETE;
-        $module     =   strtolower(trans_choice('modules.admin', 1));
+        $module     =   strtolower(trans_choice('modules.career', 1));
         $status     =   'success';
         $message    =   Message::instance()->format($action, $module, 'success');
 
-        $admin->delete();
+        $career->delete();
 
         activity()->useLog('web')
             ->causedBy(Auth::user())
-            ->performedOn($admin)
+            ->performedOn($career)
             ->log($message);
 
         return Response::instance()
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('admins.index')
+                'redirect_to' => route('careers.index')
             ])
             ->sendJson();
     }

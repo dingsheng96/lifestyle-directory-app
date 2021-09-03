@@ -1,28 +1,30 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Models\User;
+use App\Helpers\Status;
 use App\Helpers\Message;
 use App\Helpers\Response;
 use App\Models\Permission;
-use App\Models\CountryState;
-use App\DataTables\CityDataTable;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\DataTables\MemberDataTable;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\MemberRequest;
 use Illuminate\Support\Facades\Auth;
-use App\DataTables\CountryStateDataTable;
-use App\Http\Requests\CountryStateRequest;
-use App\Support\Services\CountryStateService;
+use App\Support\Facades\MemberFacade;
+use App\Support\Services\MemberService;
 
-class CountryStateController extends Controller
+class MemberController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['can:locale.read'])->only(['index', 'show']);
-        $this->middleware(['can:locale.create'])->only(['create', 'store']);
-        $this->middleware(['can:locale.update'])->only(['edit', 'update']);
-        $this->middleware(['can:locale.delete'])->only(['delete']);
+        $this->middleware(['can:member.read']);
+        $this->middleware(['can:member.create'])->only(['create', 'store']);
+        $this->middleware(['can:member.update'])->only(['edit', 'update']);
+        $this->middleware(['can:member.delete'])->only(['delete']);
     }
 
     /**
@@ -30,9 +32,9 @@ class CountryStateController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(CountryStateDataTable $dataTable)
+    public function index(MemberDataTable $dataTable)
     {
-        return $dataTable->render('locale.country_state.index');
+        return $dataTable->render('member.index');
     }
 
     /**
@@ -42,7 +44,7 @@ class CountryStateController extends Controller
      */
     public function create()
     {
-        //
+        return view('member.create');
     }
 
     /**
@@ -51,82 +53,21 @@ class CountryStateController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CountryStateRequest $request, CountryStateService $country_state_service)
+    public function store(MemberRequest $request, MemberService $member_service)
     {
         DB::beginTransaction();
 
         $action     =   Permission::ACTION_CREATE;
-        $module     =   strtolower(trans_choice('modules.country_state', 1));
+        $module     =   strtolower(trans_choice('modules.member', 1));
         $message    =   Message::instance()->format($action, $module);
         $status     =   'fail';
 
         try {
 
-            $country_state_service->setRequest($request)->store();
+            $member_service->setRequest($request)->store();
 
-            $status     =   'success';
-            $message    =   Message::instance()->format($action, $module, $status);
-
-            DB::commit();
-        } catch (\Error | \Exception $e) {
-
-            DB::rollBack();
-            $message = $e->getMessage();
-        }
-
-        activity()->useLog('web')
-            ->causedBy(Auth::user())
-            ->performedOn(new CountryState())
-            ->withProperties($request->all())
-            ->log($message);
-
-        return redirect()->route('locale.country-states.index')->with($status, $message);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CountryState $country_state, CityDataTable $dataTable)
-    {
-        return $dataTable->with(['country_state_id' => $country_state->id])->render('locale.country_state.edit', compact('country_state'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(CountryStateRequest $request, CountryState $country_state, CountryStateService $country_state_service)
-    {
-        DB::beginTransaction();
-
-        $action     =   Permission::ACTION_UPDATE;
-        $module     =   strtolower(trans_choice('modules.country_state', 1));
-        $message    =   Message::instance()->format($action, $module);
-        $status     =   'fail';
-
-        try {
-
-            $country_state_service->setModel($country_state)->setRequest($request)->store();
-
-            $status     =   'success';
-            $message    =   Message::instance()->format($action, $module, $status);
+            $status  = 'success';
+            $message = Message::instance()->format($action, $module, $status);
 
             DB::commit();
         } catch (\Error | \Exception $e) {
@@ -137,11 +78,78 @@ class CountryStateController extends Controller
 
         activity()->useLog('web')
             ->causedBy(Auth::user())
-            ->performedOn($country_state)
+            ->performedOn(new User())
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('locale.country-states.index')->with($status, $message);
+        return redirect()->route('members.index')->with($status, $message);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show(User $member)
+    {
+        $member->load(['media']);
+
+        return view('member.show', compact('member'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(User $member)
+    {
+        $member->load(['media']);
+
+        return view('member.edit', compact('member'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(MemberRequest $request, User $member, MemberService $member_service)
+    {
+        DB::beginTransaction();
+
+        $action     =   Permission::ACTION_UPDATE;
+        $module     =   strtolower(trans_choice('modules.member', 1));
+        $message    =   Message::instance()->format($action, $module);
+        $status     =   'fail';
+
+        try {
+
+            $member->load(['media']);
+
+            $member_service->setModel($member)->setRequest($request)->store();
+
+            $status  = 'success';
+            $message = Message::instance()->format($action, $module, $status);
+
+            DB::commit();
+        } catch (\Error | \Exception $e) {
+
+            DB::rollBack();
+            Log::error($e);
+        }
+
+        activity()->useLog('web')
+            ->causedBy(Auth::user())
+            ->performedOn($member)
+            ->withProperties($request->all())
+            ->log($message);
+
+        return redirect()->route('members.index')->with($status, $message);
     }
 
     /**
@@ -150,26 +158,28 @@ class CountryStateController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(CountryState $country_state)
+    public function destroy(User $member)
     {
         $action     =   Permission::ACTION_DELETE;
-        $module     =   strtolower(trans_choice('modules.country_state', 1));
-        $status     =   'success';
-        $message    =   Message::instance()->format($action, $module, 'success');
+        $module     =   strtolower(trans_choice('modules.member', 1));
+        $status     =   'fail';
+        $message    =   Message::instance()->format($action, $module);
 
-        $country_state->cities()->delete();
-        $country_state->delete();
+        $member->delete();
+
+        $message = Message::instance()->format($action, $module, 'success');
+        $status = 'success';
 
         activity()->useLog('web')
             ->causedBy(Auth::user())
-            ->performedOn($country_state)
+            ->performedOn($member)
             ->log($message);
 
         return Response::instance()
             ->withStatus($status)
             ->withMessage($message, true)
             ->withData([
-                'redirect_to' => route('locale.country-states.index')
+                'redirect_to' => route('members.index')
             ])
             ->sendJson();
     }
