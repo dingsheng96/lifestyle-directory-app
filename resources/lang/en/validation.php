@@ -203,6 +203,7 @@ return [
         'off_day' => 'off day',
         'role' => 'role',
         'old_password' => 'old password',
-        'new_password' => 'new password'
+        'new_password' => 'new password',
+        'password' => 'password'
     ],
 ];

@@ -1,4 +1,4 @@
-@extends('layouts.master', ['title' => __('labels.user_account')])
+@extends('layouts.master', ['title' => __('labels.profile')])
 
 @section('content')
 

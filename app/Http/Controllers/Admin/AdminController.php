@@ -56,15 +56,13 @@ class AdminController extends Controller
 
         $action     =   Permission::ACTION_CREATE;
         $module     =   strtolower(trans_choice('modules.admin', 1));
-        $message    =   Message::instance()->format($action, $module);
         $status     =   'fail';
 
         try {
 
-            $admin_service->setRequest($request)->store();
+            $admin_service->setRequest($request)->store()->assignRole();
 
-            $status     =   'success';
-            $message    =   Message::instance()->format($action, $module, $status);
+            $status = 'success';
 
             DB::commit();
         } catch (\Error | \Exception $e) {
@@ -73,10 +71,12 @@ class AdminController extends Controller
             Log::error($e);
         }
 
+        $message = Message::instance()->format($action, $module, $status);
+
         activity()->useLog('admin:admin')
             ->causedBy(Auth::user())
             ->performedOn(new User())
-            ->withProperties($request->all())
+            ->withProperties($request->except(['password', 'password_confirmation']))
             ->log($message);
 
         return redirect()->route('admin.admins.index')->with($status, $message);
@@ -122,10 +122,9 @@ class AdminController extends Controller
 
         try {
 
-            $admin_service->setModel($admin)->setRequest($request)->store();
+            $admin_service->setModel($admin)->setRequest($request)->store()->assignRole();
 
-            $status     =   'success';
-            $message    =   Message::instance()->format($action, $module, $status);
+            $status = 'success';
 
             DB::commit();
         } catch (\Error | \Exception $e) {
@@ -134,10 +133,12 @@ class AdminController extends Controller
             Log::error($e);
         }
 
+        $message = Message::instance()->format($action, $module, $status);
+
         activity()->useLog('admin:admin')
             ->causedBy(Auth::user())
             ->performedOn(new User())
-            ->withProperties($request->all())
+            ->withProperties($request->except(['password', 'password_confirmation']))
             ->log($message);
 
         return redirect()->route('admin.admins.index')->with($status, $message);

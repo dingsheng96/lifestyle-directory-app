@@ -48,7 +48,7 @@ class RatingController extends Controller
 
         try {
 
-            $member_service->setModel($user)->setRequest($request)->storeMerchantRating();
+            $member_service->setModel($user)->setRequest($request)->rateMerchant();
 
             DB::commit();
         } catch (\Error | \Exception $ex) {

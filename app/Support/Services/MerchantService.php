@@ -41,15 +41,13 @@ class MerchantService extends BaseService
 
     public function store()
     {
-        $this->model->name      =   $this->request->get('name');
-        $this->model->email     =   $this->request->get('email');
-        $this->model->mobile_no =   $this->request->get('phone');
-        $this->model->status    =   $this->request->get('status', User::STATUS_INACTIVE);
-        $this->model->type      =   User::USER_TYPE_MERCHANT;
-        $this->model->password  =   !empty($this->request->get('password'))
-            ? Hash::make($this->request->get('password'))
-            : $this->model->password;
-        $this->model->listing_status   =   $this->request->get('listing_status', User::LISTING_STATUS_PUBLISH);
+        $this->model->name              =   $this->request->get('name');
+        $this->model->email             =   $this->request->get('email');
+        $this->model->mobile_no         =   $this->request->get('phone');
+        $this->model->status            =   $this->request->get('status', User::STATUS_INACTIVE);
+        $this->model->password          =   $this->request->get('password');
+        $this->model->listing_status    =   $this->request->get('listing_status', User::LISTING_STATUS_PUBLISH);
+        $this->model->type              =   User::USER_TYPE_MERCHANT;
 
         if ($this->model->isDirty()) {
             $this->model->save();

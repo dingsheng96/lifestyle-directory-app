@@ -44,6 +44,7 @@ return [
     'remember_me' => 'Remember Me',
     'login' => 'Log In',
     'logout' => 'Log Out',
+    'my_profile' => 'My Profile',
     'view_all' => 'View All',
     'more_info' => 'More Info',
     'dropdown_placeholder' => 'Please select :label',
@@ -111,7 +112,6 @@ return [
     'log_name' => 'Log Name',
 
     'title' => 'Title',
-
     'created_at' => 'Created At',
     'last_updated_at' => 'Last Updated At',
     'last_login_at' => 'Last Login At',
@@ -121,7 +121,6 @@ return [
     'profile' => 'Profile',
     'profile_image' => 'Profile Image',
     'cover_photo' => 'Cover Photo',
-
     'settings' => 'Settings',
     'gallery' => 'Gallery',
 
@@ -135,7 +134,6 @@ return [
     'branch_name' => 'Branch Name',
     'info' => 'Info',
     'view_details' => 'View Details',
-    'user_account' => 'User Account',
     'import_translation' => 'Import Translations',
     'branches' => 'Branches',
     'permission' => 'Permission|Permissions',

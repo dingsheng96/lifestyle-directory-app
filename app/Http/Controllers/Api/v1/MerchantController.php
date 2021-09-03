@@ -58,7 +58,7 @@ class MerchantController extends Controller
                 'address' => function ($query) use ($latitude, $longitude) {
                     $query->getDistanceByCoordinates($latitude, $longitude);
                 }
-            ])->withCount(['careers'])
+            ])->withCount(['careers', 'ratings'])
                 ->merchant()->active()->approvedApplication()->publish()
                 ->where('id', $merchant_id)
                 ->firstOrFail();

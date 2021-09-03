@@ -35,6 +35,8 @@ class MerchantResource extends JsonResource
                     ->map(function ($value) {
                         return $value->full_file_path;
                     })->flatten(),
+                'reviews_count'     => $this->ratings_count,
+                'share_link'        => "",
                 'about'             => $this->branchDetail->description,
                 'services'          => $this->branchDetail->services,
                 'business_hours'    => $this->operationHours->map(function ($value) {

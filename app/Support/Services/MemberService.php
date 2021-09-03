@@ -25,8 +25,6 @@ class MemberService extends BaseService
         $this->model->type      =   User::USER_TYPE_MEMBER;
         $this->model->password  =   $this->request->get('password');
 
-        $this->model->application_status = User::APPLICATION_STATUS_APPROVED;
-
         if (!$this->model->exists) { // new User
 
             $this->model->email_verified_at = now();
@@ -178,7 +176,7 @@ class MemberService extends BaseService
         return $this;
     }
 
-    public function storeMerchantRating()
+    public function rateMerchant()
     {
         $merchant = User::validMerchant()->where('id', $this->request->get('merchant_id'))->firstOrFail();
 

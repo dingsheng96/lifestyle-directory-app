@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Models\User;
 use App\Helpers\Misc;
-use App\Helpers\Message;
 use App\Helpers\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Resources\LoginResource;
 use App\Support\Services\MemberService;
 use App\Http\Requests\Api\v1\Auth\LoginRequest;

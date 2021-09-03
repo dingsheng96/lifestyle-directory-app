@@ -12,9 +12,9 @@
                 <img src="https://ui-avatars.com/api/?background=8D60D8&color=ffffff&size=35&rounded=true&name={{ urlencode(Auth::user()->name) }}" class="img-circle elevation-2" alt="user">
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a href="{{ route('admin.account.index') }}" class="dropdown-item">
+                <a href="{{ route('admin.profile.index') }}" class="dropdown-item">
                     <i class="fas fa-user mr-2 text-purple"></i>
-                    <span>{{ __('labels.user_account') }}</span>
+                    <span>{{ __('labels.my_profile') }}</span>
                 </a>
                 <a href="#" class="dropdown-item" onclick="event.preventDefault(); logoutAlert('{{ __('messages.confirm_question') }}');">
                     <i class="fas fa-sign-out-alt mr-2 text-danger"></i>

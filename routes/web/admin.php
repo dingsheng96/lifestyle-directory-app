@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\TranslationController;
 */
 
 Route::get('/', function () {
+
     return redirect()->route('admin.login');
 });
 
@@ -27,6 +28,8 @@ Auth::routes(['verify' => false, 'register' => false]);
 Route::middleware(['auth:' . User::USER_TYPE_ADMIN])->group(function () {
 
     Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard');
+
+    Route::resource('profile', ProfileController::class)->only(['index', 'store']);
 
     Route::resource('banners', BannerController::class);
 
