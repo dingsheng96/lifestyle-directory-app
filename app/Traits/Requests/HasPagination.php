@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Traits;
+namespace App\Traits\Requests;
 
-trait HasPaginationRequest
+trait HasPagination
 {
     /**
      * Get the validation rules that apply to the request.

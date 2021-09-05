@@ -3,12 +3,12 @@
 namespace App\Http\Requests\Api\v1\Wishlist;
 
 use App\Rules\ValidateCoordinates;
-use App\Traits\HasPaginationRequest;
+use App\Traits\Requests\HasPagination;
 use App\Http\Requests\Api\v1\BaseRequest;
 
 class WishlistRequest extends BaseRequest
 {
-    use HasPaginationRequest;
+    use HasPagination;
 
     /**
      * Get the validation rules that apply to the request.
