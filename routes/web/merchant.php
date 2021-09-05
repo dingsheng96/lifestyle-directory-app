@@ -34,9 +34,7 @@ Route::middleware(['auth:' . User::USER_TYPE_MERCHANT])->group(function () {
 
     Route::resource('branches', BranchController::class);
 
-    Route::resource('media', MediaController::class);
-
-    Route::resource('operations', OperationHourController::class);
+    Route::resource('media', MediaController::class)->except(['show', 'edit']);
 
     Route::group(['prefix' => 'data', 'as' => 'data.'], function () {
 

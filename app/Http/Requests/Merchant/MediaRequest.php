@@ -32,4 +32,12 @@ class MediaRequest extends FormRequest
             'files.*' =>  ['image', 'mimes:jpg,jpeg,png'],
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            'files'         => __('validation.attributes.file'),
+            'files.*'       => __('validation.attributes.file'),
+        ];
+    }
 }

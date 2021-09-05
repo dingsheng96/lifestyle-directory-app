@@ -180,6 +180,27 @@
                                 </div>
                             </div>
 
+                            <hr>
+
+                            <div class="form-group row">
+                                <label for="description" class="col-form-label col-sm-2">{{ __('labels.description') }}</label>
+                                <div class="col-sm-10">
+                                    <span class="form-control-plaintext" id="description">
+                                        {!! nl2br($branch->branchDetail->description) ?? '-' !!}
+                                    </span>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label for="services" class="col-form-label col-sm-2">{{ __('labels.services') }}</label>
+                                <div class="col-sm-10">
+                                    <span class="form-control-plaintext" id="services">
+                                        {!! nl2br($branch->branchDetail->services) ?? '-' !!}
+                                    </span>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="tab-pane fade" id="list-gallery" role="tabpanel" aria-labelledby="list-gallery-list">

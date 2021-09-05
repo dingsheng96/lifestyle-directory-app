@@ -13,6 +13,7 @@
                 <div class="card-body">
                     <div class="list-group list-group-flush" id="list-tab" role="tablist">
                         <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">{{ __('labels.general') }}</a>
+                        <a class="list-group-item list-group-item-action" id="list-details-list" data-toggle="list" href="#list-details" role="tab" aria-controls="details">{{ __('labels.details') }}</a>
                         <a class="list-group-item list-group-item-action" id="list-location-list" data-toggle="list" href="#list-location" role="tab" aria-controls="location">{{ __('labels.location') }}</a>
                         <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">{{ __('labels.settings') }}</a>
                         <a class="list-group-item list-group-item-action" id="list-gallery-list" data-toggle="list" href="#list-gallery" role="tab" aria-controls="messages">{{ __('labels.gallery') }}</a>
@@ -229,6 +230,28 @@
                                     </div>
                                 </div>
 
+                            </div>
+
+                            <div class="tab-pane fade" id="list-details" role="tabpanel" aria-labelledby="list-details-list">
+                                <div class="form-group">
+                                    <label for="desription" class="col-form-label">{{ __('labels.description') }}</label>
+                                    <textarea name="description" id="description" cols="30" rows="5" class="form-control @error('description') is-invalid @enderror">{{ old('description', $branch->branchDetail->description) }}</textarea>
+                                    @error('desription')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="services" class="col-form-label">{{ __('labels.services') }}</label>
+                                    <textarea name="services" id="services" cols="30" rows="5" class="form-control @error('service') is-invalid @enderror">{{ old('services', $branch->branchDetail->services) }}</textarea>
+                                    @error('services')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
                             </div>
 
                             <div class="tab-pane fade" id="list-location" role="tabpanel" aria-labelledby="list-location-list">

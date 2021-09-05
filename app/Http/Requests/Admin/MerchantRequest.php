@@ -47,6 +47,8 @@ class MerchantRequest extends FormRequest
             'category'          =>  [Rule::requiredIf(empty($this->route('merchant'))), 'nullable', 'exists:' . Category::class . ',id'],
             'status'            =>  ['required', Rule::in(array_keys((new Status())->activeStatus()))],
             'listing_status'    =>  [Rule::requiredIf($this->route('branch')), 'nullable', Rule::in(array_keys((new Status())->publishStatus()))],
+            'description'       =>  ['nullable'],
+            'services'          =>  ['nullable'],
 
             'address_1'         =>  ['required', 'min:3', 'max:255'],
             'address_2'         =>  ['nullable'],

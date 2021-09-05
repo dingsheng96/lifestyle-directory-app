@@ -6,7 +6,7 @@
             <tr>
                 <th scope="col">{{ __('#') }}</th>
                 <th scope="col">{{ __('labels.type') }}</th>
-                <th scope="col">{{ __('labels.description') }}</th>
+                <th scope="col">{{ __('labels.items') }}</th>
 
                 @if (isset($thumbnail) && $thumbnail)
                 <th scope="col">{{ __('labels.thumbnail') }}</th>

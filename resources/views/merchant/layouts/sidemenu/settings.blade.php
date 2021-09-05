@@ -8,8 +8,8 @@
 </li>
 
 <li class="nav-item">
-    <a href="{{ route('merchant.operations.index') }}" class="nav-link {{ Nav::hasSegment('operations', 1, 'active') }}">
-        <i class="nav-icon far fa-clock"></i>
-        <p>{{ trans_choice('modules.operation', 2) }}</p>
+    <a href="{{ route('merchant.profile.index') }}" class="nav-link {{ Nav::hasSegment('profile', 1, 'active') }}">
+        <i class="nav-icon fas fa-user"></i>
+        <p>{{ __('labels.my_profile') }}</p>
     </a>
 </li>

@@ -224,3 +224,9 @@ body {
     max-height: 300px;
     object-fit: cover;
 }
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #8d60d8;
+}

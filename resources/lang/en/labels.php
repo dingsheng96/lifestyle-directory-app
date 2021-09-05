@@ -38,6 +38,10 @@ return [
     'optional' => 'Optional',
     'get_coordinate' => 'Get Coordinates',
 
+    'change_profile_pic' => 'Change Profile Picture',
+    'change_logo' => 'Change Logo',
+    'change_ssm_cert' => 'Change SSM Certificate',
+
     'copyright' => '&copy ' . config('app.name') . ' ' . date('Y') . '. All rights reserved.',
     'terms_policy' => 'Terms & Policies',
     'privacy_policy' => 'Privacy Policies',
@@ -138,9 +142,6 @@ return [
     'branches' => 'Branches',
     'permission' => 'Permission|Permissions',
     'module' => 'Module|Modules',
-    'change_profile_pic' => 'Change Profile Picture',
-    'change_logo' => 'Change Logo',
-    'change_ssm_cert' => 'Change SSM Certificate',
     'branch' => 'Branch|Branches',
     'merchant_branch' => ":merchant's Branch",
     'operating_hour' => 'Operating Hour',
@@ -157,5 +158,8 @@ return [
     'applicant_can_apply_via' => 'Applicants can apply via',
     'filename' => 'File Name',
     'preview' => 'Preview',
-    'make_thumbnail' => 'Make Thumbnail'
+    'make_thumbnail' => 'Make Thumbnail',
+    'average_ratings' => 'Average Ratings',
+    'reviews' => 'Reviews',
+    'items' => 'Items'
 ];

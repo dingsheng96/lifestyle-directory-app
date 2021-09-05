@@ -38,6 +38,8 @@
                             @enderror
                         </div>
 
+                        <hr>
+
                         <div class="form-group">
                             <label for="password" class="col-form-label">{{ __('labels.new_password') }}</label>
                             <input type="password" id="password" name="password" value="{{ old('password') }}" class="form-control @error('password') is-invalid @enderror" autocomplete="off">

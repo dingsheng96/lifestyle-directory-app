@@ -28,14 +28,9 @@ class ProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => [
-                'required', 'max:255',
-                Rule::unique(User::class, 'name')->ignore(Auth::guard(User::USER_TYPE_ADMIN)->id(), 'id')->whereNull('deleted_at')
-            ],
-            'email' => [
-                'required', 'email', Rule::unique(User::class, 'email')->ignore(Auth::guard(User::USER_TYPE_ADMIN)->id(), 'id')->whereNull('deleted_at')
-            ],
-            'password' => ['nullable', 'confirmed', Password::defaults()],
+            'name'      => ['required', 'max:255', Rule::unique(User::class, 'name')->ignore(Auth::id(), 'id')->whereNull('deleted_at')],
+            'email'     => ['required', 'email', Rule::unique(User::class, 'email')->ignore(Auth::id(), 'id')->whereNull('deleted_at')],
+            'password'  => ['nullable', 'confirmed', Password::defaults()],
         ];
     }
 

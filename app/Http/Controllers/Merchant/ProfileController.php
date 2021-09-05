@@ -20,7 +20,7 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $user = Auth::user()->load(['address', 'media']);
+        $user = Auth::user()->load(['address', 'media', 'branchDetail'])->loadCount(['ratings']);
 
         return view('merchant.profile', compact('user'));
     }
