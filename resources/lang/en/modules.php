@@ -32,6 +32,7 @@ return [
     'country_state' => 'Country State|Country States',
     'city' => 'City|Cities',
     'language' => 'Language|Languages',
-    'activity_logs' => 'Activity Logs',
+    'media' => 'Media',
+    'operation' => 'Operation|Operations'
 
 ];

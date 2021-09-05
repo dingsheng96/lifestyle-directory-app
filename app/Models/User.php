@@ -319,14 +319,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->type == self::USER_TYPE_MERCHANT;
     }
 
-    public function getIsMainMerchantAttribute()
+    public function getIsMainBranchAttribute()
     {
-        return count($this->subBranches) > 0 && count($this->mainBranch) < 1;
+        return !is_null($this->subBranches) && is_null($this->mainBranch);
     }
 
-    public function getIsSubMerchantAttribute()
+    public function getIsSubBranchAttribute()
     {
-        return count($this->mainBranch) > 0 && count($this->subBranches) < 1;
+        return !$this->is_main_branch;
     }
 
     public function getIsMemberAttribute()

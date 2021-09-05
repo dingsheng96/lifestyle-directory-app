@@ -227,7 +227,7 @@ class MerchantService extends BaseService
 
     public function assignCategory()
     {
-        if ($this->model->is_main_merchant) {
+        if ($this->model->is_main_branch) {
 
             $this->model->categories()->syncWithoutDetaching([$this->request->get('category')]);
         }

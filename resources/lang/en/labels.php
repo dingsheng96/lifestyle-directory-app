@@ -138,7 +138,6 @@ return [
     'branches' => 'Branches',
     'permission' => 'Permission|Permissions',
     'module' => 'Module|Modules',
-
     'change_profile_pic' => 'Change Profile Picture',
     'change_logo' => 'Change Logo',
     'change_ssm_cert' => 'Change SSM Certificate',
@@ -149,12 +148,14 @@ return [
     'off_day' => 'Off Day',
     'start_from' => 'Start From',
     'end_at' => 'End At',
-
     'job_title' => 'Job Title',
     'salary' => 'Salary',
     'company' => 'Company',
     'benefits' => 'Benefits',
     'show_salary' => 'Show Salary',
     'about' => 'About',
-    'applicant_can_apply_via' => 'Applicants can apply via'
+    'applicant_can_apply_via' => 'Applicants can apply via',
+    'filename' => 'File Name',
+    'preview' => 'Preview',
+    'make_thumbnail' => 'Make Thumbnail'
 ];

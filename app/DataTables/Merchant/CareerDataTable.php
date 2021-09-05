@@ -4,7 +4,6 @@ namespace App\DataTables\Merchant;
 
 use App\Models\User;
 use App\Models\Career;
-use Illuminate\Support\Str;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Illuminate\Support\Facades\Auth;
@@ -75,8 +74,7 @@ class CareerDataTable extends DataTable
      */
     public function query(Career $model)
     {
-        $merchant = Auth::guard(User::USER_TYPE_MERCHANT)
-            ->user()->load(['mainBranch', 'subBranches']);
+        $merchant = Auth::user()->load(['mainBranch', 'subBranches']);
 
         $branches = collect([$merchant])
             ->merge([$merchant->mainBranch])

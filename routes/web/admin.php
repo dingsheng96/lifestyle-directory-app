@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\TranslationController;
 
 /*
@@ -36,8 +37,6 @@ Route::middleware(['auth:' . User::USER_TYPE_ADMIN])->group(function () {
     Route::resource('careers', CareerController::class);
 
     Route::resource('categories', CategoryController::class);
-
-    Route::resource('account', AccountController::class);
 
     Route::resource('admins', AdminController::class);
 

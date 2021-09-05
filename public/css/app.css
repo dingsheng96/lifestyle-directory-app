@@ -52574,8 +52574,8 @@ body {
 }
 
 .table-img-preview {
-  -o-object-fit: contain;
-     object-fit: contain;
+  -o-object-fit: cover;
+     object-fit: cover;
   height: 50px;
   width: 50px;
   border-radius: 12px;

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Storage;
 
 class Response
 {
-    public $code    =   '';
+    public $code    =   200;
     public $data    =   [];
     public $message =   'Ok';
     public $status  =   'success';

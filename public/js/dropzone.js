@@ -66,14 +66,14 @@ $(function () {
                 formData.append(el.name, el.value);
             });
 
-            let logo = form.find('[name=logo]')[0].files[0];
-            if(logo) {
-                formData.append('logo', logo);
+            let logo = form.find('[name=logo]');
+            if(logo.length > 0) {
+                formData.append('logo', logo[0].files[0]);
             }
 
-            let ssm_cert = form.find('[name=ssm_cert]')[0].files[0];
-            if(ssm_cert) {
-                formData.append('ssm_cert', ssm_cert);
+            let ssm_cert = form.find('[name=ssm_cert]');
+            if(ssm_cert.length > 0) {
+                formData.append('ssm_cert', ssm_cert[0].files[0]);
             }
         });
 

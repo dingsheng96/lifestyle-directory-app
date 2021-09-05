@@ -29,12 +29,18 @@ class BladeServiceProvider extends ServiceProvider
             return Auth::user()->is_admin;
         });
 
-        Blade::if('merchant', function () {
-            return Auth::user()->is_merchant;
+        Blade::if('mainBranch', function () {
+
+            $user = Auth::user()->load(['mainBranch', 'subBranches']);
+
+            return $user->is_main_branch;
         });
 
-        Blade::if('member', function () {
-            return Auth::user()->is_member;
+        Blade::if('subBranch', function () {
+
+            $user = Auth::user()->load(['mainBranch', 'subBranches']);
+
+            return $user->is_sub_branch;
         });
     }
 }
