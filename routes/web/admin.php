@@ -58,9 +58,4 @@ Route::middleware(['auth:' . User::USER_TYPE_ADMIN])->group(function () {
     });
 
     Route::delete('media/{media}', [MediaController::class, '__invoke'])->name('media.destroy');
-
-    Route::group(['prefix' => 'data', 'as' => 'data.'], function () {
-
-        Route::post('country-states/{country_state}/cities', [DataController::class, 'getCityFromCountryState'])->name('country-states.cities');
-    });
 });

@@ -35,9 +35,4 @@ Route::middleware(['auth:' . User::USER_TYPE_MERCHANT])->group(function () {
     Route::resource('branches', BranchController::class);
 
     Route::resource('media', MediaController::class)->except(['show', 'edit']);
-
-    Route::group(['prefix' => 'data', 'as' => 'data.'], function () {
-
-        Route::post('country-states/{country_state}/cities', [DataController::class, 'getCityFromCountryState'])->name('country-states.cities');
-    });
 });

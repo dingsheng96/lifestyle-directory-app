@@ -57,6 +57,7 @@
     <script type="text/javascript" src="{{ asset('js/modal.js?v=' . time()) }}"></script>
     <script type="text/javascript" src="{{ asset('js/dropzone.js?v=' . time()) }}"></script>
     <script type="text/javascript" src="{{ asset('js/dynamic-form.js?v=' . time()) }}"></script>
+    <script type="text/javascript" src="{{ asset('js/geocoder.js?v=' . time()) }}"></script>
     @stack('scripts')
 
 </body>

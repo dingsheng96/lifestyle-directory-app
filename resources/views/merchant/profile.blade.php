@@ -19,11 +19,11 @@
                     <ul class="list-group list-group-unbordered my-3">
 
                         <li class="list-group-item">
-                            <b>{{ __('labels.category') }}</b> <span class="float-right">{{ $user->category->name }}</span>
+                            <b>{{ __('labels.category') }}</b> <span class="float-right">{{ $user->category->name ?? $user->mainBranch->category->name }}</span>
                         </li>
 
                         <li class="list-group-item">
-                            <b>{{ __('labels.ssm_cert') }}</b> <a class="float-right" href="{{ $user->ssm_cert->full_file_path }}" target="_blank"><i class="fas fa-external-link-alt"></i> {{ __('labels.view') }}</a>
+                            <b>{{ __('labels.ssm_cert') }}</b> <a class="float-right" href="{{ $user->ssm_cert->full_file_path ?? '#' }}" target="_blank"><i class="fas fa-external-link-alt"></i> {{ __('labels.view') }}</a>
                         </li>
 
                         <li class="list-group-item">
@@ -236,109 +236,109 @@
                             </div>
 
                             <div class="tab-pane" id="location">
+                                <div id="location-address-panel" data-route="{{ route('data.geocoding') }}">
+                                    <div class="form-group">
+                                        <label for="address_1" class="col-form-label">{{ __('labels.address_1') }} <span class="text-danger">*</span></label>
+                                        <input type="text" name="address_1" id="address_1" class="form-control @error('address_1') is-invalid @enderror" value="{{ old('address_1', $user->address->address_1) }}">
+                                        @error('address_1')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
 
-                                <div class="form-group">
-                                    <label for="address_1" class="col-form-label">{{ __('labels.address_1') }} <span class="text-danger">*</span></label>
-                                    <input type="text" name="address_1" id="address_1" class="form-control @error('address_1') is-invalid @enderror" value="{{ old('address_1', $user->address->address_1) }}">
-                                    @error('address_1')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
+                                    <div class="form-group">
+                                        <label for="address_2" class="col-form-label">{{ __('labels.address_2') }}</label>
+                                        <input type="text" name="address_2" id="address_2" class="form-control @error('address_2') is-invalid @enderror" value="{{ old('address_2', $user->address->address_2) }}">
+                                        @error('address_2')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
 
-                                <div class="form-group">
-                                    <label for="address_2" class="col-form-label">{{ __('labels.address_2') }}</label>
-                                    <input type="text" name="address_2" id="address_2" class="form-control @error('address_2') is-invalid @enderror" value="{{ old('address_2', $user->address->address_2) }}">
-                                    @error('address_2')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
+                                    <div class="row">
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="postcode" class="col-form-label">{{ __('labels.postcode') }} <span class="text-danger">*</span></label>
+                                                <input type="text" name="postcode" id="postcode" class="form-control @error('postcode') is-invalid @enderror" value="{{ old('postcode', $user->address->postcode) }}">
+                                                @error('postcode')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
 
-                                <div class="row">
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="postcode" class="col-form-label">{{ __('labels.postcode') }} <span class="text-danger">*</span></label>
-                                            <input type="text" name="postcode" id="postcode" class="form-control @error('postcode') is-invalid @enderror" value="{{ old('postcode', $user->address->postcode) }}">
-                                            @error('postcode')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="country_state" class="col-form-label">{{ trans_choice('labels.country_state', 1) }} <span class="text-danger">*</span></label>
+                                                <select name="country_state" id="country_state" class="form-control select2 @error('country_state') is-invalid @enderror city-filter">
+                                                    <option value="0" selected disabled>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(trans_choice('labels.country_state', 1))]) }} ---</option>
+                                                    @forelse ($countryStates as $state)
+                                                    <option value="{{ $state->id }}" {{ old('country_state', $user->address->countryState->id) == $state->id ? 'selected' : null }}>{{ $state->name }}</option>
+                                                    @empty
+                                                    @endforelse
+                                                </select>
+                                                @error('country_state')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="country_state" class="col-form-label">{{ trans_choice('labels.country_state', 1) }} <span class="text-danger">*</span></label>
-                                            <select name="country_state" id="country_state" class="form-control select2 @error('country_state') is-invalid @enderror city-filter">
-                                                <option value="0" selected disabled>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(trans_choice('labels.country_state', 1))]) }} ---</option>
-                                                @forelse ($countryStates as $state)
-                                                <option value="{{ $state->id }}" {{ old('country_state', $user->address->countryState->id) == $state->id ? 'selected' : null }}>{{ $state->name }}</option>
-                                                @empty
-                                                @endforelse
-                                            </select>
-                                            @error('country_state')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
+                                    <div class="row">
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="city" class="col-form-label">{{ trans_choice('labels.city', 1) }} <span class="text-danger">*</span></label>
+                                                <select name="city" id="city" class="form-control select2 @error('city') is-invalid @enderror city-dropdown" data-selected="{{ old('city', $user->address->city_id) }}" data-city-route="{{ route('data.country-states.cities', ['__REPLACE__']) }}">
+                                                    <option value="0" selected disabled>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(trans_choice('labels.city', 1))]) }} ---</option>
+                                                </select>
+                                                @error('city')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="row">
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="city" class="col-form-label">{{ trans_choice('labels.city', 1) }} <span class="text-danger">*</span></label>
-                                            <select name="city" id="city" class="form-control select2 @error('city') is-invalid @enderror city-dropdown" data-selected="{{ old('city', $user->address->city_id) }}" data-city-route="{{ route('merchant.data.country-states.cities', ['__REPLACE__']) }}">
-                                                <option value="0" selected disabled>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(trans_choice('labels.city', 1))]) }} ---</option>
-                                            </select>
-                                            @error('city')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
+                                    <hr>
+
+                                    <div class="row">
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="latitude" class="col-form-label">{{ __('labels.latitude') }} <span class="text-danger">*</span></label>
+                                                <input type="text" name="latitude" id="latitude" class="form-control @error('latitude') is-invalid @enderror" value="{{ old('latitude', $user->address->latitude ?? 0) }}">
+                                                @error('latitude')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="form-group">
+                                                <label for="longitude" class="col-form-label">{{ __('labels.longitude') }} <span class="text-danger">*</span></label>
+                                                <input type="text" name="longitude" id="longitude" class="form-control @error('longitude') is-invalid @enderror" value="{{ old('longitude', $user->address->longitude ?? 0) }}">
+                                                @error('longitude')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                <hr>
-
-                                <div class="row">
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="latitude" class="col-form-label">{{ __('labels.latitude') }} <span class="text-danger">*</span></label>
-                                            <input type="text" name="latitude" id="latitude" class="form-control @error('latitude') is-invalid @enderror" value="{{ old('latitude', $user->address->latitude ?? 0) }}">
-                                            @error('latitude')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for="longitude" class="col-form-label">{{ __('labels.longitude') }} <span class="text-danger">*</span></label>
-                                            <input type="text" name="longitude" id="longitude" class="form-control @error('longitude') is-invalid @enderror" value="{{ old('longitude', $user->address->longitude ?? 0) }}">
-                                            @error('longitude')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-purple" id="btn_get_coordinates">
+                                            <i class="fas fa-map-marker-alt"></i>
+                                            {{ __('labels.get_coordinate') }}
+                                        </button>
                                     </div>
                                 </div>
-
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-purple">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        {{ __('labels.get_coordinate') }}
-                                    </button>
-                                </div>
-
                             </div>
 
                             <div class="tab-pane" id="settings">

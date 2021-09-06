@@ -171,6 +171,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        Spatie\Geocoder\GeocoderServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -240,7 +241,8 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
         'Image' => Intervention\Image\Facades\Image::class,
-        'Carbon' => Carbon\Carbon::class
+        'Carbon' => Carbon\Carbon::class,
+        'Geocoder' => Spatie\Geocoder\Facades\Geocoder::class,
     ],
 
 ];
