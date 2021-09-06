@@ -161,5 +161,6 @@ return [
     'make_thumbnail' => 'Make Thumbnail',
     'average_ratings' => 'Average Ratings',
     'reviews' => 'Reviews',
-    'items' => 'Items'
+    'items' => 'Items',
+    'registration_form' => 'Registration Form'
 ];

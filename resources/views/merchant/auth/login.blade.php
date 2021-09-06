@@ -1,4 +1,4 @@
-@extends('merchant.layouts.master', ['title' => __('modules.login'), 'guest_view' => true, 'body' => 'login-page'])
+@extends('merchant.layouts.master', ['title' => __('modules.login'), 'body' => 'login-page'])
 
 @section('content')
 <div class="login-box">
@@ -61,6 +61,7 @@
 
         <p class="mb-1">
             <a href="{{ route('merchant.password.request') }}">{{ __('app.login_btn_forgot_password') }}</a>
+            <a href="{{ route('merchant.register') }}">{{ __('app.login_btn_register_merchant') }}</a>
         </p>
 
     </div>

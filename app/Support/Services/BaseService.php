@@ -78,8 +78,8 @@ class BaseService
         $address->address_2 = $this->request->get('address_2');
         $address->postcode  = $this->request->get('postcode');
         $address->city_id   = $this->request->get('city');
-        $address->latitude  = $this->request->get('latitude');
-        $address->longitude = $this->request->get('longitude');
+        $address->latitude  = $this->request->get('latitude', 0);
+        $address->longitude = $this->request->get('longitude', 0);
 
         if ($address->isDirty()) {
 

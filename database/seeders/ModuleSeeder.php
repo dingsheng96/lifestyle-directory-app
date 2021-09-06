@@ -40,6 +40,7 @@ class ModuleSeeder extends Seeder
             ['name' => 'category', 'display' => 'Category', 'description' => 'Category Module'],
             ['name' => 'career', 'display' => 'Career', 'description' => 'Career Module'],
             ['name' => 'banner', 'display' => 'Banner', 'description' => 'Banner Module'],
+            ['name' => 'application', 'display' => 'Application', 'description' => 'Application Module'],
         ];
     }
 }

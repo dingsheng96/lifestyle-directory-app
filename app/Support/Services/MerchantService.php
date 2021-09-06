@@ -3,14 +3,13 @@
 namespace App\Support\Services;
 
 use Exception;
-use App\Models\Role;
 use App\Models\User;
 use App\Models\Media;
+use App\Helpers\Geocoding;
 use App\Helpers\FileManager;
 use App\Models\BranchDetail;
 use App\Models\OperationHour;
 use App\Models\BranchVisitorHistory;
-use Illuminate\Support\Facades\Hash;
 use App\Support\Services\BaseService;
 
 class MerchantService extends BaseService
@@ -276,6 +275,26 @@ class MerchantService extends BaseService
 
         if ($visitor_history->isDirty()) {
             $this->model->visitorHistories()->save($visitor_history);
+        }
+
+        return $this;
+    }
+
+    public function setLocationCoordinates()
+    {
+        $geocoder = (new Geocoding())->setStreetAddress($this->request->get('address_1'), $this->request->get('address_2'))
+            ->setPostCode($this->request->get('postcode'))
+            ->setCity($this->request->get('city'))
+            ->setCountryState($this->request->get('country_state'))
+            ->getCoordinatesForAddress();
+
+        $address = $this->model->address()->first();
+        $address->latitude  = $geocoder['lat'];
+        $address->longitude = $geocoder['lng'];
+
+        if ($address->isDirty()) {
+
+            $this->model->address()->save($address);
         }
 
         return $this;
