@@ -318,6 +318,11 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->attributes['mobile_no'] = $value;
     }
 
+    public function getIsSuperAdminAttribute()
+    {
+        return $this->roles->first()->name == Role::ROLE_SUPER_ADMIN;
+    }
+
     public function getIsAdminAttribute()
     {
         return $this->type == self::USER_TYPE_ADMIN;
