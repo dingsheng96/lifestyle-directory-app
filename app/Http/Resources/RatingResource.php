@@ -28,7 +28,7 @@ class RatingResource extends JsonResource
                 'scale'         => number_format($this->pivot->scale, 0),
                 'created_at'    => $this->pivot->created_at->format('d M Y'),
                 'review'        => $this->pivot->review,
-                'rater'         => (new MemberResource($this))->withDevice(false)->toArray($request),
+                'rate_by'       => (new MemberResource($this))->withDevice(false)->toArray($request),
             ];
         }
 

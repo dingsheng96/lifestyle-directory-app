@@ -6,8 +6,10 @@ use App\Models\User;
 use App\Helpers\Response;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\RatingResource;
 use App\Http\Resources\MerchantResource;
 use App\Support\Services\MerchantService;
+use App\Http\Requests\Api\v1\Merchant\ReviewListRequest;
 use App\Http\Requests\Api\v1\Merchant\MerchantListRequest;
 use App\Http\Requests\Api\v1\Merchant\MerchantDetailsRequest;
 
@@ -94,6 +96,22 @@ class MerchantController extends Controller
             ->withMessage($message)
             ->withStatus($status)
             ->withData($data)
+            ->sendJson();
+    }
+
+    public function reviews(ReviewListRequest $request)
+    {
+        $status     =   'success';
+
+        $merchant   =   User::with(['ratings', 'address'])->validMerchant()
+            ->where('id', $request->get('merchant_id'))->first()
+            ->ratings()->orderByDesc('pivot_created_at')
+            ->paginate(15, ['*'], 'page', $request->get('page'));
+
+        return Response::instance()
+            ->withStatusCode('modules.rating', 'actions.index.' . $status)
+            ->withStatus($status)
+            ->withData(RatingResource::collection($merchant)->toArray($request))
             ->sendJson();
     }
 }

@@ -35,15 +35,18 @@ class HomeController extends Controller
 
         $popular_merchants = (clone $merchants)->filterByLocationDistance($latitude, $longitude)->orderBy('name')->limit(5)->get();
 
-        $recent_visit_merchants = (clone $merchants)->with(['visitorHistories'])
-            ->whereHas('visitorHistories', function ($query) use ($user) {
-                $query->where('visitor_id', $user->id);
-            })->orderBy(
-                BranchVisitorHistory::select('updated_at')
-                    ->where('visitor_id', $user->id)
-                    ->limit(1)
-                    ->latest('updated_at')
-            )->paginate(15, ['*'], 'page', $request->get('page'));
+        $recent_visit_merchants = [];
+        if ($user) {
+            $recent_visit_merchants = (clone $merchants)->with(['visitorHistories'])
+                ->whereHas('visitorHistories', function ($query) use ($user) {
+                    $query->where('visitor_id', $user->id);
+                })->orderBy(
+                    BranchVisitorHistory::select('updated_at')
+                        ->where('visitor_id', $user->id)
+                        ->limit(1)
+                        ->latest('updated_at')
+                )->paginate(15, ['*'], 'page', $request->get('page'));
+        }
 
         $data = [
             'banners' => BannerResource::collection($banners)->toArray($request),

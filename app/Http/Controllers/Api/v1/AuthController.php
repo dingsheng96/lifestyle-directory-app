@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Models\User;
 use App\Helpers\Misc;
 use App\Helpers\Response;
+use App\Models\UserDevice;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -15,43 +16,6 @@ use App\Http\Requests\Api\v1\Auth\RegisterRequest;
 
 class AuthController extends Controller
 {
-    public function preRegister(Request $request, MemberService $member_service)
-    {
-        DB::beginTransaction();
-
-        $status     =   'fail';
-        $message    =   'Ok';
-        $data       =   [];
-
-        try {
-
-            $guest = $member_service->storeGuest()->getModel();
-
-            $status =   'success';
-            $data   =   (new LoginResource($guest))->toArray($request);
-
-            DB::commit();
-        } catch (\Error | \Exception $ex) {
-
-            DB::rollBack();
-
-            $message = $ex->getMessage();
-        }
-
-        activity()->useLog('api:pre_register')
-            ->causedByAnonymous()
-            ->performedOn(new User())
-            ->withProperties($request->all())
-            ->log($message);
-
-        return Response::instance()
-            ->withStatusCode('modules.guest', 'actions.create.' . $status)
-            ->withStatus($status)
-            ->withMessage($message)
-            ->withData($data)
-            ->sendJson();
-    }
-
     public function login(LoginRequest $request, MemberService $member_service)
     {
         $status     =   'success';
@@ -62,11 +26,11 @@ class AuthController extends Controller
             ->where('mobile_no', (new Misc())->phoneStoreFormat($request->get('phone')))
             ->first();
 
-        $user = $member_service->setModel($user)->setRequest($request)->changeActiveDevice()->getModel();
+        $user = $member_service->setModel($user)->setRequest($request)->linkDevice()->getModel();
 
         $user->load([
             'deviceSettings' => function ($query) {
-                return $query->active();
+                $query->wherePivot('status', UserDevice::STATUS_ACTIVE);
             }
         ]);
 
@@ -94,16 +58,10 @@ class AuthController extends Controller
 
         $status     =   'success';
         $message    =   'Ok';
-        $data       =   [];
-        $user       =   $request->user();
 
         try {
 
-            $user = $member_service->setModel($user)->setRequest($request)->store()->getModel();
-
-            $user->revokeTokens();
-
-            $data = (new LoginResource($user))->toArray($request);
+            $user = $member_service->setRequest($request)->store()->getModel();
 
             DB::commit();
         } catch (\Error | \Exception $ex) {
@@ -124,7 +82,6 @@ class AuthController extends Controller
             ->withStatusCode('modules.member', 'actions.create.' . $status)
             ->withStatus($status)
             ->withMessage($message)
-            ->withData($data)
             ->sendJson();
     }
 
@@ -133,6 +90,10 @@ class AuthController extends Controller
         $status     =   'success';
         $message    =   'Ok';
         $user       =   $request->user();
+
+        $user->deviceSettings()->active()->update([
+            'user_id' => null
+        ]);
 
         $user->token()->revoke();
 

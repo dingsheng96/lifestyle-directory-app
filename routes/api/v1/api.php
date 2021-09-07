@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\v1\AuthController;
 use App\Http\Controllers\Api\v1\HomeController;
 use App\Http\Controllers\Api\v1\BannerController;
 use App\Http\Controllers\Api\v1\CareerController;
+use App\Http\Controllers\Api\v1\DeviceController;
 use App\Http\Controllers\Api\v1\RatingController;
 use App\Http\Controllers\Api\v1\AccountController;
 use App\Http\Controllers\Api\v1\CategoryController;
@@ -25,58 +26,46 @@ use App\Http\Controllers\Api\v1\NotificationController;
 |
 */
 
-Route::post('languages', [LanguageController::class, 'languages']);
-
-Route::post('pre-register', [AuthController::class, 'preRegister']);
-
 Route::post('login', [AuthController::class, 'login']);
 
-Route::middleware(['auth:api'])->group(function () {
+Route::post('register', [AuthController::class, 'register']);
 
-    Route::middleware(['scope:' . User::USER_TYPE_GUEST . ',' . User::USER_TYPE_MEMBER])->group(function () {
+Route::post('languages', [LanguageController::class, 'languages']);
+Route::post('languages/translations', [LanguageController::class, 'translations']);
 
-        Route::post('dashboard', [HomeController::class, 'index']);
+Route::post('dashboard', [HomeController::class, 'index']);
 
-        Route::post('languages/translations', [LanguageController::class, 'translations']);
+Route::post('device/settings', [DeviceController::class, 'setup']);
 
-        Route::post('device/settings', [AccountController::class, 'deviceSettings']);
+Route::post('banners/show', [BannerController::class, 'show'])->name('banners.show');
 
-        Route::post('profile', [AccountController::class, 'profile']);
+Route::post('categories', [CategoryController::class, 'index']);
+Route::post('categories/populars', [CategoryController::class, 'popular']);
 
-        Route::post('banners/show', [BannerController::class, 'show'])->name('banners.show');
+Route::post('merchants', [MerchantController::class, 'index']);
+Route::post('merchants/show', [MerchantController::class, 'show']);
+Route::post('merchants/reviews', [MerchantController::class, 'reviews']);
 
-        Route::post('categories', [CategoryController::class, 'index']);
-        Route::post('categories/populars', [CategoryController::class, 'popular']);
+Route::post('notifications', [NotificationController::class, 'index']);
+Route::post('notifications/show', [NotificationController::class, 'show'])->name('notifications.show');
 
-        Route::post('merchants', [MerchantController::class, 'index']);
-        Route::post('merchants/show', [MerchantController::class, 'show']);
+Route::post('careers', [CareerController::class, 'index']);
+Route::post('careers/show', [CareerController::class, 'show']);
 
-        Route::post('ratings', [RatingController::class, 'index']);
-        Route::post('ratings/store', [RatingController::class, 'store']);
+// Routes required login
+Route::middleware(['auth:api', 'scope:' . User::USER_TYPE_MEMBER])->group(function () {
 
-        Route::post('wishlist', [WishlistController::class, 'index']);
-        Route::post('wishlist/update', [WishlistController::class, 'update']);
+    Route::post('profile', [AccountController::class, 'profile']);
 
-        Route::post('notifications', [NotificationController::class, 'index']);
-        Route::post('notifications/show', [NotificationController::class, 'show'])->name('notifications.show');
+    Route::post('ratings', [RatingController::class, 'index']);
+    Route::post('ratings/store', [RatingController::class, 'store']);
 
-        Route::post('careers', [CareerController::class, 'index']);
-        Route::post('careers/show', [CareerController::class, 'show']);
-    });
+    Route::post('wishlist', [WishlistController::class, 'index']);
+    Route::post('wishlist/update', [WishlistController::class, 'update']);
 
-    // Routes with Guest scopes only
-    Route::middleware(['scope:' . User::USER_TYPE_GUEST])->group(function () {
+    Route::post('profile/update', [AccountController::class, 'updateProfile']);
 
-        Route::post('register', [AuthController::class, 'register']);
-    });
+    Route::post('password/change', [AccountController::class, 'changePassword']);
 
-    // Routes with Member scopes only
-    Route::middleware(['scope:' . User::USER_TYPE_MEMBER])->group(function () {
-
-        Route::post('profile/update', [AccountController::class, 'updateProfile']);
-
-        Route::post('password/change', [AccountController::class, 'changePassword']);
-
-        Route::post('logout', [AuthController::class, 'logout']);
-    });
+    Route::post('logout', [AuthController::class, 'logout']);
 });

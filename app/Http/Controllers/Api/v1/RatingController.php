@@ -16,20 +16,11 @@ class RatingController extends Controller
 {
     public function index(RatingListRequest $request)
     {
-        $status         =   'success';
-        $data           =   [];
-        $user           =   $request->user();
-        $merchant_id    =   $request->get('merchant_id');
+        $status =   'success';
 
-        if (!empty($merchant_id)) { // from merchant perspective
-
-            $merchant   =   User::with(['ratings'])->validMerchant()->where('id', $request->get('merchant_id'))->first();
-            $data       =   $merchant->ratings()->orderByDesc('pivot_created_at')->paginate(15, ['*'], 'page', $request->get('page'));
-        } else {
-
-            // from user perspective
-            $data       =   $user->raters()->orderByDesc('pivot_created_at')->paginate(15, ['*'], 'page', $request->get('page'));
-        }
+        $data   =   $request->user()->raters()
+            ->orderByDesc('pivot_created_at')
+            ->paginate(15, ['*'], 'page', $request->get('page'));
 
         return Response::instance()
             ->withStatusCode('modules.rating', 'actions.index.' . $status)

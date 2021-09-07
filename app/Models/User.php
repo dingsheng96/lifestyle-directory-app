@@ -11,13 +11,18 @@ use App\Models\Address;
 use App\Models\Category;
 use App\Models\Rateable;
 use App\Models\Favourable;
+use App\Models\UserDevice;
 use App\Models\BranchDetail;
 use App\Models\Categorizable;
 use App\Models\DeviceSetting;
+use App\Models\OperationHour;
 use App\Observers\UserObserver;
+use App\Models\UserNotification;
+use App\Models\ApplicationHistory;
 use App\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
+use App\Models\BranchVisitorHistory;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
@@ -59,7 +64,6 @@ class User extends Authenticatable implements MustVerifyEmail
     const USER_TYPE_ADMIN       =   'admin';
     const USER_TYPE_MERCHANT    =   'merchant';
     const USER_TYPE_MEMBER      =   'member';
-    const USER_TYPE_GUEST       =   'guest';
 
     const STORE_BASE_DIRECTORY      =   '/users';
     const STORE_MEMBER_PATH         =   self::STORE_BASE_DIRECTORY . '/members';
@@ -85,9 +89,14 @@ class User extends Authenticatable implements MustVerifyEmail
         }
     }
 
-    public function checkUserFavouriteStatus(self $user)
+    public function checkUserFavouriteStatus(self $user = null)
     {
-        return (bool) $this->favouriteBy->contains('id', $user->id);
+        if ($user) {
+
+            return (bool) $this->favouriteBy->contains('id', $user->id);
+        }
+
+        return (bool) false;
     }
 
     // Relationships
@@ -143,7 +152,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function deviceSettings()
     {
-        return $this->hasMany(DeviceSetting::class, 'user_id', 'id');
+        return $this->belongsToMany(DeviceSetting::class, UserDevice::class, 'user_id', 'device_id', 'id', 'id')->withPivot(['status']);
     }
 
     public function careers()
@@ -171,6 +180,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(UserNotification::class, 'user_id', 'id');
     }
 
+    public function merchantApplicationHistories()
+    {
+        return $this->hasMany(ApplicationHistory::class, 'user_id', 'id')->where('type', self::USER_TYPE_MERCHANT);
+    }
+
     // Scopes
     public function scopeAdmin($query)
     {
@@ -195,11 +209,6 @@ class User extends Authenticatable implements MustVerifyEmail
     public function scopeMember($query)
     {
         return $query->where('type', self::USER_TYPE_MEMBER);
-    }
-
-    public function scopeGuest($query)
-    {
-        return $query->where('type', self::USER_TYPE_GUEST);
     }
 
     public function scopeActive($query)
@@ -334,11 +343,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->type == self::USER_TYPE_MEMBER;
     }
 
-    public function getIsGuestAttribute()
-    {
-        return $this->type == self::USER_TYPE_GUEST;
-    }
-
     public function getFormattedPhoneNumberAttribute()
     {
         if (empty($this->mobile_no)) {
@@ -411,6 +415,13 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getActiveStatusLabelAttribute()
     {
         $label = (new Status())->statusLabel($this->status);
+
+        return '<span class="' . $label['class'] . ' px-3">' . $label['text'] . '</span>';
+    }
+
+    public function getApplicationStatusLabelAttribute()
+    {
+        $label = (new Status())->statusLabel($this->application_status);
 
         return '<span class="' . $label['class'] . ' px-3">' . $label['text'] . '</span>';
     }

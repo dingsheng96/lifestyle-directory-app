@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\User;
+use App\Models\UserDevice;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -21,24 +23,9 @@ class DeviceSetting extends Model
         'enable_notification_sound' => 'boolean'
     ];
 
-    // Constants
-    const STATUS_ACTIVE = 'active';
-    const STATUS_INACTIVE = 'inactive';
-
     // Relationships
-    public function user()
+    public function users()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
-    }
-
-    // Scopes
-    public function scopeActive($query)
-    {
-        return $query->where('status', self::STATUS_ACTIVE);
-    }
-
-    public function scopeInactive($query)
-    {
-        return $query->where('status', self::STATUS_INACTIVE);
+        return $this->belongsToMany(User::class, UserDevice::class, 'device_id', 'user_id', 'id', 'id')->withPivot(['status']);
     }
 }

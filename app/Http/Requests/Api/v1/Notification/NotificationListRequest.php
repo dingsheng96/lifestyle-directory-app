@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Api\v1\Notification;
 
-use App\Rules\ExistMerchant;
 use App\Traits\Requests\HasPagination;
 use App\Http\Requests\Api\v1\BaseRequest;
 

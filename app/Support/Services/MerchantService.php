@@ -9,6 +9,7 @@ use App\Helpers\Geocoding;
 use App\Helpers\FileManager;
 use App\Models\BranchDetail;
 use App\Models\OperationHour;
+use App\Models\ApplicationHistory;
 use App\Models\BranchVisitorHistory;
 use App\Support\Services\BaseService;
 
@@ -201,18 +202,7 @@ class MerchantService extends BaseService
         return $this;
     }
 
-    public function setUserType(string $type = User::USER_TYPE_MERCHANT)
-    {
-        $this->model->type = $type;
-
-        if ($this->model->isDirty()) {
-            $this->model->save();
-        }
-
-        return $this;
-    }
-
-    public function setApplicationStatus(string $status = User::APPLICATION_STATUS_PENDING)
+    public function setApplicationStatus(string $status = User::APPLICATION_STATUS_PENDING, string $remarks = NULL)
     {
         $this->model->application_status = $status;
 
@@ -220,6 +210,8 @@ class MerchantService extends BaseService
 
             $this->model->save();
         }
+
+        $this->storeApplicationHistory($status, $remarks);
 
         return $this;
     }
@@ -264,17 +256,19 @@ class MerchantService extends BaseService
 
     public function storeVisitorHistory()
     {
-        $visitor_history = $this->model->visitorHistories()
-            ->where('visitor_id', $this->request->user()->id)
-            ->firstOr(function () {
-                return new BranchVisitorHistory();
-            });
+        if ($this->request->user()) {
+            $visitor_history = $this->model->visitorHistories()
+                ->where('visitor_id', $this->request->user()->id)
+                ->firstOr(function () {
+                    return new BranchVisitorHistory();
+                });
 
-        $visitor_history->visitor_id    = $this->request->user()->id;
-        $visitor_history->visit_count   += 1;
+            $visitor_history->visitor_id    = $this->request->user()->id;
+            $visitor_history->visit_count   += 1;
 
-        if ($visitor_history->isDirty()) {
-            $this->model->visitorHistories()->save($visitor_history);
+            if ($visitor_history->isDirty()) {
+                $this->model->visitorHistories()->save($visitor_history);
+            }
         }
 
         return $this;
@@ -296,6 +290,18 @@ class MerchantService extends BaseService
 
             $this->model->address()->save($address);
         }
+
+        return $this;
+    }
+
+    private function storeApplicationHistory(string $status, string $remarks = NULL)
+    {
+        $history = new ApplicationHistory();
+
+        $history->status = $status;
+        $history->remarks = $remarks;
+
+        $this->model->merchantApplicationHistories()->save($history);
 
         return $this;
     }

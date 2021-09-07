@@ -35,7 +35,6 @@ class AuthServiceProvider extends ServiceProvider
         Passport::routes();
 
         Passport::tokensCan([
-            User::USER_TYPE_GUEST => 'Guest user',
             User::USER_TYPE_MEMBER => 'Registered user',
         ]);
     }

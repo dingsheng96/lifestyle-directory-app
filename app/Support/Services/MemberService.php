@@ -4,6 +4,7 @@ namespace App\Support\Services;
 
 use App\Models\User;
 use App\Models\Media;
+use App\Models\UserDevice;
 use App\Helpers\FileManager;
 use App\Models\DeviceSetting;
 use Illuminate\Support\Facades\Hash;
@@ -84,76 +85,22 @@ class MemberService extends BaseService
         return $this;
     }
 
-    public function setUserType(string $type = User::USER_TYPE_MEMBER)
+    public function linkDevice()
     {
-        $this->model->type = $type;
+        $device         = DeviceSetting::where('device_id', $this->request->get('device_id'))->firstOrFail();
 
-        if ($this->model->isDirty()) {
-            $this->model->save();
+        $user_device    = $this->model->deviceSettings();
+
+        $active_devices = (clone $user_device)->wherePivot('status', UserDevice::STATUS_ACTIVE)->get();
+
+        foreach ($active_devices as $active_device) {
+
+            (clone $user_device)->syncWithoutDetaching([$active_device->id => ['status' => UserDevice::STATUS_INACTIVE]]);
         }
 
-        return $this;
-    }
+        (clone $user_device)->syncWithoutDetaching([$device->id => ['status' => UserDevice::STATUS_ACTIVE]]);
 
-    public function storeGuest()
-    {
-        $this->model->name                  =   'Guest_' . time();
-        $this->model->email                 =   'guest' . time() . '@guest.com';
-        $this->model->status                =   User::STATUS_ACTIVE;
-        $this->model->type                  =   User::USER_TYPE_GUEST;
-        $this->model->password              =   Hash::make('password' . time());
-        $this->model->application_status    =   User::APPLICATION_STATUS_APPROVED;
-
-        if (!$this->model->exists) { // new User
-
-            $this->model->email_verified_at = now();
-        }
-
-        if ($this->model->isDirty()) {
-            $this->model->save();
-        }
-
-        return $this;
-    }
-
-    public function storeDevice()
-    {
-        $device = $this->model->deviceSettings()
-            ->where('device_id', $this->request->get('device_id'))
-            ->firstOr(function () {
-                return new DeviceSetting();
-            });
-
-        $device->device_id                  =   $this->request->get('device_id');
-        $device->device_os                  =   $this->request->get('device_os');
-        $device->push_messaging_token       =   $this->request->get('push_messaging_token');
-        $device->enable_push_messaging      =   $this->request->get('enable_push_messaging');
-        $device->enable_notification_sound  =   $this->request->get('enable_notification_sound');
-
-        if ($device->isDirty()) {
-
-            $this->model->deviceSettings()->save($device);
-        }
-
-        return $this;
-    }
-
-    public function changeActiveDevice()
-    {
-        if ($active_device = $this->model->deviceSettings()->active()->first()) {
-
-            $active_device->status  =   DeviceSetting::STATUS_INACTIVE;
-
-            $this->model->deviceSettings()->save($active_device);
-        }
-
-        if ($target_device = DeviceSetting::where('device_id', $this->request->get('device_id'))->first()) {
-
-            $target_device->user_id =   $this->model->id;
-            $target_device->status  =   DeviceSetting::STATUS_ACTIVE;
-
-            $this->model->deviceSettings()->save($target_device);
-        }
+        (new DeviceService())->setModel($device)->updateDeviceLastActivationDate(); // update last activation date
 
         return $this;
     }

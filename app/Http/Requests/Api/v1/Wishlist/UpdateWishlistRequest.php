@@ -2,9 +2,8 @@
 
 namespace App\Http\Requests\Api\v1\Wishlist;
 
-use App\Rules\ValidateCoordinates;
 use App\Rules\ExistWishlistMerchant;
-use App\Traits\Requests\HasPagination;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Api\v1\BaseRequest;
 
 class UpdateWishlistRequest extends BaseRequest
@@ -21,5 +20,15 @@ class UpdateWishlistRequest extends BaseRequest
         return [
             'merchant_id'   =>  ['required', new ExistWishlistMerchant($this->user())],
         ];
+    }
+
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return Auth::guard('api')->check();
     }
 }

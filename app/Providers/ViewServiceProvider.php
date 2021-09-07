@@ -26,6 +26,9 @@ class ViewServiceProvider extends ServiceProvider
         \App\Http\View\Composers\PermissionModuleComposer::class => [
             'admin.role.*'
         ],
+        \App\Http\View\Composers\PendingApplicationComposer::class => [
+            'admin.*'
+        ],
     ];
 
     /**

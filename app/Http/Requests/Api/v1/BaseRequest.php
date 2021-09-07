@@ -20,7 +20,7 @@ class BaseRequest extends FormRequest
      */
     public function authorize()
     {
-        return Auth::guard('api')->check();
+        return true;
     }
 
     /**

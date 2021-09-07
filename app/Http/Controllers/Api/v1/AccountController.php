@@ -67,41 +67,6 @@ class AccountController extends Controller
             ->sendJson();
     }
 
-    public function deviceSettings(DeviceSettingRequest $request, MemberService $member_service)
-    {
-        DB::beginTransaction();
-
-        $status     =   'fail';
-        $message    =   'Ok';
-        $user       =   $request->user();
-
-        try {
-
-            $member_service->setModel($user)->setRequest($request)->storeDevice();
-
-            $status = 'success';
-
-            DB::commit();
-        } catch (\Error | \Exception $ex) {
-
-            DB::rollBack();
-
-            $message = $ex->getMessage();
-        }
-
-        activity()->useLog('api:device_settings')
-            ->causedBy($user)
-            ->performedOn(new DeviceSetting())
-            ->withProperties($request->all())
-            ->log($message);
-
-        return Response::instance()
-            ->withStatusCode('modules.device', 'actions.update.' . $status)
-            ->withStatus($status)
-            ->withMessage($message)
-            ->sendJson();
-    }
-
     public function changePassword(ChangePasswordRequest $request, MemberService $member_service)
     {
         DB::beginTransaction();
