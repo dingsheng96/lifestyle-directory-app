@@ -43,15 +43,15 @@ class RouteServiceProvider extends ServiceProvider
 
             ['web' => $web, 'api' => $api, 'prefix' => $prefix] = (new Domain())->getConfig();
 
-            if ($prefix) {
-                $this->prefixApiRoutes($web, $api);
-            } else {
-                $this->domainRoutes($web, $api);
-            }
-
             Route::middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
+
+            if ($prefix) {
+                $this->prefixRoutes($web, $api);
+            } else {
+                $this->domainRoutes($web, $api);
+            }
         });
 
         $this->routeBindings();
@@ -69,7 +69,7 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 
-    protected function prefixApiRoutes(array $web, array $api)
+    protected function prefixRoutes(array $web, array $api)
     {
         foreach ($web as $value) {
 
