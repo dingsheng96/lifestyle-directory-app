@@ -9,7 +9,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class MemberDataTable extends DataTable
+class ApplicationDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -26,16 +26,16 @@ class MemberDataTable extends DataTable
                 return view('admin.components.btn_action', [
                     'no_action' => $this->no_action ?: null,
                     'view' => [
-                        'permission' => 'member.read',
-                        'route' => route('admin.members.show', ['member' => $data->id])
+                        'permission' => 'merchant.read',
+                        'route' => route('admin.applications.show', ['application' => $data->id])
                     ],
                     'update' => [
-                        'permission' => 'member.update',
-                        'route' => route('admin.members.edit', ['member' => $data->id])
+                        'permission' => 'application.update',
+                        'route' => route('admin.applications.edit', ['application' => $data->id])
                     ],
                     'delete' => [
-                        'permission' => 'member.delete',
-                        'route' => route('admin.members.destroy', ['member' => $data->id])
+                        'permission' => 'application.delete',
+                        'route' => route('admin.applications.destroy', ['application' => $data->id])
                     ]
                 ])->render();
             })
@@ -45,13 +45,10 @@ class MemberDataTable extends DataTable
             ->editColumn('mobile_no', function ($data) {
                 return $data->formatted_mobile_no;
             })
-            ->editColumn('status', function ($data) {
-                return '<span>' . $data->active_status_label . '</span>';
+            ->editColumn('application_status', function ($data) {
+                return $data->application_status_label;
             })
-            ->filterColumn('status', function ($query, $keyword) {
-                $query->where('status', strtolower($keyword));
-            })
-            ->rawColumns(['action', 'status']);
+            ->rawColumns(['action', 'status', 'application_status']);
     }
 
     /**
@@ -62,7 +59,7 @@ class MemberDataTable extends DataTable
      */
     public function query(User $model)
     {
-        return $model->member()->newQuery();
+        return $model->merchant()->pendingApplication()->newQuery();
     }
 
     /**
@@ -73,11 +70,11 @@ class MemberDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('member-table')
+            ->setTableId('application-table')
             ->addTableClass('table-hover table w-100')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->orderBy(5, 'desc')
+            ->orderBy(1, 'asc')
             ->responsive(true)
             ->autoWidth(true)
             ->processing(false);
@@ -92,10 +89,10 @@ class MemberDataTable extends DataTable
     {
         return [
             Column::computed('DT_RowIndex', '#'),
-            Column::make('name')->title(__('labels.name')),
-            Column::make('mobile_no')->title(__('labels.contact_no')),
+            Column::make('name')->title(__('labels.company_name')),
             Column::make('email')->title(__('labels.email')),
-            Column::make('status')->title(__('labels.status')),
+            Column::make('mobile_no')->title(__('labels.contact_no')),
+            Column::make('application_status')->title(__('labels.status')),
             Column::make('created_at')->title(__('labels.created_at')),
             Column::computed('action', __('labels.action'))
                 ->exportable(false)
@@ -110,6 +107,6 @@ class MemberDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Member_' . date('YmdHis');
+        return 'Application_' . date('YmdHis');
     }
 }

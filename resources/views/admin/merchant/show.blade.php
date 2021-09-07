@@ -38,7 +38,7 @@
                             <div class="form-group row">
                                 <label for="phone" class="col-form-label col-sm-2">{{ __('labels.contact_no') }}</label>
                                 <div class="col-sm-10">
-                                    <span class="form-control-plaintext" id="phone">{{ $merchant->formatted_phone_number }}</span>
+                                    <span class="form-control-plaintext" id="phone">{{ $merchant->formatted_mobile_no }}</span>
                                 </div>
                             </div>
 
@@ -173,7 +173,7 @@
                                 <label for="pic_phone" class="col-form-label col-sm-2">{{ __('labels.pic_contact') }}</label>
                                 <div class="col-sm-10">
                                     <span class="form-control-plaintext" id="pic_phone">
-                                        {{ $merchant->branchDetail->formatted_pic_phone }}
+                                        {{ $merchant->branchDetail->formatted_pic_contact }}
                                     </span>
                                 </div>
                             </div>

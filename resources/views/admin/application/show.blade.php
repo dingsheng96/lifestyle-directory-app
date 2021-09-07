@@ -1,0 +1,98 @@
+@extends('admin.layouts.master', ['title' => trans_choice('modules.application', 2)])
+
+@section('content')
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow">
+
+
+                <div class="card-body">
+
+                    <h5 class="mb-4">Person In Charge Details</h5>
+
+                    <div class="form-group row">
+                        <label for="pic_name" class="col-form-label col-sm-2">{{ __('labels.name') }}</label>
+                        <div class="col-sm-10">
+                            <span class="form-control-plaintext" id="pic_name">{{ $application->branchDetail->pic_name ?? null }}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="pic_phone" class="col-form-label col-sm-2">{{ __('labels.contact_no') }}</label>
+                        <div class="col-sm-10">
+                            <span class="form-control-plaintext" id="pic_phone">{{ $application->branchDetail->formatted_pic_contact?? null }}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="pic_email" class="col-form-label col-sm-2">{{ __('labels.email') }}</label>
+                        <div class="col-sm-10">
+                            <span class="form-control-plaintext" id="pic_email">{{ $application->branchDetail->pic_email ?? null }}</span>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <h5 class="mb-4">Company Details</h5>
+
+                    <div class="form-group row">
+                        <label for="name" class="col-form-label col-sm-2">{{ __('labels.company_name') }}</label>
+                        <div class="col-sm-10">
+                            <span class="form-control-plaintext" id="name">{{ $application->name ?? null }}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="phone" class="col-form-label col-sm-2">{{ __('labels.contact_no') }}</label>
+                        <div class="col-sm-10">
+                            <span class="form-control-plaintext" id="phone">{{ $application->formatted_mobile_no ?? null }}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="email" class="col-form-label col-sm-2">{{ __('labels.email') }}</label>
+                        <div class="col-sm-10">
+                            <span class="form-control-plaintext" id="email">{{ $application->email ?? null }}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="reg_no" class="col-form-label col-sm-2">{{ __('labels.reg_no') }}</label>
+                        <div class="col-sm-10">
+                            <span class="form-control-plaintext" id="reg_no">{{ $application->branchDetail->reg_no ?? null }}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="address" class="col-form-label col-sm-2">{{ __('labels.address') }}</label>
+                        <div class="col-sm-10">
+                            <span id="address" class="form-control-plaintext">{{ $application->address->full_address ?? '-' }}</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="media" class="col-form-label col-sm-2">{{ trans_choice('labels.document', 2) }}</label>
+                        <div class="col-sm-10">
+                            @include('admin.components.tbl_image', ['images' => $application->media])
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer bg-transparent text-center text-md-right">
+                    <a href="{{ route('admin.applications.index') }}" class="btn btn-light">
+                        <i class="fas fa-caret-left"></i>
+                        {{ __('labels.back') }}
+                    </a>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@endsection

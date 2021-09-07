@@ -42,7 +42,7 @@
 
                 @if (isset($action) && $action)
                 <td>
-                    @include('admin.components.btn_action', ['no_action' => $image->is_thumbnail, 'download' => ['route' => $image->full_file_path,'attribute' => 'download'], 'delete' => ['permission' => 'merchant.update','route' => route('admin.media.destroy', ['medium' => $image->id])]])
+                    @include('admin.components.btn_action', ['no_action' => $image->is_thumbnail, 'download' => ['route' => $image->full_file_path, 'attribute' => 'download'], 'delete' => ['route' => route('admin.media.destroy', ['medium' => $image->id])]])
                 </td>
                 @endif
             </tr>

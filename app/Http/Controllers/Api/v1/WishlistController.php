@@ -26,9 +26,10 @@ class WishlistController extends Controller
             'address' => function ($query) use ($latitude, $longitude) {
                 $query->getDistanceByCoordinates($latitude, $longitude);
             }
-        ])->validMerchant()->whereHas('favouriteBy', function ($query) use ($user) {
-            $query->where('id', $user->id);
-        })->orderBy('name')->paginate(15, ['*'], 'page', $request->get('page'));
+        ])->validMerchant()->publish()
+            ->whereHas('favouriteBy', function ($query) use ($user) {
+                $query->where('id', $user->id);
+            })->orderBy('name')->paginate(15, ['*'], 'page', $request->get('page'));
 
         return Response::instance()
             ->withStatusCode('modules.wishlist', 'actions.index.' . $status)

@@ -198,12 +198,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function scopeMainMerchant($query)
     {
-        return $query->has('subBranches')->doesntHave('mainBranch');
+        return $query->doesntHave('mainBranch');
     }
 
     public function scopeSubMerchant($query)
     {
-        return $query->has('mainBranch')->doesntHave('subBranches');
+        return $query->has('mainBranch');
     }
 
     public function scopeMember($query)
@@ -248,7 +248,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function scopeValidMerchant($query)
     {
-        return $query->merchant()->active()->approvedApplication()->publish();
+        return $query->merchant()->active()->approvedApplication();
     }
 
     public function scopeFilterMerchantByRating($query, $value)
@@ -343,7 +343,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->type == self::USER_TYPE_MEMBER;
     }
 
-    public function getFormattedPhoneNumberAttribute()
+    public function getFormattedMobileNoAttribute()
     {
         if (empty($this->mobile_no)) {
             return null;

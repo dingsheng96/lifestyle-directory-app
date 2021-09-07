@@ -46,7 +46,7 @@ class MerchantDataTable extends DataTable
                 return $data->status_label;
             })
             ->editColumn('mobile_no', function ($data) {
-                return $data->formatted_phone_number;
+                return $data->formatted_mobile_no;
             })
             ->rawColumns(['action', 'status', 'profile']);
     }
@@ -59,7 +59,7 @@ class MerchantDataTable extends DataTable
      */
     public function query(User $model)
     {
-        return $model->mainMerchant()->withCount(['subBranches'])->newQuery();
+        return $model->merchant()->mainMerchant()->withCount(['subBranches'])->newQuery();
     }
 
     /**

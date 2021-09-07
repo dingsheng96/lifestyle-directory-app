@@ -116,7 +116,7 @@ class MemberService extends BaseService
 
     public function storeWishlist()
     {
-        $merchant = User::validMerchant()->where('id', $this->request->get('merchant_id'))->firstOrFail();
+        $merchant = User::validMerchant()->publish()->where('id', $this->request->get('merchant_id'))->firstOrFail();
 
         $this->model->favourites()->toggle([$merchant->id]);
 
@@ -125,7 +125,7 @@ class MemberService extends BaseService
 
     public function rateMerchant()
     {
-        $merchant = User::validMerchant()->where('id', $this->request->get('merchant_id'))->firstOrFail();
+        $merchant = User::validMerchant()->publish()->where('id', $this->request->get('merchant_id'))->firstOrFail();
 
         $this->model->raters()->attach([
             $merchant->id => [

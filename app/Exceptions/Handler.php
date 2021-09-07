@@ -68,29 +68,35 @@ class Handler extends ExceptionHandler
     {
         $this->renderable(function (AccessDeniedHttpException $e, $request) {
 
-            return $request->expectsJson()
-                ? Response::instance()
-                ->withStatusCode('modules.scope', 'actions.authenticate.fail')
-                ->withStatus('fail')
-                ->withMessage($e->getMessage())
-                ->sendJson(403)
-                : redirect()->route('login')->with('info', $e->getMessage());
+            if ($request->expectsJson()) {
+                return Response::instance()
+                    ->withStatusCode('modules.scope', 'actions.authenticate.fail')
+                    ->withStatus('fail')
+                    ->withMessage($e->getMessage())
+                    ->sendJson(403);
+            }
         });
 
         $this->renderable(function (NotFoundHttpException $e, $request) {
 
-            return $request->expectsJson()
-                ? Response::instance()
-                ->withStatusCode('modules.route', 'actions.read.fail')
-                ->withStatus('fail')
-                ->withMessage('Not Found')
-                ->sendJson(404)
-                : redirect()->route('login')->with('info', $e->getMessage());
+            if ($request->expectsJson()) {
+                return Response::instance()
+                    ->withStatusCode('modules.route', 'actions.read.fail')
+                    ->withStatus('fail')
+                    ->withMessage('Not Found')
+                    ->sendJson(404);
+            }
         });
 
         $this->renderable(function (TokenMismatchException $e, $request) {
 
-            return redirect()->route('login')->with('info', __('messages.session_expired'));
+            if ($request->expectsJson()) {
+                return Response::instance()
+                    ->withStatusCode('modules.route', 'actions.read.fail')
+                    ->withStatus('fail')
+                    ->withMessage($e->getMessage())
+                    ->sendJson(404);
+            };
         });
 
         $this->renderable(function (InvalidSignatureException $e, $request) {

@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use App\Models\User;
-use App\Models\Rateable;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class RatingResource extends JsonResource

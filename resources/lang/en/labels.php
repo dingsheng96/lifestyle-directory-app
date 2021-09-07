@@ -110,6 +110,7 @@ return [
     'person_in_charge' => 'Person In Charge',
     'logo' => 'Logo',
     'image' => 'Image|Images',
+    'document' => 'Document|Documents',
     'type' => 'Type',
     'subject_to' => 'Subject To',
     'caused_by' => 'Caused By',
@@ -162,5 +163,6 @@ return [
     'average_ratings' => 'Average Ratings',
     'reviews' => 'Reviews',
     'items' => 'Items',
-    'registration_form' => 'Registration Form'
+    'registration_form' => 'Registration Form',
+    'state_reason' => 'Please state the reason',
 ];

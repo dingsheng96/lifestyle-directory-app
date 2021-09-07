@@ -45,7 +45,7 @@ class CareerController extends Controller
             $query->with(['address', 'media']);
         }])->where('id', $request->get('career_id'))
             ->whereHas('branch', function ($query) {
-                $query->validMerchant();
+                $query->validMerchant()->publish();
             })->publish()->firstOrFail();
 
 

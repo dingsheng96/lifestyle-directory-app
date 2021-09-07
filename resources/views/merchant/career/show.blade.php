@@ -77,7 +77,7 @@
                     <div class="form-group row">
                         <label for="phone" class="col-form-label col-sm-2">{{ __('labels.contact_no') }}</label>
                         <div class="col-sm-10">
-                            <span class="form-control-plaintext" id="phone">{{ $career->formatted_phone_number ?? '-' }}</span>
+                            <span class="form-control-plaintext" id="phone">{{ $career->formatted_mobile_no ?? '-' }}</span>
                         </div>
                     </div>
 

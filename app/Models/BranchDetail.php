@@ -51,7 +51,7 @@ class BranchDetail extends Model
         $this->attributes['whatsapp'] = $value;
     }
 
-    public function getFormattedPicPhoneAttribute()
+    public function getFormattedPicContactAttribute()
     {
         if (empty($this->pic_contact)) {
             return null;

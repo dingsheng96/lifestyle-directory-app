@@ -22,6 +22,11 @@ return [
         'fail' => 'The :module unable to import!',
     ],
 
+    'application' => [
+        'approved' => 'The :module has been approved.',
+        'rejected' => 'The :module has been rejected.',
+    ],
+
     'logout_success' => 'Logout successfully.',
     'login_success' => 'Login successfully.',
     'register_success' => 'Register successfully.',

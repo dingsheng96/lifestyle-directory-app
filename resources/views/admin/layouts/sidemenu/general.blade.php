@@ -7,6 +7,20 @@
     </a>
 </li>
 
+@canany(['application.create', 'application.read', 'application.update', 'application.delete'])
+<li class="nav-item">
+    <a href="{{ route('admin.applications.index') }}" class="nav-link {{ Nav::hasSegment('applications', 1, 'active') }}">
+        <i class="nav-icon fas fa-stamp"></i>
+        <p>
+            {{ trans_choice('modules.application', 2) }}
+            @if ($pending_applications_count > 0)
+            <span class="badge badge-pill badge-danger right">{{ $pending_applications_count }}</span>
+            @endif
+        </p>
+    </a>
+</li>
+@endcanany
+
 @canany(['banner.create', 'banner.read', 'banner.update', 'banner.delete'])
 <li class="nav-item">
     <a href="{{ route('admin.banners.index') }}" class="nav-link {{ Nav::hasSegment('banners', 1, 'active') }}">

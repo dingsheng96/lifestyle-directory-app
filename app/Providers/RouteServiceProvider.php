@@ -121,12 +121,14 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('merchant', function ($value) {
 
-            return User::where('id', $value)->merchant()->mainMerchant()->firstOrFail();
+            return User::where('id', $value)->merchant()
+                ->mainMerchant()->approvedApplication()->firstOrFail();
         });
 
         Route::bind('branch', function ($value) {
 
-            return User::where('id', $value)->merchant()->subMerchant()->firstOrFail();
+            return User::where('id', $value)->merchant()
+                ->subMerchant()->approvedApplication()->firstOrFail();
         });
 
         Route::bind('member', function ($value) {
@@ -134,9 +136,13 @@ class RouteServiceProvider extends ServiceProvider
             return User::where('id', $value)->member()->firstOrFail();
         });
 
-        Route::bind('guest', function ($value) {
+        Route::bind('application', function ($value) {
 
-            return User::where('id', $value)->guest()->firstOrFail();
+            return User::where('id', $value)->merchant()
+                ->mainMerchant()->pendingApplication()
+                ->orWhere(function ($query) {
+                    $query->rejectedApplication();
+                })->first();
         });
     }
 }

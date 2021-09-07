@@ -103,7 +103,8 @@ class MerchantController extends Controller
     {
         $status     =   'success';
 
-        $merchant   =   User::with(['ratings', 'address'])->validMerchant()
+        $merchant   =   User::with(['ratings', 'address'])
+            ->validMerchant()->publish()
             ->where('id', $request->get('merchant_id'))->first()
             ->ratings()->orderByDesc('pivot_created_at')
             ->paginate(15, ['*'], 'page', $request->get('page'));

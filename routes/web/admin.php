@@ -3,7 +3,6 @@
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DataController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\TranslationController;
@@ -31,6 +30,8 @@ Route::middleware(['auth:' . User::USER_TYPE_ADMIN])->group(function () {
     Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard');
 
     Route::resource('profile', ProfileController::class)->only(['index', 'store']);
+
+    Route::resource('applications', ApplicationController::class)->except(['store', 'create']);
 
     Route::resource('banners', BannerController::class);
 
