@@ -37,7 +37,7 @@
                     <div class="form-group row">
                         <label for="status" class="col-form-label col-sm-2">{{ __('labels.status') }}</label>
                         <div class="col-sm-10">
-                            <p id="status" class="form-control-plaintext">{!! $admin->status_label !!}</p>
+                            <p id="status" class="form-control-plaintext">{!! $admin->active_status_label !!}</p>
                         </div>
                     </div>
                 </div>
