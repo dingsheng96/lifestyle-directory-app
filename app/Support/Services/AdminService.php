@@ -37,6 +37,8 @@ class AdminService extends BaseService
     {
         $role = Role::where('id', $this->request->get('role'))->first();
 
-        $this->model->assignRole($role->name);
+        $this->model->syncRoles([$role->name]);
+
+        return $this;
     }
 }
