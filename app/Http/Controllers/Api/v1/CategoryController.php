@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Models\Category;
-use App\Models\Rateable;
 use App\Helpers\Response;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -29,17 +28,19 @@ class CategoryController extends Controller
     {
         $status = 'success';
 
-        $categories = Category::withCount([
-            'merchants' => function ($query) {
-                $query->with(['ratings'])->filterMerchantByRating(4);
-            }
-        ])->with(['media'])
-            ->whereHas('merchants', function ($query) {
-                $query->with(['ratings'])->filterMerchantByRating(4);
-            })
-            ->orderByDesc('merchants.count')
-            ->limit(6)
-            ->get();
+        $categories = Category::with([
+            'media', 'merchants.ratings'
+        ])->whereHas('merchants');
+
+        $popular_category_id = (clone $categories)->get()->mapWithKeys(function ($value) {
+            return [
+                $value->id => $value->merchants->filter(function ($value) {
+                    return $value->ratings->avg('pivot.scale') >= 3;
+                })->count()
+            ];
+        })->sortDesc()->keys()->take(6);
+
+        $categories = $categories->whereIn('id', $popular_category_id)->get();
 
         return Response::instance()
             ->withStatusCode('modules.category', 'actions.index.' . $status)

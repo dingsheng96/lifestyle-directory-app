@@ -14,6 +14,10 @@ use App\Http\Controllers\DataController;
 |
 */
 
+Route::get('/', function () {
+    return 'Home page';
+});
+
 Route::group(['prefix' => 'data', 'as' => 'data.'], function () {
 
     Route::post('country-states/{country_state}/cities', [DataController::class, 'getCityFromCountryState'])->name('country-states.cities');

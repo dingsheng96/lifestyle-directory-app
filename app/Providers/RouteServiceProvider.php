@@ -43,10 +43,6 @@ class RouteServiceProvider extends ServiceProvider
 
             ['web' => $web, 'api' => $api, 'prefix' => $prefix] = (new Domain())->getConfig();
 
-            Route::middleware('web')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/web.php'));
-
             if ($prefix) {
                 $this->prefixRoutes($web, $api);
             } else {
@@ -73,42 +69,89 @@ class RouteServiceProvider extends ServiceProvider
     {
         foreach ($web as $value) {
 
-            Route::prefix($value['prefix'])
+            if (!empty($value['namespace'])) {
+                $route_namespace = $this->namespace . '\\' . $value['namespace'];
+            }
+
+            if (!empty($value['route']['name'])) {
+                $route_name = $value['route']['name'] . '.';
+            }
+
+            if (!empty($value['prefix'])) {
+                $route_prefix = $value['prefix'];
+            }
+
+            Route::prefix($route_prefix)
                 ->middleware('web')
-                ->namespace($this->namespace . '\\' . $value['namespace'])
-                ->name($value['route']['name'])
-                ->group(base_path('routes/web/' . $value['route']['file']));
+                ->namespace($route_namespace)
+                ->name($route_name)
+                ->group(base_path('routes/' . $value['route']['file']));
         }
 
         foreach ($api as $value) {
 
-            Route::prefix($value['prefix'] . '/' . $value['version'])
+            if (!empty($value['namespace'])) {
+                $route_namespace = $this->namespace . '\\' . $value['namespace'];
+            }
+
+            if (!empty($value['route']['name'])) {
+                $route_name = $value['route']['name'] . '.';
+            }
+
+            if (!empty($value['prefix'])) {
+                $route_prefix = $value['prefix'];
+            }
+
+            Route::prefix($route_prefix)
                 ->middleware('api')
-                ->namespace($this->namespace . '\\' . $value['namespace'] . '\\' . $value['version'])
-                ->name($value['route']['name'] . '.' . $value['version'] . '.')
-                ->group(base_path('routes/api/' . $value['version'] . '/' . $value['route']['file']));
+                ->namespace($route_namespace)
+                ->name($route_name)
+                ->group(base_path('routes/' . $value['route']['file']));
         }
     }
 
     protected function domainRoutes(array $web, array $api)
     {
+        $route_name         =   '';
+        $route_namespace    =   $this->namespace;
+
         foreach ($web as $value) {
+
+            if (!empty($value['namespace'])) {
+                $route_namespace = $this->namespace . '\\' . $value['namespace'];
+            }
+
+            if (!empty($value['route']['name'])) {
+                $route_name = $value['route']['name'] . '.';
+            }
 
             Route::domain($value['url'])
                 ->middleware('web')
-                ->namespace($this->namespace . '\\' . $value['namespace'])
-                ->name($value['route']['name'] . '.')
-                ->group(base_path('routes/web/' . $value['route']['file']));
+                ->namespace($route_namespace)
+                ->name($route_name)
+                ->group(base_path('routes/' . $value['route']['file']));
         }
 
         foreach ($api as $value) {
 
+            if (!empty($value['namespace'])) {
+                $route_namespace = $this->namespace . '\\' . $value['namespace'];
+            }
+
+            if (!empty($value['route']['name'])) {
+                $route_name = $value['route']['name'] . '.';
+            }
+
+            if (!empty($value['prefix'])) {
+                $route_prefix = $value['prefix'];
+            }
+
             Route::domain($value['url'])
-                ->prefix($value['version'])
+                ->prefix($route_prefix)
                 ->middleware('api')
-                ->namespace($this->namespace . '\\' . $value['namespace'] . '\\' . $value['version'])
-                ->name($value['route']['name'] . '.' . $value['version'] . '.')
-                ->group(base_path('routes/api/' . $value['version'] . '/' . $value['route']['file']));
+                ->namespace($route_namespace)
+                ->name($route_name)
+                ->group(base_path('routes/' . $value['route']['file']));
         }
     }
 

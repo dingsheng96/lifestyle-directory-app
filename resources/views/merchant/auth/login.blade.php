@@ -59,10 +59,8 @@
 
         </form>
 
-        <p class="mb-1">
-            <a href="{{ route('merchant.password.request') }}">{{ __('app.login_btn_forgot_password') }}</a>
-            <a href="{{ route('merchant.register') }}">{{ __('app.login_btn_register_merchant') }}</a>
-        </p>
+        <a href="{{ route('merchant.password.request') }}" class="mb-1">{{ __('app.login_btn_forgot_password') }}</a>
+        <a href="{{ route('merchant.register') }}" class="mb-1">{{ __('app.login_btn_register_merchant') }}</a>
 
     </div>
 </div>

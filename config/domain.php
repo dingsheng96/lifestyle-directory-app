@@ -5,13 +5,22 @@ return [
     'prefix' => false, // if true, prefix mode will be used, else will use domain mode
 
     'web' => [
+        'web' => [
+            'url' => env('MAIN_DOMAIN'),
+            'prefix' => '',
+            'namespace' => '',
+            'route' => [
+                'name' => '',
+                'file' => 'web.php',
+            ]
+        ],
         'admin' => [
             'url' => env('WEB_ADMIN_DOMAIN'),
             'prefix' => 'admin',
             'namespace' => 'Admin',
             'route' => [
                 'name' => 'admin',
-                'file' => 'admin.php',
+                'file' => 'web/admin.php',
             ]
         ],
         'merchant' => [
@@ -20,30 +29,37 @@ return [
             'namespace' => 'Merchant',
             'route' => [
                 'name' => 'merchant',
-                'file' => 'merchant.php'
+                'file' => 'web/merchant.php'
             ]
         ],
     ],
 
     'api' => [
+        'api' => [
+            'url' => env('API_DOMAIN'),
+            'prefix' => 'v1',
+            'namespace' => 'Api',
+            'route' => [
+                'name' => 'api.v1',
+                'file' => 'api/v1/api.php'
+            ]
+        ],
         'guest' => [
             'url' => env('API_DOMAIN'),
-            'prefix' => 'api',
+            'prefix' => 'v1',
             'namespace' => 'Api',
-            'version' => 'v1',
             'route' => [
-                'name' => 'api',
-                'file' => 'api.php'
+                'name' => 'api.v1',
+                'file' => 'api/v1/api.php'
             ]
         ],
         'member' => [
             'url' => env('API_DOMAIN'),
-            'prefix' => 'api',
+            'prefix' => 'v1',
             'namespace' => 'Api',
-            'version' => 'v1',
             'route' => [
-                'name' => 'api',
-                'file' => 'api.php'
+                'name' => 'api.v1',
+                'file' => 'api/v1/api.php',
             ]
         ]
     ]

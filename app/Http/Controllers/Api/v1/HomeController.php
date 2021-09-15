@@ -21,7 +21,6 @@ class HomeController extends Controller
         $data       =   [];
         $latitude   =   $request->get('latitude', 0);
         $longitude  =   $request->get('longitude', 0);
-        $user       =   $request->user();
 
         $banners    = Banner::with(['media'])->publish()->orderByDesc('created_at')->get();
 
@@ -31,12 +30,14 @@ class HomeController extends Controller
             'media', 'ratings', 'address' => function ($query) use ($latitude, $longitude) {
                 $query->getDistanceByCoordinates($latitude, $longitude);
             }
-        ])->merchant()->active()->approvedApplication()->publish();
+        ])->validMerchant()->publish();
 
-        $popular_merchants = (clone $merchants)->filterByLocationDistance($latitude, $longitude)->orderBy('name')->limit(5)->get();
+        // popular merchants
+        $popular_merchants = (clone $merchants)->filterByLocationDistance($latitude, $longitude)->filterMerchantByRating()->orderBy('name')->limit(5)->get();
 
+        // recent visit merchants
         $recent_visit_merchants = [];
-        if ($user) {
+        if ($user = $request->user()) {
             $recent_visit_merchants = (clone $merchants)->with(['visitorHistories'])
                 ->whereHas('visitorHistories', function ($query) use ($user) {
                     $query->where('visitor_id', $user->id);

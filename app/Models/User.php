@@ -251,21 +251,23 @@ class User extends Authenticatable implements MustVerifyEmail
         return $query->merchant()->active()->approvedApplication();
     }
 
-    public function scopeFilterMerchantByRating($query, $value)
+    public function scopeFilterMerchantByRating($query, $value = null)
     {
-        $tbl_user   =   $this->getTable();
-        $tbl_rating =   app(Rateable::class)->getTable();
+        $tbl_users      =   $this->getTable();
+        $tbl_ratings    =   app(Rateable::class)->getTable();
 
-        // return $query->selectRaw($tbl_user . '.id, AVG(' . $tbl_rating . '.scale) AS ratings')
-        //     ->join($tbl_rating, $tbl_user . '.id', '=', $tbl_rating . '.rateable_id')
-        //     ->where($tbl_rating . '.rateable_type', self::class)
-        //     ->active()->merchant()->approvedApplication()
-        //     ->groupBy($tbl_user . '.id')
-        //     ->having('ratings', 'like', "{$value}%");
-
-        return $query->whereHas('ratings', function ($query) {
-            $query->avg('scale');
-        });
+        return $query->select($tbl_users . '.id', $tbl_users . '.name', DB::raw('AVG(' . $tbl_ratings . '.scale) AS ratings'))
+            ->join($tbl_ratings, $tbl_users . '.id', '=', $tbl_ratings . '.rateable_id')
+            ->where($tbl_ratings . '.rateable_type', self::class)
+            ->validMerchant()
+            ->groupBy($tbl_users . '.id', $tbl_users . '.name')
+            ->when(empty($value), function ($query) {
+                $query->having('ratings', '>=', 4);
+            })
+            ->when(!empty($value), function ($query) use ($value) {
+                $query->having('ratings', 'like', "%{$value}%");
+            })
+            ->orderByDesc('ratings');
     }
 
     public function scopeSortMerchantByRating($query)
@@ -273,11 +275,11 @@ class User extends Authenticatable implements MustVerifyEmail
         $tbl_users      =   $this->getTable();
         $tbl_ratings    =   app(Rateable::class)->getTable();
 
-        return $query->select($tbl_users . '.id', $tbl_users . '.name', $tbl_users . '.status', DB::raw('AVG(' . $tbl_ratings . '.scale) AS ratings'))
+        return $query->select($tbl_users . '.id', $tbl_users . '.name', DB::raw('AVG(' . $tbl_ratings . '.scale) AS ratings'))
             ->join($tbl_ratings, $tbl_users . '.id', '=', $tbl_ratings . '.rateable_id')
             ->where($tbl_ratings . '.rateable_type', self::class)
-            ->active()->merchant()->approvedApplication()
-            ->groupBy($tbl_users . '.id', $tbl_users . '.name', $tbl_users . '.status')
+            ->validMerchant()
+            ->groupBy($tbl_users . '.id', $tbl_users . '.name')
             ->having('ratings', '>', 0)
             ->orderByDesc('ratings');
     }
@@ -300,6 +302,21 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $query->whereHas('address', function ($query) use ($keyword) {
             $query->searchByAddress($keyword);
+        });
+    }
+
+    public function scopeSearchByInput($query, $keyword)
+    {
+        return $query->where(function ($query) use ($keyword) {
+            $query->orWhere('name', 'like', "%$keyword%")
+                ->orWhereHas('mainBranch', function ($query) use ($keyword) {
+                    $query->whereHas('categories', function ($query) use ($keyword) {
+                        $query->where('name', 'like', "%$keyword%");
+                    });
+                })
+                ->orWhere(function ($query) use ($keyword) {
+                    $query->searchByAddress($keyword);
+                });
         });
     }
 

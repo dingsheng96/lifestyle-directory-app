@@ -40,11 +40,13 @@ Route::post('device/settings', [DeviceController::class, 'setup']);
 Route::post('banners/show', [BannerController::class, 'show'])->name('banners.show');
 
 Route::post('categories', [CategoryController::class, 'index']);
-Route::post('categories/populars', [CategoryController::class, 'popular']);
+Route::post('categories/popular', [CategoryController::class, 'popular']);
 
 Route::post('merchants', [MerchantController::class, 'index']);
 Route::post('merchants/show', [MerchantController::class, 'show']);
 Route::post('merchants/reviews', [MerchantController::class, 'reviews']);
+Route::post('merchants/search', [MerchantController::class, 'search']);
+Route::post('merchants/popular', [MerchantController::class, 'popular']);
 
 Route::post('notifications', [NotificationController::class, 'index']);
 Route::post('notifications/show', [NotificationController::class, 'show'])->name('notifications.show');
