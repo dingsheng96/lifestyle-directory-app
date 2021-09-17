@@ -59,7 +59,7 @@ class WishlistController extends Controller
             $status     =   'fail';
         }
 
-        activity()->useLog('api')
+        activity()->useLog('api:wishlist')
             ->causedBy($user)
             ->performedOn(new Favourable())
             ->withProperties($request->all())

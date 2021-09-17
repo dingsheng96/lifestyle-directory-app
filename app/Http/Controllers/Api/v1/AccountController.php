@@ -77,7 +77,7 @@ class AccountController extends Controller
 
         try {
 
-            $member_service->setModel($user)->setRequest($request)->resetPassword();
+            $member_service->setModel($user)->resetPassword($request->get('new_password'));
 
             $status = 'success';
 

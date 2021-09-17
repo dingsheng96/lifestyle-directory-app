@@ -50,7 +50,7 @@ class RatingController extends Controller
             $status     =   'fail';
         }
 
-        activity()->useLog('api')
+        activity()->useLog('api:rating')
             ->causedBy($request->user())
             ->performedOn(new Rateable())
             ->withProperties($request->all())
