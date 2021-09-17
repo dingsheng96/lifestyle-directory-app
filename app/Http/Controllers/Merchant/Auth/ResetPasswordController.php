@@ -41,7 +41,7 @@ class ResetPasswordController extends Controller
      */
     protected function resetPassword($user, $password)
     {
-        $this->setUserPassword($user, $password);
+        $user->password = $password;
 
         $user->setRememberToken(Str::random(60));
 
@@ -63,7 +63,23 @@ class ResetPasswordController extends Controller
             return new JsonResponse(['message' => trans($response)], 200);
         }
 
-        return redirect($this->redirectPath())
-            ->withSuccess(trans($response));
+        return redirect()->route('merchant.login')->withSuccess(trans($response));
+    }
+
+    /**
+     * Display the password reset view for the given token.
+     *
+     * If no token is present, display the link request form.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function showResetForm(Request $request)
+    {
+        $token = $request->route()->parameter('token');
+
+        return view('merchant.auth.passwords.reset')->with(
+            ['token' => $token, 'email' => $request->email]
+        );
     }
 }

@@ -20,7 +20,7 @@ class Media extends Model
     const TYPE_PROFILE_IMAGE    =   'profile';
     const TYPE_COVER_PHOTO      =   'cover';
     const TYPE_THUMBNAIL        =   'thumbnail';
-    const DEFAULT_IMAGE         =   'nopreview.png';
+    const DEFAULT_IMAGE         =   'assets/nopreview.png';
     const MAX_BRANCH_IMAGE_UPLOAD = 10;
 
     // Relationships
@@ -90,7 +90,7 @@ class Media extends Model
 
     public function getDefaultPreviewImageAttribute()
     {
-        return asset('storage/' . self::DEFAULT_IMAGE);
+        return asset(self::DEFAULT_IMAGE);
     }
 
     public function getIsThumbnailAttribute()

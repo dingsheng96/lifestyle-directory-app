@@ -1,10 +1,10 @@
-@extends('layouts.master', ['title' => __('modules.login'), 'guest_view' => true, 'body' => 'login-page'])
+@extends('layouts.master', ['title' => __('modules.login'), 'body' => 'login-page'])
 
 @section('content')
 <div class="login-box">
 
     <div class="login-logo">
-        <img src="{{ asset('storage/logo.png') }}" class="d-block mx-auto w-50">
+        <img src="{{ asset('assets/logo.png') }}" class="d-block mx-auto w-50">
     </div>
 
     <div class="card card-body login-card-body shadow-lg my-5">

@@ -105,9 +105,9 @@ class MemberService extends BaseService
         return $this;
     }
 
-    public function resetPassword()
+    public function resetPassword(string $password)
     {
-        $this->model->password = $this->request->get('new_password');
+        $this->model->password = $password;
 
         $this->model->save();
 

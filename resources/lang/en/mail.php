@@ -2,7 +2,7 @@
 
 return [
 
-    'greeting' => 'Dear :name',
+    'greeting' => 'Hi :name',
 
     'verify_account' => [
         'subject' => 'Verify Email Address',
@@ -47,12 +47,9 @@ return [
         ]
     ],
 
-    'free_trial' => [
-        'subject'   =>  'Profile Verification :status',
-        'action'    =>  'Create Project Now',
-        'line_1'    =>  "Congratulations and Welcome onboard to Rhinosite!",
-        'line_2'    =>  "On behalf of Rhinosite’s Team, we would like to inform you that your application has been approved.",
-        'line_3'    =>  "Please note that your free trial is valid for 30 days upon signing up with Rhinosite. Rhinosite Team will send you a reminder to renew your subscription prior to your expiry date.",
-        'line_4'    =>  "Thereafter, you may click the button below to start creating your projects.",
+    'reset_password' => [
+        'subject'   =>  'Verification Code For Reset Password',
+        'line_1'    =>  "Your reset password verification code is :code, and will be expired at :expiry",
+        'line_2'    =>  "If in any circumstances that you are still in doubt, we do have a support team to further assist you with your queries.",
     ],
 ];

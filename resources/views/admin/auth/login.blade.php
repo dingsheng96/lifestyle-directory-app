@@ -3,11 +3,17 @@
 @section('content')
 <div class="login-box">
 
-    <div class="login-logo">
-        <img src="{{ asset('storage/logo.png') }}" class="d-block mx-auto w-50">
+    <div class="login-logo mb-5">
+        <img src="{{ asset('assets/logo.png') }}" class="d-block mx-auto w-50">
     </div>
 
-    <div class="card card-body login-card-body shadow-lg my-5">
+    @if(session('success'))
+    <div class="alert alert-success mb-3" role="alert">
+        {{ session('success') }}
+    </div>
+    @endif
+
+    <div class="card card-body login-card-body shadow">
 
         <p class="login-box-msg">{{ __('app.login_title_main') }}</p>
 
@@ -58,10 +64,6 @@
             </div>
 
         </form>
-
-        <p class="mb-1">
-            <a href="{{ route('admin.password.request') }}">{{ __('app.login_btn_forgot_password') }}</a>
-        </p>
 
     </div>
 </div>

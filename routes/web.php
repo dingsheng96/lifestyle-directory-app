@@ -1,7 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +19,10 @@ use App\Http\Controllers\DataController;
 Route::get('/', function () {
     return 'Home page';
 });
+
+Route::get('password/reset/success', [ResetPasswordController::class, 'resetPasswordSuccess'])->name('password.reset.success');
+
+Auth::routes(['register' => false, 'login' => 'false', 'verify' => false]);
 
 Route::group(['prefix' => 'data', 'as' => 'data.'], function () {
 

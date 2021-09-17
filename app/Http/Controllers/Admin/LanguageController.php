@@ -42,7 +42,7 @@ class LanguageController extends Controller
      */
     public function create()
     {
-        $excel = asset('storage/mobile_labels.xlsx');
+        $excel = asset('assets/mobile_labels.xlsx');
 
         return view('admin.locale.language.create', compact('excel'));
     }
@@ -106,7 +106,7 @@ class LanguageController extends Controller
     {
         $language->load(['translations']);
 
-        $excel = asset('storage/mobile_labels.xlsx');
+        $excel = asset('assets/mobile_labels.xlsx');
 
         return $dataTable->with(['language' => $language])->render('admin.locale.language.edit', compact('language', 'excel'));
     }

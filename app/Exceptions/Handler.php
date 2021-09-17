@@ -101,7 +101,7 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (InvalidSignatureException $e, $request) {
 
-            return redirect()->route('login')->with('info', __('messages.email_verification_link_expired'));
+            return redirect()->route('merchant.login')->with('info', __('messages.email_verification_link_expired'));
         });
     }
 }

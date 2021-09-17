@@ -4,7 +4,7 @@
 
         <div class="my-3 pb-3 d-flex">
             <a href="{{ route('admin.dashboard') }}" class="brand-link border-0">
-                <img src="{{ asset('storage/logo.png') }}" alt="logo" class="brand-text d-block mx-auto my-0" style="max-width: 50%;">
+                <img src="{{ asset('assets/logo.png') }}" alt="logo" class="brand-text d-block mx-auto my-0" style="max-width: 50%;">
             </a>
         </div>
 

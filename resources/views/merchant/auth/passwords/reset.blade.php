@@ -1,7 +1,8 @@
 @extends('merchant.layouts.master', ['title' => 'Reset Password', 'body' => 'enduser'])
 
 @section('content')
-<div class="container" style="padding-top: 7rem; padding-bottom: 5rem;">
+
+<div class="container container-py">
 
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -14,9 +15,9 @@
 
                     <input type="hidden" name="token" value="{{ $token }}">
 
-                    <div class="input-group mb-3">
+                    <div class="form-group">
                         <p class="login-text">{{ __('labels.email') }} <span class="text-danger">*</span></p>
-                        <input type="email" name="email" id="email" value="{{ old('email', $email) }}" class="@error('email') is-invalid @enderror" required autocomplete="email">
+                        <input type="email" name="email" id="email" value="{{ old('email', $email) }}" class="form-control @error('email') is-invalid @enderror bg-white" required autocomplete="email" readonly>
                         @error('email')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -24,9 +25,9 @@
                         @enderror
                     </div>
 
-                    <div class="input-group mb-3">
+                    <div class="form-group">
                         <p class="login-text">{{ __('labels.password') }} <span class="text-danger">*</span></p>
-                        <input type="password" name="password" id="password" value="{{ old('password') }}" class="@error('password') is-invalid @enderror" required autocomplete="new-password" autofocus>
+                        <input type="password" name="password" id="password" value="{{ old('password') }}" class="form-control @error('password') is-invalid @enderror" required autocomplete="new-password" autofocus>
                         @error('password')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -35,19 +36,25 @@
                         <small>* {{ __('messages.password_format') }}</small>
                     </div>
 
-                    <div class="input-group mb-3">
+                    <div class="form-group">
                         <p class="login-text">{{ __('labels.password_confirmation') }} <span class="text-danger">*</span></p>
-                        <input type="password" name="password_confirmation" id="password_confirmation" value="{{ old('password_confirmation') }}" class="@error('password-confirmation') is-invalid @enderror" required autocomplete="new-password">
+                        <input type="password" name="password_confirmation" id="password_confirmation" value="{{ old('password_confirmation') }}" class="form-control @error('password-confirmation') is-invalid @enderror" required autocomplete="new-password">
                     </div>
 
-                    <div class="form-group row justify-content-center">
-                        <button type="submit" class="btn btn-orange btn-lg">
+                    <div class="form-group row justify-content-center my-3">
+                        <button type="submit" class="btn btn-purple">
                             {{ strtoupper(__('Reset Password')) }}
                         </button>
                     </div>
                 </form>
 
             </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <p class="text-muted text-center">{!! __('labels.copyright') !!}</p>
         </div>
     </div>
 

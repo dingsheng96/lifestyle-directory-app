@@ -10,7 +10,7 @@
 
     <title>{{ config('app.name') }} @if (!empty($title)) {{ ' | ' . $title }} @endif</title>
 
-    <link rel="icon" href="{{ asset('storage/logo.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ asset('assets/logo.png') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">

@@ -23,7 +23,7 @@ Route::get('/', function () {
     return redirect()->route('admin.login');
 });
 
-Auth::routes(['verify' => false, 'register' => false]);
+Auth::routes(['verify' => false, 'register' => false, 'reset_password' => false]);
 
 Route::middleware(['auth:' . User::USER_TYPE_ADMIN])->group(function () {
 
