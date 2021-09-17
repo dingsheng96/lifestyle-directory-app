@@ -12,20 +12,20 @@ use Illuminate\Support\Facades\Auth;
 
 class MediaController extends Controller
 {
-    public function __invoke(Media $media)
+    public function __invoke(Media $medium)
     {
         $action     =   Permission::ACTION_DELETE;
         $module     =   'media';
         $status     =   'success';
         $message    =   Message::instance()->format($action, $module, $status);
 
-        (new FileManager())->removeFile($media->file_path);
+        (new FileManager())->removeFile($medium->file_path);
 
-        $media->delete();
+        $medium->delete();
 
         activity()->useLog('admin:media')
             ->causedBy(Auth::user())
-            ->performedOn($media)
+            ->performedOn($medium)
             ->log($message);
 
         return Response::instance()

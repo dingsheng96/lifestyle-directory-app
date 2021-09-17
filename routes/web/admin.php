@@ -58,5 +58,5 @@ Route::middleware(['auth:' . User::USER_TYPE_ADMIN])->group(function () {
         Route::get('languages/{language}/translations/export', [TranslationController::class, 'export'])->name('languages.translations.export');
     });
 
-    Route::delete('media/{media}', [MediaController::class, '__invoke'])->name('media.destroy');
+    Route::delete('media/{medium}', [MediaController::class, '__invoke'])->name('media.destroy');
 });

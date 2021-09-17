@@ -478,7 +478,7 @@
                                 @endif
 
                                 <div class="form-group">
-                                    @include('admin.components.tbl_image', ['images' => $image_and_thumbnail, 'thumbnail' => true, 'action' => true])
+                                    @include('admin.components.tbl_image', ['images' => $image_and_thumbnail, 'thumbnail' => true, 'action' => true, 'delete_permission' => 'merchant.destroy'])
                                 </div>
 
                             </div>
