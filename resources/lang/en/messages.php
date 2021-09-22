@@ -30,11 +30,9 @@ return [
     'logout_success' => 'Logout successfully.',
     'login_success' => 'Login successfully.',
     'register_success' => 'Register successfully.',
-
     'logout_fail' => 'Unable to logout.',
     'login_fail' => 'Unable to login',
     'register_fail' => 'Unable to register',
-
     'confirm_question' => 'Are you sure?',
     'empty_list' => "You don't have any :list yet",
     'delete_info' => 'You will not be able to revert this!',
@@ -47,7 +45,6 @@ return [
     'no_records' => 'No records found.',
     'errors_found' => 'Errors found!',
     'no_subscription' => 'You have not subscribe any plan yet.',
-
     'contact_support' => 'Errors found! Please contact customer support.',
     'compare_list_reached_limit' => 'Compare list has reached the maximum limit.',
     'wishlist_empty' => 'Your wishlist is empty',

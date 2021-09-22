@@ -37,11 +37,9 @@ return [
     'unverified' => 'Unverified',
     'optional' => 'Optional',
     'get_coordinate' => 'Get Coordinates',
-
     'change_profile_pic' => 'Change Profile Picture',
     'change_logo' => 'Change Logo',
     'change_ssm_cert' => 'Change SSM Certificate',
-
     'copyright' => '&copy ' . config('app.name') . ' ' . date('Y') . '. All rights reserved.',
     'terms_policy' => 'Terms & Policies',
     'privacy_policy' => 'Privacy Policies',
@@ -52,7 +50,6 @@ return [
     'view_all' => 'View All',
     'more_info' => 'More Info',
     'dropdown_placeholder' => 'Please select :label',
-
     'country_state' => 'Country State|Country States',
     'city' => 'City|Cities',
     'name' => 'Name',
@@ -88,19 +85,16 @@ return [
     'new_version' => 'New Version',
     'use_version' => 'Use This Version',
     'download_format' => 'Download format',
-
     'upload_thumbnail' => 'Upload Thumbnail',
     'upload_image' => 'Upload Image|Upload Images',
     'upload_file' => 'Upload File|Upload Files',
     'upload_profile_image' => 'Upload Profile Image',
-
     'merchant' => 'Merchant',
     'address' => 'Address',
     'website' => 'Website',
     'facebook' => 'Facebook',
     'instagram' => 'Instagram',
     'whatsapp' => 'Whatsapp',
-
     'filename' => 'File Name',
     'details' => 'Details',
     'verification' => 'Verification',
@@ -115,23 +109,19 @@ return [
     'subject_to' => 'Subject To',
     'caused_by' => 'Caused By',
     'log_name' => 'Log Name',
-
     'title' => 'Title',
     'created_at' => 'Created At',
     'last_updated_at' => 'Last Updated At',
     'last_login_at' => 'Last Login At',
     'user' => 'User',
-
     'menu' => 'Menu',
     'profile' => 'Profile',
     'profile_image' => 'Profile Image',
     'cover_photo' => 'Cover Photo',
     'settings' => 'Settings',
     'gallery' => 'Gallery',
-
     'return_dashboard' => 'Return Dashboard',
     'ssm_cert' => 'SSM Certificate',
-
     'thumbnail' => 'Thumbnail',
     'reg_no' => 'Registration No.',
     'admin_section' => 'Admin Section',
@@ -165,4 +155,10 @@ return [
     'items' => 'Items',
     'registration_form' => 'Registration Form',
     'state_reason' => 'Please state the reason',
+    'total_listing_careers' => 'Total Listing Careers',
+    'total_listing_merchants' => 'Total Listing Merchants',
+    'total_registered_members' => 'Total Registered Members',
+    'total_pending_applications' => 'Total Pending Applications',
+    'top_rated_merchants' => 'Top 10 Rated Merchants',
+    'rank' => 'Rank'
 ];
