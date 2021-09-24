@@ -37,7 +37,7 @@ class HomeController extends Controller
 
         // recent visit merchants
         $recent_visit_merchants = [];
-        if ($user = $request->user()) {
+        if ($user = $request->user('api')) {
             $recent_visit_merchants = (clone $merchants)->with(['visitorHistories'])
                 ->whereHas('visitorHistories', function ($query) use ($user) {
                     $query->where('visitor_id', $user->id);

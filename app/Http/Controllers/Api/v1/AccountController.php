@@ -21,10 +21,7 @@ class AccountController extends Controller
     {
         $status =   'success';
         $user   =   $request->user()->load([
-            'media',
-            'deviceSettings' => function ($query) {
-                $query->wherePivot('status', UserDevice::STATUS_ACTIVE);
-            }
+            'media', 'deviceSettings'
         ]);
 
         return Response::instance()

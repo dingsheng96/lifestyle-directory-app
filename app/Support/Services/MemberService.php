@@ -87,7 +87,9 @@ class MemberService extends BaseService
 
     public function linkDevice()
     {
-        $device = DeviceSetting::where('device_id', $this->request->get('device_id'))->firstOrFail();
+        $device = DeviceSetting::where('device_id', $this->request->get('device_id'))->first();
+
+        throw_if(!$device, new \Exception('Device ID not found.'));
 
         $device->users()->sync([$this->model->id]);
 

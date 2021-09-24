@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Exception;
 use Throwable;
 use App\Helpers\Response;
 use Illuminate\Auth\AuthenticationException;
@@ -84,6 +85,17 @@ class Handler extends ExceptionHandler
                     ->withStatusCode('modules.route', 'actions.read.fail')
                     ->withStatus('fail')
                     ->withMessage('Not Found')
+                    ->sendJson(404);
+            }
+        });
+
+        $this->renderable(function (Exception $e, $request) {
+
+            if ($request->expectsJson()) {
+                return Response::instance()
+                    ->withStatusCode('modules.member', 'actions.read.fail')
+                    ->withStatus('fail')
+                    ->withMessage($e->getMessage())
                     ->sendJson(404);
             }
         });
