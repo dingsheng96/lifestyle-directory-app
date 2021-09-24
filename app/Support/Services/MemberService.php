@@ -87,18 +87,9 @@ class MemberService extends BaseService
 
     public function linkDevice()
     {
-        $device         = DeviceSetting::where('device_id', $this->request->get('device_id'))->firstOrFail();
+        $device = DeviceSetting::where('device_id', $this->request->get('device_id'))->firstOrFail();
 
-        $user_device    = $this->model->deviceSettings();
-
-        $active_devices = (clone $user_device)->wherePivot('status', UserDevice::STATUS_ACTIVE)->get();
-
-        foreach ($active_devices as $active_device) {
-
-            (clone $user_device)->syncWithoutDetaching([$active_device->id => ['status' => UserDevice::STATUS_INACTIVE]]);
-        }
-
-        (clone $user_device)->syncWithoutDetaching([$device->id => ['status' => UserDevice::STATUS_ACTIVE]]);
+        $device->users()->sync([$this->model->id]);
 
         (new DeviceService())->setModel($device)->updateDeviceLastActivationDate(); // update last activation date
 

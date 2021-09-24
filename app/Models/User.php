@@ -152,7 +152,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function deviceSettings()
     {
-        return $this->belongsToMany(DeviceSetting::class, UserDevice::class, 'user_id', 'device_id', 'id', 'id')->withPivot(['status']);
+        return $this->belongsToMany(DeviceSetting::class, UserDevice::class, 'user_id', 'device_id', 'id', 'id');
     }
 
     public function careers()

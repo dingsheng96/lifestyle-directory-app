@@ -26,6 +26,6 @@ class DeviceSetting extends Model
     // Relationships
     public function users()
     {
-        return $this->belongsToMany(User::class, UserDevice::class, 'device_id', 'user_id', 'id', 'id')->withPivot(['status']);
+        return $this->belongsToMany(User::class, UserDevice::class, 'device_id', 'user_id', 'id', 'id');
     }
 }

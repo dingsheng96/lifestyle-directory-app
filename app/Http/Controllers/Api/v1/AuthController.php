@@ -32,12 +32,6 @@ class AuthController extends Controller
 
         $user = $member_service->setModel($user)->setRequest($request)->linkDevice()->getModel();
 
-        $user->load([
-            'deviceSettings' => function ($query) {
-                $query->wherePivot('status', UserDevice::STATUS_ACTIVE);
-            }
-        ]);
-
         $user->revokeTokens();
 
         $data = (new LoginResource($user))->toArray($request);
@@ -95,9 +89,7 @@ class AuthController extends Controller
         $message    =   'Ok';
         $user       =   $request->user();
 
-        $user->deviceSettings()->active()->update([
-            'user_id' => null
-        ]);
+        $user->deviceSettings()->detach();
 
         $user->token()->revoke();
 

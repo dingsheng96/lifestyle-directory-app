@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Models\User;
 use App\Helpers\Response;
+use App\Models\UserDevice;
 use Illuminate\Http\Request;
 use App\Models\DeviceSetting;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +23,7 @@ class AccountController extends Controller
         $user   =   $request->user()->load([
             'media',
             'deviceSettings' => function ($query) {
-                $query->active();
+                $query->wherePivot('status', UserDevice::STATUS_ACTIVE);
             }
         ]);
 
