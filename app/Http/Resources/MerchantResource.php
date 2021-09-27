@@ -21,6 +21,9 @@ class MerchantResource extends JsonResource
         $data = [
             'id'        =>  $this->id,
             'name'      =>  $this->name,
+            'mobile_no' =>  $this->mobile_no,
+            'email'     =>  $this->email ?? "",
+            'status'    =>  $this->status,
             'thumbnail' =>  $this->thumbnail->full_file_path ?? app(Media::class)->default_preview_image,
             'location'  =>  $this->address->location_city_state,
             'rating'    =>  $this->rating,
