@@ -52,8 +52,8 @@ class MerchantResource extends JsonResource
                 }),
                 'address'           => [
                     'full_address'  => $this->address->full_address,
-                    'longitude'     => $this->address->longitude,
-                    'latitude'      => $this->address->latitude
+                    'longitude'     => number_format($this->address->longitude, 12),
+                    'latitude'      => number_format($this->address->latitude, 12)
                 ],
                 'has_career'        => (bool) $this->careers_count > 0,
                 'similar_merchants' => parent::collection($this->similar_merchants)->toArray($request)

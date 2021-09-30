@@ -56,7 +56,7 @@ class MerchantRequest extends FormRequest
             'postcode'          =>  ['required', 'digits:5'],
             'country_state'     =>  ['required', Rule::exists(CountryState::class, 'id')],
             'city'              =>  ['required', Rule::exists(City::class, 'id')->where('country_state_id', $this->get('country_state'))],
-            'reg_no'            =>  ['required', Rule::unique(BranchDetail::class, 'reg_no')->ignore($merchant->id, 'branch_id')->whereNull('deleted_at')],
+            'reg_no'            =>  ['required', Rule::unique(BranchDetail::class, 'reg_no')->ignore(optional($merchant)->id, 'branch_id')->whereNull('deleted_at')],
             'pic_name'          =>  ['required'],
             'pic_phone'         =>  ['required', new PhoneFormat],
             'pic_email'         =>  ['required', 'email'],
