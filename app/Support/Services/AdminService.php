@@ -39,6 +39,29 @@ class AdminService extends BaseService
 
         $this->model->syncRoles([$role->name]);
 
+        if ($role->generate_referral) {
+
+            $this->generateReferralCode();
+        }
+
+        return $this;
+    }
+
+    private function generateReferralCode()
+    {
+        $referral_code = random_int(100000, 999999);
+
+        while (User::admin()->where('referral_code', $referral_code)->exists()) {
+
+            $referral_code = random_int(100000, 999999);
+        }
+
+        $this->model->referral_code = $referral_code;
+
+        if ($this->model->isDirty()) {
+            $this->model->save();
+        }
+
         return $this;
     }
 }

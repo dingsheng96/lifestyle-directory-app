@@ -5,12 +5,11 @@ namespace App\DataTables\Admin;
 use App\Models\User;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class AdminDataTable extends DataTable
+class ReferralDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -25,40 +24,23 @@ class AdminDataTable extends DataTable
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
                 return view('admin.components.btn_action', [
-                    'no_action' => $this->no_action ?: ($data->id == Auth::id() || $data->is_super_admin),
+                    'no_action' => $this->no_action ?: null,
                     'view' => [
-                        'permission' => 'admin.read',
-                        'route' => route('admin.admins.show', ['admin' => $data->id])
+                        'permission' => 'merchant.read',
+                        'route' => route('admin.merchants.show', ['merchant' => $data->id])
                     ],
-                    'update' => [
-                        'permission' => 'admin.update',
-                        'route' => route('admin.admins.edit', ['admin' => $data->id])
-                    ],
-                    'delete' => [
-                        'permission' => 'admin.delete',
-                        'route' => route('admin.admins.destroy', ['admin' => $data->id])
-                    ]
                 ])->render();
-            })
-            ->addColumn('role', function ($data) {
-                return $data->roles->first()->name;
-            })
-            ->addColumn('referred_users', function ($data) {
-                return $data->referred_by_count;
             })
             ->editColumn('created_at', function ($data) {
                 return $data->created_at->toDateTimeString();
             })
             ->editColumn('status', function ($data) {
-                return '<span>' . $data->active_status_label . '</span>';
+                return $data->status_label;
             })
-            ->filterColumn('status', function ($query, $keyword) {
-                $query->where('status', strtolower($keyword));
+            ->editColumn('mobile_no', function ($data) {
+                return $data->formatted_mobile_no;
             })
-            ->filterColumn('role', function ($query, $keyword) {
-                $query->where('name', 'like', "%{$keyword}%");
-            })
-            ->rawColumns(['action', 'status']);
+            ->rawColumns(['action', 'status', 'profile']);
     }
 
     /**
@@ -69,7 +51,12 @@ class AdminDataTable extends DataTable
      */
     public function query(User $model)
     {
-        return $model->withCount('referredBy')->with(['roles'])->admin()->newQuery();
+        return $model->merchant()->approvedApplication()
+            ->withCount('subBranches')->with('referrals')
+            ->whereHas('referrals', function ($query) {
+                $query->where('id', $this->admin->id);
+            })
+            ->newQuery();
     }
 
     /**
@@ -80,11 +67,11 @@ class AdminDataTable extends DataTable
     public function html()
     {
         return $this->builder()
-            ->setTableId('admin-table')
+            ->setTableId('merchant-table')
             ->addTableClass('table-hover table w-100')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->orderBy(0, 'asc')
+            ->orderBy(1, 'asc')
             ->responsive(true)
             ->autoWidth(true)
             ->processing(false);
@@ -100,14 +87,14 @@ class AdminDataTable extends DataTable
         return [
             Column::computed('DT_RowIndex', '#'),
             Column::make('name')->title(__('labels.name')),
-            Column::make('role')->title(__('labels.role')),
             Column::make('email')->title(__('labels.email')),
-            Column::make('referred_users')->title(__('labels.referred_users')),
+            Column::make('mobile_no')->title(__('labels.contact_no')),
+            Column::make('sub_branches_count')->title(__('labels.branches'))->searchable(false),
             Column::make('status')->title(__('labels.status')),
             Column::make('created_at')->title(__('labels.created_at')),
             Column::computed('action', __('labels.action'))
                 ->exportable(false)
-                ->printable(false)
+                ->printable(false),
         ];
     }
 
@@ -118,6 +105,6 @@ class AdminDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Admin_' . date('YmdHis');
+        return 'Merchant_' . date('YmdHis');
     }
 }

@@ -11,4 +11,10 @@ class Role extends SpatieRole
 
     // Constants
     const ROLE_SUPER_ADMIN  = 'Super Admin';
+
+    protected $fillable = ['generate_referral'];
+
+    protected $casts = [
+        'generate_referral' => 'boolean'
+    ];
 }

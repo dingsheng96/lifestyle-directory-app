@@ -305,4 +305,19 @@ class MerchantService extends BaseService
 
         return $this;
     }
+
+    public function setReferral($column = 'id')
+    {
+        $referral_code = $this->request->get('referral_code');
+
+        $referral = User::admin()->when($column === 'id', function ($query) use ($referral_code) {
+            $query->where('id', $referral_code);
+        })->when($column !== 'id', function ($query) use ($referral_code) {
+            $query->where('referral_code', $referral_code);
+        })->firstOrFail();
+
+        $this->model->referrals()->sync($referral->id, false);
+
+        return $this;
+    }
 }

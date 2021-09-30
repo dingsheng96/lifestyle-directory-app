@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col-12 col-md-5">
-            <div class="card shadow">
+            <div class="card shadow border">
                 <div class="card-header bg-transparent border-0">
                     <h3 class="card-title">{{ __('modules.view', ['module' => trans_choice('modules.country', 1)]) }}</h3>
                 </div>
@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="card-footer bg-transparent text-md-right text-center">
-                    <a role="button" href="{{ route('countries.index') }}" class="btn btn-light">
+                    <a role="button" href="{{ route('countries.index') }}" class="btn btn-default">
                         <i class="fas fa-chevron-left"></i>
                         {{ __('labels.back') }}
                     </a>
@@ -35,7 +35,7 @@
         </div>
 
         <div class="col-12 col-md-7">
-            <div class="card shadow">
+            <div class="card shadow border">
                 <div class="card-header bg-transparent">
                     <h3 class="card-title">{{ trans_choice('labels.country_state', 2) }}</h3>
                 </div>

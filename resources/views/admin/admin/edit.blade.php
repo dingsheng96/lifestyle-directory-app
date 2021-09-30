@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col-12">
-            <div class="card shadow">
+            <div class="card shadow border">
 
                 <div class="card-header bg-transparent border-0">
                     <span class="h5">{{ __('modules.edit', ['module' => trans_choice('modules.admin', 1)]) }}</span>
@@ -67,6 +67,22 @@
                             @enderror
                         </div>
 
+                        @if(!empty($admin->referral_code))
+                        <div class="form-group">
+                            <label for="referral_link" class="col-form-label">{{ __('labels.referral_link') }}</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-purple" onclick="copyReferralLink('{{ route('merchant.register', ['referral' => $admin->referral_code]) }}');">
+                                        {{ __('labels.copy') }} {{ __('labels.referral_link') }}
+                                    </button>
+                                </div>
+                                <span class="form-control">{{ route('merchant.register', ['referral' => $admin->referral_code]) }}</span>
+                            </div>
+                        </div>
+                        @endif
+
+                        <hr>
+
                         <div class="form-group">
                             <label for="password" class="col-form-label">{{ __('labels.new_password') }}</label>
                             <input type="password" id="password" name="password" value="{{ old('password') }}" class="form-control @error('password') is-invalid @enderror" autocomplete="off">
@@ -90,7 +106,7 @@
                     </div>
 
                     <div class="card-footer bg-transparent text-md-right text-center">
-                        <a role="button" href="{{ route('admin.admins.index') }}" class="btn btn-light mx-2">
+                        <a role="button" href="{{ route('admin.admins.index') }}" class="btn btn-default mx-2">
                             <i class="fas fa-caret-left"></i>
                             {{ __('labels.back') }}
                         </a>

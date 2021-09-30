@@ -5,7 +5,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <div class="card shadow">
+            <div class="card shadow border">
 
                 <div class="card-header bg-transparent border-0">
                     <span class="h5">{{ __('modules.create', ['module' => trans_choice('modules.member', 1)]) }}</span>
@@ -140,7 +140,7 @@
                     </div>
 
                     <div class="card-footer bg-transparent text-md-right text-center">
-                        <a href="{{ route('admin.members.index') }}" role="button" class="btn btn-light mx-2">
+                        <a href="{{ route('admin.members.index') }}" role="button" class="btn btn-default mx-2">
                             <i class="fas fa-times"></i>
                             {{ __('labels.cancel') }}
                         </a>

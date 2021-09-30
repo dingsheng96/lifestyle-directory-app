@@ -8,7 +8,7 @@
     <div class="row">
 
         <div class="col-12 col-md-3">
-            <div class="card shadow">
+            <div class="card shadow border">
                 <div class="card-body box-profile">
                     <div class="text-center">
                         <img class="profile-user-img img-fluid img-circle" src="{{ $user->logo->full_file_path }}" alt="{{ $user->name . ' logo' }}">
@@ -41,7 +41,7 @@
         </div>
 
         <div class="col-12 col-md-9">
-            <div class="card shadow">
+            <div class="card shadow border">
 
                 <form action="{{ route('merchant.profile.store') }}" method="post" enctype="multipart/form-data" role="form">
                     @csrf
@@ -236,7 +236,7 @@
                             </div>
 
                             <div class="tab-pane" id="location">
-                                <div id="location-address-panel" data-route="{{ route('data.geocoding') }}">
+                                <div id="location-address-panel" data-route="{{ route('merchant.data.geocoding') }}">
                                     <div class="form-group">
                                         <label for="address_1" class="col-form-label">{{ __('labels.address_1') }} <span class="text-danger">*</span></label>
                                         <input type="text" name="address_1" id="address_1" class="form-control @error('address_1') is-invalid @enderror" value="{{ old('address_1', $user->address->address_1) }}">
@@ -293,7 +293,8 @@
                                         <div class="col-md-6 col-12">
                                             <div class="form-group">
                                                 <label for="city" class="col-form-label">{{ trans_choice('labels.city', 1) }} <span class="text-danger">*</span></label>
-                                                <select name="city" id="city" class="form-control select2 @error('city') is-invalid @enderror city-dropdown" data-selected="{{ old('city', $user->address->city_id) }}" data-city-route="{{ route('data.country-states.cities', ['__REPLACE__']) }}">
+                                                <select name="city" id="city" class="form-control select2 @error('city') is-invalid @enderror city-dropdown" data-selected="{{ old('city', $user->address->city_id) }}"
+                                                    data-city-route="{{ route('merchant.data.country-states.cities', ['__REPLACE__']) }}">
                                                     <option value="0" selected disabled>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(trans_choice('labels.city', 1))]) }} ---</option>
                                                 </select>
                                                 @error('city')

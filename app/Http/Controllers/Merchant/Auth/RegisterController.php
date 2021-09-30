@@ -59,7 +59,9 @@ class RegisterController extends Controller
      */
     public function showRegistrationForm()
     {
-        return view('merchant.auth.register');
+        $referral = request()->get('referral');
+
+        return view('merchant.auth.register', compact('referral'));
     }
 
     public function register(RegisterRequest $request, MerchantService $merchant_service)
@@ -73,7 +75,8 @@ class RegisterController extends Controller
         try {
 
             $merchant_service->setRequest($request)->store()
-                ->setApplicationStatus(User::APPLICATION_STATUS_PENDING);
+                ->setApplicationStatus(User::APPLICATION_STATUS_PENDING)
+                ->setReferral('referral_code');
             // ->setLocationCoordinates();
 
             $status  = 'success';

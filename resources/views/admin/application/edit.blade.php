@@ -5,7 +5,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <div class="card shadow">
+            <div class="card shadow border">
                 <form action="{{ route('admin.applications.update', ['application' => $application->id]) }}" method="post" role="form" enctype="multipart/form-data">
                     @csrf
                     @method('put')
@@ -14,7 +14,7 @@
 
                     <div class="card-body">
 
-                        <h5 class="mb-4">Person In Charge Details</h5>
+                        <h5 class="mb-4">{{ __('labels.pic_details') }}</h5>
 
                         <div class="form-group row">
                             <label for="pic_name" class="col-form-label col-sm-2">{{ __('labels.name') }}</label>
@@ -39,7 +39,7 @@
 
                         <hr>
 
-                        <h5 class="mb-4">Company Details</h5>
+                        <h5 class="mb-4">{{ __('labels.company_details') }}</h5>
 
                         <div class="form-group row">
                             <label for="name" class="col-form-label col-sm-2">{{ __('labels.company_name') }}</label>
@@ -82,6 +82,36 @@
                                 @include('admin.components.tbl_image', ['images' => $application->media])
                             </div>
                         </div>
+
+                        @if ($application->referrals->first())
+
+                        <hr>
+
+                        <h5 class="mb-4">{{ __('labels.referral_details') }}</h5>
+
+                        <div class="form-group row">
+                            <label for="referral_name" class="col-form-label col-sm-2">{{ __('labels.name') }}</label>
+                            <div class="col-sm-10">
+                                <span class="form-control-plaintext" id="referral_name">{{ $application->referrals->first()->name ?? null }}</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="referral_email" class="col-form-label col-sm-2">{{ __('labels.email') }}</label>
+                            <div class="col-sm-10">
+                                <span class="form-control-plaintext" id="referral_email">{{ $application->referrals->first()->email ?? null }}</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="referral_code" class="col-form-label col-sm-2">{{ __('labels.referral_code') }}</label>
+                            <div class="col-sm-10">
+                                <span class="form-control-plaintext" id="referral_code">{{ $application->referrals->first()->referral_code ?? null }}</span>
+                            </div>
+                        </div>
+
+                        @endif
+
                     </div>
 
                     <div class="card-footer bg-transparent text-center text-md-right">

@@ -23,6 +23,8 @@ Route::get('/', function () {
 
 Auth::routes(['verify' => true]);
 
+require 'general.php';
+
 Route::middleware(['auth:' . User::USER_TYPE_MERCHANT])->group(function () {
 
     Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard');

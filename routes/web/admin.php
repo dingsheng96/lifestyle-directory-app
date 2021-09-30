@@ -25,6 +25,8 @@ Route::get('/', function () {
 
 Auth::routes(['verify' => false, 'register' => false, 'reset_password' => false]);
 
+require 'general.php';
+
 Route::middleware(['auth:' . User::USER_TYPE_ADMIN])->group(function () {
 
     Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard');

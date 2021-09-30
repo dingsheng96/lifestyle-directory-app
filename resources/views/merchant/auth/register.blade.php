@@ -6,7 +6,7 @@
 
     <h4 class="my-3 text-center">{{ __('labels.registration_form') }}</h4>
 
-    <div class="card shadow">
+    <div class="card shadow border">
 
         <form action="{{ route('merchant.register') }}" method="post" role="form" enctype="multipart/form-data">
             @csrf
@@ -78,8 +78,6 @@
                     </div>
                 </div>
 
-
-
                 <div class="row">
                     <div class="col-12">
                         <div class="form-group">
@@ -125,6 +123,23 @@
                 </div>
 
                 <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label for="category" class="col-form-label">{{ __('labels.category') }} <span class="text-danger">*</span></label>
+                            <select name="category" id="category" class="form-control select2 @error('category') is-invalid @enderror">
+                                <option value="0" disabled selected>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(__('labels.category'))]) }} ---</option>
+                                @forelse ($categories as $category)
+                                <option value="{{ $category->id }}" {{ old('category') == $category->id ? 'selected' : null }}>{{ $category->name }}</option>
+                                @empty
+                                @endforelse
+                            </select>
+                            @error('status')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
                     <div class="col-12 col-md-6">
                         <div class="form-group">
                             <label for="reg_no" class="col-form-label">{{ __('labels.reg_no') }} <span class="text-danger">*</span></label>
@@ -194,10 +209,21 @@
                     <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="city" class="col-form-label">{{ trans_choice('labels.city', 1) }} <span class="text-danger">*</span></label>
-                            <select name="city" id="city" class="form-control select2 @error('city') is-invalid @enderror city-dropdown" data-selected="{{ old('city', 0) }}" data-city-route="{{ route('data.country-states.cities', ['__REPLACE__']) }}">
+                            <select name="city" id="city" class="form-control select2 @error('city') is-invalid @enderror city-dropdown" data-selected="{{ old('city', 0) }}" data-city-route="{{ route('merchant.data.country-states.cities', ['__REPLACE__']) }}">
                                 <option value="0" selected disabled>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(trans_choice('labels.city', 1))]) }} ---</option>
                             </select>
                             @error('city')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label for="referral_code" class="col-form-label">{{ __('labels.referral_code') }}</label>
+                            <input type="text" name="referral_code" id="referral_code" value="{{ old('referral_code', $referral) }}" class="form-control @error('referral_code') is-invalid @enderror">
+                            @error('referral_code')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -208,15 +234,13 @@
 
                 <div class="form-group">
                     <label for="logo" class="col-form-label">{{ __('labels.logo') }} <span class="text-danger">*</span></label>
-                    <div class="row">
-                        <input type="file" id="logo" name="logo" class="form-control-file custom-img-input @error('logo') is-invalid @enderror" accept=".jpg,.jpeg,.png">
-                        @error('logo')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
-                        @enderror
-                        <ul class="pl-3 mt-3">{!! trans_choice('messages.upload_file_rules', 1, ['maxsize' => '2mb', 'extensions' => 'JPG,JPEG, PNG']) !!}</ul>
-                    </div>
+                    <input type="file" id="logo" name="logo" class="form-control-file custom-img-input @error('logo') is-invalid @enderror" accept=".jpg,.jpeg,.png">
+                    @error('logo')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                    <ul class="pl-3 mt-3">{!! trans_choice('messages.upload_file_rules', 1, ['maxsize' => '2mb', 'extensions' => 'JPG,JPEG, PNG']) !!}</ul>
                 </div>
 
                 <div class="form-group">

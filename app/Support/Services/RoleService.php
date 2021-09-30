@@ -14,9 +14,10 @@ class RoleService extends BaseService
 
     public function store()
     {
-        $this->model->name          =   $this->request->get('name');
-        $this->model->description   =   $this->request->get('description');
-        $this->model->guard_name    =   config('auth.default.guard', 'web');
+        $this->model->name              = $this->request->get('name');
+        $this->model->description       = $this->request->get('description');
+        $this->model->guard_name        = config('auth.default.guard', 'web');
+        $this->model->generate_referral = $this->request->has('generate_referral');
 
         if ($this->model->isDirty()) {
             $this->model->save();

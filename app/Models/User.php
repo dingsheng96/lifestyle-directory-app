@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Role;
 use App\Helpers\Misc;
 use App\Models\Media;
 use App\Models\Branch;
@@ -13,6 +14,7 @@ use App\Models\Rateable;
 use App\Models\Favourable;
 use App\Models\UserDevice;
 use App\Models\BranchDetail;
+use App\Models\UserReferral;
 use App\Models\Categorizable;
 use App\Models\DeviceSetting;
 use App\Models\OperationHour;
@@ -37,9 +39,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $table = 'users';
 
     protected $fillable = [
-        'name', 'email', 'mobile_no', 'type', 'publish',
-        'status', 'application_status', 'email_verified_at',
-        'password', 'remember_token',
+        'name', 'email', 'mobile_no', 'type', 'publish', 'referral_code',
+        'status', 'application_status', 'email_verified_at', 'password', 'remember_token',
     ];
 
     protected $hidden = [
@@ -183,6 +184,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function merchantApplicationHistories()
     {
         return $this->hasMany(ApplicationHistory::class, 'user_id', 'id')->where('type', self::USER_TYPE_MERCHANT);
+    }
+
+    public function referrals()
+    {
+        return $this->belongsToMany(self::class, UserReferral::class, 'user_id', 'referral_id', 'id', 'id');
+    }
+
+    public function referredBy()
+    {
+        return $this->belongsToMany(self::class, UserReferral::class, 'referral_id', 'user_id', 'id', 'id');
     }
 
     // Scopes

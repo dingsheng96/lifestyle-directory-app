@@ -254,3 +254,29 @@ function subscriptionTerminationAlert(title, message, redirectUrl)
         }
     });
 }
+
+function copyReferralLink(copyText)
+{
+    if (navigator.clipboard && window.isSecureContext) {
+        // navigator clipboard api method'
+        navigator.clipboard.writeText(copyText);
+    } else {
+        // text area method
+        let textArea = document.createElement("textarea");
+        textArea.value = copyText;
+        // make the textarea out of viewport
+        textArea.style.position = "fixed";
+        textArea.style.left = "-999999px";
+        textArea.style.top = "-999999px";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        new Promise((res, rej) => {
+            // here the magic happens
+            document.execCommand('copy') ? res() : rej();
+            textArea.remove();
+        });
+    }
+
+    alert('Referral link has been copied to clipboard');
+}

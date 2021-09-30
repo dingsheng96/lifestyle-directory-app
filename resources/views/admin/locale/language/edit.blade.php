@@ -6,7 +6,7 @@
 
     <div class="row mb-3">
         <div class="col-12">
-            <div class="card shadow">
+            <div class="card shadow border">
                 <div class="card-header bg-transparent border-0">
                     <h3 class="card-title">{{ __('modules.edit', ['module' => trans_choice('modules.language', 1)]) }}</h3>
                 </div>
@@ -101,7 +101,7 @@
                         </div>
                     </div>
                     <div class="card-footer bg-transparent text-md-right text-center">
-                        <a role="button" href="{{ route('admin.locales.languages.index') }}" class="btn btn-light mx-2">
+                        <a role="button" href="{{ route('admin.locales.languages.index') }}" class="btn btn-default mx-2">
                             <i class="fas fa-caret-left"></i>
                             {{ __('labels.back') }}
                         </a>

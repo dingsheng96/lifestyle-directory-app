@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Support\Services\AdminService;
 use App\DataTables\Admin\AdminDataTable;
 use App\Http\Requests\Admin\AdminRequest;
+use App\DataTables\Admin\ReferralDataTable;
 
 class AdminController extends Controller
 {
@@ -88,9 +89,11 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(User $admin)
+    public function show(User $admin, ReferralDataTable $dataTable)
     {
-        return view('admin.admin.show', compact('admin'));
+        $admin->loadCount('referredBy');
+
+        return $dataTable->with(compact('admin'))->render('admin.admin.show', compact('admin'));
     }
 
     /**

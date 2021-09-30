@@ -6,7 +6,7 @@
 
     <div class="row mb-3">
         <div class="col-12">
-            <div class="card shadow">
+            <div class="card shadow border">
 
                 <div class="card-header bg-transparent border-0">
                     <span class="h5">{{ __('modules.create', ['module' => trans_choice('modules.banner', 1)]) }}</span>
@@ -70,7 +70,7 @@
                     </div>
 
                     <div class="card-footer bg-transparent text-md-right text-center">
-                        <a role="button" href="{{ route('admin.banners.index') }}" class="btn btn-light mx-2">
+                        <a role="button" href="{{ route('admin.banners.index') }}" class="btn btn-default mx-2">
                             <i class="fas fa-caret-left"></i>
                             {{ __('labels.back') }}
                         </a>

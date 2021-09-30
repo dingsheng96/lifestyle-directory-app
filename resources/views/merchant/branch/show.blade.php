@@ -6,7 +6,7 @@
     <div class="row">
 
         <div class="col-12 col-md-3">
-            <div class="card shadow">
+            <div class="card shadow border">
                 <div class="card-header bg-transparent border-0">
                     <span class="h5">{{ __('modules.view', ['module' => trans_choice('labels.branch', 1)]) }}</span>
                 </div>
@@ -20,7 +20,7 @@
         </div>
 
         <div class="col-12 col-md-9">
-            <div class="card shadow">
+            <div class="card shadow border">
                 <div class="card-body">
                     <div class="tab-content" id="nav-tabContent">
                         <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
@@ -190,7 +190,7 @@
                 </div>
 
                 <div class="card-footer bg-transparent text-md-right text-center">
-                    <a href="{{ route('merchant.branches.index') }}" role="button" class="btn btn-light">
+                    <a href="{{ route('merchant.branches.index') }}" role="button" class="btn btn-default">
                         <i class="fas fa-caret-left"></i>
                         {{ __('labels.back') }}
                     </a>

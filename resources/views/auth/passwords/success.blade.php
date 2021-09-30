@@ -6,7 +6,7 @@
 
     <div class="row justify-content-center">
         <div class="col-md-8">
-            <div class="card shadow text-center py-3 border">
+            <div class="card shadow border text-center py-3 border">
 
                 <div class="card-body text-center">
                     <img src="{{ asset('assets/check.png') }}" alt="success" class="status-img card-img-top">

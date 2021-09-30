@@ -34,7 +34,7 @@ class RoleRequest extends FormRequest
             'name'          =>  ['required', Rule::unique(Role::class, 'name')->ignore($this->route('role'), 'id')->whereNull('deleted_at')],
             'description'   =>  ['nullable'],
             'permissions'   =>  ['nullable', 'array'],
-            'permissions.*' =>  ['exists:' . Permission::class . ',id']
+            'permissions.*' =>  ['exists:' . Permission::class . ',id'],
         ];
     }
 

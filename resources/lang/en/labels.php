@@ -9,6 +9,7 @@ return [
     'create' => 'Create',
     'delete' => 'Delete',
     'action' => 'Action',
+    'copy' => 'Copy',
     'back' => 'Back',
     'active' => 'Active',
     'inactive' => 'Inactive',
@@ -160,5 +161,12 @@ return [
     'total_registered_members' => 'Total Registered Members',
     'total_pending_applications' => 'Total Pending Applications',
     'top_rated_merchants' => 'Top 10 Rated Merchants',
-    'rank' => 'Rank'
+    'rank' => 'Rank',
+    'generate_referral_code' => 'Generate Referral Code',
+    'referral_link' => 'Referral Link',
+    'referral_code' => 'Referral Code',
+    'pic_details' => 'Person In Charge Details',
+    'company_details' => 'Company Details',
+    'referral_details' => 'Referral Details',
+    'referred_users' => 'Referred Users',
 ];

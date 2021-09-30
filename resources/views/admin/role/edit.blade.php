@@ -6,7 +6,7 @@
 
     <div class="row">
         <div class="col-12">
-            <div class="card shadow">
+            <div class="card shadow border">
                 <div class="card-header bg-transparent border-0">
                     <span class="h5">{{ __('modules.edit', ['module' => trans_choice('modules.role', 1)]) }}</span>
                 </div>
@@ -35,12 +35,27 @@
                             </span>
                             @enderror
                         </div>
+                        <div class="form-group">
+                            <label for="settings" class="col-form-label">{{ __('labels.settings') }}</label>
+                            <div class="row mt-3" id="settings">
+                                <div class="col-12">
+                                    <div class="icheck-purple d-inline">
+                                        <input type="checkbox" id="generate_referral" name="generate_referral" value="1" {{ old('generate_referral', $role->generate_referral) == 1 ? 'checked' : null }}>
+                                        <label for="generate_referral">{{ __('labels.generate_referral_code') }}</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
 
                         <div class="form-group">
-                            <label for="tbl_permission" class="col-form-label">{{ trans_choice('labels.permission', 2) }}</label>
                             <div class="table-responsive" id="tbl_permission">
-                                <table class="table table-bordered table-striped table-hover">
+                                <table class="table table-bordered table-striped table-hover w-100">
                                     <thead>
+                                        <tr>
+                                            <th colspan="5" class="text-center">{{ trans_choice('labels.permission', 2) }}</th>
+                                        </tr>
                                         <tr>
                                             <td class="font-weight-bold">{{ trans_choice('labels.module', 2) }}</td>
                                             @foreach ($actions as $action)
@@ -71,7 +86,7 @@
                     </div>
 
                     <div class="card-footer bg-transparent text-md-right text-center">
-                        <a role="button" href="{{ route('admin.roles.index') }}" class="btn btn-light mx-2">
+                        <a role="button" href="{{ route('admin.roles.index') }}" class="btn btn-default mx-2">
                             <i class="fas fa-caret-left"></i>
                             {{ __('labels.back') }}
                         </a>

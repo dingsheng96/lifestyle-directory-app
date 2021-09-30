@@ -3,6 +3,8 @@
 namespace App\Http\Requests\Merchant\Auth;
 
 use App\Models\City;
+use App\Models\User;
+use App\Models\Category;
 use App\Rules\PhoneFormat;
 use App\Models\CountryState;
 use App\Rules\UniqueMerchant;
@@ -44,6 +46,8 @@ class RegisterRequest extends FormRequest
             'pic_email'         =>  ['required', 'email'],
             'logo'              =>  ['required', 'image', 'max:2000', 'mimes:jpg,jpeg,png'],
             'ssm_cert'          =>  ['required', 'file', 'max:2000', 'mimes:pdf'],
+            'referral_code'     =>  ['nullable', Rule::exists(User::class, 'referral_code')->where('type', 'admin')->whereNull('deleted_at')],
+            'category'          =>  ['required', 'exists:' . Category::class . ',id']
         ];
     }
 }

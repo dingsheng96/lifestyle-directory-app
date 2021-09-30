@@ -58,7 +58,7 @@
     {{-- Top 10 rated merchants --}}
     <div class="row">
         <div class="col-12">
-            <div class="card shadow">
+            <div class="card shadow border">
                 <div class="card-header border-0 bg-transparent">
                     <span class="h5">{{ __('labels.top_rated_merchants') }}</span>
                 </div>

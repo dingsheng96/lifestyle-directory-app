@@ -6,7 +6,7 @@
 
     <div class="row mb-3">
         <div class="col-12">
-            <div class="card shadow">
+            <div class="card shadow border">
 
                 <div class="card-header bg-transparent border-0">
                     <span class="h5">{{ __('modules.view', ['module' => trans_choice('modules.category', 1)]) }}</span>
@@ -45,7 +45,7 @@
                 </div>
 
                 <div class="card-footer bg-transparent text-md-right text-center">
-                    <a role="button" href="{{ route('admin.categories.index') }}" class="btn btn-light">
+                    <a role="button" href="{{ route('admin.categories.index') }}" class="btn btn-default">
                         <i class="fas fa-caret-left"></i>
                         {{ __('labels.back') }}
                     </a>

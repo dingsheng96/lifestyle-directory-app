@@ -7,7 +7,7 @@
 
     <div class="row">
         <div class="col-12">
-            <div class="card shadow">
+            <div class="card shadow border">
 
                 <div class="card-header bg-transparent border-0">
                     <span class="h5">{{ __('modules.edit', ['module' => __('labels.profile')]) }}</span>
@@ -37,6 +37,16 @@
                             </span>
                             @enderror
                         </div>
+
+                        @if(!empty($user->referral_code))
+                        <div class="form-group">
+                            <label for="referral_link" class="col-form-label">{{ __('labels.referral_link') }}</label>
+                            <span class="form-control-plaintext d-inline">{{ route('merchant.register', ['referral' => $user->referral_code]) }}</span>
+                            <button type="button" class="btn btn-purple btn-sm d-inline mr-1" onclick="copyReferralLink('{{ route('merchant.register', ['referral' => $user->referral_code]) }}');">
+                                {{ __('labels.copy') }} {{ __('labels.referral_link') }}
+                            </button>
+                        </div>
+                        @endif
 
                         <hr>
 

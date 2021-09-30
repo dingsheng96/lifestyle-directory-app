@@ -6,7 +6,7 @@
     <div class="row">
 
         <div class="col-12 col-md-3">
-            <div class="card shadow">
+            <div class="card shadow border">
                 <div class="card-header bg-transparent border-0">
                     <span class="h5">{{ __('modules.edit', ['module' => trans_choice('modules.merchant', 1)]) }}</span>
                 </div>
@@ -24,7 +24,7 @@
         </div>
 
         <div class="col-12 col-md-9">
-            <div class="card shadow">
+            <div class="card shadow border">
 
                 <form action="{{ route('admin.merchants.update', ['merchant' => $merchant->id]) }}" method="post" role="form" enctype="multipart/form-data">
                     @csrf
@@ -270,7 +270,7 @@
 
                             <div class="tab-pane fade" id="list-location" role="tabpanel" aria-labelledby="list-location-list">
 
-                                <div id="location-address-panel" data-route="{{ route('data.geocoding') }}">
+                                <div id="location-address-panel" data-route="{{ route('admin.data.geocoding') }}">
                                     <div class="form-group">
                                         <label for="address_1" class="col-form-label">{{ __('labels.address_1') }} <span class="text-danger">*</span></label>
                                         <input type="text" name="address_1" id="address_1" class="form-control @error('address_1') is-invalid @enderror" value="{{ old('address_1', $merchant->address->address_1 ?? null) }}">
@@ -328,7 +328,7 @@
                                             <div class="form-group">
                                                 <label for="city" class="col-form-label">{{ trans_choice('labels.city', 1) }} <span class="text-danger">*</span></label>
                                                 <select name="city" id="city" class="form-control select2 @error('city') is-invalid @enderror city-dropdown" data-selected="{{ old('city', $merchant->address->city_id ?? null) }}"
-                                                    data-city-route="{{ route('data.country-states.cities', ['__REPLACE__']) }}">
+                                                    data-city-route="{{ route('admin.data.country-states.cities', ['__REPLACE__']) }}">
                                                     <option value="0" selected disabled>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(trans_choice('labels.city', 1))]) }} ---</option>
                                                 </select>
                                                 @error('city')
@@ -508,7 +508,7 @@
                     </div>
 
                     <div class="card-footer bg-transparent text-md-right text-center">
-                        <a href="{{ route('admin.merchants.index') }}" role="button" class="btn btn-light mx-2">
+                        <a href="{{ route('admin.merchants.index') }}" role="button" class="btn btn-default mx-2">
                             <i class="fas fa-caret-left"></i>
                             {{ __('labels.back') }}
                         </a>

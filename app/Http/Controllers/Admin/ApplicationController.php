@@ -36,7 +36,7 @@ class ApplicationController extends Controller
     public function show(User $application)
     {
         $application->load([
-            'address', 'branchDetail', 'media'
+            'address', 'branchDetail', 'media', 'referrals'
         ]);
 
         return view('admin.application.show', compact('application'));
@@ -51,7 +51,7 @@ class ApplicationController extends Controller
     public function edit(User $application)
     {
         $application->load([
-            'address', 'branchDetail', 'media'
+            'address', 'branchDetail', 'media', 'referrals'
         ]);
 
         $status_approve = User::APPLICATION_STATUS_APPROVED;
