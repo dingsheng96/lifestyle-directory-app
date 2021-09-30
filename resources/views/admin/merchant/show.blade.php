@@ -106,57 +106,16 @@
 
                             <hr>
 
+                            @foreach ($social_media as $media_key => $media_text)
                             <div class="form-group row">
-                                <label for="whatsapp" class="col-form-label col-sm-2">{{ __('labels.whatsapp') }}</label>
+                                <label for="{{ $media_text }}" class="col-form-label col-sm-2">{{ $media_text }}</label>
                                 <div class="col-sm-10">
-                                    <span class="form-control-plaintext" id="whatsapp">
-                                        @if (!empty($merchant->branchDetail->whatsapp))
-                                        <a href="https://wa.me/{{ $merchant->branchDetail->whatsapp }}" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt mr-2"></i>{{ $merchant->branchDetail->formatted_whatsapp }}</a>
-                                        @else
-                                        -
-                                        @endif
+                                    <span class="form-control-plaintext">
+                                        {{ $merchant->userSocialMedia->where('media_key', $media_key)->first()->media_value ?? '-' }}
                                     </span>
                                 </div>
                             </div>
-
-                            <div class="form-group row">
-                                <label for="website" class="col-form-label col-sm-2">{{ __('labels.website') }}</label>
-                                <div class="col-sm-10">
-                                    <span class="form-control-plaintext" id="ssm_cert">
-                                        @if (!empty($merchant->branchDetail->website))
-                                        <a href="{{ $merchant->branchDetail->website }}" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt mr-2"></i>{{ $merchant->branchDetail->website }}</a>
-                                        @else
-                                        -
-                                        @endif
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="facebook" class="col-form-label col-sm-2">{{ __('labels.facebook') }}</label>
-                                <div class="col-sm-10">
-                                    <span class="form-control-plaintext" id="facebook">
-                                        @if (!empty($merchant->branchDetail->facebook))
-                                        <a href="{{ $merchant->branchDetail->facebook }}" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt mr-2"></i>{{ $merchant->branchDetail->facebook }}</a>
-                                        @else
-                                        -
-                                        @endif
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="instagram" class="col-form-label col-sm-2">{{ __('labels.instagram') }}</label>
-                                <div class="col-sm-10">
-                                    <span class="form-control-plaintext" id="instagram">
-                                        @if (!empty($merchant->branchDetail->instagram))
-                                        <a href="{{ $merchant->branchDetail->instagram }}" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt mr-2"></i>{{ $merchant->branchDetail->instagram }}</a>
-                                        @else
-                                        -
-                                        @endif
-                                    </span>
-                                </div>
-                            </div>
+                            @endforeach
 
                             <hr>
 

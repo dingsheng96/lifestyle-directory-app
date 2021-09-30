@@ -50,10 +50,6 @@ class MerchantResource extends JsonResource
                         'end_at'        =>  $value->end
                     ];
                 }),
-                'website'           => $this->branchDetail->website,
-                'facebook'          => $this->branchDetail->facebook,
-                'whatsapp'          => $this->branchDetail->whatsapp,
-                'instagram'         => $this->branchDetail->instagram,
                 'address'           => [
                     'full_address'  => $this->address->full_address,
                     'longitude'     => $this->address->longitude,
@@ -62,6 +58,11 @@ class MerchantResource extends JsonResource
                 'has_career'        => (bool) $this->careers_count > 0,
                 'similar_merchants' => parent::collection($this->similar_merchants)->toArray($request)
             ]);
+
+            $data = array_merge($data, collect($this->userSocialMedia)
+                ->mapWithKeys(function ($item) {
+                    return [$item->media_key => $item->media_value];
+                })->toArray());
         }
 
         return $data;

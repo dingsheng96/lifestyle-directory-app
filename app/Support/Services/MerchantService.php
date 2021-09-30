@@ -4,11 +4,13 @@ namespace App\Support\Services;
 
 use Exception;
 use App\Models\User;
+use App\Helpers\Misc;
 use App\Models\Media;
 use App\Helpers\Geocoding;
 use App\Helpers\FileManager;
 use App\Models\BranchDetail;
 use App\Models\OperationHour;
+use App\Models\UserSocialMedia;
 use App\Models\ApplicationHistory;
 use App\Models\BranchVisitorHistory;
 use App\Support\Services\BaseService;
@@ -59,6 +61,7 @@ class MerchantService extends BaseService
         $this->storeSsmCert();
         $this->storeImage();
         $this->storeOperatingHour();
+        $this->storeSocialMedia();
 
         return $this;
     }
@@ -75,10 +78,6 @@ class MerchantService extends BaseService
         $details->pic_email     =   $this->request->get('pic_email');
         $details->description   =   $this->request->get('description');
         $details->services      =   $this->request->get('services');
-        $details->website       =   $this->request->get('website');
-        $details->facebook      =   $this->request->get('facebook');
-        $details->whatsapp      =   $this->request->get('whatsapp');
-        $details->instagram     =   $this->request->get('instagram');
 
         if ($details->isDirty()) {
 
@@ -317,6 +316,30 @@ class MerchantService extends BaseService
         })->firstOrFail();
 
         $this->model->referrals()->sync($referral->id, false);
+
+        return $this;
+    }
+
+    public function storeSocialMedia()
+    {
+        foreach ((new Misc())->getSocialMediaKeys() as $media_key => $media_text) {
+
+            $social_media = $this->model->userSocialMedia()
+                ->where('media_key', $media_key)
+                ->firstOr(function () {
+                    return new UserSocialMedia();
+                });
+
+            $social_media->media_key    = $media_key;
+            $social_media->media_value  = ($media_key == UserSocialMedia::SOCIAL_MEDIA_KEY_WHATSAPP)
+                ? (new Misc())->phoneStoreFormat($this->request->get($media_key))
+                : $this->request->get($media_key);
+
+            if ($social_media->isDirty()) {
+
+                $this->model->userSocialMedia()->save($social_media);
+            }
+        }
 
         return $this;
     }

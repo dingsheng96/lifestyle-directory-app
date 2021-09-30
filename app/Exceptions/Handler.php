@@ -89,16 +89,16 @@ class Handler extends ExceptionHandler
             }
         });
 
-        $this->renderable(function (Exception $e, $request) {
+        // $this->renderable(function (Exception $e, $request) {
 
-            if ($request->expectsJson()) {
-                return Response::instance()
-                    ->withStatusCode('modules.member', 'actions.read.fail')
-                    ->withStatus('fail')
-                    ->withMessage($e->getMessage())
-                    ->sendJson(404);
-            }
-        });
+        //     if ($request->expectsJson()) {
+        //         return Response::instance()
+        //             ->withStatus('fail')
+        //             ->withMessage($e->getMessage())
+        //             ->withData(['error' => $e])
+        //             ->sendJson(404);
+        //     }
+        // });
 
         $this->renderable(function (TokenMismatchException $e, $request) {
 

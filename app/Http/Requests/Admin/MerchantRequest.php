@@ -4,6 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use App\Models\City;
 use App\Models\User;
+use App\Helpers\Misc;
 use App\Models\Media;
 use App\Helpers\Status;
 use App\Models\Category;
@@ -11,6 +12,7 @@ use App\Rules\PhoneFormat;
 use App\Models\BranchDetail;
 use App\Models\CountryState;
 use App\Rules\UniqueMerchant;
+use App\Models\UserSocialMedia;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -39,7 +41,7 @@ class MerchantRequest extends FormRequest
     {
         $merchant = $this->route('branch') ?? $this->route('merchant');
 
-        return [
+        $rules = [
             'name'              =>  ['required', 'min:3', 'max:255'],
             'phone'             =>  ['required', new PhoneFormat],
             'email'             =>  ['required', 'email', new UniqueMerchant('email', $merchant)],
@@ -49,25 +51,18 @@ class MerchantRequest extends FormRequest
             'listing_status'    =>  [Rule::requiredIf($this->route('branch')), 'nullable', Rule::in(array_keys((new Status())->publishStatus()))],
             'description'       =>  ['nullable'],
             'services'          =>  ['nullable'],
-
             'address_1'         =>  ['required', 'min:3', 'max:255'],
             'address_2'         =>  ['nullable'],
             'postcode'          =>  ['required', 'digits:5'],
             'country_state'     =>  ['required', Rule::exists(CountryState::class, 'id')],
             'city'              =>  ['required', Rule::exists(City::class, 'id')->where('country_state_id', $this->get('country_state'))],
-
             'reg_no'            =>  ['required', Rule::unique(BranchDetail::class, 'reg_no')->ignore($merchant->id, 'branch_id')->whereNull('deleted_at')],
-            'website'           =>  ['nullable', 'url'],
-            'facebook'          =>  ['nullable', 'url'],
-            'instagram'         =>  ['nullable', 'url'],
-            'whatsapp'          =>  ['nullable', new PhoneFormat],
             'pic_name'          =>  ['required'],
             'pic_phone'         =>  ['required', new PhoneFormat],
             'pic_email'         =>  ['required', 'email'],
-
             'logo'              =>  [Rule::requiredIf(empty($merchant)), 'nullable', 'image', 'max:2000', 'mimes:jpg,jpeg,png'],
             'ssm_cert'          =>  [Rule::requiredIf(empty($merchant)), 'nullable', 'file', 'max:2000', 'mimes:pdf'],
-            'files'             =>  ['nullable'],
+            'files'             =>  ['nullable', 'array'],
             'files.*'           =>  ['image', 'mimes:jpg,jpeg,png'],
             'thumbnail'         =>  ['nullable', 'exists:' . Media::class . ',id'],
 
@@ -76,6 +71,20 @@ class MerchantRequest extends FormRequest
             'operation.*.end_at'        =>  ['required', 'date_format:H:i'],
             'operation.*.off_day'       =>  ['nullable', 'in:on'],
         ];
+
+        $social_media_rules = [];
+
+        foreach ((new Misc())->getSocialMediaKeys() as $media_key => $media_text) {
+
+            if ($media_key == UserSocialMedia::SOCIAL_MEDIA_KEY_WHATSAPP) {
+                $social_media_rules[$media_key] = ['nullable', new PhoneFormat];
+                continue;
+            }
+
+            $social_media_rules[$media_key] = ['nullable', 'url'];
+        }
+
+        return array_merge($rules, $social_media_rules);
     }
 
     /**

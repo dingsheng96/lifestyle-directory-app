@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use App\Helpers\Misc;
 use App\Models\Media;
 use App\Helpers\Message;
 use App\Helpers\Response;
@@ -35,7 +36,9 @@ class BranchController extends Controller
     {
         $max_files = Media::MAX_BRANCH_IMAGE_UPLOAD;
 
-        return view('admin.merchant.branch.create', compact('max_files', 'merchant'));
+        $social_media = (new Misc())->getSocialMediaKeys();
+
+        return view('admin.merchant.branch.create', compact('max_files', 'merchant', 'social_media'));
     }
 
     /**
@@ -94,12 +97,14 @@ class BranchController extends Controller
     public function show(User $merchant, User $branch)
     {
         $branch->load([
-            'branchDetail', 'address.city', 'media', 'operationHours'
+            'branchDetail', 'address.city', 'media', 'operationHours', 'userSocialMedia'
         ]);
 
         $image_and_thumbnail = collect($branch->media)->whereNotIn('type', [Media::TYPE_LOGO, Media::TYPE_SSM]);
 
-        return view('admin.merchant.branch.show', compact('merchant', 'branch', 'image_and_thumbnail'));
+        $social_media = (new Misc())->getSocialMediaKeys();
+
+        return view('admin.merchant.branch.show', compact('merchant', 'branch', 'image_and_thumbnail', 'social_media'));
     }
 
     /**
@@ -111,14 +116,16 @@ class BranchController extends Controller
     public function edit(User $merchant, User $branch)
     {
         $branch->load([
-            'branchDetail', 'address.city', 'media', 'operationHours'
+            'branchDetail', 'address.city', 'media', 'operationHours', 'userSocialMedia'
         ]);
 
         $image_and_thumbnail = collect($branch->media)->whereNotIn('type', [Media::TYPE_LOGO, Media::TYPE_SSM]);
 
         $max_files = Media::MAX_BRANCH_IMAGE_UPLOAD - (clone $image_and_thumbnail)->count();
 
-        return view('admin.merchant.branch.edit', compact('merchant', 'branch', 'max_files', 'image_and_thumbnail'));
+        $social_media = (new Misc())->getSocialMediaKeys();
+
+        return view('admin.merchant.branch.edit', compact('merchant', 'branch', 'max_files', 'image_and_thumbnail', 'social_media'));
     }
 
     /**

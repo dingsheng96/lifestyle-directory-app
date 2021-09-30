@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Merchant;
 
+use App\Helpers\Misc;
 use App\Helpers\Message;
 use App\Models\Permission;
 use Illuminate\Support\Facades\DB;
@@ -20,9 +21,11 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $user = Auth::user()->load(['address', 'media', 'branchDetail'])->loadCount(['ratings']);
+        $user = Auth::user()->load(['address', 'media', 'branchDetail', 'userSocialMedia'])->loadCount(['ratings']);
 
-        return view('merchant.profile', compact('user'));
+        $social_media = (new Misc())->getSocialMediaKeys();
+
+        return view('merchant.profile', compact('user', 'social_media'));
     }
 
     /**

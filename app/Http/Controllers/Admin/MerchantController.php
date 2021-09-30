@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\User;
+use App\Helpers\Misc;
 use App\Models\Media;
 use App\Helpers\Message;
 use App\Helpers\Response;
@@ -45,7 +46,9 @@ class MerchantController extends Controller
     {
         $max_files = Media::MAX_BRANCH_IMAGE_UPLOAD;
 
-        return view('admin.merchant.create', compact('max_files'));
+        $social_media = (new Misc())->getSocialMediaKeys();
+
+        return view('admin.merchant.create', compact('max_files', 'social_media'));
     }
 
     /**
@@ -95,7 +98,8 @@ class MerchantController extends Controller
     public function show(User $merchant, BranchDataTable $dataTable)
     {
         $merchant->load([
-            'branchDetail', 'address.city', 'media', 'subBranches', 'categories', 'operationHours'
+            'branchDetail', 'address.city', 'media', 'subBranches',
+            'categories', 'operationHours', 'userSocialMedia'
         ]);
 
         $image_and_thumbnail = collect($merchant->media)->whereNotIn('type', [Media::TYPE_LOGO, Media::TYPE_SSM]);
@@ -112,7 +116,7 @@ class MerchantController extends Controller
     public function edit(User $merchant, BranchDataTable $dataTable)
     {
         $merchant->load([
-            'branchDetail', 'address.city', 'media', 'categories',
+            'branchDetail', 'address.city', 'media', 'categories', 'userSocialMedia',
             'subBranches' => function ($query) {
                 $query->orderByDesc('created_at');
             },
@@ -125,7 +129,9 @@ class MerchantController extends Controller
 
         $max_files = Media::MAX_BRANCH_IMAGE_UPLOAD - (clone $image_and_thumbnail)->count();
 
-        return $dataTable->with(['merchant' => $merchant])->render('admin.merchant.edit', compact('merchant', 'image_and_thumbnail', 'max_files'));
+        $social_media = (new Misc())->getSocialMediaKeys();
+
+        return $dataTable->with(['merchant' => $merchant])->render('admin.merchant.edit', compact('merchant', 'image_and_thumbnail', 'max_files', 'social_media'));
     }
 
     /**
@@ -146,7 +152,7 @@ class MerchantController extends Controller
 
         try {
 
-            $merchant->load(['media', 'address', 'branchDetail', 'categories']);
+            $merchant->load(['media', 'address', 'branchDetail', 'categories', 'userSocialMedia']);
 
             $merchant_service->setModel($merchant)->setRequest($request)->storeMainMerchant();
 

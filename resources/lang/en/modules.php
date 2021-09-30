@@ -12,6 +12,7 @@ return [
 
     'login' => 'Login',
     'verify_email' => 'Verify Email',
+    'register' => 'Register',
 
     'general' => 'General',
     'dashboard' => 'Dashboard',

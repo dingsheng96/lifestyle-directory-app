@@ -1,4 +1,4 @@
-@extends('merchant.layouts.master', ['title' => __('modules.login')])
+@extends('merchant.layouts.master', ['title' => __('modules.register')])
 
 @section('content')
 

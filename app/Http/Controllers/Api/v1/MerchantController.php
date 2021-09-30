@@ -58,7 +58,7 @@ class MerchantController extends Controller
         try {
 
             $merchant = User::with([
-                'media', 'ratings', 'branchDetail', 'raters', 'categories', 'operationHours', 'favouriteBy',
+                'media', 'ratings', 'branchDetail', 'raters', 'categories', 'operationHours', 'favouriteBy',  'userSocialMedia',
                 'address' => function ($query) use ($latitude, $longitude) {
                     $query->getDistanceByCoordinates($latitude, $longitude);
                 }

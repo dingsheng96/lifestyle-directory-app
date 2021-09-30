@@ -18,6 +18,7 @@ use App\Models\UserReferral;
 use App\Models\Categorizable;
 use App\Models\DeviceSetting;
 use App\Models\OperationHour;
+use App\Models\UserSocialMedia;
 use App\Observers\UserObserver;
 use App\Models\UserNotification;
 use App\Models\ApplicationHistory;
@@ -194,6 +195,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function referredBy()
     {
         return $this->belongsToMany(self::class, UserReferral::class, 'referral_id', 'user_id', 'id', 'id');
+    }
+
+    public function userSocialMedia()
+    {
+        return $this->hasMany(UserSocialMedia::class, 'user_id', 'id');
     }
 
     // Scopes

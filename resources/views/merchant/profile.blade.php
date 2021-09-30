@@ -51,6 +51,7 @@
                         <ul class="nav nav-pills">
                             <li class="nav-item"><a class="nav-link active" href="#general" data-toggle="tab">{{ __('labels.general') }}</a></li>
                             <li class="nav-item"><a class="nav-link" href="#details" data-toggle="tab">{{ __('labels.details') }}</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#social" data-toggle="tab">{{ __('labels.social_media') }}</a></li>
                             <li class="nav-item"><a class="nav-link" href="#location" data-toggle="tab">{{ __('labels.location') }}</a></li>
                             <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">{{ __('labels.settings') }}</a></li>
                         </ul>
@@ -149,63 +150,6 @@
                                     </div>
                                 </div>
 
-                                <hr>
-
-                                <div class="row">
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label for="whatsapp" class="col-form-label">{{ __('labels.whatsapp') }}</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text bg-white">+</span>
-                                                </div>
-                                                <input type="text" name="whatsapp" id="whatsapp" value="{{ old('whatsapp', $user->branchDetail->whatsapp) }}" class="form-control @error('whatsapp') is-invalid @enderror">
-                                            </div>
-                                            @error('whatsapp')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label for="website" class="col-form-label">{{ __('labels.website') }}</label>
-                                            <input type="url" name="website" id="website" value="{{ old('website', $user->branchDetail->website) }}" class="form-control @error('website') is-invalid @enderror">
-                                            @error('website')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label for="facebook" class="col-form-label">{{ __('labels.facebook') }}</label>
-                                            <input type="url" name="facebook" id="facebook" value="{{ old('facebook', $user->branchDetail->facebook) }}" class="form-control @error('facebook') is-invalid @enderror">
-                                            @error('facebook')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6">
-                                        <div class="form-group">
-                                            <label for="instagram" class="col-form-label">{{ __('labels.instagram') }}</label>
-                                            <input type="url" name="instagram" id="instagram" value="{{ old('instagram', $user->branchDetail->instagram) }}" class="form-control @error('instagram') is-invalid @enderror">
-                                            @error('instagram')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
                             </div>
 
                             <div class="tab-pane" id="details">
@@ -233,6 +177,23 @@
                                     <label for="tbl_oprating_hour" class="col-form-label">{{ __('labels.operating_hour') }}</label>
                                     @include('components.tbl_operation', ['operation_hours' => $user->operationHours])
                                 </div>
+                            </div>
+
+                            <div class="tab-pane" id="social">
+                                @foreach ($social_media as $media_key => $media_text)
+                                <div class="form-group row">
+                                    <label for="{{ $media_text }}" class="col-form-label col-sm-2">{{ $media_text }}</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="{{ $media_key }}" id="{{ $media_text }}" value="{{ old($media_key, optional(optional(optional($user->userSocialMedia)->where('media_key', $media_key))->first())->media_value) }}"
+                                            class="form-control @error($media_key) is-invalid @enderror">
+                                        @error($media_key)
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                @endforeach
                             </div>
 
                             <div class="tab-pane" id="location">
