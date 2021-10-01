@@ -273,11 +273,11 @@ class User extends Authenticatable implements MustVerifyEmail
         $tbl_users      =   $this->getTable();
         $tbl_ratings    =   app(Rateable::class)->getTable();
 
-        return $query->select($tbl_users . '.id', $tbl_users . '.name', DB::raw('AVG(' . $tbl_ratings . '.scale) AS ratings'))
+        return $query->select($tbl_users . '.id', $tbl_users . '.name', $tbl_users . '.mobile_no', $tbl_users . '.status', $tbl_users . '.email', DB::raw('AVG(' . $tbl_ratings . '.scale) AS ratings'))
             ->join($tbl_ratings, $tbl_users . '.id', '=', $tbl_ratings . '.rateable_id')
             ->where($tbl_ratings . '.rateable_type', self::class)
             ->validMerchant()
-            ->groupBy($tbl_users . '.id', $tbl_users . '.name')
+            ->groupBy($tbl_users . '.id', $tbl_users . '.name', $tbl_users . '.mobile_no', $tbl_users . '.status', $tbl_users . '.email')
             ->when(empty($value), function ($query) {
                 $query->having('ratings', '>=', 4);
             })
@@ -292,11 +292,11 @@ class User extends Authenticatable implements MustVerifyEmail
         $tbl_users      =   $this->getTable();
         $tbl_ratings    =   app(Rateable::class)->getTable();
 
-        return $query->select($tbl_users . '.id', $tbl_users . '.name', DB::raw('AVG(' . $tbl_ratings . '.scale) AS ratings'))
+        return $query->select($tbl_users . '.id', $tbl_users . '.name', $tbl_users . '.mobile_no', $tbl_users . '.status', $tbl_users . '.email', DB::raw('AVG(' . $tbl_ratings . '.scale) AS ratings'))
             ->join($tbl_ratings, $tbl_users . '.id', '=', $tbl_ratings . '.rateable_id')
             ->where($tbl_ratings . '.rateable_type', self::class)
             ->validMerchant()
-            ->groupBy($tbl_users . '.id', $tbl_users . '.name')
+            ->groupBy($tbl_users . '.id', $tbl_users . '.name', $tbl_users . '.mobile_no', $tbl_users . '.status', $tbl_users . '.email')
             ->having('ratings', '>', 0)
             ->orderByDesc('ratings');
     }
