@@ -56,6 +56,7 @@ class MerchantResource extends JsonResource
                     'latitude'      => number_format($this->address->latitude, 12)
                 ],
                 'has_career'        => (bool) $this->careers_count > 0,
+                'career_description' => $this->branchDetail->career_description,
                 'similar_merchants' => parent::collection($this->similar_merchants)->toArray($request)
             ]);
 

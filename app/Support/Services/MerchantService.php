@@ -72,12 +72,13 @@ class MerchantService extends BaseService
             return new BranchDetail();
         });
 
-        $details->reg_no        =   $this->request->get('reg_no');
-        $details->pic_name      =   $this->request->get('pic_name');
-        $details->pic_contact   =   $this->request->get('pic_phone');
-        $details->pic_email     =   $this->request->get('pic_email');
-        $details->description   =   $this->request->get('description');
-        $details->services      =   $this->request->get('services');
+        $details->reg_no                =   $this->request->get('reg_no');
+        $details->pic_name              =   $this->request->get('pic_name');
+        $details->pic_contact           =   $this->request->get('pic_phone');
+        $details->pic_email             =   $this->request->get('pic_email');
+        $details->description           =   $this->request->get('description');
+        $details->services              =   $this->request->get('services');
+        $details->career_description    =   $this->request->get('career_desc');
 
         if ($details->isDirty()) {
 

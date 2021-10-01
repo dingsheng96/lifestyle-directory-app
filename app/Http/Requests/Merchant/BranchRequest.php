@@ -45,6 +45,10 @@ class BranchRequest extends FormRequest
             'status'            =>  ['required', Rule::in(array_keys((new Status())->activeStatus()))],
             'listing_status'    =>  ['required', Rule::in(array_keys((new Status())->publishStatus()))],
 
+            'description'       =>  ['nullable', 'string'],
+            'services'          =>  ['nullable', 'string'],
+            'career_desc'       =>  ['nullable', 'string'],
+
             'address_1'         =>  ['required', 'min:3', 'max:255'],
             'address_2'         =>  ['nullable'],
             'postcode'          =>  ['required', 'digits:5'],

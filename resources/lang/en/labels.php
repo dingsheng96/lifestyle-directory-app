@@ -175,4 +175,5 @@ return [
     'company_details' => 'Company Details',
     'referral_details' => 'Referral Details',
     'referred_users' => 'Referred Users',
+    'career_introduction' => 'Career Introduction'
 ];

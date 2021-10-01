@@ -186,6 +186,16 @@
                                     </span>
                                     @enderror
                                 </div>
+
+                                <div class="form-group">
+                                    <label for="career_desc" class="col-form-label">{{ __('labels.career_introduction') }}</label>
+                                    <textarea name="career_desc" id="career_desc" cols="30" rows="5" class="form-control @error('career_desc') is-invalid @enderror">{{ old('career_desc') }}</textarea>
+                                    @error('career_desc')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
+                                </div>
                             </div>
 
                             <div class="tab-pane fade" id="list-social" role="tabpanel" aria-labelledby="list-social-list">

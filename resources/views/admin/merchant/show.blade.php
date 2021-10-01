@@ -167,6 +167,15 @@
                                 </div>
                             </div>
 
+                            <div class="form-group row">
+                                <label for="career_desc" class="col-form-label col-sm-2">{{ __('labels.career_introduction') }}</label>
+                                <div class="col-sm-10">
+                                    <span class="form-control-plaintext" id="career_desc">
+                                        {!! nl2br($merchant->branchDetail->career_description) ?? '-' !!}
+                                    </span>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="tab-pane fade" id="list-gallery" role="tabpanel" aria-labelledby="list-gallery-list">

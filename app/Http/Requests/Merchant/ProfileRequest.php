@@ -39,8 +39,9 @@ class ProfileRequest extends FormRequest
             'phone'     => ['required', new PhoneFormat],
             'password'  => ['nullable', 'confirmed', Password::defaults()],
 
-            'description'   =>  ['nullable'],
-            'services'      =>  ['nullable'],
+            'description'       =>  ['nullable', 'string'],
+            'services'          =>  ['nullable', 'string'],
+            'career_desc'       =>  ['nullable', 'string'],
 
             'listing_status'            =>  ['required', Rule::in(array_keys((new Status())->publishStatus()))],
             'operation.*'               =>  ['required', 'array'],
