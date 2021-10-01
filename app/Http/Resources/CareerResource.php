@@ -21,9 +21,7 @@ class CareerResource extends JsonResource
             'position'      =>  $this->position,
             'merchant'      =>  $this->branch->name,
             'location'      =>  $this->branch->address->location_city_state,
-            'show_salary'   =>  $this->show_salary,
-            'min_salary'    =>  number_format($this->formatted_min_salary, 2),
-            'max_salary'    =>  number_format($this->formatted_max_salary, 2),
+            'salary'        =>  $this->salary_range_with_currency_code
         ];
 
         if ($this->with_details) {

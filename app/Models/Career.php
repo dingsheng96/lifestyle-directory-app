@@ -105,7 +105,7 @@ class Career extends Model
             return number_format($min_salary, 2);
         }
 
-        return number_format($min_salary, 2) . ' - ' . number_format($max_salary, 2);
+        return number_format($min_salary, 2, '.', '') . ' - ' . number_format($max_salary, 2, '.', '');
     }
 
     public function getFormattedPhoneNumberAttribute()
@@ -124,5 +124,14 @@ class Career extends Model
         }
 
         return (new Misc())->addTagsToPhone($this->whatsapp);
+    }
+
+    public function getSalaryRangeWithCurrencyCodeAttribute()
+    {
+        if ($this->show_salary) {
+            return 'RM ' . $this->salary_range;
+        }
+
+        return 'RM xxxx';
     }
 }
