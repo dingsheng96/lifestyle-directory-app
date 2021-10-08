@@ -52,9 +52,13 @@ class CountryStateService extends BaseService
 
             $file = $this->request->file('create')['file'];
 
-            Excel::import(new CityImport($this->model), $file, null, (new FileManager())->getExcelReaderType($file->extension()));
+            Excel::import(new ImportsCityImport($this->model), $file, null, (new FileManager())->getExcelReaderType($file->extension()));
         }
 
         return $this;
+    }
+
+    public function getCities()
+    {
     }
 }
