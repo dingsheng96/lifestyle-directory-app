@@ -41,9 +41,9 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
 
-            ['web' => $web, 'api' => $api, 'prefix' => $prefix] = (new Domain())->getConfig();
+            ['web' => $web, 'api' => $api, 'prefix_mode' => $prefix_mode] = (new Domain())->getConfig();
 
-            if ($prefix) {
+            if ($prefix_mode) {
                 $this->prefixRoutes($web, $api);
             } else {
                 $this->domainRoutes($web, $api);
@@ -67,6 +67,10 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function prefixRoutes(array $web, array $api)
     {
+        $route_name = '';
+        $route_prefix = '';
+        $route_namespace = $this->namespace;
+
         foreach ($web as $value) {
 
             if (!empty($value['namespace'])) {
@@ -81,8 +85,8 @@ class RouteServiceProvider extends ServiceProvider
                 $route_prefix = $value['prefix'];
             }
 
-            Route::prefix($route_prefix)
-                ->middleware('web')
+            Route::middleware('web')
+                ->prefix($route_prefix)
                 ->namespace($route_namespace)
                 ->name($route_name)
                 ->group(base_path('routes/' . $value['route']['file']));
@@ -102,8 +106,8 @@ class RouteServiceProvider extends ServiceProvider
                 $route_prefix = $value['prefix'];
             }
 
-            Route::prefix($route_prefix)
-                ->middleware('api')
+            Route::middleware('api')
+                ->prefix($route_prefix)
                 ->namespace($route_namespace)
                 ->name($route_name)
                 ->group(base_path('routes/' . $value['route']['file']));
@@ -112,8 +116,9 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function domainRoutes(array $web, array $api)
     {
-        $route_name         =   '';
-        $route_namespace    =   $this->namespace;
+        $route_name = '';
+        $route_prefix = '';
+        $route_namespace = $this->namespace;
 
         foreach ($web as $value) {
 
@@ -125,8 +130,8 @@ class RouteServiceProvider extends ServiceProvider
                 $route_name = $value['route']['name'] . '.';
             }
 
-            Route::domain($value['url'])
-                ->middleware('web')
+            Route::middleware('web')
+                ->domain($value['url'])
                 ->namespace($route_namespace)
                 ->name($route_name)
                 ->group(base_path('routes/' . $value['route']['file']));
@@ -146,9 +151,9 @@ class RouteServiceProvider extends ServiceProvider
                 $route_prefix = $value['prefix'];
             }
 
-            Route::domain($value['url'])
+            Route::middleware('api')
+                ->domain($value['url'])
                 ->prefix($route_prefix)
-                ->middleware('api')
                 ->namespace($route_namespace)
                 ->name($route_name)
                 ->group(base_path('routes/' . $value['route']['file']));

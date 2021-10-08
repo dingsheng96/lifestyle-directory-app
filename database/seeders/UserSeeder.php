@@ -21,16 +21,14 @@ class UserSeeder extends Seeder
         DB::statement('TRUNCATE TABLE ' . (new User())->getTable());
 
         // create super admin
-        $superadmin = User::create([
+        User::create([
             'name'                  =>  'Super Admin',
             'email'                 =>  'superadmin@bizboo.com',
-            'password'              =>  Hash::make('password'),
+            'password'              =>  'password',
             'status'                =>  User::STATUS_ACTIVE,
             'application_status'    =>  User::APPLICATION_STATUS_APPROVED,
             'email_verified_at'     =>  now()
-        ]);
-
-        $superadmin->assignRole(Role::ROLE_SUPER_ADMIN);
+        ])->assignRole(Role::ROLE_SUPER_ADMIN);
 
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }

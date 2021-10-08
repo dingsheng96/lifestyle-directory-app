@@ -2,7 +2,7 @@
 
 return [
 
-    'prefix' => false, // if true, prefix mode will be used, else will use domain mode
+    'prefix_mode' => env('ENABLE_PREFIX_MODE'), // if true, prefix mode will be used, else will use domain mode
 
     'web' => [
         'web' => [
