@@ -66,7 +66,7 @@
                             <div class="form-group row">
                                 <label for="category" class="col-form-label col-sm-2">{{ __('labels.category') }}</label>
                                 <div class="col-sm-10">
-                                    <p class="form-control-plaintext" id="category">{!! $merchant->category->name !!}</p>
+                                    <p class="form-control-plaintext" id="category">{!! $merchant->category->name ?? '-' !!}</p>
                                 </div>
                             </div>
 

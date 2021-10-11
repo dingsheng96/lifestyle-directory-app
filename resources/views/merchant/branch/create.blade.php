@@ -81,14 +81,14 @@
                             </div>
                             <div class="col-12 col-md-4">
                                 <div class="form-group">
-                                    <label for="branch_status" class="col-form-label">{{ __('labels.listing_status') }} <span class="text-danger">*</span></label>
-                                    <select name="branch_status" id="branch_status" class="form-control select2 @error('branch_status') is-invalid @enderror">
+                                    <label for="listing_status" class="col-form-label">{{ __('labels.listing_status') }} <span class="text-danger">*</span></label>
+                                    <select name="listing_status" id="listing_status" class="form-control select2 @error('listing_status') is-invalid @enderror">
                                         @forelse ($publish_statuses as $status => $display)
-                                        <option value="{{ $status }}" {{ old('branch_status', 'publish') == $status ? 'selected' : null }}>{{ $display }}</option>
+                                        <option value="{{ $status }}" {{ old('listing_status', 'publish') == $status ? 'selected' : null }}>{{ $display }}</option>
                                         @empty
                                         @endforelse
                                     </select>
-                                    @error('branch_status')
+                                    @error('listing_status')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>

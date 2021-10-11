@@ -19,7 +19,7 @@
                     <ul class="list-group list-group-unbordered my-3">
 
                         <li class="list-group-item">
-                            <b>{{ __('labels.category') }}</b> <span class="float-right">{{ $user->category->name ?? $user->mainBranch->category->name }}</span>
+                            <b>{{ __('labels.category') }}</b> <span class="float-right">{{ $user->category->name ?? $user->mainBranch->category->name ?? '-' }}</span>
                         </li>
 
                         <li class="list-group-item">

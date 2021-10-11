@@ -5,7 +5,8 @@
 ### Updates
 
 -   Changing form layout of merchant module in admin & merchant panel.
--   Solving the error that cause merchant unable to access dashboard after login.
+-   Solving the error that cause merchant unable to access dashboard after login and in profile.
 -   Solving merchant logout issue.
 -   Added state save in data tables.
 -   Allow super admin to edit admin user, and restrict other roles cannot edit super admin.
+-   Solving the issue of merchant branch listing status unable to store into database.
