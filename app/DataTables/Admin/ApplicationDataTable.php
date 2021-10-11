@@ -77,7 +77,8 @@ class ApplicationDataTable extends DataTable
             ->orderBy(1, 'asc')
             ->responsive(true)
             ->autoWidth(true)
-            ->processing(false);
+            ->processing(false)
+            ->stateSave();
     }
 
     /**

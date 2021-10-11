@@ -11,7 +11,7 @@
                     <span class="h5">{{ __('modules.view', ['module' => trans_choice('modules.merchant', 1)]) }}</span>
                 </div>
                 <div class="card-body">
-                    <div class="list-group list-group-flush" id="list-tab" role="tablist">
+                    <div class="list-group list-group-flush toggleTab" id="list-tab" role="tablist">
                         <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">{{ __('labels.general') }}</a>
                         <a class="list-group-item list-group-item-action" id="list-gallery-list" data-toggle="list" href="#list-gallery" role="tab" aria-controls="gallery">{{ __('labels.gallery') }}</a>
                         <a class="list-group-item list-group-item-action" id="list-branches-list" data-toggle="list" href="#list-branches" role="tab" aria-controls="branches">{{ trans_choice('labels.branch', 2) }}</a>
@@ -200,11 +200,15 @@
                     </div>
                 </div>
 
-                <div class="card-footer bg-transparent text-md-right text-center">
-                    <a href="{{ url()->previous() }}" role="button" class="btn btn-default">
+                <div class="card-footer bg-transparent">
+                    <button type="button" class="btn btn-default btnPreviousTab">
                         <i class="fas fa-caret-left"></i>
-                        {{ __('labels.back') }}
-                    </a>
+                        {{ __('labels.previous') }}
+                    </button>
+                    <button type="button" class="btn btn-purple btnNextTab float-right">
+                        <i class="fas fa-caret-right"></i>
+                        {{ __('labels.next') }}
+                    </button>
                 </div>
 
             </div>

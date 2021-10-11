@@ -76,8 +76,8 @@ class RegisterController extends Controller
 
             $merchant_service->setRequest($request)->store()
                 ->setApplicationStatus(User::APPLICATION_STATUS_PENDING)
-                ->setReferral('referral_code');
-            // ->setLocationCoordinates();
+                ->setReferral('referral_code')
+                ->setLocationCoordinates();
 
             $status  = 'success';
 

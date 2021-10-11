@@ -32,21 +32,21 @@ class LanguageRequest extends FormRequest
      */
     public function rules()
     {
+        $count = 0;
+
+        if (strtolower($this->getMethod()) == 'put') {
+
+            $language =  $this->route('language')->loadCount('translations');
+
+            $count = $language->translations_count;
+        }
+
         return [
             'name'              =>  ['required'],
             'code'              =>  ['required', Rule::unique(Language::class, 'code')->ignore($this->route('language'), 'id')->whereNull('deleted_at')],
-            'new_version'       =>  [
-                Rule::requiredIf(!empty($this->get('file'))), 'nullable',
-                new UniqueLanguageTranslationVersion($this->route('language'))
-            ],
-            'file'              =>  [
-                Rule::requiredIf(!empty($this->get('new_version'))), 'nullable', 'max:2000',
-                'mimes:' . implode(',', array_keys((new FileManager())->reader))
-            ],
-            'current_version'   =>  [
-                Rule::requiredIf(!empty($this->route('language'))), 'nullable',
-                Rule::exists(Translation::class, 'version')->whereNull('deleted_at')
-            ]
+            'new_version'       =>  [Rule::requiredIf(!empty($this->get('file'))), 'nullable', new UniqueLanguageTranslationVersion($this->route('language'))],
+            'file'              =>  [Rule::requiredIf(!empty($this->get('new_version'))), 'nullable', 'max:2000', 'mimes:' . implode(',', array_keys((new FileManager())->reader))],
+            'current_version'   =>  [Rule::requiredIf(!empty($this->route('language')) && $count > 0), 'nullable', Rule::exists(Translation::class, 'version')->whereNull('deleted_at')]
         ];
     }
 }

@@ -37,6 +37,8 @@ return [
     'verified' => 'Verified',
     'unverified' => 'Unverified',
     'optional' => 'Optional',
+    'next' => 'Next',
+    'previous' => 'Previous',
     'get_coordinate' => 'Get Coordinates',
     'change_profile_pic' => 'Change Profile Picture',
     'change_logo' => 'Change Logo',

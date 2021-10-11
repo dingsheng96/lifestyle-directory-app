@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
             'password'              =>  'password',
             'status'                =>  User::STATUS_ACTIVE,
             'application_status'    =>  User::APPLICATION_STATUS_APPROVED,
-            'email_verified_at'     =>  now()
+            'type'                  =>  User::USER_TYPE_ADMIN
         ])->assignRole(Role::ROLE_SUPER_ADMIN);
 
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');

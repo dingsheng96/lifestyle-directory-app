@@ -104,7 +104,9 @@ class MerchantController extends Controller
 
         $image_and_thumbnail = collect($merchant->media)->whereNotIn('type', [Media::TYPE_LOGO, Media::TYPE_SSM]);
 
-        return $dataTable->with(['merchant' => $merchant, 'view_only' => true])->render('admin.merchant.show', compact('merchant', 'image_and_thumbnail'));
+        $social_media = (new Misc())->getSocialMediaKeys();
+
+        return $dataTable->with(['merchant' => $merchant, 'view_only' => true])->render('admin.merchant.show', compact('merchant', 'image_and_thumbnail', 'social_media'));
     }
 
     /**

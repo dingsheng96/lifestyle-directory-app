@@ -68,7 +68,8 @@ class CountryStateDataTable extends DataTable
             ->orderBy(0, 'asc')
             ->responsive(true)
             ->autoWidth(true)
-            ->processing(false);
+            ->processing(false)
+            ->stateSave();
     }
 
     /**

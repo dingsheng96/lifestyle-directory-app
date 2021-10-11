@@ -26,7 +26,7 @@ class MerchantService extends BaseService
 
     public function storeMainMerchant()
     {
-        $this->store()->setApplicationStatus(User::APPLICATION_STATUS_APPROVED)->assignCategory();
+        $this->store()->setApplicationStatus(User::APPLICATION_STATUS_APPROVED);
 
         return $this;
     }
@@ -62,6 +62,7 @@ class MerchantService extends BaseService
         $this->storeImage();
         $this->storeOperatingHour();
         $this->storeSocialMedia();
+        $this->assignCategory();
 
         return $this;
     }
@@ -218,7 +219,7 @@ class MerchantService extends BaseService
 
     public function assignCategory()
     {
-        if ($this->model->is_main_branch) {
+        if ($this->model->is_main_branch && $this->request->has('category')) {
 
             $this->model->categories()->syncWithoutDetaching([$this->request->get('category')]);
         }
@@ -310,13 +311,15 @@ class MerchantService extends BaseService
     {
         $referral_code = $this->request->get('referral_code');
 
-        $referral = User::admin()->when($column === 'id', function ($query) use ($referral_code) {
-            $query->where('id', $referral_code);
-        })->when($column !== 'id', function ($query) use ($referral_code) {
-            $query->where('referral_code', $referral_code);
-        })->firstOrFail();
+        if (!empty($referral_code)) {
+            $referral = User::admin()->when($column === 'id', function ($query) use ($referral_code) {
+                $query->where('id', $referral_code);
+            })->when($column !== 'id', function ($query) use ($referral_code) {
+                $query->where('referral_code', $referral_code);
+            })->firstOrFail();
 
-        $this->model->referrals()->sync($referral->id, false);
+            $this->model->referrals()->sync($referral->id, false);
+        }
 
         return $this;
     }

@@ -26,6 +26,6 @@ class CountryStateComposer
      */
     public function compose(View $view)
     {
-        $view->with('countryStates', CountryState::orderBy('name')->get());
+        $view->with('country_states', CountryState::orderBy('name')->get());
     }
 }

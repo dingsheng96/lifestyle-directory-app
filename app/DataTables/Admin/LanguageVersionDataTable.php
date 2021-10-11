@@ -78,7 +78,8 @@ class LanguageVersionDataTable extends DataTable
             ->orderBy(1, 'desc')
             ->responsive(true)
             ->autoWidth(true)
-            ->processing(false);
+            ->processing(false)
+            ->stateSave();
     }
 
     /**

@@ -369,12 +369,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getIsMainBranchAttribute()
     {
-        return !is_null($this->subBranches) && is_null($this->mainBranch);
+        return !$this->is_sub_branch;
     }
 
     public function getIsSubBranchAttribute()
     {
-        return !$this->is_main_branch;
+        return !is_null($this->mainBranch);
     }
 
     public function getIsMemberAttribute()

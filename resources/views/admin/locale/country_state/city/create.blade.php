@@ -38,15 +38,12 @@
 
                     <div class="form-group">
                         <label for="file" class="col-form-label">{{ trans_choice('labels.upload_file', 1) }}</label>
-                        <div class="custom-file">
-                            <input type="file" id="file" name="create[file]" class="custom-file-input @error('create.file') is-invalid @enderror">
-                            <label class="custom-file-label" for="validatedCustomFile">Choose file</label>
-                            @error('create.file')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
+                        <input type="file" id="file" name="create[file]" class="form-control-file @error('create.file') is-invalid @enderror">
+                        @error('create.file')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                        @enderror
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -157,5 +157,13 @@ $(function() {
         pick12HourFormat: false,
         ignoreReadonly: true,
     })
+
+    $('.btnNextTab').on('click', function(){
+        $('.toggleTab > .active').next('.list-group-item').trigger('click');
+    });
+
+    $('.btnPreviousTab').on('click', function(){
+        $('.toggleTab > .active').prev('.list-group-item').trigger('click');
+    });
 });
 

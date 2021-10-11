@@ -25,7 +25,7 @@ class AdminDataTable extends DataTable
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
                 return view('admin.components.btn_action', [
-                    'no_action' => $this->no_action ?: ($data->id == Auth::id() || $data->is_super_admin),
+                    'no_action' => $this->no_action ?: (!Auth::user()->is_super_admin && $data->is_super_admin),
                     'view' => [
                         'permission' => 'admin.read',
                         'route' => route('admin.admins.show', ['admin' => $data->id])
@@ -69,7 +69,9 @@ class AdminDataTable extends DataTable
      */
     public function query(User $model)
     {
-        return $model->withCount('referredBy')->with(['roles'])->admin()->newQuery();
+        return $model->newQuery()->admin()
+            ->withCount('referredBy')->with(['roles'])
+            ->where('id', '<>', Auth::id());
     }
 
     /**
@@ -87,7 +89,8 @@ class AdminDataTable extends DataTable
             ->orderBy(0, 'asc')
             ->responsive(true)
             ->autoWidth(true)
-            ->processing(false);
+            ->processing(false)
+            ->stateSave();
     }
 
     /**

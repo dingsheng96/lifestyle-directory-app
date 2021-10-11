@@ -185,13 +185,12 @@
                             @enderror
                         </div>
                     </div>
-
                     <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="country_state" class="col-form-label">{{ trans_choice('labels.country_state', 1) }} <span class="text-danger">*</span></label>
                             <select name="country_state" id="country_state" class="form-control select2 @error('country_state') is-invalid @enderror city-filter">
                                 <option value="0" selected disabled>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(trans_choice('labels.country_state', 1))]) }} ---</option>
-                                @forelse ($countryStates as $state)
+                                @forelse ($country_states as $state)
                                 <option value="{{ $state->id }}" {{ old('country_state') == $state->id ? 'selected' : null }}>{{ $state->name }}</option>
                                 @empty
                                 @endforelse

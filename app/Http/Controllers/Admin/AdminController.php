@@ -91,6 +91,8 @@ class AdminController extends Controller
      */
     public function show(User $admin, ReferralDataTable $dataTable)
     {
+        abort_if(!Auth::user()->is_super_admin && $admin->is_super_admin || $admin->id == Auth::id(), 403);
+
         $admin->loadCount('referredBy');
 
         return $dataTable->with(compact('admin'))->render('admin.admin.show', compact('admin'));
@@ -104,6 +106,8 @@ class AdminController extends Controller
      */
     public function edit(User $admin)
     {
+        abort_if(!Auth::user()->is_super_admin && $admin->is_super_admin || $admin->id == Auth::id(), 403);
+
         return view('admin.admin.edit', compact('admin'));
     }
 
@@ -116,6 +120,8 @@ class AdminController extends Controller
      */
     public function update(AdminRequest $request, User $admin, AdminService $admin_service)
     {
+        abort_if(!Auth::user()->is_super_admin && $admin->is_super_admin || $admin->id == Auth::id(), 403);
+
         DB::beginTransaction();
 
         $action     =   Permission::ACTION_UPDATE;
@@ -155,6 +161,8 @@ class AdminController extends Controller
      */
     public function destroy(User $admin)
     {
+        abort_if(!Auth::user()->is_super_admin && $admin->is_super_admin || $admin->id == Auth::id(), 403);
+
         $action     =   Permission::ACTION_DELETE;
         $module     =   strtolower(trans_choice('modules.admin', 1));
         $status     =   'success';

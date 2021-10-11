@@ -80,7 +80,8 @@ class MemberDataTable extends DataTable
             ->orderBy(5, 'desc')
             ->responsive(true)
             ->autoWidth(true)
-            ->processing(false);
+            ->processing(false)
+            ->stateSave();
     }
 
     /**
