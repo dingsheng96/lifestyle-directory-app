@@ -17,7 +17,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 
 Route::get('/', function () {
     return 'Home page';
-});
+})->name('home');
 
 Route::get('password/reset/success', [ResetPasswordController::class, 'resetPasswordSuccess'])->name('password.reset.success');
 

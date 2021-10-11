@@ -80,12 +80,12 @@ class AccountService extends BaseService
             $file  =   $this->request->file('logo');
 
             $config = [
-                'save_path'     =>   User::STORE_PATH,
-                'type'          =>   Media::TYPE_LOGO,
+                'save_path'     => User::STORE_MEMBER_PATH,
+                'type'          => Media::TYPE_LOGO,
                 'filemime'      => (new FileManager())->getMimesType($file->getClientOriginalExtension()),
-                'filename'      =>   $file->getClientOriginalName(),
-                'extension'     =>   $file->getClientOriginalExtension(),
-                'filesize'      =>   $file->getSize(),
+                'filename'      => $file->getClientOriginalName(),
+                'extension'     => $file->getClientOriginalExtension(),
+                'filesize'      => $file->getSize(),
             ];
 
             $media = $this->model->media()->logo()->first();

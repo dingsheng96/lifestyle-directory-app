@@ -61,6 +61,7 @@ class Handler extends ExceptionHandler
             ? Response::instance()
             ->withStatusCode('modules.system', 'actions.force.login')
             ->withMessage(__('messages.unauthenticated'))
+            ->withStatus('fail')
             ->sendJson(401)
             : redirect()->guest($exception->redirectTo() ?? route('login'));
     }
@@ -76,6 +77,8 @@ class Handler extends ExceptionHandler
                     ->withMessage($e->getMessage())
                     ->sendJson(403);
             }
+
+            return abort(403);
         });
 
         $this->renderable(function (NotFoundHttpException $e, $request) {
@@ -87,18 +90,20 @@ class Handler extends ExceptionHandler
                     ->withMessage('Not Found')
                     ->sendJson(404);
             }
+
+            return abort(404);
         });
 
-        $this->renderable(function (Exception $e, $request) {
+        // $this->renderable(function (Exception $e, $request) {
 
-            if ($request->expectsJson()) {
-                return Response::instance()
-                    ->withStatus('fail')
-                    ->withMessage($e->getMessage())
-                    ->withData(['error' => $e])
-                    ->sendJson(404);
-            }
-        });
+        //     if ($request->expectsJson()) {
+        //         return Response::instance()
+        //             ->withStatus('fail')
+        //             ->withMessage($e->getMessage())
+        //             ->withData(['error' => $e])
+        //             ->sendJson(404);
+        //     }
+        // });
 
         $this->renderable(function (TokenMismatchException $e, $request) {
 
@@ -109,6 +114,8 @@ class Handler extends ExceptionHandler
                     ->withMessage($e->getMessage())
                     ->sendJson(404);
             };
+
+            return abort(404);
         });
 
         $this->renderable(function (InvalidSignatureException $e, $request) {
