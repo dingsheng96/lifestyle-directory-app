@@ -19,10 +19,14 @@ class Tac
             ]);
         }
 
-        $raw_tac    = rand(100000, 999999);
+        if (config('app.env') === 'production') {
+            $raw_tac    = rand(100000, 999999);
 
-        while ((clone $user_tac)->where('tac', $raw_tac)->exists()) {
-            $raw_tac = rand(100000, 999999);
+            while ((clone $user_tac)->where('tac', $raw_tac)->exists()) {
+                $raw_tac = rand(100000, 999999);
+            }
+        } else {
+            $raw_tac = 111111;
         }
 
         $new_tac = TacNumber::create([

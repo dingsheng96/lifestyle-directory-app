@@ -45,82 +45,43 @@ class Handler extends ExceptionHandler
             //
         });
 
-        $this->customRenderables();
-    }
-
-    /**
-     * Convert an authentication exception into a response.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Auth\AuthenticationException  $exception
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function unauthenticated($request, AuthenticationException $exception)
-    {
-        return $request->expectsJson()
-            ? Response::instance()
-            ->withStatusCode('modules.system', 'actions.force.login')
-            ->withMessage(__('messages.unauthenticated'))
-            ->withStatus('fail')
-            ->sendJson(401)
-            : redirect()->guest($exception->redirectTo() ?? route('login'));
-    }
-
-    protected function customRenderables()
-    {
-        $this->renderable(function (AccessDeniedHttpException $e, $request) {
+        $this->renderable(function (Exception $e, $request) {
 
             if ($request->expectsJson()) {
+
+                $status = 'fail';
+                $status_code = 404;
+                $message = $e->getMessage();
+                $status_code_prefix = 'modules.route';
+                $status_code_suffix = 'actions.read.fail';
+
+                if ($e instanceof AuthenticationException) {
+
+                    $status_code = 401;
+                    $status_code_prefix = 'modules.system';
+                    $status_code_suffix = 'actions.force.login';
+                    $message = __('messages.unauthenticated');
+                } elseif ($e instanceof AccessDeniedHttpException) {
+
+                    $status_code = 403;
+                    $status_code_prefix = 'modules.scope';
+                    $status_code_suffix = 'actions.authenticate.fail';
+                } elseif ($e instanceof NotFoundHttpException) {
+
+                    $message = __('messages.not_found');
+                } elseif ($e instanceof InvalidSignatureException) {
+
+                    $message = __('messages.email_verification_link_expired');
+                }
+
                 return Response::instance()
-                    ->withStatusCode('modules.scope', 'actions.authenticate.fail')
-                    ->withStatus('fail')
-                    ->withMessage($e->getMessage())
-                    ->sendJson(403);
+                    ->withStatusCode($status_code_prefix, $status_code_suffix)
+                    ->withStatus($status)
+                    ->withMessage($message)
+                    ->sendJson($status_code);
             }
 
-            return abort(403);
-        });
-
-        $this->renderable(function (NotFoundHttpException $e, $request) {
-
-            if ($request->expectsJson()) {
-                return Response::instance()
-                    ->withStatusCode('modules.route', 'actions.read.fail')
-                    ->withStatus('fail')
-                    ->withMessage('Not Found')
-                    ->sendJson(404);
-            }
-
-            return abort(404);
-        });
-
-        // $this->renderable(function (Exception $e, $request) {
-
-        //     if ($request->expectsJson()) {
-        //         return Response::instance()
-        //             ->withStatus('fail')
-        //             ->withMessage($e->getMessage())
-        //             ->withData(['error' => $e])
-        //             ->sendJson(404);
-        //     }
-        // });
-
-        $this->renderable(function (TokenMismatchException $e, $request) {
-
-            if ($request->expectsJson()) {
-                return Response::instance()
-                    ->withStatusCode('modules.route', 'actions.read.fail')
-                    ->withStatus('fail')
-                    ->withMessage($e->getMessage())
-                    ->sendJson(404);
-            };
-
-            return abort(404);
-        });
-
-        $this->renderable(function (InvalidSignatureException $e, $request) {
-
-            return redirect()->route('merchant.login')->with('info', __('messages.email_verification_link_expired'));
+            return parent::render($request, $e);
         });
     }
 }

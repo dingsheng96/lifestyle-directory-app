@@ -3,6 +3,7 @@
 namespace App\Rules;
 
 use App\Models\User;
+use App\Helpers\Misc;
 use Illuminate\Contracts\Validation\Rule;
 
 class ValidateMemberStatus implements Rule
@@ -28,8 +29,12 @@ class ValidateMemberStatus implements Rule
      */
     public function passes($attribute, $value)
     {
-        return User::member()
-            ->active()->where($this->column, $value)
+        return User::member()->active()
+            ->when($this->column == 'mobile_no', function ($query) use ($value) {
+                $query->where($this->column, (new Misc())->phoneStoreFormat($value));
+            })->when($this->column != 'mobile_no', function ($query) use ($value) {
+                $query->where($this->column, $value);
+            })
             ->whereNull('deleted_at')->exists();
     }
 

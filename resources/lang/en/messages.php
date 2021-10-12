@@ -63,4 +63,5 @@ return [
     'insufficient_quota' => 'Insufficient Quota',
     'complete_fields' => 'Please complete the fields below.',
     'unauthenticated' => 'Unauthenticated',
+    'not_found' => 'Not Found',
 ];
