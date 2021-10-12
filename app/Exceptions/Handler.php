@@ -80,8 +80,6 @@ class Handler extends ExceptionHandler
                     ->withMessage($message)
                     ->sendJson($status_code);
             }
-
-            return parent::render($request, $e);
         });
     }
 }
