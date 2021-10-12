@@ -257,17 +257,21 @@ class MerchantService extends BaseService
 
     public function storeVisitorHistory()
     {
-        if ($this->request->user()) {
+        $user = $this->request->user('api');
+
+        if ($user) {
+
             $visitor_history = $this->model->visitorHistories()
-                ->where('visitor_id', $this->request->user()->id)
+                ->where('visitor_id', $user->id)
                 ->firstOr(function () {
                     return new BranchVisitorHistory();
                 });
 
-            $visitor_history->visitor_id    = $this->request->user()->id;
+            $visitor_history->visitor_id    = $user->id;
             $visitor_history->visit_count   += 1;
 
             if ($visitor_history->isDirty()) {
+
                 $this->model->visitorHistories()->save($visitor_history);
             }
         }
