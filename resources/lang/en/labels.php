@@ -177,5 +177,14 @@ return [
     'company_details' => 'Company Details',
     'referral_details' => 'Referral Details',
     'referred_users' => 'Referred Users',
-    'career_introduction' => 'Career Introduction'
+    'career_introduction' => 'Career Introduction',
+    'review' => 'Review|Reviews',
+    'rating' => 'Rating',
+    'today_visitor_count' => 'Today Visitors Count',
+    'total_visitor_count' => 'Total Visitors Count',
+    'total_visit_count' => 'Total Visit Count',
+    'visitor_history' => 'Visitor History',
+    'visitor' => 'Visitor',
+    'first_visit_at' => 'First Visit At',
+    'recent_visit_at' => 'Recent Visit At'
 ];

@@ -58,7 +58,10 @@ class MerchantController extends Controller
         try {
 
             $merchant = User::with([
-                'media', 'ratings', 'branchDetail', 'raters', 'categories', 'operationHours', 'favouriteBy',  'userSocialMedia',
+                'ratings', 'branchDetail', 'raters', 'categories', 'operationHours', 'favouriteBy',  'userSocialMedia',
+                'media' => function ($query) {
+                    $query->orderBy('position');
+                },
                 'address' => function ($query) use ($latitude, $longitude) {
                     $query->getDistanceByCoordinates($latitude, $longitude);
                 }
@@ -69,7 +72,10 @@ class MerchantController extends Controller
             $merchant_service->setModel($merchant)->setRequest($request)->storeVisitorHistory();
 
             $similar_merchants = User::with([
-                'media', 'ratings',
+                'ratings',
+                'media' => function ($query) {
+                    $query->orderBy('position');
+                },
                 'address' => function ($query) use ($latitude, $longitude) {
                     $query->getDistanceByCoordinates($latitude, $longitude);
                 }
@@ -81,7 +87,10 @@ class MerchantController extends Controller
                 ->limit(6)
                 ->get();
 
-            $data = (new MerchantResource($merchant))->listing(false)->similarMerchant($similar_merchants)->toArray($request);
+            $data = (new MerchantResource($merchant))
+                ->listing(false)
+                ->similarMerchant($similar_merchants)
+                ->toArray($request);
 
             DB::commit();
         } catch (\Error | \Exception $ex) {

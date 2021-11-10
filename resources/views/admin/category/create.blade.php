@@ -29,7 +29,7 @@
                             <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-danger">*</span></label>
                             <select name="status" id="status" class="form-control select2 @error('status') is-invalid @enderror">
                                 @forelse ($publish_statuses as $status => $display)
-                                <option value="{{ $status }}" {{ old('status', 'publish') == $status ? 'selected' : null }}>{{ $display }}</option>
+                                <option value="{{ $status }}" {{ old('status', 'publish' )==$status ? 'selected' : null }}>{{ $display }}</option>
                                 @empty
                                 @endforelse
                             </select>
@@ -56,16 +56,6 @@
                                     <ul class="pl-3 mt-3">{!! trans_choice('messages.upload_file_rules', 1, ['maxsize' => '2mb', 'extensions' => 'JPG,JPEG, PNG']) !!}</ul>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="description" class="col-form-label">{{ __('labels.description') }}</label>
-                            <textarea type="text" id="description" name="description" class="form-control @error('description') is-invalid @enderror" cols="100" rows="7">{{ old('description') }}</textarea>
-                            @error('description')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
                         </div>
                     </div>
 

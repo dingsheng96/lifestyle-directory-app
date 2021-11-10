@@ -5,17 +5,6 @@
 </a>
 <div class="dropdown-menu dropdown-menu-right">
 
-    @isset($thumbnail)
-    <a role="button" href="#" class="dropdown-item" @isset($thumbnail['attribute']) {!! $thumbnail['attribute'] !!} @endisset>
-        <i class="fas fa-thumbtack mr-2 text-indigo"></i>
-        {{ __('labels.make_thumbnail') }}
-    </a>
-    <form action="{{ $thumbnail['route'] ?? '#' }}" method="post" class="d-none" id="{{ $thumbnail['form_id'] ?? null }}">
-        @method('put')
-        @csrf
-    </form>
-    @endisset
-
     {{-- view button --}}
     @isset($view)
     <a role="button" href="{{ $view['route'] ?? '#' }}" class="dropdown-item" @isset($view['attribute']) {!! $view['attribute'] !!} @endisset>

@@ -7,14 +7,19 @@
     </ul>
 
     <ul class="navbar-nav ml-auto">
-
-        <li class="nav-item">
-            <a href="#" class="nav-link btn" onclick="event.preventDefault(); logoutAlert('{{ __('messages.confirm_question') }}');">
-                <i class="fas fa-sign-out-alt text-danger"></i>
+        <li class="nav-item dropdown">
+            <a data-toggle="dropdown" class="nav-link" href="#">
+                <img src="https://ui-avatars.com/api/?background=8D60D8&color=ffffff&size=35&rounded=true&name={{ urlencode(Auth::user()->name) }}" class="img-circle elevation-2" alt="user">
             </a>
-            <form id="logout-form" action="{{ route('merchant.logout') }}" method="POST" style="display: none;">
-                @csrf
-            </form>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a href="#" class="dropdown-item" onclick="event.preventDefault(); logoutAlert('{{ __('messages.confirm_question') }}');">
+                    <i class="fas fa-sign-out-alt mr-2 text-danger"></i>
+                    <span>{{ __('labels.logout') }}</span>
+                </a>
+                <form id="logout-form" action="{{ route('merchant.logout') }}" method="POST" style="display: none;">
+                    @csrf
+                </form>
+            </div>
         </li>
     </ul>
 

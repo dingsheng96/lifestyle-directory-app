@@ -1,5 +1,23 @@
 # Change Log
 
+## 2021-11-10
+
+### What's new?
+
+-   Added reordering function for media table in merchant & branch module of admin panel and merchant panel
+
+## 2021-11-09
+
+### What's new?
+
+-   Added review modules in merchant module in admin panel
+-   Added review listing and visitor history in merchant panel's dashboard.
+
+### Updates
+
+-   Filter out main merchant's career listing when log in as sub branch in merchant panel.
+-   Restrict single customer rate 1 time only to the same merchant.
+
 ## 2021-10-11
 
 ### Updates

@@ -26,13 +26,14 @@
                         </div>
 
                         <div class="row">
+                            @mainBranch
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="merchant" class="col-form-label">{{ trans_choice('labels.branch', 1) }} <span class="text-danger">*</span></label>
                                     <select name="merchant" id="merchant" class="form-control select2 @error('merchant') is-invalid @enderror">
                                         <option value="0" disabled selected>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(trans_choice('labels.branch', 1))]) }} ---</option>
                                         @foreach ($merchants as $merchant)
-                                        <option value="{{ $merchant->id }}" {{ old('merchant') == $merchant->id ? 'selected' : null }}>{{ $merchant->name }}</option>
+                                        <option value="{{ $merchant->id }}" {{ old('merchant')==$merchant->id ? 'selected' : null }}>{{ $merchant->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('merchant')
@@ -42,12 +43,13 @@
                                     @enderror
                                 </div>
                             </div>
+                            @endmainBranch
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-danger">*</span></label>
                                     <select name="status" id="status" class="form-control select2 @error('status') is-invalid @enderror">
                                         @foreach ($publish_statuses as $status => $display)
-                                        <option value="{{ $status }}" {{ old('status', 'publish') == $status ? 'selected' : null }}>{{ $display }}</option>
+                                        <option value="{{ $status }}" {{ old('status', 'publish' )==$status ? 'selected' : null }}>{{ $display }}</option>
                                         @endforeach
                                     </select>
                                     @error('status')

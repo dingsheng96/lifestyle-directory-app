@@ -23,12 +23,12 @@
 
     @auth
     <div class="wrapper">
-        @include('admin.layouts.topnav')
-        @include('admin.layouts.sidenav')
+        @includeWhen((!isset($page_only) || !$page_only), 'admin.layouts.topnav')
+        @includeWhen((!isset($page_only) || !$page_only), 'admin.layouts.sidenav')
 
         <div class="content-wrapper">
 
-            @include('admin.layouts.header')
+            @includeWhen((!isset($page_only) || !$page_only), 'admin.layouts.header')
 
             <div class="content">
                 @includeWhen(Session::has('success') || Session::has('fail') ||$errors->any(), 'components.alert')
@@ -36,7 +36,7 @@
             </div>
         </div>
 
-        @include('admin.layouts.footer') {{-- auth footer --}}
+        @includeWhen((!isset($page_only) || !$page_only), 'admin.layouts.footer') {{-- auth footer --}}
 
         @include('components.loader')
     </div>
@@ -47,9 +47,11 @@
     @endguest
 
     <script type="text/javascript" src="{{ asset('js/app.js?v=' . time()) }}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.39.0/js/tempusdominus-bootstrap-4.min.js" integrity="sha512-k6/Bkb8Fxf/c1Tkyl39yJwcOZ1P4cRrJu77p83zJjN2Z55prbFHxPs9vN7q3l3+tSMGPDdoH51AEU8Vgo1cgAA==" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript" src="{{ asset('js/loader.js?v=' . time()) }}"></script>
     <script type="text/javascript" src="{{ asset('js/function.js?v=' . time()) }}"></script>
     <script type="text/javascript" src="{{ asset('js/dropdown.js?v=' . time()) }}"></script>
     <script type="text/javascript" src="{{ asset('js/datepicker.js?v=' . time()) }}"></script>
@@ -57,6 +59,7 @@
     <script type="text/javascript" src="{{ asset('js/modal.js?v=' . time()) }}"></script>
     <script type="text/javascript" src="{{ asset('js/dropzone.js?v=' . time()) }}"></script>
     <script type="text/javascript" src="{{ asset('js/geocoder.js?v=' . time()) }}"></script>
+    <script type="text/javascript" src="{{ asset('js/sortable.js?v=' . time()) }}"></script>
     @stack('scripts')
 
 </body>

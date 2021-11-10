@@ -17,23 +17,22 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        DB::statement('TRUNCATE TABLE ' . app(Permission::class)->getTable());
-
         collect($this->getData())
             ->sortBy('name')
             ->each(function ($data, $key) {
-                Permission::create([
-                    'name'          =>  $data['name'],
-                    'guard_name'    =>  $data['guard_name'],
-                    'display'       =>  $data['display'],
-                    'description'   =>  $data['description'],
-                    'module_id'     =>  $data['module_id'],
-                    'action'        =>  $data['action'],
-                ]);
+                Permission::firstOrCreate(
+                    [
+                        'name'          =>  $data['name'],
+                        'guard_name'    =>  $data['guard_name'],
+                    ],
+                    [
+                        'display'       =>  $data['display'],
+                        'description'   =>  $data['description'],
+                        'module_id'     =>  $data['module_id'],
+                        'action'        =>  $data['action'],
+                    ]
+                );
             });
-
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 
     public function getData()

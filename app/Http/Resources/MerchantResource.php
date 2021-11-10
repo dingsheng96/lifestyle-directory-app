@@ -34,7 +34,7 @@ class MerchantResource extends JsonResource
         if (!$this->listing) {
 
             $data = array_merge($data, [
-                'images'            => collect($this->image)
+                'images' => collect($this->image)
                     ->map(function ($value) {
                         return $value->full_file_path;
                     })->flatten(),

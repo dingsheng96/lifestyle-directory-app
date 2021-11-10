@@ -18,7 +18,6 @@ class CategoryService extends BaseService
     {
         $this->model->name = $this->request->get('name');
         $this->model->status = $this->request->get('status');
-        $this->model->description = $this->request->get('description');
 
         if ($this->model->isDirty()) {
             $this->model->save();

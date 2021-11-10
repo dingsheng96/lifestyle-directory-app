@@ -4,6 +4,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Merchant\HomeController;
+use App\Http\Controllers\Merchant\MediaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,5 +36,11 @@ Route::middleware(['auth:' . User::USER_TYPE_MERCHANT])->group(function () {
 
     Route::resource('branches', BranchController::class);
 
-    Route::resource('media', MediaController::class)->except(['show', 'edit']);
+    Route::post('media/reorder', [MediaController::class, 'reorder'])->name('media.reorder');
+
+    Route::resource('media', 'MediaController')->except(['show', 'edit']);
+
+    Route::get('reviews', [HomeController::class, 'reviewIndex'])->name('reviews.index');
+
+    Route::get('visitors', [HomeController::class, 'visitorHistoryIndex'])->name('visitors.index');
 });

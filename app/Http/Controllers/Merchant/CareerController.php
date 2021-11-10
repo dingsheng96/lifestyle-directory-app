@@ -35,13 +35,15 @@ class CareerController extends Controller
     public function create()
     {
         $merchant = Auth::user()->load(['mainBranch', 'subBranches']);
+        $merchants = collect([$merchant]);
 
-        $merchants = collect([$merchant])
-            ->merge([$merchant->mainBranch])
-            ->merge($merchant->subBranches)
-            ->filter(function ($item) {
-                return !is_null($item);
-            });
+        if ($merchant->is_main_merchant) {
+            $merchants->merge($merchant->subBranches);
+        }
+
+        $merchants->filter(function ($item) {
+            return !is_null($item);
+        });
 
         return view('merchant.career.create', compact('merchants'));
     }
@@ -109,12 +111,15 @@ class CareerController extends Controller
 
         $merchant = Auth::user()->load(['mainBranch', 'subBranches']);
 
-        $merchants = collect([$merchant])
-            ->merge([$merchant->mainBranch])
-            ->merge($merchant->subBranches)
-            ->filter(function ($item) {
-                return !is_null($item);
-            });
+        $merchants = collect([$merchant]);
+
+        if ($merchant->is_main_merchant) {
+            $merchants->merge($merchant->subBranches);
+        }
+
+        $merchants->filter(function ($item) {
+            return !is_null($item);
+        });
 
         return view('merchant.career.edit', compact('career', 'merchants'));
     }

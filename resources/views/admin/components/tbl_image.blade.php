@@ -18,10 +18,10 @@
             </tr>
         </thead>
 
-        <tbody>
+        <tbody @if(isset($sortable) && $sortable) class="sortable" data-reorder-route="{{ $reorder_route ?? null }}" data-parent-id="{{ $parent_id ?? null }}" data-parent-type="{{ $parent_type ?? null }}" @endif>
 
             @forelse ($images as $image)
-            <tr>
+            <tr @if(isset($sortable) && $sortable) data-id="{{ $image->id }}" class="sortable-row" @endif>
                 <th scope="row">{{ $loop->iteration }}</th>
                 <td>{{ $image->type }}</td>
                 <td>
@@ -34,7 +34,7 @@
                 @if (isset($thumbnail) && $thumbnail)
                 <td>
                     <div class="icheck-purple">
-                        <input type="radio" name="thumbnail" id="thumbnail_{{ $loop->iteration }}" value="{{ $image->id }}" {{ (old('thumbnail') == $image->id || $image->is_thumbnail) ? 'checked' : null }}>
+                        <input type="radio" name="thumbnail" id="thumbnail_{{ $loop->iteration }}" value="{{ $image->id }}" {{ (old('thumbnail')==$image->id || $image->is_thumbnail) ? 'checked' : null }}>
                         <label for="thumbnail_{{ $loop->iteration }}"></label>
                     </div>
                 </td>

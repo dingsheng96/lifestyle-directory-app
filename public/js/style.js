@@ -1,16 +1,5 @@
 $(function() {
 
-    // loader
-    $('form').on('submit', function () {
-        $('.loading').show();
-    });
-
-    $(document).ajaxStart(function () {
-        $('.loading').show();
-    }).ajaxStop(function () {
-        $('.loading').hide();
-    });
-
     // initialize select2
     $(".select2").select2({
         theme: "bootstrap4"
@@ -41,11 +30,6 @@ $(function() {
     });
 
     $(".summernote-disabled").summernote("disable");
-
-    // disabled form submit button when loading submission
-    $("form").not(".loading").on("submit", function() {
-        $(this).find(":submit").attr("disabled", "disabled");
-    });
 
     // select all checkbox within container
     $(".select-all-toggle").on('click',

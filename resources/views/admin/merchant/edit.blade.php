@@ -13,6 +13,7 @@
                 <div class="card-body">
                     <div class="list-group list-group-flush toggleTab" id="list-tab" role="tablist">
                         <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">{{ __('labels.general') }}</a>
+                        <a class="list-group-item list-group-item-action" id="list-review-list" data-toggle="list" href="#list-reviews" role="tab" aria-controls="reviews">{{ trans_choice('labels.review', 2) }}</a>
                         <a class="list-group-item list-group-item-action" id="list-branches-list" data-toggle="list" href="#list-branches" role="tab" aria-controls="branches">{{ trans_choice('labels.branch', 2) }}</a>
                     </div>
                 </div>
@@ -426,8 +427,21 @@
                                 @endif
 
                                 <div class="form-group">
-                                    @include('admin.components.tbl_image', ['images' => $image_and_thumbnail, 'thumbnail' => true, 'action' => true, 'delete_permission' => 'merchant.destroy'])
+                                    @include('admin.components.tbl_image', [
+                                    'images' => $image_and_thumbnail,
+                                    'thumbnail' => true,
+                                    'action' => true,
+                                    'delete_permission' => 'merchant.destroy',
+                                    'sortable' => true,
+                                    'reorder_route' => route('admin.media.reorder'),
+                                    'parent_id' => $merchant->id,
+                                    'parent_type' => 'merchant'
+                                    ])
                                 </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="list-reviews" role="tabpanel" aria-labelledby="list-reviews-list">
+                                <iframe src="{{ route('admin.reviews.index', ['merchant_id' => $merchant->id]) }}" frameborder="0" style="width: 100%; min-height:80vh;"></iframe>
                             </div>
 
                             <div class="tab-pane fade" id="list-branches" role="tabpanel" aria-labelledby="list-branches-list">

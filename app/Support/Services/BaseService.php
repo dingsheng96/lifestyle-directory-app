@@ -52,14 +52,15 @@ class BaseService
             $media->file_path ?? null,
         );
 
-        $media->original_filename   =   $config['filename'] ?? null;
-        $media->type                =   $config['type'];
-        $media->path                =   $config['save_path'] ?? null;
-        $media->extension           =   $config['extension'] ?? null;
-        $media->size                =   $config['filesize'] ?? null;
-        $media->mime                =   $config['filemime'] ?? null;
-        $media->properties          =   json_encode($config, JSON_UNESCAPED_UNICODE);
-        $media->filename            =   basename($store_file);
+        $media->original_filename   = $config['filename'] ?? null;
+        $media->type                = $config['type'];
+        $media->path                = $config['save_path'] ?? null;
+        $media->extension           = $config['extension'] ?? null;
+        $media->size                = $config['filesize'] ?? null;
+        $media->mime                = $config['filemime'] ?? null;
+        $media->properties          = json_encode($config, JSON_UNESCAPED_UNICODE);
+        $media->filename            = basename($store_file);
+        $media->position            = $this->model->media()->where('type', $config['type'])->max('position') + 1 ?? 1;
 
         if ($media->isDirty()) {
             $this->model->media()->save($media);

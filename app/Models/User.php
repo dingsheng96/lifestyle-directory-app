@@ -137,12 +137,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->morphToMany(self::class, 'favourable', Favourable::class);
     }
 
-    public function ratings()
+    public function ratings() // merchant that received ratings
     {
         return $this->morphToMany(self::class, 'rateable', Rateable::class)->withPivot(['scale', 'review'])->withTimestamps();
     }
 
-    public function raters()
+    public function raters() // user who give ratings
     {
         return $this->morphedByMany(self::class, 'rateable', Rateable::class)->withPivot(['scale', 'review'])->withTimestamps();
     }

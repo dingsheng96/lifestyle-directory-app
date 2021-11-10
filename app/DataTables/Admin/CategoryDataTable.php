@@ -41,9 +41,6 @@ class CategoryDataTable extends DataTable
                     ]
                 ])->render();
             })
-            ->editColumn('description', function ($data) {
-                return Str::limit($data->description);
-            })
             ->editColumn('created_at', function ($data) {
                 return $data->created_at->toDateTimeString();
             })
@@ -94,7 +91,6 @@ class CategoryDataTable extends DataTable
             Column::computed('DT_RowIndex', '#'),
             Column::make('name')->title(__('labels.name')),
             Column::make('status')->title(__('labels.status')),
-            Column::make('description')->title(__('labels.description')),
             Column::make('created_at')->title(__('labels.created_at')),
             Column::computed('action', __('labels.action'))
                 ->exportable(false)

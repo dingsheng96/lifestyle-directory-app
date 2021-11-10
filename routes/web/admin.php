@@ -60,5 +60,8 @@ Route::middleware(['auth:' . User::USER_TYPE_ADMIN])->group(function () {
         Route::get('languages/{language}/translations/export', [TranslationController::class, 'export'])->name('languages.translations.export');
     });
 
-    Route::delete('media/{medium}', [MediaController::class, '__invoke'])->name('media.destroy');
+    Route::post('media/reorder', [MediaController::class, 'reorder'])->name('media.reorder');
+    Route::delete('media/{medium}', [MediaController::class, 'destroy'])->name('media.destroy');
+
+    Route::resource('reviews', ReviewController::class)->only('index');
 });

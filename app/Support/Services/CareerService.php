@@ -3,6 +3,7 @@
 namespace App\Support\Services;
 
 use App\Models\Career;
+use Illuminate\Support\Facades\Auth;
 use App\Support\Services\BaseService;
 
 class CareerService extends BaseService
@@ -14,7 +15,7 @@ class CareerService extends BaseService
 
     public function store()
     {
-        $this->model->branch_id     =   $this->request->get('merchant');
+        $this->model->branch_id     =   $this->request->get('merchant', Auth::id());
         $this->model->position      =   $this->request->get('position');
         $this->model->about         =   $this->request->get('about');
         $this->model->description   =   $this->request->get('description');

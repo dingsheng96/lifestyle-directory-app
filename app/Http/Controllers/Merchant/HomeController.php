@@ -5,12 +5,18 @@ namespace App\Http\Controllers\Merchant;
 use App\Models\Career;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\DataTables\Merchant\ReviewDataTable;
+use App\DataTables\Merchant\VisitorDataTable;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
+        $user = Auth::user()->loadCount([
+            'visitorHistories' => function ($query) {
+                $query->whereDate('updated_at', today());
+            }
+        ])->load('visitorHistories', 'ratings');
 
         // Widgets
         $total_listing_careers = Career::publish()
@@ -28,6 +34,22 @@ class HomeController extends Controller
             })
             ->count();
 
-        return view('merchant.dashboard', compact('total_listing_careers'));
+        $today_visitor_count = $user->visitor_histories_count;
+
+        $total_visitor_count = (clone $user->visitorHistories)->sum('visit_count');
+
+        $average_ratings = $user->rating;
+
+        return view('merchant.dashboard', compact('total_listing_careers', 'today_visitor_count', 'total_visitor_count', 'average_ratings'));
+    }
+
+    public function reviewIndex(ReviewDataTable $dataTable)
+    {
+        return $dataTable->render('merchant.dashboard.review');
+    }
+
+    public function visitorHistoryIndex(VisitorDataTable $dataTable)
+    {
+        return $dataTable->render('merchant.dashboard.visitor');
     }
 }

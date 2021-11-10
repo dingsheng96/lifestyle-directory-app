@@ -14,26 +14,37 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Support\Services\MerchantService;
+use Illuminate\Database\Eloquent\Builder;
 use App\DataTables\Merchant\MediaDataTable;
 use App\Http\Requests\Merchant\MediaRequest;
 
 class MediaController extends Controller
 {
-    public function index(MediaDataTable $dataTable)
+    public function index()
     {
         $user = Auth::user()->loadCount([
             'media' => function ($query) {
                 $query->where(function ($query) {
-                    $query->thumbnail()->orWhere(function ($query) {
-                        $query->image();
-                    });
+                    $query->thumbnail()
+                        ->orWhere(function ($query) {
+                            $query->image();
+                        });
+                });
+            }
+        ])->load([
+            'media' => function ($query) {
+                $query->where(function ($query) {
+                    $query->thumbnail()
+                        ->orWhere(function ($query) {
+                            $query->image();
+                        });
                 });
             }
         ]);
 
         $max_files = Media::MAX_BRANCH_IMAGE_UPLOAD - $user->media_count;
 
-        return $dataTable->render('merchant.media.index', compact('max_files'));
+        return view('merchant.media.index', compact('max_files', 'user'));
     }
 
     public function store(MediaRequest $request, MerchantService $merchant_service)
@@ -140,6 +151,39 @@ class MediaController extends Controller
             ->withData([
                 'redirect_to' => url()->previous()
             ])
+            ->sendJson();
+    }
+
+    public function reorder(Request $request)
+    {
+        $request->validate([
+            'media' => ['required', 'array'],
+            'media.*' => ['integer'],
+        ]);
+
+        foreach ($request->get('media') as $index => $id) {
+            $medium = Media::where('id', $id)->first();
+            $medium->position = $index + 1;
+            $medium->saveQuietly();
+        }
+
+        switch ($request->get('parent_type')) {
+            case 'merchant':
+                $class = User::class;
+                break;
+        }
+
+        $positions = Media::query()
+            ->whereHasMorph('mediable', $class, function (Builder $query) use ($request) {
+                $query->where('id', $request->get('parent_id'));
+            })
+            ->pluck('position', 'id');
+
+
+        return Response::instance()
+            ->withStatus('success')
+            ->withMessage()
+            ->withData(compact('positions'))
             ->sendJson();
     }
 }

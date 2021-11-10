@@ -19,7 +19,16 @@
         <div class="col-12">
             <div class="card shadow border">
                 <div class="card-body table-responsive">
-                    {!! $dataTable->table() !!}
+                    @include('merchant.components.tbl_image', [
+                    'images' => $user->media,
+                    'thumbnail' => true,
+                    'action' => true,
+                    'delete_permission' => 'merchant.destroy',
+                    'sortable' => true,
+                    'reorder_route' => route('merchant.media.reorder'),
+                    'parent_id' => $user->id,
+                    'parent_type' => 'merchant'
+                    ])
                 </div>
             </div>
         </div>
@@ -29,7 +38,3 @@
 @include('merchant.media.upload', compact('max_files'))
 
 @endsection
-
-@push('scripts')
-{!! $dataTable->scripts() !!}
-@endpush

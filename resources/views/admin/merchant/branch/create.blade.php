@@ -70,7 +70,7 @@
                                     <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-danger">*</span></label>
                                     <select name="status" id="status" class="form-control select2 @error('status') is-invalid @enderror">
                                         @forelse ($active_statuses as $status => $display)
-                                        <option value="{{ $status }}" {{ old('status', 'active') == $status ? 'selected' : null }}>{{ $display }}</option>
+                                        <option value="{{ $status }}" {{ old('status', 'active' )==$status ? 'selected' : null }}>{{ $display }}</option>
                                         @empty
                                         @endforelse
                                     </select>
@@ -86,7 +86,7 @@
                                     <label for="branch_status" class="col-form-label">{{ __('labels.listing_status') }} <span class="text-danger">*</span></label>
                                     <select name="branch_status" id="branch_status" class="form-control select2 @error('branch_status') is-invalid @enderror">
                                         @forelse ($publish_statuses as $status => $display)
-                                        <option value="{{ $status }}" {{ old('branch_status', 'publish') == $status ? 'selected' : null }}>{{ $display }}</option>
+                                        <option value="{{ $status }}" {{ old('branch_status', 'publish' )==$status ? 'selected' : null }}>{{ $display }}</option>
                                         @empty
                                         @endforelse
                                     </select>
@@ -225,7 +225,7 @@
                                         <select name="country_state" id="country_state" class="form-control select2 @error('country_state') is-invalid @enderror city-filter">
                                             <option value="0" selected disabled>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(trans_choice('labels.country_state', 1))]) }} ---</option>
                                             @forelse ($country_states as $state)
-                                            <option value="{{ $state->id }}" {{ old('country_state') == $state->id ? 'selected' : null }}>{{ $state->name }}</option>
+                                            <option value="{{ $state->id }}" {{ old('country_state')==$state->id ? 'selected' : null }}>{{ $state->name }}</option>
                                             @empty
                                             @endforelse
                                         </select>
@@ -381,22 +381,21 @@
                         </div>
 
                     </div>
-            </div>
 
-            <div class="card-footer bg-transparent text-md-right text-center">
-                <a href="{{ route('admin.merchants.edit', ['merchant' => $merchant->id]) }}" role="button" class="btn btn-default mx-2">
-                    <i class="fas fa-caret-left"></i>
-                    {{ __('labels.back') }}
-                </a>
-                <button type="submit" class="btn btn-purple">
-                    <i class="fas fa-paper-plane"></i>
-                    {{ __('labels.submit') }}
-                </button>
-            </div>
-            </form>
+                    <div class="card-footer bg-transparent text-md-right text-center">
+                        <a href="{{ route('admin.merchants.edit', ['merchant' => $merchant->id]) }}" role="button" class="btn btn-default mx-2">
+                            <i class="fas fa-caret-left"></i>
+                            {{ __('labels.back') }}
+                        </a>
+                        <button type="submit" class="btn btn-purple">
+                            <i class="fas fa-paper-plane"></i>
+                            {{ __('labels.submit') }}
+                        </button>
+                    </div>
+                </form>
 
+            </div>
         </div>
     </div>
-</div>
 
-@endsection
+    @endsection

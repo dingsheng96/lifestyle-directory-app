@@ -76,10 +76,13 @@ class CareerDataTable extends DataTable
     {
         $merchant = Auth::user()->load(['mainBranch', 'subBranches']);
 
-        $branches = collect([$merchant])
-            ->merge([$merchant->mainBranch])
-            ->merge($merchant->subBranches)
-            ->pluck('id')->unique();
+        $branches = collect([$merchant]);
+
+        if ($merchant->is_main_merchant) {
+            $branches->merge($merchant->subBranches);
+        }
+
+        $branches->pluck('id')->unique();
 
 
         return $model->with(['branch.address'])
@@ -99,7 +102,7 @@ class CareerDataTable extends DataTable
             ->addTableClass('table-hover table w-100')
             ->columns($this->getColumns())
             ->minifiedAjax()
-            ->orderBy(0, 'asc')
+            ->orderBy(count($this->getColumns()) - 2, 'desc')
             ->responsive(true)
             ->autoWidth(true)
             ->processing(false);

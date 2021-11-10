@@ -15,18 +15,17 @@ class ModuleSeeder extends Seeder
      */
     public function run()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        DB::statement('TRUNCATE TABLE ' . (new Module())->getTable());
-
         collect($this->getData())->sortBy('name')->each(function ($data) {
-            Module::create([
-                'name'          =>  $data['name'],
-                'display'       =>  $data['display'],
-                'description'   =>  $data['description']
-            ]);
+            Module::firstOrCreate(
+                [
+                    'name'          =>  $data['name']
+                ],
+                [
+                    'display'       =>  $data['display'],
+                    'description'   =>  $data['description']
+                ]
+            );
         });
-
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 
     public function getData()
@@ -41,6 +40,7 @@ class ModuleSeeder extends Seeder
             ['name' => 'career', 'display' => 'Career', 'description' => 'Career Module'],
             ['name' => 'banner', 'display' => 'Banner', 'description' => 'Banner Module'],
             ['name' => 'application', 'display' => 'Application', 'description' => 'Application Module'],
+            ['name' => 'review', 'display' => 'Review', 'description' => 'Review Module'],
         ];
     }
 }

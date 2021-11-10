@@ -8,12 +8,14 @@ use App\Models\Media;
 use App\Helpers\Message;
 use App\Helpers\Response;
 use App\Models\Permission;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\DataTables\Admin\BranchDataTable;
 use App\Support\Services\MerchantService;
+use Illuminate\Database\Eloquent\Builder;
 use App\DataTables\Admin\MerchantDataTable;
 use App\Http\Requests\Admin\MerchantRequest;
 
@@ -86,7 +88,16 @@ class MerchantController extends Controller
             ->withProperties($request->all())
             ->log($message);
 
-        return redirect()->route('admin.merchants.index')->with($status, $message);
+        return $request->ajax()
+            ? Response::instance()
+            ->withStatusCode('modules.merchant', 'actions.' . $action . $status)
+            ->withStatus($status)
+            ->withMessage($message, true)
+            ->withData([
+                'redirect_to' => route('admin.merchants.index')
+            ])
+            ->sendJson()
+            : redirect()->route('admin.merchants.index')->with($status, $message);
     }
 
     /**
@@ -118,7 +129,10 @@ class MerchantController extends Controller
     public function edit(User $merchant, BranchDataTable $dataTable)
     {
         $merchant->load([
-            'branchDetail', 'address.city', 'media', 'categories', 'userSocialMedia',
+            'branchDetail', 'address.city', 'categories', 'userSocialMedia',
+            'media' => function ($query) {
+                $query->orderBy('position');
+            },
             'subBranches' => function ($query) {
                 $query->orderByDesc('created_at');
             },
@@ -212,6 +226,39 @@ class MerchantController extends Controller
             ->withData([
                 'redirect_to' => route('admin.merchants.index')
             ])
+            ->sendJson();
+    }
+
+    public function reorder(Request $request)
+    {
+        $request->validate([
+            'media' => ['required', 'array'],
+            'media.*' => ['integer'],
+        ]);
+
+        foreach ($request->get('media') as $index => $id) {
+            $medium = Media::where('id', $id)->first();
+            $medium->position = $index + 1;
+            $medium->saveQuietly();
+        }
+
+        switch ($request->get('parent_type')) {
+            case 'merchant':
+                $class = User::class;
+                break;
+        }
+
+        $positions = Media::query()
+            ->whereHasMorph('mediable', $class, function (Builder $query) use ($request) {
+                $query->where('id', $request->get('parent_id'));
+            })
+            ->pluck('position', 'id');
+
+
+        return Response::instance()
+            ->withStatus('success')
+            ->withMessage()
+            ->withData(compact('positions'))
             ->sendJson();
     }
 }

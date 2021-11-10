@@ -28,6 +28,7 @@
                         </div>
 
                         <div class="row">
+                            @mainBranch
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="merchant" class="col-form-label">{{ trans_choice('labels.branch', 1) }} <span class="text-danger">*</span></label>
@@ -44,6 +45,7 @@
                                     @enderror
                                 </div>
                             </div>
+                            @endmainBranch
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
                                     <label for="status" class="col-form-label">{{ __('labels.status') }} <span class="text-danger">*</span></label>

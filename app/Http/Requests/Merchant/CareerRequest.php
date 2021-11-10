@@ -31,7 +31,7 @@ class CareerRequest extends FormRequest
     {
         return [
             'position'      =>  ['required'],
-            'merchant'      =>  ['required', new ExistMerchant()],
+            'merchant'      =>  [Rule::requiredIf(Auth::user()->is_main_merchant), 'nullable', new ExistMerchant()],
             'status'        =>  ['required', Rule::in(array_keys((new Status())->publishStatus()))],
             'min_salary'    =>  ['required', 'numeric'],
             'max_salary'    =>  ['required', 'numeric', 'gte:min_salary'],

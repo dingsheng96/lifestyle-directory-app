@@ -27,7 +27,6 @@ class MediaDataTable extends DataTable
             ->eloquent($query)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
-
                 $options = [
                     'no_action' => $this->no_action ?: null,
                     'view' => [
@@ -61,7 +60,11 @@ class MediaDataTable extends DataTable
             ->addColumn('preview', function ($data) {
                 return '<img src="' . $data->full_file_path . '" alt="' . $data->original_filename . '" class="table-img-preview">';
             })
-            ->rawColumns(['action', 'preview']);
+            ->rawColumns(['action', 'preview'])
+            ->setRowAttr([
+                'data-id' => '{{ $id }}'
+            ])
+            ->setRowClass("{{ 'sortable-row' }}");
     }
 
     /**

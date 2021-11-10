@@ -118,14 +118,23 @@ class MemberService extends BaseService
 
     public function rateMerchant()
     {
-        $merchant = User::validMerchant()->publish()->where('id', $this->request->get('merchant_id'))->firstOrFail();
+        $merchant = User::validMerchant()
+            ->publish()
+            ->where('id', $this->request->get('merchant_id'))
+            ->firstOrFail();
 
-        $this->model->raters()->attach([
-            $merchant->id => [
-                'scale'     => $this->request->get('scale'),
-                'review'    => $this->request->get('review')
-            ]
-        ]);
+        throw_if(
+            $this->model->raters()->where('id', $merchant->id)->exists(),
+            new \Exception('User already reviewed the same merchant.')
+        );
+
+        $this->model->raters()
+            ->syncWithoutDetaching([
+                $merchant->id => [
+                    'scale'     => $this->request->get('scale'),
+                    'review'    => $this->request->get('review')
+                ]
+            ]);
 
         return $this;
     }

@@ -59,15 +59,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="description" class="col-form-label">{{ __('labels.description') }}</label>
-                            <textarea type="text" id="description" name="description" class="form-control @error('description') is-invalid @enderror" cols="100" rows="7">{!! old('description', $category->description) !!}</textarea>
-                            @error('description')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
                     </div>
 
                     <div class="card-footer bg-transparent text-md-right text-center">
