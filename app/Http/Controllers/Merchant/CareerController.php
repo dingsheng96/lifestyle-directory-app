@@ -37,13 +37,10 @@ class CareerController extends Controller
         $merchant = Auth::user()->load(['mainBranch', 'subBranches']);
         $merchants = collect([$merchant]);
 
-        if ($merchant->is_main_merchant) {
-            $merchants->merge($merchant->subBranches);
-        }
+        if ($merchant->is_main_branch) {
 
-        $merchants->filter(function ($item) {
-            return !is_null($item);
-        });
+            $merchants = $merchants->merge($merchant->subBranches);
+        }
 
         return view('merchant.career.create', compact('merchants'));
     }

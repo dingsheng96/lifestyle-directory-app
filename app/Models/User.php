@@ -167,14 +167,17 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(OperationHour::class, 'branch_id', 'id');
     }
 
-    public function visitorHistories()
+    public function visitorHistories() // from merchant perspective
     {
-        return $this->hasMany(BranchVisitorHistory::class, 'branch_id', 'id');
+        return $this->belongsToMany(self::class, BranchVisitorHistory::class, 'branch_id', 'visitor_id', 'id', 'id')
+            ->withTimestamps();
     }
 
-    public function branchVisitHistories()
+    public function branchVisitHistories() // from member perspective
     {
-        return $this->hasMany(BranchVisitorHistory::class, 'visitor_id', 'id');
+        return $this->belongsToMany(self::class, BranchVisitorHistory::class, 'visitor_id', 'branch_id', 'id', 'id')
+            ->withPivot(['branch_id'])
+            ->withTimestamps();
     }
 
     public function userNotifications()

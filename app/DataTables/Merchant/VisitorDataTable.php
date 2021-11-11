@@ -2,10 +2,10 @@
 
 namespace App\DataTables\Merchant;
 
+use App\Models\User;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
-use App\Models\BranchVisitorHistory;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
@@ -25,10 +25,10 @@ class VisitorDataTable extends DataTable
             ->eloquent($query)
             ->addIndexColumn()
             ->addColumn('visitor', function ($data) {
-                return $data->visitor->name;
+                return $data->name;
             })
             ->addColumn('total_visit_count', function ($data) {
-                return $data->visit_count;
+                return $data->branchVisitHistories->where('id', Auth::id())->count();
             })
             ->editColumn('created_at', function ($data) {
                 return $data->created_at->toDateTimeString();
@@ -41,14 +41,14 @@ class VisitorDataTable extends DataTable
     /**
      * Get query source of dataTable.
      *
-     * @param \App\Models\BranchVisitorHistory $model
+     * @param \App\Models\User $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(BranchVisitorHistory $model)
+    public function query(User $model)
     {
         return $model->newQuery()
-            ->with('visitor')
-            ->where('branch_id', Auth::id());
+            ->member()
+            ->with(['branchVisitHistories']);
     }
 
     /**

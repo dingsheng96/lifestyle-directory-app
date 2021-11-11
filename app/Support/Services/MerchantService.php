@@ -261,19 +261,7 @@ class MerchantService extends BaseService
 
         if ($user) {
 
-            $visitor_history = $this->model->visitorHistories()
-                ->where('visitor_id', $user->id)
-                ->firstOr(function () {
-                    return new BranchVisitorHistory();
-                });
-
-            $visitor_history->visitor_id    = $user->id;
-            $visitor_history->visit_count   += 1;
-
-            if ($visitor_history->isDirty()) {
-
-                $this->model->visitorHistories()->save($visitor_history);
-            }
+            $this->model->visitorHistories()->attach($user->id);
         }
 
         return $this;

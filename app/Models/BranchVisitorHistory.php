@@ -2,27 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class BranchVisitorHistory extends Model
+class BranchVisitorHistory extends Pivot
 {
     use SoftDeletes;
 
     protected $table = 'branch_visitor_histories';
 
     protected $fillable = [
-        'branch_id', 'visitor_id', 'visit_count'
+        'branch_id', 'visitor_id'
     ];
-
-    // Relationships
-    public function branch()
-    {
-        return $this->belongsTo(User::class, 'branch_id', 'id');
-    }
-
-    public function visitor()
-    {
-        return $this->belongsTo(User::class, 'visitor_id', 'id');
-    }
 }

@@ -2,6 +2,13 @@
 
 ## 2021-11-10
 
+### Updates
+
+-   Remove visit count from branch visit histories table
+-   Record member visit record every time clicking merchant details from mobile app.
+
+## 2021-11-10
+
 ### What's new?
 
 -   Added reordering function for media table in merchant & branch module of admin panel and merchant panel

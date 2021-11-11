@@ -58,7 +58,8 @@ class MerchantController extends Controller
         try {
 
             $merchant = User::with([
-                'ratings', 'branchDetail', 'raters', 'categories', 'operationHours', 'favouriteBy',  'userSocialMedia',
+                'ratings', 'branchDetail', 'raters', 'categories',
+                'operationHours', 'favouriteBy',  'userSocialMedia',
                 'media' => function ($query) {
                     $query->orderBy('position');
                 },

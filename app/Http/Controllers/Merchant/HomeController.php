@@ -12,11 +12,15 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $user = Auth::user()->loadCount([
-            'visitorHistories' => function ($query) {
-                $query->whereDate('updated_at', today());
-            }
-        ])->load('visitorHistories', 'ratings');
+        $user = Auth::user()
+            ->loadCount(['visitorHistories'])
+            ->load([
+                'ratings',
+                'visitorHistories' => function ($query) {
+                    $query->wherePivot('created_at', '>=', today()->startOfDay())
+                        ->wherePivot('created_at', '<=', today()->endOfDay());
+                }
+            ]);
 
         // Widgets
         $total_listing_careers = Career::publish()
@@ -34,9 +38,9 @@ class HomeController extends Controller
             })
             ->count();
 
-        $today_visitor_count = $user->visitor_histories_count;
+        $today_visitor_count = $user->visitorHistories->count();
 
-        $total_visitor_count = (clone $user->visitorHistories)->sum('visit_count');
+        $total_visitor_count = $user->visitor_histories_count;
 
         $average_ratings = $user->rating;
 
