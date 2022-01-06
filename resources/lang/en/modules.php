@@ -37,6 +37,5 @@ return [
     'city' => 'City|Cities',
     'language' => 'Language|Languages',
     'media' => 'Media',
-    'operation' => 'Operation|Operations'
-
+    'operation' => 'Operation|Operations',
 ];

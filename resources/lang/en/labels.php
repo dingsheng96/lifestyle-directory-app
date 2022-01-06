@@ -43,9 +43,9 @@ return [
     'change_profile_pic' => 'Change Profile Picture',
     'change_logo' => 'Change Logo',
     'change_ssm_cert' => 'Change SSM Certificate',
-    'copyright' => '&copy ' . config('app.name') . ' ' . date('Y') . '. All rights reserved.',
-    'terms_policy' => 'Terms & Policies',
-    'privacy_policy' => 'Privacy Policies',
+    'copyright' => '&copy;' . date('Y') . ' Copyright Reserved Bizboo Sdn Bhd',
+    'terms_service' => 'Terms of Service',
+    'privacy_policy' => 'Privacy Policy',
     'remember_me' => 'Remember Me',
     'login' => 'Log In',
     'logout' => 'Log Out',
@@ -71,7 +71,6 @@ return [
     'select_all' => 'Select All',
     'status' => 'Status',
     'listing_status' => 'Listing Status',
-    'contact_no' => 'Contact No.',
     'address_1' => 'Address 1',
     'address_2' => 'Address 2',
     'postcode' => 'Postal Code',
@@ -186,5 +185,12 @@ return [
     'visitor_history' => 'Visitor History',
     'visitor' => 'Visitor',
     'first_visit_at' => 'First Visit At',
-    'recent_visit_at' => 'Recent Visit At'
+    'recent_visit_at' => 'Recent Visit At',
+
+    'quick_link' => 'Quick Links',
+    'about_us' => 'About Us',
+    'feature' => 'Features',
+    'contact_us' => 'Contact Us',
+    'contact_no' => 'Contact Number',
+    'follow_us' => 'Follow Us On'
 ];

@@ -6,7 +6,7 @@ return [
 
     'web' => [
         'web' => [
-            'url' => env('MAIN_DOMAIN'),
+            'url' => env('WEB_DOMAIN'),
             'prefix' => '',
             'namespace' => '',
             'route' => [

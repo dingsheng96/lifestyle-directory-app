@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WebController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 
 /*
@@ -16,9 +17,17 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 */
 
 Route::get('/', function () {
-    return 'Home page';
+
+    return view('web.home');
 })->name('home');
 
-Route::get('password/reset/success', [ResetPasswordController::class, 'resetPasswordSuccess'])->name('password.reset.success');
 
-Auth::routes(['register' => false, 'login' => 'false', 'verify' => false]);
+Route::get('term-condition', function () {
+
+    return view('web.tnc');
+})->name('term-condition');
+
+Route::get('privacy-policy', function () {
+
+    return view('web.policy');
+})->name('privacy-policy');

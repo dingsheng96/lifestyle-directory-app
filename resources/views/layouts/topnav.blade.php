@@ -1,21 +1,29 @@
-<nav class="main-header navbar navbar-expand navbar-white navbar-light border-0">
-
-    <ul class="navbar-nav">
-        <li class="nav-item">
-            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-        </li>
-    </ul>
-
-    <ul class="navbar-nav ml-auto">
-
-        <li class="nav-item">
-            <a href="#" class="nav-link btn" onclick="event.preventDefault(); logoutAlert('{{ __('messages.confirm_question') }}');">
-                <i class="fas fa-sign-out-alt text-danger"></i>
-            </a>
-            <form id="logout-form" action="{{ route('merchant.logout') }}" method="POST" style="display: none;">
-                @csrf
-            </form>
-        </li>
-    </ul>
-
+<nav class="navbar navbar-expand-lg navbar-light sticky-top">
+    <div class="container mb-3 mt-3">
+        <a class="navbar-brand " href="{{ route('home') }}">
+            <img src="{{ asset('assets/web/MicrosoftTeams-image.png') }}" alt="">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto nav-text">
+                <li class="nav-item mr-2">
+                    <a class="nav-link" href="./index.html#home">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item  mr-2">
+                    <a class="nav-link" href="./index.html#about">About Us</a>
+                </li>
+                <li class="nav-item mr-2 ">
+                    <a class="nav-link" href="./index.html#feature">Features</a>
+                </li>
+                <li class="nav-item mr-2 ">
+                    <a class="nav-link" href="./index.html#OI">Our Industries</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="./index.html#contact">Contact Us</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </nav>
