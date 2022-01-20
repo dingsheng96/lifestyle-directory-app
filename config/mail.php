@@ -115,4 +115,5 @@ return [
         ],
     ],
 
+    'support_mail' => env('SUPPORT_EMAIL', 'support@bizboo.com')
 ];

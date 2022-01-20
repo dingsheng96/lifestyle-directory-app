@@ -131,9 +131,9 @@ return [
     'return_dashboard' => 'Return Dashboard',
     'ssm_cert' => 'SSM Certificate',
     'thumbnail' => 'Thumbnail',
-    'reg_no' => 'Registration No.',
+    'reg_no' => 'SSM Registration No.',
     'admin_section' => 'Admin Section',
-    'company_name' => 'Company Name',
+    'company_name' => 'Company Name as Registered',
     'branch_name' => 'Branch Name',
     'info' => 'Info',
     'view_details' => 'View Details',
@@ -161,7 +161,7 @@ return [
     'average_ratings' => 'Average Ratings',
     'reviews' => 'Reviews',
     'items' => 'Items',
-    'registration_form' => 'Registration Form',
+    'registration_form' => 'Registration',
     'state_reason' => 'Please state the reason',
     'total_listing_careers' => 'Total Listing Careers',
     'total_listing_merchants' => 'Total Listing Merchants',
@@ -186,11 +186,72 @@ return [
     'visitor' => 'Visitor',
     'first_visit_at' => 'First Visit At',
     'recent_visit_at' => 'Recent Visit At',
+    'message' => 'Message',
+    'personal_details' => 'Personal Details',
+    'full_name_as_nric' => 'Full Name (Name as per NRIC)',
+    'upload_verification_documents' => 'Upload Documents',
+    'shop_image' => 'Image of Your Shop',
+    'if_any' => 'If Any',
 
     'quick_link' => 'Quick Links',
-    'about_us' => 'About Us',
-    'feature' => 'Features',
-    'contact_us' => 'Contact Us',
     'contact_no' => 'Contact Number',
-    'follow_us' => 'Follow Us On'
+    'follow_us' => 'Follow Us On',
+    'register_agreement' => 'I have read & agree to <a href="' . route('term-condition') . '" target="_blank">Terms of Service</a> and <a href="' . route('privacy-policy') . '" target="_blank"> Privacy Policy</a>',
+    'menu' => [
+        'home' => 'Home',
+        'about_us' => 'About Us',
+        'feature' => 'Features',
+        'industry' => 'Our Industries',
+        'contact_us' => 'Contact Us',
+        'terms_service' => 'Terms of Service',
+        'privacy_policy' => 'Privacy Policy',
+        'join_as_merchant' => 'Join As Merchant'
+    ],
+    'home' => [
+        'main_title' => 'Pocket Biz Information',
+        'sub_title' => 'Finding businesses around you never this easy before! Bizboo shows you to all local businesses that you are looking for from Restaurants, Conveniece Stores, Fashion Boutique, Offices & So Much More.',
+        'stat_label_downloads' => 'Downloads',
+        'stat_label_merchants' => 'Merchants',
+        'stat_label_sales' => 'Sales Increased',
+    ],
+    'about_us' => [
+        'main_title' => 'About Us',
+        'sub_title' => 'What We Do',
+        'content_1' => 'Bizboo Sdn Bhd is a Malaysia company that plans to Lead Malaysia Business Directory to provide more accurate and timely information to all stakeholders. Users can easily download Bizboo on their smart devices on Apple App Store, Google Playstore & Huawei App Gallery.',
+        'content_2' => 'Bizboo is inspired by a group of entrepreneurs who wants to connect businesses to every interested stakeholders in the market that can easily access to their basic information like business name, business address, business contact, business hours, social medias and their available vacancy.',
+        'content_3' => 'The company plans to strive forward by providing more users to access more accurate information so it could satisfy all stakeholders.',
+    ],
+    'feature' => [
+        'main_title' => 'Features',
+        'sub_title' => 'Why Us?',
+        'item_1' => [
+            'title' => 'Business Near You',
+            'content' => 'Bizboo will show you any businesses that are around your location and you can look for their information easily like never before.'
+        ],
+        'item_2' => [
+            'title' => 'Plan Ahead of Time',
+            'content' => 'Bizboo allow you to look for businesses manually by searching on keywords, location, operating hours as well as industry. You can start planning your itinerary for your upcoming roadtrips and holiday at other District & States.'
+        ],
+        'item_3' => [
+            'title' => 'Available Vacancy',
+            'content' => 'Merchant on Bizboo can post job openings that their business is in need of. You do not search jobs only on Job Portals, you can even look for jobs that are around you and you can easily contact them for your personal interests.'
+        ]
+    ],
+    'our_industry' => [
+        'main_title' => 'Our Industries'
+    ],
+    'contact_us' => [
+        'main_title' => 'Contact Us',
+        'sub_title' => 'Want to Collab?',
+        'contact_form' => [
+            'name' => 'Name',
+            'first_name' => 'First Name',
+            'last_name' => 'Last Name',
+            'email' => 'Email Address',
+            'phone' => 'Mobile Number',
+            'message' => 'Message',
+            'submit' => 'Submit',
+            'optional' => 'Optional'
+        ]
+    ],
 ];

@@ -113,7 +113,7 @@
                                     <select name="country" id="country" class="@error('country') is-invalid @enderror country-state-filter">
                                         <option value="0" selected disabled>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(trans_choice('labels.country', 1))]) }} ---</option>
                                         @foreach ($countries as $country)
-                                        <option value="{{ $country->id }}" {{ (old('country') == $country->id || $country->set_default) ? 'selected' : null }}>{{ $country->name }}</option>
+                                        <option value="{{ $country->id }}" {{ (old('country')==$country->id || $country->set_default) ? 'selected' : null }}>{{ $country->name }}</option>
                                         @endforeach
                                     </select>
                                     @error('country')

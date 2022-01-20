@@ -4,6 +4,12 @@ return [
 
     'greeting' => 'Hi :name',
 
+    'contact_email' => [
+        'subject' => 'Contact Form Notification',
+        'title' => 'Contact Form Notification',
+        'content' => 'Hi, someone wish to reach on you. Please find details as below:'
+    ],
+
     'verify_account' => [
         'subject' => 'Verify Email Address',
         'action' => 'Verify Email Address',

@@ -11,7 +11,7 @@ class ViewServiceProvider extends ServiceProvider
             'admin.merchant.*', 'admin.category.*', 'admin.member.*', 'admin.banner.*', 'merchant.branch.*', 'merchant.profile'
         ],
         \App\Http\View\Composers\CategoryComposer::class => [
-            'admin.merchant.*', 'merchant.auth.register'
+            'admin.merchant.*', 'merchant.auth.register', 'web.*'
         ],
         \App\Http\View\Composers\CountryStateComposer::class => [
             'admin.merchant.*', 'merchant.branch.*', 'merchant.profile', 'merchant.auth.register'

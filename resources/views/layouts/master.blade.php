@@ -31,6 +31,9 @@
     @endguest
 
     <script type="text/javascript" src="{{ asset('js/app.js?v=' . time()) }}"></script>
+    <script type="text/javascript" src="{{ asset('js/web.js?v=' . time()) }}"></script>
+    <script type="text/javascript" src="{{ asset('js/function.js?v=' . time()) }}"></script>
+    <script type="text/javascript" src="{{ asset('js/dropdown.js?v=' . time()) }}"></script>
     @stack('scripts')
 
 </body>

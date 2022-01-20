@@ -1,9 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
+use App\Mail\ContactUsEmail;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\WebController;
-use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,17 +18,16 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 */
 
 Route::get('/', function () {
-
-    return view('web.home');
+    return view('web.index');
 })->name('home');
 
-
 Route::get('term-condition', function () {
-
     return view('web.tnc');
 })->name('term-condition');
 
 Route::get('privacy-policy', function () {
-
     return view('web.policy');
 })->name('privacy-policy');
+
+Route::post('contact-us', [ContactController::class, 'sendEmail'])
+    ->name('contact_us');

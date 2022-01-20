@@ -32,6 +32,7 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
+            'agreement'         =>  ['accepted'],
             'name'              =>  ['required', 'min:3', 'max:255'],
             'phone'             =>  ['required', new PhoneFormat],
             'email'             =>  ['required', 'email', new UniqueMerchant('email')],

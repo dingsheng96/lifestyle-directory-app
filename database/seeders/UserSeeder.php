@@ -17,11 +17,9 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        DB::statement('TRUNCATE TABLE ' . (new User())->getTable());
-
-        // create super admin
-        User::create([
+        User::firstOrCreate([
+            'email' => 'superadmin@bizboo.com',
+        ], [
             'name'                  =>  'Super Admin',
             'email'                 =>  'superadmin@bizboo.com',
             'password'              =>  'password',
@@ -29,7 +27,5 @@ class UserSeeder extends Seeder
             'application_status'    =>  User::APPLICATION_STATUS_APPROVED,
             'type'                  =>  User::USER_TYPE_ADMIN
         ])->assignRole(Role::ROLE_SUPER_ADMIN);
-
-        DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 }

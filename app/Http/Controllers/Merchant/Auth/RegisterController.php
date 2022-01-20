@@ -4,19 +4,14 @@ namespace App\Http\Controllers\Merchant\Auth;
 
 use App\Models\User;
 use App\Helpers\Message;
-use App\Helpers\Response;
 use App\Models\Permission;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
 use App\Support\Services\MerchantService;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use App\Http\Requests\Merchant\Auth\RegisterRequest;
 
@@ -57,9 +52,9 @@ class RegisterController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function showRegistrationForm()
+    public function showRegistrationForm(Request $request)
     {
-        $referral = request()->get('referral');
+        $referral = $request->get('referral');
 
         return view('merchant.auth.register', compact('referral'));
     }
@@ -74,7 +69,8 @@ class RegisterController extends Controller
 
         try {
 
-            $merchant_service->setRequest($request)->store()
+            $merchant_service->setRequest($request)
+                ->store()
                 ->setApplicationStatus(User::APPLICATION_STATUS_PENDING)
                 ->setReferral('referral_code')
                 ->setLocationCoordinates();
@@ -96,8 +92,8 @@ class RegisterController extends Controller
             ->withProperties($request->except(['password', 'password_confirmation']))
             ->log($message);
 
-        // return redirect()->route('merchant.branches.index')->with($status, $message);
-        return 'Application submitted';
+        return redirect()->route('merchant.register')
+            ->with($status, $message);
     }
 
     /**
