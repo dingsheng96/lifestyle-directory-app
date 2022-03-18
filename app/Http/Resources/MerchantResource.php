@@ -18,6 +18,8 @@ class MerchantResource extends JsonResource
      */
     public function toArray($request)
     {
+        $this->loadCount('careers');
+
         $data = [
             'id'        =>  $this->id,
             'name'      =>  $this->name,
@@ -28,7 +30,8 @@ class MerchantResource extends JsonResource
             'location'  =>  $this->address->location_city_state,
             'rating'    =>  $this->rating,
             'distance'  =>  $this->address->formatted_distance,
-            'favourite' =>  $this->checkUserFavouriteStatus($request->user())
+            'favourite' =>  $this->checkUserFavouriteStatus($request->user()),
+            'has_career' => (bool) $this->careers_count > 0,
         ];
 
         if (!$this->listing) {
@@ -55,7 +58,6 @@ class MerchantResource extends JsonResource
                     'longitude'     => number_format($this->address->longitude, 12),
                     'latitude'      => number_format($this->address->latitude, 12)
                 ],
-                'has_career'        => (bool) $this->careers_count > 0,
                 'career_description' => $this->branchDetail->career_description,
                 'similar_merchants' => parent::collection($this->similar_merchants)->toArray($request)
             ]);

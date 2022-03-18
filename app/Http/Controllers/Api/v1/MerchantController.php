@@ -23,12 +23,15 @@ class MerchantController extends Controller
         $latitude   =   $request->get('latitude', 0);
         $longitude  =   $request->get('longitude', 0);
 
-        $merchants = User::with([
-            'media', 'ratings', 'favouriteBy', 'categories',
-            'address' => function ($query) use ($latitude, $longitude) {
-                $query->getDistanceByCoordinates($latitude, $longitude);
-            }
-        ])->validMerchant()->publish()
+        $merchants = User::query()
+            ->with([
+                'media', 'ratings', 'favouriteBy', 'categories',
+                'address' => function ($query) use ($latitude, $longitude) {
+                    $query->getDistanceByCoordinates($latitude, $longitude);
+                }
+            ])
+            ->validMerchant()
+            ->publish()
             ->filterByLocationDistance($latitude, $longitude)
             ->whereHas('categories', function ($query) use ($request) {
                 $query->whereIn('id', [$request->get('category_id')]);
@@ -57,30 +60,35 @@ class MerchantController extends Controller
 
         try {
 
-            $merchant = User::with([
-                'ratings', 'branchDetail', 'raters', 'categories',
-                'operationHours', 'favouriteBy',  'userSocialMedia',
-                'media' => function ($query) {
-                    $query->orderBy('position');
-                },
-                'address' => function ($query) use ($latitude, $longitude) {
-                    $query->getDistanceByCoordinates($latitude, $longitude);
-                }
-            ])->withCount(['careers', 'ratings'])->validMerchant()->publish()
+            $merchant = User::query()
+                ->with([
+                    'ratings', 'branchDetail', 'raters', 'categories',
+                    'operationHours', 'favouriteBy',  'userSocialMedia',
+                    'media' => function ($query) {
+                        $query->orderBy('position');
+                    },
+                    'address' => function ($query) use ($latitude, $longitude) {
+                        $query->getDistanceByCoordinates($latitude, $longitude);
+                    }
+                ])
+                ->withCount(['careers', 'ratings'])
+                ->validMerchant()->publish()
                 ->where('id', $merchant_id)
                 ->firstOrFail();
 
             $merchant_service->setModel($merchant)->setRequest($request)->storeVisitorHistory();
 
-            $similar_merchants = User::with([
-                'ratings',
-                'media' => function ($query) {
-                    $query->orderBy('position');
-                },
-                'address' => function ($query) use ($latitude, $longitude) {
-                    $query->getDistanceByCoordinates($latitude, $longitude);
-                }
-            ])->validMerchant()
+            $similar_merchants = User::query()
+                ->with([
+                    'ratings',
+                    'media' => function ($query) {
+                        $query->orderBy('position');
+                    },
+                    'address' => function ($query) use ($latitude, $longitude) {
+                        $query->getDistanceByCoordinates($latitude, $longitude);
+                    }
+                ])
+                ->validMerchant()
                 ->where('id', '!=', $merchant_id)
                 ->filterByLocationDistance($latitude, $longitude)
                 ->filterByCategories($merchant->categories->pluck('id')->toArray())
@@ -115,9 +123,12 @@ class MerchantController extends Controller
         $status     =   'success';
 
         $merchant   =   User::with(['ratings', 'address'])
-            ->validMerchant()->publish()
-            ->where('id', $request->get('merchant_id'))->first()
-            ->ratings()->orderByDesc('pivot_created_at')
+            ->publish()
+            ->validMerchant()
+            ->where('id', $request->get('merchant_id'))
+            ->first()
+            ->ratings()
+            ->orderByDesc('pivot_created_at')
             ->paginate(15, ['*'], 'page', $request->get('page'));
 
         return Response::instance()
@@ -133,13 +144,18 @@ class MerchantController extends Controller
         $latitude   =   $request->get('latitude', 0);
         $longitude  =   $request->get('longitude', 0);
 
-        $merchants = User::with([
-            'media', 'ratings', 'favouriteBy', 'categories',
-            'address' => function ($query) use ($latitude, $longitude) {
-                $query->getDistanceByCoordinates($latitude, $longitude);
-            }
-        ])->validMerchant()->publish()->searchByInput($request->get('keyword'))
-            ->filterByLocationDistance($latitude, $longitude)->orderBy('name')
+        $merchants = User::query()
+            ->with([
+                'media', 'ratings', 'favouriteBy', 'categories',
+                'address' => function ($query) use ($latitude, $longitude) {
+                    $query->getDistanceByCoordinates($latitude, $longitude);
+                }
+            ])
+            ->validMerchant()
+            ->publish()
+            ->searchByInput($request->get('keyword'))
+            ->filterByLocationDistance($latitude, $longitude)
+            ->orderBy('name')
             ->paginate(15, ['*'], 'page', $request->get('page'));
 
         return Response::instance()
@@ -155,12 +171,16 @@ class MerchantController extends Controller
         $latitude   =   $request->get('latitude', 0);
         $longitude  =   $request->get('longitude', 0);
 
-        $merchants = User::with([
-            'media', 'ratings', 'favouriteBy', 'categories',
-            'address' => function ($query) use ($latitude, $longitude) {
-                $query->getDistanceByCoordinates($latitude, $longitude);
-            }
-        ])->validMerchant()->publish()->filterMerchantByRating()
+        $merchants = User::query()
+            ->with([
+                'media', 'ratings', 'favouriteBy', 'categories',
+                'address' => function ($query) use ($latitude, $longitude) {
+                    $query->getDistanceByCoordinates($latitude, $longitude);
+                }
+            ])
+            ->validMerchant()
+            ->publish()
+            ->filterMerchantByRating()
             ->filterByLocationDistance($latitude, $longitude)->orderBy('name')
             ->paginate(15, ['*'], 'page', $request->get('page'));
 

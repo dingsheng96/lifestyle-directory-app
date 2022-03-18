@@ -35,7 +35,6 @@ class ProfileRequest extends FormRequest
     {
         return [
             'name'      => ['required', 'max:255', Rule::unique(User::class, 'name')->ignore(Auth::id(), 'id')->where('type', User::USER_TYPE_MERCHANT)->whereNull('deleted_at')],
-            'email'     => ['required', 'email', Rule::unique(User::class, 'email')->ignore(Auth::id(), 'id')->where('type', User::USER_TYPE_MERCHANT)->whereNull('deleted_at')],
             'phone'     => ['required', new PhoneFormat],
             'password'  => ['nullable', 'confirmed', Password::defaults()],
 

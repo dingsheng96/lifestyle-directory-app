@@ -24,6 +24,8 @@ Route::get('/', function () {
 
 Auth::routes(['verify' => true]);
 
+Route::get('account/{user}/impersonate', 'Auth\LoginController@impersonate');
+
 require 'general.php';
 
 Route::middleware(['auth:' . User::USER_TYPE_MERCHANT])->group(function () {

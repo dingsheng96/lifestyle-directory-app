@@ -68,29 +68,29 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="email" class="col-form-label">{{ __('labels.email') }} <span class="text-danger">*</span></label>
-                                    <input type="email" id="email" name="email" value="{{ old('email', $user->email) }}" class="form-control @error('email') is-invalid @enderror">
-                                    @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="phone" class="col-form-label">{{ __('labels.contact_no') }} <span class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text bg-white">+</span>
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="email" class="col-form-label">{{ __('labels.email') }}</label>
+                                            <span id="email" class="form-control-plaintext">{{ $user->email }}</span>
                                         </div>
-                                        <input type="text" name="phone" id="phone" value="{{ old('phone', $user->mobile_no) }}" class="form-control @error('phone') is-invalid @enderror">
                                     </div>
-                                    @error('phone')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                    @enderror
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-group">
+                                            <label for="phone" class="col-form-label">{{ __('labels.contact_no') }} <span class="text-danger">*</span></label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text bg-white">+</span>
+                                                </div>
+                                                <input type="text" name="phone" id="phone" value="{{ old('phone', $user->mobile_no) }}" class="form-control @error('phone') is-invalid @enderror">
+                                            </div>
+                                            @error('phone')
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <div class="row">

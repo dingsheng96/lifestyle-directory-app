@@ -26,11 +26,14 @@ class HomeController extends Controller
 
         $categories = Category::with(['media'])->inRandomOrder()->limit(6)->get();
 
-        $merchants  = User::with([
-            'media', 'ratings', 'address' => function ($query) use ($latitude, $longitude) {
-                $query->getDistanceByCoordinates($latitude, $longitude);
-            }
-        ])->validMerchant()->publish();
+        $merchants  = User::query()
+            ->with([
+                'media', 'ratings', 'address' => function ($query) use ($latitude, $longitude) {
+                    $query->getDistanceByCoordinates($latitude, $longitude);
+                }
+            ])
+            ->validMerchant()
+            ->publish();
 
         // popular merchants
         $popular_merchants = (clone $merchants)->filterByLocationDistance($latitude, $longitude)->filterMerchantByRating()->orderBy('name')->limit(5)->get();

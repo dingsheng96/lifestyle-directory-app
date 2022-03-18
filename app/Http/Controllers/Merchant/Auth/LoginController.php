@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -120,5 +121,16 @@ class LoginController extends Controller
     protected function guard()
     {
         return Auth::guard(User::USER_TYPE_MERCHANT);
+    }
+
+    public function impersonate(User $user)
+    {
+        if (!$user->is_merchant) {
+            abort(Response::HTTP_NOT_FOUND);
+        }
+
+        $this->guard()->login($user);
+
+        return redirect()->route('merchant.dashboard');
     }
 }

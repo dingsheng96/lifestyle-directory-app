@@ -21,15 +21,20 @@ class WishlistController extends Controller
         $longitude  =   $request->get('longitude', 0);
         $user       =   $request->user();
 
-        $merchants = User::with([
-            'media', 'ratings',
-            'address' => function ($query) use ($latitude, $longitude) {
-                $query->getDistanceByCoordinates($latitude, $longitude);
-            }
-        ])->validMerchant()->publish()
+        $merchants = User::query()
+            ->with([
+                'media', 'ratings',
+                'address' => function ($query) use ($latitude, $longitude) {
+                    $query->getDistanceByCoordinates($latitude, $longitude);
+                }
+            ])
+            ->validMerchant()
+            ->publish()
             ->whereHas('favouriteBy', function ($query) use ($user) {
                 $query->where('id', $user->id);
-            })->orderBy('name')->paginate(15, ['*'], 'page', $request->get('page'));
+            })
+            ->orderBy('name')
+            ->paginate(15, ['*'], 'page', $request->get('page'));
 
         return Response::instance()
             ->withStatusCode('modules.wishlist', 'actions.index.' . $status)

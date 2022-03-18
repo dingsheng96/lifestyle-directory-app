@@ -19,7 +19,7 @@ class Address extends Model
     ];
 
     // Constants
-    const SEARCH_RADIUS_IN_KM = 5;
+    const SEARCH_RADIUS_IN_KM = 100;
 
     // Relationships
     public function addressable()
