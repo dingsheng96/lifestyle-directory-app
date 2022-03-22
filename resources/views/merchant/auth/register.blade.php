@@ -10,28 +10,16 @@
         <div id="reg-form" class="container">
             <form action="{{ route('merchant.register') }}" method="post" role="form" enctype="multipart/form-data" class="py-5">
                 @csrf
+
                 <div class="row mb-5">
                     <div class="col-12 mb-4">
-                        <h3>{!! trans('labels.personal_details') !!}</h3>
-                    </div>
-                    <div class="col-12 mb-4">
-                        <div class="form-group-lg">
-                            <label for="pic_name" class="label-text required">{{ __('labels.full_name_as_nric') }}</label>
-                            <div class="form-row" id="name">
-                                <input type="text" name="pic_name" id="pic_name" value="{{ old('pic_name') }}" class="form-control form-control-lg @error('pic_name') is-invalid @enderror" required>
-                                @error('pic_name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
-                            </div>
-                        </div>
+                        <h3>{!! trans('labels.company_details') !!}</h3>
                     </div>
                     <div class="col-12 col-lg-6 mb-4">
                         <div class="form-group-lg">
-                            <label for="pic_phone" class="label-text required">{!! trans('labels.contact_no') !!}</label>
-                            <input type="text" name="pic_phone" id="pic_phone" value="{{ old('pic_phone')  }}" class="form-control form-control-lg @error('pic_phone') is-invalid @enderror phone_format" placeholder="Eg: +6012xxxxxxx" pattern="^(\+601)[0-46-9][0-9]{7,8}$" required>
-                            @error('pic_phone')
+                            <label for="name" class="label-text required">{!! trans('labels.company_name') !!}</label>
+                            <input type="text" name="name" id="name" value="{{ old('name') }}" class="form-control form-control-lg ucfirst @error('name') is-invalid @enderror" required>
+                            @error('name')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
@@ -40,12 +28,34 @@
                     </div>
                     <div class="col-12 col-lg-6 mb-4">
                         <div class="form-group-lg">
-                            <label for="pic_email" class="label-text required">{!! trans('labels.email') !!}</label>
-                            <input type="email" value="{{ old('pic_email') }}" class="form-control form-control-lg @error('pic_email') is-invalid @enderror" id="pic_email" name="pic_email" placeholder="Eg: example@email.com" required>
-                            @error('pic_email')
-                            <div class="invalid-feedback" role="alert">
+                            <label for="reg_no" class="label-text required">{!! trans('labels.reg_no') !!}</label>
+                            <input type="text" name="reg_no" id="reg_no" value="{{ old('reg_no') }}" class="form-control form-control-lg @error('reg_no') is-invalid @enderror">
+                            @error('reg_no')
+                            <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
-                            </div>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 mb-4">
+                        <div class="form-group-lg">
+                            <label for="contact" class="label-text required">{!! trans('labels.company_contact_no') !!}</label>
+                            <input type="text" name="phone" id="phone" value="{{ old('phone')  }}" class="form-control form-control-lg @error('phone') is-invalid @enderror phone_format" placeholder="Eg: +60xxxxxxxxx" pattern="^(\+60)[0-9][0-9]{8,9}$" required>
+                            @error('phone')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 mb-4">
+                        <div class="form-group-lg">
+                            <label for="email" class="label-text required">{!! trans('labels.email') !!} ({!! trans('labels.username') !!})</label>
+                            <input type="email" name="email" id="email" value="{{ old('email') }}" class="form-control form-control-lg @error('email') is-invalid @enderror" placeholder="Eg: example@email.com" required>
+                            @error('email')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
                             @enderror
                         </div>
                     </div>
@@ -72,57 +82,6 @@
                             @enderror
                         </div>
                     </div>
-                </div>
-
-                <div class="row mb-5">
-                    <div class="col-12 mb-4">
-                        <h3>{!! trans('labels.company_details') !!}</h3>
-                    </div>
-                    <div class="col-12 col-lg-6 mb-4">
-                        <div class="form-group-lg">
-                            <label for="name" class="label-text required">{!! trans('labels.company_name') !!}</label>
-                            <input type="text" name="name" id="name" value="{{ old('name') }}" class="form-control form-control-lg ucfirst @error('name') is-invalid @enderror" required>
-                            @error('name')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-6 mb-4">
-                        <div class="form-group-lg">
-                            <label for="reg_no" class="label-text required">{!! trans('labels.reg_no') !!}</label>
-                            <input type="text" name="reg_no" id="reg_no" value="{{ old('reg_no') }}" class="form-control @error('reg_no') is-invalid @enderror">
-                            @error('reg_no')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-6 mb-4">
-                        <div class="form-group-lg">
-                            <label for="contact" class="label-text required">{!! trans('labels.contact_no') !!}</label>
-                            <input type="text" name="phone" id="phone" value="{{ old('phone')  }}" class="form-control form-control-lg @error('phone') is-invalid @enderror phone_format" placeholder="Eg: +6012xxxxxxx" pattern="^(\+601)[0-46-9][0-9]{7,8}$" required>
-                            @error('phone')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="col-12 col-lg-6 mb-4">
-                        <div class="form-group-lg">
-                            <label for="email" class="label-text required">{!! trans('labels.email') !!}</label>
-                            <input type="email" name="email" id="email" value="{{ old('email') }}" class="form-control form-control-lg @error('email') is-invalid @enderror" placeholder="Eg: example@email.com" required>
-                            @error('email')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-                    </div>
-
                     <div class="col-12 col-lg-6 mb-4">
                         <div class="form-group-lg">
                             <label for="category" class='label-text required'>{!! trans('labels.category') !!}</label>
@@ -211,6 +170,47 @@
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-5">
+                    <div class="col-12 mb-4">
+                        <h3>{!! trans('labels.personal_details') !!}</h3>
+                    </div>
+                    <div class="col-12 mb-4">
+                        <div class="form-group-lg">
+                            <label for="pic_name" class="label-text required">{{ __('labels.full_name_as_nric') }}</label>
+                            <div class="form-row" id="name">
+                                <input type="text" name="pic_name" id="pic_name" value="{{ old('pic_name') }}" class="form-control form-control-lg @error('pic_name') is-invalid @enderror" required>
+                                @error('pic_name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 mb-4">
+                        <div class="form-group-lg">
+                            <label for="pic_phone" class="label-text required">{!! trans('labels.contact_no') !!}</label>
+                            <input type="text" name="pic_phone" id="pic_phone" value="{{ old('pic_phone')  }}" class="form-control form-control-lg @error('pic_phone') is-invalid @enderror phone_format" placeholder="Eg: +6012xxxxxxx" pattern="^(\+601)[0-46-9][0-9]{7,8}$" required>
+                            @error('pic_phone')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 mb-4">
+                        <div class="form-group-lg">
+                            <label for="pic_email" class="label-text required">{!! trans('labels.email') !!}</label>
+                            <input type="email" value="{{ old('pic_email') }}" class="form-control form-control-lg @error('pic_email') is-invalid @enderror" id="pic_email" name="pic_email" placeholder="Eg: example@email.com" required>
+                            @error('pic_email')
+                            <div class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </div>
                             @enderror
                         </div>
                     </div>
