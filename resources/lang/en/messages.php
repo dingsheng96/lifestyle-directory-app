@@ -40,7 +40,7 @@ return [
     'drag_and_drop' => 'Drop files here to upload',
     'boosts_ads_preference_text' => 'You may choose to boost this project',
     'select_prefer_boosts_ads_days' => 'Select your preferred day to boost ads.',
-    'password_format' => 'Minimum 8 characters with at least 1 uppercase, 1 lowercase letter, 1 number and 1 symbol.',
+    'password_format' => 'Minimum 8 characters.',
     'upload_file_rules' => '{1} <li>Only :extensions file type allowed.</li><li>Total file size must be &le; :maxsize.</li>|{2,} <li>Only total of :maxfiles files allowed.</li><li>Only :extensions file type allowed</li><li>Total file size must be &le; :maxsize.</li>',
     'upload_file_rules_text' => '{1} Only :extensions file type allowed.<br/>Total file size must be &le; :maxsize.|{2,} Only total of :maxfiles files allowed.<br/>Only :extensions file type allowed<br/>Total file size must be &le; :maxsize.',
     'no_records' => 'No records found.',

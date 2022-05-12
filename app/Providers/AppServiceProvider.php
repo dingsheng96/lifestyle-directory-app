@@ -35,8 +35,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(255);
 
         Password::defaults(function () {
-
-            return Password::min(8)->mixedCase()->numbers()->symbols();
+            return Password::min(8);
         });
     }
 }

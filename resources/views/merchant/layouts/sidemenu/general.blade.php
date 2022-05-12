@@ -8,7 +8,7 @@
 </li>
 
 <li class="nav-item">
-    <a href="{{ route('merchant.careers.index') }}" class="nav-link {{ Nav::hasSegment('careers', 1, 'active') }}">
+    <a href="{{ route('merchant.careers.index') }}" class="nav-link {{ Nav::isResource('careers') }}">
         <i class="nav-icon fas fa-briefcase"></i>
         <p>{{ trans_choice('modules.career', 2) }}</p>
     </a>
@@ -16,9 +16,9 @@
 
 @mainBranch
 <li class="nav-item">
-    <a href="{{ route('merchant.branches.index') }}" class="nav-link {{ Nav::hasSegment('branches', 1, 'active') }}">
+    <a href="{{ route('merchant.branches.index') }}" class="nav-link {{ Nav::isResource('branches', null, 'active') || Nav::isResource('merchants', null, 'active') }}">
         <i class="nav-icon fas fa-store"></i>
-        <p>{{ trans_choice('modules.branch', 2) }}</p>
+        <p>{{ trans_choice('modules.company', 2) }}</p>
     </a>
 </li>
 @endmainBranch

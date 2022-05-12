@@ -28,9 +28,7 @@ class CareerResource extends JsonResource
 
             $data = array_merge($data, [
                 'logo'          =>  $this->branch->logo->full_file_path,
-                'about'         =>  $this->about,
                 'description'   =>  $this->description,
-                'benefit'       =>  $this->benefit,
                 'gallery'       =>  collect($this->branch->image)->map(function ($item) {
                     return $item->full_file_path;
                 })->values(),

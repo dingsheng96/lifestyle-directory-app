@@ -53,7 +53,7 @@ class BranchController extends Controller
         DB::beginTransaction();
 
         $action     =   Permission::ACTION_CREATE;
-        $module     =   strtolower(trans_choice('labels.branch', 1));
+        $module     =   strtolower(trans_choice('modules.branch', 1));
         $status     =   'fail';
 
         try {
@@ -140,7 +140,7 @@ class BranchController extends Controller
         DB::beginTransaction();
 
         $action     =   Permission::ACTION_UPDATE;
-        $module     =   strtolower(trans_choice('labels.branch', 1));
+        $module     =   strtolower(trans_choice('modules.branch', 1));
         $status     =   'fail';
 
         try {
@@ -186,7 +186,7 @@ class BranchController extends Controller
     public function destroy(User $branch)
     {
         $action     =   Permission::ACTION_DELETE;
-        $module     =   strtolower(trans_choice('labels.branch', 1));
+        $module     =   strtolower(trans_choice('modules.branch', 1));
         $status     =   'success';
         $message    =   Message::instance()->format($action, $module, $status);
 

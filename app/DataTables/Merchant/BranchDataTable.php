@@ -24,7 +24,6 @@ class BranchDataTable extends DataTable
             ->eloquent($query)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
-
                 return view('merchant.components.btn_action', [
                     'no_action' => $this->no_action ?: null,
                     'view' => [
@@ -32,9 +31,6 @@ class BranchDataTable extends DataTable
                     ],
                     'update' => [
                         'route' => route('merchant.branches.edit', ['branch' => $data->id])
-                    ],
-                    'delete' => [
-                        'route' => route('merchant.branches.destroy', ['branch' => $data->id])
                     ]
                 ])->render();
             })
@@ -61,10 +57,11 @@ class BranchDataTable extends DataTable
      */
     public function query(User $model)
     {
-        return $model->subMerchant()
+        return $model->newQuery()
+            ->subMerchant()
             ->whereHas('mainBranch', function ($query) {
                 $query->where('id', Auth::id());
-            })->newQuery();
+            });
     }
 
     /**

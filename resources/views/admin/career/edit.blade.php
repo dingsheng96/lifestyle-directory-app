@@ -96,27 +96,6 @@
                             </span>
                             @enderror
                         </div>
-
-                        <div class="form-group">
-                            <label for="about" class="col-form-label">{{ __('labels.about') }}</label>
-                            <textarea type="text" id="about" name="about" class="form-control summernote @error('about') is-invalid @enderror" cols="100" rows="7">{!! old('about', $career->about) !!}</textarea>
-                            @error('about')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label for="benefit" class="col-form-label">{{ __('labels.benefits') }}</label>
-                            <textarea type="text" id="benefit" name="benefit" class="form-control summernote @error('benefit') is-invalid @enderror" cols="100" rows="7">{!! old('benefit', $career->benefit) !!}</textarea>
-                            @error('benefit')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-
                         <hr>
                         <p class="h5">{{ __('labels.applicant_can_apply_via') }}</p>
 

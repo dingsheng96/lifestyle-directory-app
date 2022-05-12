@@ -36,6 +36,9 @@ Route::middleware(['auth:' . User::USER_TYPE_MERCHANT])->group(function () {
 
     Route::resource('careers', CareerController::class);
 
+    Route::resource('merchants', MerchantController::class)
+        ->only(['show', 'edit', 'update']);
+
     Route::resource('branches', BranchController::class);
 
     Route::post('media/reorder', [MediaController::class, 'reorder'])->name('media.reorder');

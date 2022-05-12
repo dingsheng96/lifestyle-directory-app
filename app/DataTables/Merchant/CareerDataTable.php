@@ -118,7 +118,7 @@ class CareerDataTable extends DataTable
         return [
             Column::computed('DT_RowIndex', '#'),
             Column::make('position')->title(__('labels.job_title')),
-            Column::make('branch')->title(trans_choice('labels.branch', 1)),
+            Column::make('branch')->title(trans_choice('modules.company', 1)),
             Column::make('location')->title(__('labels.location')),
             Column::make('status')->title(__('labels.status')),
             Column::make('created_at')->title(__('labels.created_at')),

@@ -194,6 +194,9 @@ return [
     'if_any' => 'If Any',
     'company_contact_no' => 'Company Contact Number',
     'username' => 'Username',
+    'my_company_profile' => 'My Company Profile',
+    'main_hq' => 'Main HQ',
+    'e_catalogue' => 'E-Catalogue',
 
     'quick_link' => 'Quick Links',
     'contact_no' => 'Contact Number',

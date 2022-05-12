@@ -1,7 +1,5 @@
 <div class="table-responsive">
-
     <table id="tbl_image" class="table w-100 table-striped">
-
         <thead>
             <tr>
                 <th scope="col">{{ __('#') }}</th>
@@ -19,7 +17,6 @@
         </thead>
 
         <tbody @if(isset($sortable) && $sortable) class="sortable" data-reorder-route="{{ $reorder_route ?? null }}" data-parent-id="{{ $parent_id ?? null }}" data-parent-type="{{ $parent_type ?? null }}" @endif>
-
             @forelse ($images as $image)
             <tr @if(isset($sortable) && $sortable) data-id="{{ $image->id }}" class="sortable-row" @endif>
                 <th scope="row">{{ $loop->iteration }}</th>
@@ -34,10 +31,11 @@
                 @if (isset($thumbnail) && $thumbnail)
                 <td>
                     <div class="icheck-purple">
-                        <input type="radio" name="thumbnail" id="thumbnail_{{ $loop->iteration }}" value="{{ $image->id }}" onchange="showLoading(); document.getElementById('thumbnail_form_{{ $image->id }}').submit();" {{ (old('thumbnail')==$image->id || $image->is_thumbnail) ? 'checked' : null }}>
+                        <input type="radio" name="thumbnail" id="thumbnail_{{ $loop->iteration }}" value="{{ $image->id }}" onchange="showLoading(); document.querySelector('#thumbnail_form_{{ $image->id }}').submit();" {{ (old('thumbnail')==$image->id || $image->is_thumbnail) ? 'checked' : null
+                        }}>
                         <label for="thumbnail_{{ $loop->iteration }}"></label>
                     </div>
-                    <form action="{{ route('merchant.media.update', ['medium' => $image->id]) ?? '#' }}" method="post" class="d-none" id="thumbnail_form_{{ $image->id }}">
+                    <form action="{{ route('merchant.media.update', ['medium' => $image->id]) ?? '#' }}" method="post" id="thumbnail_form_{{ $image->id }}">
                         @method('put')
                         @csrf
                     </form>
@@ -48,7 +46,7 @@
                 <td>
                     @include('merchant.components.btn_action', [
                     'no_action' => $image->is_thumbnail,
-                    'download' => ['route' => $image->full_file_path,'attribute' => 'download'],
+                    'download' => ['route' => $image->full_file_path, 'attribute' => 'download="' .$image->original_filename .'"'],
                     'delete' => ['route' => route('merchant.media.destroy', ['medium' => $image->id])]])
                 </td>
                 @endif

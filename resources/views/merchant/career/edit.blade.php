@@ -31,9 +31,9 @@
                             @mainBranch
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    <label for="merchant" class="col-form-label">{{ trans_choice('labels.branch', 1) }} <span class="text-danger">*</span></label>
+                                    <label for="merchant" class="col-form-label">{{ trans_choice('modules.company', 1) }} <span class="text-danger">*</span></label>
                                     <select name="merchant" id="merchant" class="form-control select2 @error('merchant') is-invalid @enderror">
-                                        <option value="0" disabled selected>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(trans_choice('labels.branch', 1))]) }} ---</option>
+                                        <option value="0" disabled selected>--- {{ __('labels.dropdown_placeholder', ['label' => strtolower(trans_choice('modules.company', 1))]) }} ---</option>
                                         @foreach ($merchants as $merchant)
                                         <option value="{{ $merchant->id }}" {{ old('merchant', $career->branch_id) == $merchant->id ? 'selected' : null }}>{{ $merchant->name }}</option>
                                         @endforeach
@@ -93,26 +93,6 @@
                             <label for="description" class="col-form-label">{{ __('labels.description') }} <span class="text-danger">*</span></label>
                             <textarea type="text" id="description" name="description" class="form-control summernote @error('description') is-invalid @enderror" cols="100" rows="7">{!! old('description', $career->description) !!}</textarea>
                             @error('description')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label for="about" class="col-form-label">{{ __('labels.about') }}</label>
-                            <textarea type="text" id="about" name="about" class="form-control summernote @error('about') is-invalid @enderror" cols="100" rows="7">{!! old('about', $career->about) !!}</textarea>
-                            @error('about')
-                            <span class="invalid-feedback" role="alert">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <label for="benefit" class="col-form-label">{{ __('labels.benefits') }}</label>
-                            <textarea type="text" id="benefit" name="benefit" class="form-control summernote @error('benefit') is-invalid @enderror" cols="100" rows="7">{!! old('benefit', $career->benefit) !!}</textarea>
-                            @error('benefit')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

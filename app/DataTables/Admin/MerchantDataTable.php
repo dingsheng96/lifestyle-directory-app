@@ -39,6 +39,21 @@ class MerchantDataTable extends DataTable
                     ]
                 ])->render();
             })
+            ->addColumn('total_visitor_count', function ($data) {
+                $data->load([
+                    'subBranches' => function ($query) {
+                        $query->withCount('visitorHistories');
+                    }
+                ]);
+
+                $total_visitors = $data->visitor_histories_count;
+
+                foreach ($data->subBranches as $branch) {
+                    $total_visitors += $branch->visitor_histories_count;
+                }
+
+                return $total_visitors;
+            })
             ->editColumn('created_at', function ($data) {
                 return $data->created_at->toDateTimeString();
             })
@@ -59,7 +74,10 @@ class MerchantDataTable extends DataTable
      */
     public function query(User $model)
     {
-        return $model->merchant()->mainMerchant()->withCount(['subBranches'])->newQuery();
+        return $model->newQuery()
+            ->merchant()
+            ->mainMerchant()
+            ->withCount(['subBranches', 'visitorHistories']);
     }
 
     /**
@@ -94,6 +112,7 @@ class MerchantDataTable extends DataTable
             Column::make('email')->title(__('labels.email')),
             Column::make('mobile_no')->title(__('labels.contact_no')),
             Column::make('sub_branches_count')->title(__('labels.branches'))->searchable(false),
+            Column::make('total_visitor_count')->title(__('labels.total_visitor_count'))->searchable(false),
             Column::make('status')->title(__('labels.status')),
             Column::make('created_at')->title(__('labels.created_at')),
             Column::computed('action', __('labels.action'))

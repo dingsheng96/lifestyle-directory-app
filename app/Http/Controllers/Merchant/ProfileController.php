@@ -45,7 +45,7 @@ class ProfileController extends Controller
 
         try {
 
-            $merchant_service->setModel($user)->setRequest($request)->store();
+            $merchant_service->setModel($user)->setRequest($request)->storeMerchantProfile();
 
             $status  =  'success';
 

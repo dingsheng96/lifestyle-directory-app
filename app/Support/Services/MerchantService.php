@@ -12,7 +12,6 @@ use App\Models\BranchDetail;
 use App\Models\OperationHour;
 use App\Models\UserSocialMedia;
 use App\Models\ApplicationHistory;
-use App\Models\BranchVisitorHistory;
 use App\Support\Services\BaseService;
 
 class MerchantService extends BaseService
@@ -43,29 +42,38 @@ class MerchantService extends BaseService
 
     public function store()
     {
-        $this->model->name              =   $this->request->get('name');
-        $this->model->mobile_no         =   $this->request->get('phone');
-        $this->model->status            =   $this->request->get('status', User::STATUS_ACTIVE);
-        $this->model->password          =   $this->request->get('password');
-        $this->model->listing_status    =   $this->request->get('listing_status', User::LISTING_STATUS_PUBLISH);
-        $this->model->type              =   User::USER_TYPE_MERCHANT;
+        $this->model->name = $this->request->get('name');
+        $this->model->mobile_no = $this->request->get('phone');
+        $this->model->type = User::USER_TYPE_MERCHANT;
+
+        if ($this->request->has('password') && !empty($this->request->get('password'))) {
+            $this->model->password = $this->request->get('password');
+        }
+
+        if ($this->request->has('status') && !empty($this->request->get('status'))) {
+            $this->model->status = $this->request->get('status', User::STATUS_ACTIVE);
+        }
+
+        if ($this->request->has('listing_status') && !empty($this->request->get('listing_status'))) {
+            $this->model->listing_status = $this->request->get('listing_status', User::LISTING_STATUS_PUBLISH);
+        }
 
         if ($this->request->has('email') && !empty($this->request->get('email'))) {
-            $this->model->email         =   $this->request->get('email');
+            $this->model->email = $this->request->get('email');
         }
 
         if ($this->model->isDirty()) {
             $this->model->save();
         }
 
-        $this->storeDetails();
-        $this->storeAddress();
-        $this->storeLogo();
-        $this->storeSsmCert();
-        $this->storeImage();
-        $this->storeOperatingHour();
-        $this->storeSocialMedia();
-        $this->assignCategory();
+        $this->storeDetails()
+            ->storeAddress()
+            ->storeLogo()
+            ->storeSsmCert()
+            ->storeImage()
+            ->storeOperatingHour()
+            ->storeSocialMedia()
+            ->assignCategory();
 
         return $this;
     }
@@ -338,6 +346,23 @@ class MerchantService extends BaseService
 
                 $this->model->userSocialMedia()->save($social_media);
             }
+        }
+
+        return $this;
+    }
+
+    public function storeMerchantProfile()
+    {
+        $this->model->name = $this->request->get('name');
+        $this->model->mobile_no = $this->request->get('phone');
+
+        if ($this->request->has('password') && !empty($this->request->get('password'))) {
+            $this->model->password = $this->request->get('password');
+        }
+
+        if ($this->model->isDirty()) {
+
+            $this->model->save();
         }
 
         return $this;

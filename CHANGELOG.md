@@ -1,5 +1,29 @@
 # Change Log
 
+## 2022-12-05
+
+### Updates
+
+#### Admin CMS
+
+1. Add total visitor count for each merchant in datatable
+2. Include branch created under total listing in dashboard.
+
+#### Merchant CMS
+
+1. Remove about and benefits, remain description, limit 1000varchar, add small(you may include about and benefits here.)
+2. Side nav
+    - 'my profile' to 'my company profile'
+    - 'branch to 'Companies'
+3. Once the application being approved, a default branch will be opened under branch with the company details. This details to be set as HQ ad only allow view and edit.
+4. Only company name, username, company contact, and password will store in my profile, the rest will be store in the default HQ branch.
+5. Add another column in datatables ,title('Company'), inside will store either 'HQ' or "Branch" to indicate .
+6. 'Create' btn to 'Create Branches' btn
+7. Change email to email(username) in create new branch
+8. Move password below listing status in create branch
+9. Add another input to add url, name('E-catalogue')
+10. Add import function for creating new branch, add default for career introduction, description, services and branch name.
+
 ## 2021-11-10
 
 ### Updates

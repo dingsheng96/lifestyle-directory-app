@@ -27,42 +27,42 @@
                             <div class="form-group row">
                                 <label for="branch_name" class="col-form-label col-sm-2">{{ __('labels.branch_name') }}</label>
                                 <div class="col-sm-10">
-                                    <span class="form-control-plaintext" id="branch_name">{{ $branch->name }}</span>
+                                    <span class="form-control-plaintext" id="branch_name">{{ $user->name }}</span>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label for="phone" class="col-form-label col-sm-2">{{ __('labels.contact_no') }}</label>
                                 <div class="col-sm-10">
-                                    <span class="form-control-plaintext" id="phone">{{ $branch->formatted_mobile_no }}</span>
+                                    <span class="form-control-plaintext" id="phone">{{ $user->formatted_mobile_no }}</span>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label for="email" class="col-form-label col-sm-2">{{ __('labels.email') }} <small>({{ trans('labels.username') }})</small></label>
                                 <div class="col-sm-10">
-                                    <span class="form-control-plaintext" id="email">{{ $branch->email }}</span>
+                                    <span class="form-control-plaintext" id="email">{{ $user->email }}</span>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label for="reg_no" class="col-form-label col-sm-2">{{ __('labels.reg_no') }}</label>
                                 <div class="col-sm-10">
-                                    <span class="form-control-plaintext" id="reg_no">{{ $branch->branchDetail->reg_no ?? '-' }}</span>
+                                    <span class="form-control-plaintext" id="reg_no">{{ $user->branchDetail->reg_no ?? '-' }}</span>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label for="email" class="col-form-label col-sm-2">{{ __('labels.email') }}</label>
                                 <div class="col-sm-10">
-                                    <span class="form-control-plaintext" id="email">{{ $branch->email }}</span>
+                                    <span class="form-control-plaintext" id="email">{{ $user->email }}</span>
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <label for="status" class="col-form-label col-sm-2">{{ __('labels.status') }}</label>
                                 <div class="col-sm-10">
-                                    <p class="form-control-plaintext" id="status">{!! $branch->listing_status_label !!}</p>
+                                    <p class="form-control-plaintext" id="status">{!! $user->listing_status_label !!}</p>
                                 </div>
                             </div>
 
@@ -70,7 +70,7 @@
                                 <label for="ssm_cert" class="col-form-label col-sm-2">{{ __('labels.ssm_cert') }}</label>
                                 <div class="col-sm-10">
                                     <span class="form-control-plaintext" id="ssm_cert">
-                                        <a href="{{ $branch->ssm_cert->full_file_path ?? null }}" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt mr-2"></i>{{ $branch->ssm_cert->original_filename ?? '-' }}</a>
+                                        <a href="{{ $user->ssm_cert->full_file_path ?? null }}" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt mr-2"></i>{{ $user->ssm_cert->original_filename ?? '-' }}</a>
                                     </span>
                                 </div>
                             </div>
@@ -79,7 +79,7 @@
                                 <label for="logo" class="col-form-label col-sm-2">{{ __('labels.logo') }}</label>
                                 <div class="col-sm-10">
                                     <span class="form-control-plaintext" id="ssm_cert">
-                                        <a href="{{ $branch->logo->full_file_path ?? null }}" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt mr-2"></i>{{ $branch->logo->original_filename ?? '-' }}</a>
+                                        <a href="{{ $user->logo->full_file_path ?? null }}" target="_blank" rel="noopener noreferrer"><i class="fas fa-external-link-alt mr-2"></i>{{ $user->logo->original_filename ?? '-' }}</a>
                                     </span>
                                 </div>
                             </div>
@@ -88,7 +88,7 @@
                                 <label for="address" class="col-form-label col-sm-2">{{ __('labels.address') }}</label>
                                 <div class="col-sm-10">
                                     <span class="form-control-plaintext" id="address">
-                                        {{ $branch->address->full_address }}
+                                        {{ $user->address->full_address }}
                                     </span>
                                 </div>
                             </div>
@@ -100,7 +100,7 @@
                                 <label for="{{ $media_text }}" class="col-form-label col-sm-2">{{ $media_text }}</label>
                                 <div class="col-sm-10">
                                     <span class="form-control-plaintext">
-                                        {{ $branch->userSocialMedia->where('media_key', $media_key)->first()->media_value ?? '-' }}
+                                        {{ $user->userSocialMedia->where('media_key', $media_key)->first()->media_value ?? '-' }}
                                     </span>
                                 </div>
                             </div>
@@ -112,7 +112,7 @@
                                 <label for="pic_name" class="col-form-label col-sm-2">{{ __('labels.pic_name') }}</label>
                                 <div class="col-sm-10">
                                     <span class="form-control-plaintext" id="pic_name">
-                                        {{ $branch->branchDetail->pic_name }}
+                                        {{ $user->branchDetail->pic_name }}
                                     </span>
                                 </div>
                             </div>
@@ -121,7 +121,7 @@
                                 <label for="pic_phone" class="col-form-label col-sm-2">{{ __('labels.pic_contact') }}</label>
                                 <div class="col-sm-10">
                                     <span class="form-control-plaintext" id="pic_phone">
-                                        {{ $branch->branchDetail->formatted_pic_contact }}
+                                        {{ $user->branchDetail->formatted_pic_contact }}
                                     </span>
                                 </div>
                             </div>
@@ -130,7 +130,7 @@
                                 <label for="pic_email" class="col-form-label col-sm-2">{{ __('labels.pic_email') }}</label>
                                 <div class="col-sm-10">
                                     <span class="form-control-plaintext" id="pic_email">
-                                        {{ $branch->branchDetail->pic_email ?? '-' }}
+                                        {{ $user->branchDetail->pic_email ?? '-' }}
                                     </span>
                                 </div>
                             </div>
@@ -141,7 +141,7 @@
                                 <label for="description" class="col-form-label col-sm-2">{{ __('labels.description') }}</label>
                                 <div class="col-sm-10">
                                     <span class="form-control-plaintext" id="description">
-                                        {!! nl2br($branch->branchDetail->description) ?? '-' !!}
+                                        {!! nl2br($user->branchDetail->description) ?? '-' !!}
                                     </span>
                                 </div>
                             </div>
@@ -151,7 +151,7 @@
                                 <label for="services" class="col-form-label col-sm-2">{{ __('labels.services') }}</label>
                                 <div class="col-sm-10">
                                     <span class="form-control-plaintext" id="services">
-                                        {!! nl2br($branch->branchDetail->services) ?? '-' !!}
+                                        {!! nl2br($user->branchDetail->services) ?? '-' !!}
                                     </span>
                                 </div>
                             </div>
@@ -160,7 +160,7 @@
                                 <label for="career_desc" class="col-form-label col-sm-2">{{ __('labels.career_introduction') }}</label>
                                 <div class="col-sm-10">
                                     <span class="form-control-plaintext" id="career_desc">
-                                        {!! nl2br($branch->branchDetail->career_description) ?? '-' !!}
+                                        {!! nl2br($user->branchDetail->career_description) ?? '-' !!}
                                     </span>
                                 </div>
                             </div>

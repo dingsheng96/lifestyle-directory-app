@@ -10,7 +10,6 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Widgets
         // total listing all merchants, total registered members, total listing careers, pending applications
         $total_listing_careers      =   Career::publish()->count();
         $total_listing_merchants    =   User::validMerchant()->publish()->count();

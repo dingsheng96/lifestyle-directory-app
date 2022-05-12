@@ -26,6 +26,7 @@ return [
     'admin' => 'Admin|Admins',
     'merchant' => 'Merchant|Merchants',
     'branch' => 'Branch|Branches',
+    'company' => 'Company|Companies',
     'member' => 'Member|Members',
     'review' => 'Review|Reviews',
     'visitor' => 'Visitor|Visitors',

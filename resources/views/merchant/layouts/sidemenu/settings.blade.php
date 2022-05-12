@@ -10,6 +10,6 @@
 <li class="nav-item">
     <a href="{{ route('merchant.profile.index') }}" class="nav-link {{ Nav::hasSegment('profile', 1, 'active') }}">
         <i class="nav-icon fas fa-user"></i>
-        <p>{{ __('labels.my_profile') }}</p>
+        <p>{{ __('labels.my_company_profile') }}</p>
     </a>
 </li>

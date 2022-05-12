@@ -27,6 +27,7 @@ class UserSocialMedia extends Model
     const SOCIAL_MEDIA_KEY_SHOPEE      = 'shopee';
     const SOCIAL_MEDIA_KEY_LAZADA      = 'lazada';
     const SOCIAL_MEDIA_KEY_YOUTUBE     = 'youtube';
+    const SOCIAL_MEDIA_KEY_ECATALOGUE  = 'e_catalogue';
 
     // Relationships
     public function user()

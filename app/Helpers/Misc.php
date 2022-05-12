@@ -43,7 +43,8 @@ class Misc
             UserSocialMedia::SOCIAL_MEDIA_KEY_LINKEDIN    => __('labels.linkedin'),
             UserSocialMedia::SOCIAL_MEDIA_KEY_SHOPEE      => __('labels.shopee'),
             UserSocialMedia::SOCIAL_MEDIA_KEY_LAZADA      => __('labels.lazada'),
-            UserSocialMedia::SOCIAL_MEDIA_KEY_YOUTUBE     => __('labels.youtube')
+            UserSocialMedia::SOCIAL_MEDIA_KEY_YOUTUBE     => __('labels.youtube'),
+            UserSocialMedia::SOCIAL_MEDIA_KEY_ECATALOGUE  => __('labels.e_catalogue')
         ];
     }
 }

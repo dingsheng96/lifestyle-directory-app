@@ -17,9 +17,7 @@ class CareerService extends BaseService
     {
         $this->model->branch_id     =   $this->request->get('merchant', Auth::id());
         $this->model->position      =   $this->request->get('position');
-        $this->model->about         =   $this->request->get('about');
         $this->model->description   =   $this->request->get('description');
-        $this->model->benefit       =   $this->request->get('benefit');
         $this->model->min_salary    =   $this->request->get('min_salary');
         $this->model->max_salary    =   $this->request->get('max_salary');
         $this->model->show_salary   =   $this->request->has('show_salary');

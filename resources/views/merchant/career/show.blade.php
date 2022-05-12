@@ -57,20 +57,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="about" class="col-form-label col-sm-2">{{ __('labels.about') }}</label>
-                        <div class="col-sm-10">
-                            <span class="form-control-plaintext">{!! $career->about ?? '-' !!}</span>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="benefit" class="col-form-label col-sm-2">{{ __('labels.benefits') }}</label>
-                        <div class="col-sm-10">
-                            <span class="form-control-plaintext">{!! $career->benefit ?? '-' !!}</span>
-                        </div>
-                    </div>
-
                     <hr>
                     <p class="h5 mb-4">{{ __('labels.applicant_can_apply_via') }}</p>
 
