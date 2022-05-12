@@ -56,22 +56,22 @@ class Handler extends ExceptionHandler
                 $status_code_suffix = 'actions.read.fail';
 
                 if ($e instanceof AuthenticationException) {
-
                     $status_code = 401;
                     $status_code_prefix = 'modules.system';
                     $status_code_suffix = 'actions.force.login';
                     $message = __('messages.unauthenticated');
                 } elseif ($e instanceof AccessDeniedHttpException) {
-
                     $status_code = 403;
                     $status_code_prefix = 'modules.scope';
                     $status_code_suffix = 'actions.authenticate.fail';
                 } elseif ($e instanceof NotFoundHttpException) {
-
                     $message = __('messages.not_found');
                 } elseif ($e instanceof InvalidSignatureException) {
-
                     $message = __('messages.email_verification_link_expired');
+                } elseif ($e instanceof ReviewIdleException) {
+                    $status_code = 200;
+                    $status_code_prefix = 'modules.rating';
+                    $status_code_suffix = 'actions.create.fail';
                 }
 
                 return Response::instance()

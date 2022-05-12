@@ -2,6 +2,7 @@
 
 namespace App\Support\Services;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Media;
 use App\Models\Config;
@@ -9,8 +10,10 @@ use App\Models\Rateable;
 use App\Models\UserDevice;
 use App\Helpers\FileManager;
 use App\Models\DeviceSetting;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use App\Support\Services\BaseService;
+use App\Exceptions\ReviewIdleException;
 use App\Support\Services\DeviceService;
 
 class MemberService extends BaseService
@@ -126,24 +129,22 @@ class MemberService extends BaseService
             ->where('id', $this->request->get('merchant_id'))
             ->firstOrFail();
 
-        $latest_rating_from_user = Rateable::select('created_at')
+        $latest_rating_from_user = Rateable::query()
             ->where('user_id', $this->model->id)
-            ->whereHasMorph('rateable', User::class, function ($query) {
-                $query->merchant()
-                    ->where('user_id', $this->request->get('merchant_id'));
-            })
+            ->where('rateable_type', User::class)
+            ->where('rateable_id', $merchant->id)
             ->orderByDesc('created_at')
             ->first();
 
         $review_idle_period_in_days = Config::reviewIdlePeriodInDays()->value('value');
 
         throw_if(
-            $latest_rating_from_user->created_at->diffInDays(today()) <= $review_idle_period_in_days,
-            new \Exception("User are not allowed to review the same merchant within {$review_idle_period_in_days} days.")
+            $latest_rating_from_user && $latest_rating_from_user->created_at->diffInDays(today()) < $review_idle_period_in_days,
+            new ReviewIdleException("User are not allowed to review the same merchant within {$review_idle_period_in_days} days.")
         );
 
         $this->model->raters()
-            ->syncWithoutDetaching([
+            ->attach([
                 $merchant->id => [
                     'scale'     => $this->request->get('scale'),
                     'review'    => $this->request->get('review')
