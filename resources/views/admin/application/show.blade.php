@@ -3,6 +3,13 @@
 @section('content')
 
 <div class="container-fluid">
+
+    @if(session('resent'))
+    <div class="alert alert-info mb-3" role="alert">
+        {{ trans('app.resend_verify') }}
+    </div>
+    @endif
+
     <div class="row">
         <div class="col-12">
             <div class="card shadow border">
@@ -109,10 +116,19 @@
                 </div>
 
                 <div class="card-footer bg-transparent text-center text-md-right">
-                    <a href="{{ route('admin.applications.index') }}" class="btn btn-default">
+                    <a href="{{ route('admin.applications.index') }}" class="btn btn-default ml-2">
                         <i class="fas fa-caret-left"></i>
                         {{ __('labels.back') }}
                     </a>
+                    @if (!$application->has_filled_branch_details)
+                    <button type="submit" class="btn btn-purple float-right ml-2" form="resendVerificationEmailForm">
+                        <i class="fas fa-envelope"></i>
+                        {{ __('app.btn_resend_verification_email') }}
+                    </button>
+                    <form method="POST" action="{{ route('merchant.verification.resend', ['user' => $application->id]) }}" id="resendVerificationEmailForm">
+                        @csrf
+                    </form>
+                    @endif
                 </div>
 
 

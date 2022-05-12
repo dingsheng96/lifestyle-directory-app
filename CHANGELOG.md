@@ -24,6 +24,12 @@
 9. Add another input to add url, name('E-catalogue')
 10. Add import function for creating new branch, add default for career introduction, description, services and branch name.
 
+#### Registration Form-Merchant
+
+1. Registration flow -> Fill in the registration form>Store the data>Send verification link via email>Customer fill up and submit>application submit to CMS.
+2. New registration form only include, company name, company contact name, email address(username), password, pic name
+3. Remaining field to be filled up will be inside the verification form.
+
 ## 2021-11-10
 
 ### Updates

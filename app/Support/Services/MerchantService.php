@@ -42,9 +42,13 @@ class MerchantService extends BaseService
 
     public function store()
     {
-        $this->model->name = $this->request->get('name');
-        $this->model->mobile_no = $this->request->get('phone');
-        $this->model->type = User::USER_TYPE_MERCHANT;
+        if ($this->request->has('name') && !empty($this->request->get('name'))) {
+            $this->model->name = $this->request->get('name');
+        }
+
+        if ($this->request->has('phone') && !empty($this->request->get('phone'))) {
+            $this->model->mobile_no = $this->request->get('phone');
+        }
 
         if ($this->request->has('password') && !empty($this->request->get('password'))) {
             $this->model->password = $this->request->get('password');
@@ -61,6 +65,8 @@ class MerchantService extends BaseService
         if ($this->request->has('email') && !empty($this->request->get('email'))) {
             $this->model->email = $this->request->get('email');
         }
+
+        $this->model->type = User::USER_TYPE_MERCHANT;
 
         if ($this->model->isDirty()) {
             $this->model->save();
@@ -84,16 +90,35 @@ class MerchantService extends BaseService
             return new BranchDetail();
         });
 
-        $details->reg_no                =   $this->request->get('reg_no');
-        $details->pic_name              =   $this->request->get('pic_name');
-        $details->pic_contact           =   $this->request->get('pic_phone');
-        $details->pic_email             =   $this->request->get('pic_email');
-        $details->description           =   $this->request->get('description');
-        $details->services              =   $this->request->get('services');
-        $details->career_description    =   $this->request->get('career_desc');
+        if ($this->request->has('reg_no') && !empty($this->request->get('reg_no'))) {
+            $details->reg_no = $this->request->get('reg_no');
+        }
+
+        if ($this->request->has('pic_name') && !empty($this->request->get('pic_name'))) {
+            $details->pic_name = $this->request->get('pic_name');
+        }
+
+        if ($this->request->has('pic_phone') && !empty($this->request->get('pic_phone'))) {
+            $details->pic_contact = $this->request->get('pic_phone');
+        }
+
+        if ($this->request->has('pic_email') && !empty($this->request->get('pic_email'))) {
+            $details->pic_email = $this->request->get('pic_email');
+        }
+
+        if ($this->request->has('description') && !empty($this->request->get('description'))) {
+            $details->description = $this->request->get('description');
+        }
+
+        if ($this->request->has('services') && !empty($this->request->get('services'))) {
+            $details->services = $this->request->get('services');
+        }
+
+        if ($this->request->has('career_desc') && !empty($this->request->get('career_desc'))) {
+            $details->career_description = $this->request->get('career_desc');
+        }
 
         if ($details->isDirty()) {
-
             $this->model->branchDetail()->save($details);
         }
 
@@ -355,13 +380,13 @@ class MerchantService extends BaseService
     {
         $this->model->name = $this->request->get('name');
         $this->model->mobile_no = $this->request->get('phone');
+        $this->model->mobile_no = $this->request->get('phone');
 
         if ($this->request->has('password') && !empty($this->request->get('password'))) {
             $this->model->password = $this->request->get('password');
         }
 
         if ($this->model->isDirty()) {
-
             $this->model->save();
         }
 

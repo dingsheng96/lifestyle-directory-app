@@ -13,6 +13,12 @@
     </div>
     @endif
 
+    @if(session('verified'))
+    <div class="alert alert-info mb-3" role="alert">
+        {{ trans('app.verified') }}
+    </div>
+    @endif
+
     <div class="card card-body login-card-body shadow">
 
         <p class="login-box-msg">{{ __('app.login_title_main') }}</p>

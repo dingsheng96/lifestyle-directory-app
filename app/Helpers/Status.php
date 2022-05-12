@@ -58,6 +58,10 @@ class Status
             'draft' => [
                 'text' => __('labels.draft'),
                 'class' => 'badge badge-pill badge-lg badge-primary'
+            ],
+            'incomplete' => [
+                'text' => __('labels.incomplete'),
+                'class' => 'badge badge-pill badge-lg badge-info'
             ]
         ];
 

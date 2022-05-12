@@ -20,9 +20,9 @@ class CreateBranchDetailsTable extends Migration
         Schema::create('branch_details', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('branch_id')->index();
-            $table->string('reg_no');
+            $table->string('reg_no')->nullable();
             $table->string('pic_name');
-            $table->string('pic_contact');
+            $table->string('pic_contact')->nullable();
             $table->string('pic_email')->nullable();
             $table->longText('about')->nullable();
             $table->longText('services')->nullable();

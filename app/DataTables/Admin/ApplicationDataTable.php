@@ -23,21 +23,29 @@ class ApplicationDataTable extends DataTable
             ->eloquent($query)
             ->addIndexColumn()
             ->addColumn('action', function ($data) {
-                return view('admin.components.btn_action', [
+
+                $actions = [
                     'no_action' => $this->no_action ?: null,
                     'view' => [
                         'permission' => 'merchant.read',
                         'route' => route('admin.applications.show', ['application' => $data->id])
                     ],
-                    'update' => [
-                        'permission' => 'application.update',
-                        'route' => route('admin.applications.edit', ['application' => $data->id])
-                    ],
                     'delete' => [
                         'permission' => 'application.delete',
                         'route' => route('admin.applications.destroy', ['application' => $data->id])
                     ]
-                ])->render();
+                ];
+
+                if ($data->has_filled_branch_details) {
+                    $actions = array_merge($actions, [
+                        'update' => [
+                            'permission' => 'application.update',
+                            'route' => route('admin.applications.edit', ['application' => $data->id])
+                        ]
+                    ]);
+                }
+
+                return view('admin.components.btn_action', $actions)->render();
             })
             ->editColumn('created_at', function ($data) {
                 return $data->created_at->toDateTimeString();
@@ -46,6 +54,10 @@ class ApplicationDataTable extends DataTable
                 return $data->formatted_mobile_no;
             })
             ->editColumn('application_status', function ($data) {
+                if (!$data->has_filled_branch_details) {
+                    return $data->application_with_incomplete_branch_details_status_label;
+                }
+
                 return $data->application_status_label;
             })
             ->rawColumns(['action', 'status', 'application_status']);

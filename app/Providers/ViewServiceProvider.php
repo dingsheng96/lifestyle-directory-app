@@ -11,10 +11,12 @@ class ViewServiceProvider extends ServiceProvider
             'admin.merchant.*', 'admin.category.*', 'admin.member.*', 'admin.banner.*', 'merchant.branch.*', 'merchant.profile'
         ],
         \App\Http\View\Composers\CategoryComposer::class => [
-            'admin.merchant.*', 'merchant.auth.register', 'web.*'
+            'admin.merchant.*', 'merchant.auth.register', 'merchant.auth.verify',
+            'web.*'
         ],
         \App\Http\View\Composers\CountryStateComposer::class => [
-            'admin.merchant.*', 'merchant.branch.*', 'merchant.profile', 'merchant.auth.register', 'merchant.merchant.*'
+            'admin.merchant.*', 'merchant.branch.*', 'merchant.profile', 'merchant.auth.register', 'merchant.auth.verify',
+            'merchant.merchant.*'
         ],
         \App\Http\View\Composers\StatusComposer::class => [
             'admin.merchant.*', 'admin.admin.*', 'admin.member.*', 'admin.banner.*', 'admin.category.*', 'admin.career.*',

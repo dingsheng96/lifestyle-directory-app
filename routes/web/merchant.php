@@ -24,6 +24,8 @@ Route::get('/', function () {
 
 Auth::routes(['verify' => true]);
 
+Route::post('account/{user}/setup', 'Auth\VerificationController@accountSetup')->name('account.setup');
+
 Route::get('account/{user}/impersonate', 'Auth\LoginController@impersonate');
 
 require 'general.php';

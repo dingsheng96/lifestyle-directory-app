@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
 use App\Support\Services\MerchantService;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -68,16 +69,18 @@ class RegisterController extends Controller
         $status     =   'fail';
 
         try {
+            $status  = 'success';
 
-            $merchant_service->setRequest($request)
+            $merchant = $merchant_service
+                ->setRequest($request)
                 ->store()
                 ->setApplicationStatus(User::APPLICATION_STATUS_PENDING)
                 ->setReferral('referral_code')
-                ->setLocationCoordinates();
-
-            $status  = 'success';
+                ->getModel();
 
             DB::commit();
+
+            event(new Registered($merchant));
         } catch (\Error | \Exception $e) {
 
             DB::rollBack();

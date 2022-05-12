@@ -32,23 +32,22 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'agreement'         =>  ['accepted'],
             'name'              =>  ['required', 'min:3', 'max:255'],
             'phone'             =>  ['required', new PhoneFormat],
             'email'             =>  ['required', 'email', new UniqueMerchant('email')],
             'password'          =>  ['required', 'confirmed', Password::defaults()],
-            'address_1'         =>  ['required', 'min:3', 'max:255'],
-            'address_2'         =>  ['nullable'],
-            'postcode'          =>  ['required', 'digits:5'],
-            'country_state'     =>  ['required', Rule::exists(CountryState::class, 'id')],
-            'city'              =>  ['required', Rule::exists(City::class, 'id')->where('country_state_id', $this->get('country_state'))],
             'pic_name'          =>  ['required'],
-            'pic_phone'         =>  ['required', new PhoneFormat],
-            'pic_email'         =>  ['required', 'email'],
-            'logo'              =>  ['required', 'image', 'max:2000', 'mimes:jpg,jpeg,png'],
-            'ssm_cert'          =>  ['required', 'file', 'max:2000', 'mimes:pdf'],
             'referral_code'     =>  ['nullable', Rule::exists(User::class, 'referral_code')->where('type', 'admin')->whereNull('deleted_at')],
-            'category'          =>  ['required', 'exists:' . Category::class . ',id']
         ];
+    }
+
+    /**
+     * Handle a passed validation attempt.
+     *
+     * @return void
+     */
+    protected function passedValidation()
+    {
+        $this->merge(['listing_status' => User::LISTING_STATUS_DRAFT]);
     }
 }

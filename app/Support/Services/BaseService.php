@@ -75,15 +75,31 @@ class BaseService
             return new Address();
         });
 
-        $address->address_1 = $this->request->get('address_1');
-        $address->address_2 = $this->request->get('address_2');
-        $address->postcode  = $this->request->get('postcode');
-        $address->city_id   = $this->request->get('city');
-        $address->latitude  = $this->request->get('latitude', 0);
-        $address->longitude = $this->request->get('longitude', 0);
+        if ($this->request->has('address_1') && !empty($this->request->get('address_1'))) {
+            $address->address_1 = $this->request->get('address_1');
+        }
+
+        if ($this->request->has('address_2') && !empty($this->request->get('address_2'))) {
+            $address->address_2 = $this->request->get('address_2');
+        }
+
+        if ($this->request->has('postcode') && !empty($this->request->get('postcode'))) {
+            $address->postcode = $this->request->get('postcode');
+        }
+
+        if ($this->request->has('city') && !empty($this->request->get('city'))) {
+            $address->city_id = $this->request->get('city');
+        }
+
+        if ($this->request->has('latitude') && !empty($this->request->get('latitude'))) {
+            $address->latitude = $this->request->get('latitude', 0);
+        }
+
+        if ($this->request->has('longitude') && !empty($this->request->get('longitude'))) {
+            $address->longitude = $this->request->get('longitude', 0);
+        }
 
         if ($address->isDirty()) {
-
             $this->model->address()->save($address);
         }
 

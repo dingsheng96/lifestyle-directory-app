@@ -77,7 +77,8 @@ class MerchantDataTable extends DataTable
         return $model->newQuery()
             ->merchant()
             ->mainMerchant()
-            ->withCount(['subBranches', 'visitorHistories']);
+            ->withCount(['subBranches', 'visitorHistories'])
+            ->approvedApplication();
     }
 
     /**

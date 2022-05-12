@@ -29,6 +29,7 @@ use App\Models\BranchVisitorHistory;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
+use App\Mail\VerifyEmail as MailVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -81,6 +82,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function sendEmailVerificationNotification()
     {
+        if ($this->type == self::USER_TYPE_MERCHANT) {
+            $this->notify(new MailVerifyEmail());
+            return;
+        }
+
         $this->notify(new VerifyEmail());
     }
 
@@ -466,5 +472,33 @@ class User extends Authenticatable implements MustVerifyEmail
         $label = (new Status())->statusLabel($this->application_status);
 
         return '<span class="' . $label['class'] . ' px-3">' . $label['text'] . '</span>';
+    }
+
+    public function getHasFilledBranchDetailsAttribute(): bool
+    {
+        $require_columns = ['pic_name', 'pic_contact', 'pic_email', 'reg_no'];
+
+        foreach ($require_columns as $column) {
+            if (empty($this->branchDetail->{$column})) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public function getIncompleteBranchDetailsStatusLabelAttribute()
+    {
+        $label = (new Status())->statusLabel('incomplete');
+
+        return '<span class="' . $label['class'] . ' px-3">' . $label['text'] . '</span>';
+    }
+
+    public function getApplicationWithIncompleteBranchDetailsStatusLabelAttribute()
+    {
+        $application_status  = $this->application_status_label;
+        $incomplete_branch_details_status = $this->incomplete_branch_details_status_label;
+
+        return $application_status . '<br/>' . $incomplete_branch_details_status;
     }
 }

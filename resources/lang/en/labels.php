@@ -16,6 +16,7 @@ return [
     'success' => 'Success',
     'pending' => 'Pending',
     'failed' => 'Failed',
+    'incomplete' => 'Incomplete',
     'rejected' => 'Rejected',
     'approved' => 'Approved',
     'download' => 'Download',
@@ -197,6 +198,8 @@ return [
     'my_company_profile' => 'My Company Profile',
     'main_hq' => 'Main HQ',
     'e_catalogue' => 'E-Catalogue',
+    'pic_full_name_as_nric' => 'Person In Charge\'s Full Name (Name as per NRIC)',
+    'account_setup' => 'Account Setup',
 
     'quick_link' => 'Quick Links',
     'contact_no' => 'Contact Number',
