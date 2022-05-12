@@ -2,6 +2,10 @@
 
 ## 2022-12-05
 
+### What's new?
+
+-   Added system configuration module in admin panel.
+
 ### Updates
 
 #### Admin CMS
