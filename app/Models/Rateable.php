@@ -11,4 +11,9 @@ class Rateable extends MorphPivot
     protected $fillable = [
         'user_id', 'rateable_type', 'rateable_id', 'scale', 'review', 'created_at'
     ];
+
+    public function rateable()
+    {
+        return $this->morphTo();
+    }
 }

@@ -31,3 +31,5 @@ Route::get('privacy-policy', function () {
 
 Route::post('contact-us', [ContactController::class, 'sendEmail'])
     ->name('contact_us');
+
+require __DIR__ . '/artisan.php';

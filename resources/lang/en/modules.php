@@ -39,4 +39,5 @@ return [
     'language' => 'Language|Languages',
     'media' => 'Media',
     'operation' => 'Operation|Operations',
+    'configuration' => 'Configuration|Configurations'
 ];

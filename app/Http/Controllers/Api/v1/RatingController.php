@@ -51,7 +51,7 @@ class RatingController extends Controller
         }
 
         activity()->useLog('api:rating')
-            ->causedBy($request->user())
+            ->causedBy($user)
             ->performedOn(new Rateable())
             ->withProperties($request->all())
             ->log($message);

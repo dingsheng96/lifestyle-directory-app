@@ -41,6 +41,7 @@ class ModuleSeeder extends Seeder
             ['name' => 'banner', 'display' => 'Banner', 'description' => 'Banner Module'],
             ['name' => 'application', 'display' => 'Application', 'description' => 'Application Module'],
             ['name' => 'review', 'display' => 'Review', 'description' => 'Review Module'],
+            ['name' => 'config', 'display' => 'Configurations', 'description' => 'System Configurations'],
         ];
     }
 }

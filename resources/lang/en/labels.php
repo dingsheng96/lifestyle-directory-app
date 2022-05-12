@@ -200,6 +200,8 @@ return [
     'e_catalogue' => 'E-Catalogue',
     'pic_full_name_as_nric' => 'Person In Charge\'s Full Name (Name as per NRIC)',
     'account_setup' => 'Account Setup',
+    'search_radius_in_km' => 'Searching Radius (Kilometers)',
+    'review_idle_period_in_days' => 'User\'s Review Idle Period (Days)',
 
     'quick_link' => 'Quick Links',
     'contact_no' => 'Contact Number',

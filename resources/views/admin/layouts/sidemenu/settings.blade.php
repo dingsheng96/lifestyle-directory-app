@@ -37,4 +37,13 @@
 </li>
 @endcanany
 
+@canany(['config.update'])
+<li class="nav-item">
+    <a href="{{ route('admin.configs.index') }}" class="nav-link {{ Nav::hasSegment('configs', 1, 'active') }}">
+        <i class="nav-icon fas fa-cog"></i>
+        <p>{{ trans_choice('modules.configuration', 2) }}</p>
+    </a>
+</li>
+@endcanany
+
 @endcanany

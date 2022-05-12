@@ -4,11 +4,14 @@ namespace App\Support\Services;
 
 use App\Models\User;
 use App\Models\Media;
+use App\Models\Config;
+use App\Models\Rateable;
 use App\Models\UserDevice;
 use App\Helpers\FileManager;
 use App\Models\DeviceSetting;
 use Illuminate\Support\Facades\Hash;
 use App\Support\Services\BaseService;
+use App\Support\Services\DeviceService;
 
 class MemberService extends BaseService
 {
@@ -123,9 +126,20 @@ class MemberService extends BaseService
             ->where('id', $this->request->get('merchant_id'))
             ->firstOrFail();
 
+        $latest_rating_from_user = Rateable::select('created_at')
+            ->where('user_id', $this->model->id)
+            ->whereHasMorph('rateable', User::class, function ($query) {
+                $query->merchant()
+                    ->where('user_id', $this->request->get('merchant_id'));
+            })
+            ->orderByDesc('created_at')
+            ->first();
+
+        $review_idle_period_in_days = Config::reviewIdlePeriodInDays()->value('value');
+
         throw_if(
-            $this->model->raters()->where('id', $merchant->id)->exists(),
-            new \Exception('User already reviewed the same merchant.')
+            $latest_rating_from_user->created_at->diffInDays(today()) <= $review_idle_period_in_days,
+            new \Exception("User are not allowed to review the same merchant within {$review_idle_period_in_days} days.")
         );
 
         $this->model->raters()

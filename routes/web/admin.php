@@ -64,4 +64,7 @@ Route::middleware(['auth:' . User::USER_TYPE_ADMIN])->group(function () {
     Route::delete('media/{medium}', [MediaController::class, 'destroy'])->name('media.destroy');
 
     Route::resource('reviews', ReviewController::class)->only('index');
+
+    Route::resource('configs', ConfigController::class)
+        ->only('index', 'store');
 });
