@@ -97,4 +97,9 @@ class Media extends Model
     {
         return $this->type == self::TYPE_THUMBNAIL;
     }
+
+    public function getSystemLogoAsPreviewImageAttribute()
+    {
+        return asset('assets/logo_preview.png');
+    }
 }
