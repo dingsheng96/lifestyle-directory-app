@@ -183,6 +183,15 @@
                         <i class="fas fa-caret-left"></i>
                         {{ __('labels.back') }}
                     </a>
+                    @if (is_null($branch->password))
+                    <button type="submit" class="btn btn-info float-right ml-2" form="resendVerificationEmailForm">
+                        <i class="fas fa-envelope"></i>
+                        {{ __('app.btn_resend_verification_email') }}
+                    </button>
+                    <form method="POST" action="{{ route('merchant.verification.resend', ['merchant' => $branch->id]) }}" id="resendVerificationEmailForm" class="d-none">
+                        @csrf
+                    </form>
+                    @endif
                 </div>
 
             </div>

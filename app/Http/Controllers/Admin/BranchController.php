@@ -8,10 +8,14 @@ use App\Models\Media;
 use App\Helpers\Message;
 use App\Helpers\Response;
 use App\Models\Permission;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\MerchantBranchesImport;
+use Illuminate\Support\Facades\Storage;
 use App\Support\Services\MerchantService;
 use App\Http\Requests\Admin\MerchantRequest;
 
@@ -204,5 +208,41 @@ class BranchController extends Controller
                 'redirect_to' => route('admin.merchants.edit', ['merchant' => $merchant->id])
             ])
             ->sendJson();
+    }
+
+    public function import(Request $request, User $merchant)
+    {
+        $request->validate(['file' => ['required', 'file', 'mimes:xlsx', 'max:10000']]);
+
+        try {
+            return DB::transaction(function () use ($request, $merchant) {
+
+                $message = Message::instance()->format('import', strtolower(trans_choice('labels.branch', 1)), 'success');
+
+                Excel::import(new MerchantBranchesImport($merchant), $request->file('file'));
+
+                activity()->useLog('admin:merchant_branch')
+                    ->causedBy(Auth::user())
+                    ->performedOn($merchant)
+                    ->withProperties($request->all())
+                    ->log($message);
+
+                return redirect()->back()->withSuccess($message);
+            });
+        } catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+
+            $file_path = 'import_log/import_branches_logs_' . time() . '.txt';
+
+            Storage::disk('public')->put($file_path, json_encode($e->failures()));
+
+            return response()->download(public_path('storage/' . $file_path));
+        } catch (\Error | \Exception $e) {
+
+            Log::error($e->getMessage());
+            Log::error($e->getTraceAsString());
+
+            return redirect()->back()
+                ->with('fail', $e->getMessage());
+        }
     }
 }

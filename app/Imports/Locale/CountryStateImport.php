@@ -19,7 +19,6 @@ class CountryStateImport implements ToModel, WithValidation, SkipsEmptyRows
      */
     public function model(array $row)
     {
-
         return CountryState::firstOrCreate(['name' => $row[0]]);
     }
 

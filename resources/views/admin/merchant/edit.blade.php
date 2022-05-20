@@ -447,7 +447,11 @@
                             <div class="tab-pane fade" id="list-branches" role="tabpanel" aria-labelledby="list-branches-list">
                                 <div class="row mb-3">
                                     <div class="col-12">
-                                        <a href="{{ route('admin.merchants.branches.create', ['merchant' => $merchant->id]) }}" class="btn btn-purple">
+                                        <a href="#importBranchModal" class="btn btn-info mr-1" data-toggle="modal">
+                                            <i class="fas fa-file-import"></i>
+                                            {{ __('labels.import') }}
+                                        </a>
+                                        <a href="{{ route('admin.merchants.branches.create', ['merchant' => $merchant->id]) }}" class="btn btn-purple mr-1">
                                             <i class="fas fa-plus"></i>
                                             {{ __('labels.create') }}
                                         </a>
@@ -480,6 +484,8 @@
         </div>
     </div>
 </div>
+
+@include('admin.merchant.branch.import')
 
 @endsection
 

@@ -78,9 +78,9 @@ class RegisterController extends Controller
                 ->setReferral('referral_code')
                 ->getModel();
 
-            DB::commit();
-
             event(new Registered($merchant));
+
+            DB::commit();
         } catch (\Error | \Exception $e) {
 
             DB::rollBack();

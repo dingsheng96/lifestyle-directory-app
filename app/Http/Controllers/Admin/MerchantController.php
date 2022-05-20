@@ -261,4 +261,19 @@ class MerchantController extends Controller
             ->withData(compact('positions'))
             ->sendJson();
     }
+
+    public function resendVerificationEmail(User $user)
+    {
+        if (!$user->is_merchant) {
+            return back()->with('fail', 'This account is not a merchant.');
+        }
+
+        if ($user->hasVerifiedEmail()) {
+            return back()->with('fail', 'This account has already been verified.');
+        }
+
+        $user->sendEmailVerificationNotification();
+
+        return back()->with('success', 'Verification email has been sent.');
+    }
 }

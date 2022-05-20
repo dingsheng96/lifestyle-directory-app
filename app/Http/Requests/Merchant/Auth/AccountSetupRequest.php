@@ -3,10 +3,12 @@
 namespace App\Http\Requests\Merchant\Auth;
 
 use App\Models\City;
+use App\Models\User;
 use App\Models\Category;
 use App\Rules\PhoneFormat;
 use App\Models\CountryState;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AccountSetupRequest extends FormRequest
@@ -28,18 +30,31 @@ class AccountSetupRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'agreement'         =>  ['accepted'],
-            'address_1'         =>  ['required', 'min:3', 'max:255'],
-            'address_2'         =>  ['nullable'],
-            'postcode'          =>  ['required', 'digits:5'],
-            'country_state'     =>  ['required', Rule::exists(CountryState::class, 'id')],
-            'city'              =>  ['required', Rule::exists(City::class, 'id')->where('country_state_id', $this->get('country_state'))],
-            'pic_phone'         =>  ['required', new PhoneFormat],
-            'pic_email'         =>  ['required', 'email'],
-            'logo'              =>  ['required', 'image', 'max:2000', 'mimes:jpg,jpeg,png'],
-            'ssm_cert'          =>  ['required', 'file', 'max:2000', 'mimes:pdf,jpg,jpeg,png'],
-            'category'          =>  ['required', 'exists:' . Category::class . ',id']
+        $user = $this->route('user');
+
+        $rules = [
+            'agreement' => ['accepted'],
+            'logo' =>  ['required', 'image', 'max:2000', 'mimes:jpg,jpeg,png'],
+            'ssm_cert' =>  ['required', 'file', 'max:2000', 'mimes:pdf,jpg,jpeg,png'],
         ];
+
+        if ($user->is_main_branch) {
+            $rules += [
+                'address_1'         =>  ['required', 'min:3', 'max:255'],
+                'address_2'         =>  ['nullable'],
+                'postcode'          =>  ['required', 'digits:5'],
+                'country_state'     =>  ['required', Rule::exists(CountryState::class, 'id')],
+                'city'              =>  ['required', Rule::exists(City::class, 'id')->where('country_state_id', $this->get('country_state'))],
+                'pic_phone'         =>  ['required', new PhoneFormat],
+                'pic_email'         =>  ['required', 'email'],
+                'category'          =>  ['required', 'exists:' . Category::class . ',id']
+            ];
+        } elseif ($user->is_sub_branch) {
+            $rules += [
+                'password' => ['required', 'confirmed', Password::defaults()],
+            ];
+        }
+
+        return $rules;
     }
 }

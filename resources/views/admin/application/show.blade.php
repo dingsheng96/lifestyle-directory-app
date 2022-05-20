@@ -125,7 +125,7 @@
                         <i class="fas fa-envelope"></i>
                         {{ __('app.btn_resend_verification_email') }}
                     </button>
-                    <form method="POST" action="{{ route('merchant.verification.resend', ['user' => $application->id]) }}" id="resendVerificationEmailForm">
+                    <form method="POST" action="{{ route('admin.merchants.verification.resend', ['user' => $application->id]) }}" id="resendVerificationEmailForm">
                         @csrf
                     </form>
                     @endif

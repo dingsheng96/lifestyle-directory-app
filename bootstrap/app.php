@@ -52,8 +52,8 @@ $app->singleton(
 |
 */
 
-$app->bind('path.public', function () {
-    return __DIR__ . '/../../';
-});
+// $app->bind('path.public', function () {
+//     return __DIR__ . '/../../';
+// });
 
 return $app;

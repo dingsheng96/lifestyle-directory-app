@@ -29,6 +29,7 @@ class LanguageTranslationsImport implements OnEachRow, WithValidation, SkipsEmpt
      */
     public function model(array $row)
     {
+        //
     }
 
     public function rules(): array

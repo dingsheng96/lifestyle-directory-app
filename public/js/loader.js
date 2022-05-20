@@ -9,7 +9,12 @@ function hideLoading() {
 $(document).on('submit','form', function() {
 
     if($(this).hasClass('no-load') || !$(this).hasClass('loading')) {
+        if ($(this).hasClass('no-disabled')) {
+            return;
+        }
+
         $(this).find(":submit").attr("disabled", "disabled");
+
         return;
     }
 

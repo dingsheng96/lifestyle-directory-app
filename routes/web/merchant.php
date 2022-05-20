@@ -41,6 +41,9 @@ Route::middleware(['auth:' . User::USER_TYPE_MERCHANT])->group(function () {
     Route::resource('merchants', MerchantController::class)
         ->only(['show', 'edit', 'update']);
 
+    Route::post('branches/import', 'BranchController@import')
+        ->name('branches.import');
+
     Route::resource('branches', BranchController::class);
 
     Route::post('media/reorder', [MediaController::class, 'reorder'])->name('media.reorder');

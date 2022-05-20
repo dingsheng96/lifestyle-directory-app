@@ -305,7 +305,8 @@ class MerchantService extends BaseService
 
     public function setLocationCoordinates()
     {
-        $geocoder = (new Geocoding())->setStreetAddress($this->request->get('address_1'), $this->request->get('address_2'))
+        $geocoder = (new Geocoding())
+            ->setStreetAddress($this->request->get('address_1'), $this->request->get('address_2'))
             ->setPostCode($this->request->get('postcode'))
             ->setCity($this->request->get('city'))
             ->setCountryState($this->request->get('country_state'))
@@ -355,21 +356,21 @@ class MerchantService extends BaseService
     public function storeSocialMedia()
     {
         foreach ((new Misc())->getSocialMediaKeys() as $media_key => $media_text) {
+            if ($this->request->has($media_key)) {
+                $social_media = $this->model->userSocialMedia()
+                    ->where('media_key', $media_key)
+                    ->firstOr(function () {
+                        return new UserSocialMedia();
+                    });
 
-            $social_media = $this->model->userSocialMedia()
-                ->where('media_key', $media_key)
-                ->firstOr(function () {
-                    return new UserSocialMedia();
-                });
+                $social_media->media_key    = $media_key;
+                $social_media->media_value  = ($media_key == UserSocialMedia::SOCIAL_MEDIA_KEY_WHATSAPP)
+                    ? (new Misc())->phoneStoreFormat($this->request->get($media_key))
+                    : $this->request->get($media_key);
 
-            $social_media->media_key    = $media_key;
-            $social_media->media_value  = ($media_key == UserSocialMedia::SOCIAL_MEDIA_KEY_WHATSAPP)
-                ? (new Misc())->phoneStoreFormat($this->request->get($media_key))
-                : $this->request->get($media_key);
-
-            if ($social_media->isDirty()) {
-
-                $this->model->userSocialMedia()->save($social_media);
+                if ($social_media->isDirty()) {
+                    $this->model->userSocialMedia()->save($social_media);
+                }
             }
         }
 

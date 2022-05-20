@@ -48,6 +48,10 @@
             </div>
         </div>
         <div class="col-12 mb-3">
+            <a href="#importBranchModal" class="btn btn-info mr-1" data-toggle="modal">
+                <i class="fas fa-file-import"></i>
+                {{ __('labels.import') }} {{ trans_choice('labels.branch', 1) }}
+            </a>
             <a href="{{ route('merchant.branches.create') }}" class="btn btn-purple">
                 <i class="fas fa-plus"></i>
                 {{ __('labels.create') }} {{ trans_choice('labels.branch', 1) }}
@@ -65,6 +69,8 @@
         </div>
     </div>
 </div>
+
+@include('merchant.branch.import')
 
 @endsection
 

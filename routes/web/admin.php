@@ -45,7 +45,13 @@ Route::middleware(['auth:' . User::USER_TYPE_ADMIN])->group(function () {
 
     Route::resource('members', MemberController::class);
 
+    Route::post('merchants/{user}/verification/resend', 'MerchantController@resendVerificationEmail')
+        ->name('merchants.verification.resend');
+
     Route::resource('merchants', MerchantController::class);
+
+    Route::post('merchants/{merchant}/branches/import', 'BranchController@import')
+        ->name('merchants.branches.import');
 
     Route::resource('merchants.branches', BranchController::class);
 

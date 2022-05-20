@@ -117,12 +117,20 @@ class VerificationController extends Controller
 
             return DB::transaction(function () use ($merchant_service, $request, $message, $user) {
 
-                $merchant = $merchant_service
-                    ->setModel($user)
-                    ->setRequest($request)
-                    ->store()
-                    ->setLocationCoordinates()
-                    ->getModel();
+                if ($user->is_main_branch) {
+                    $merchant = $merchant_service
+                        ->setModel($user)
+                        ->setRequest($request)
+                        ->store()
+                        ->setLocationCoordinates()
+                        ->getModel();
+                } elseif ($user->is_sub_branch) {
+                    $merchant = $merchant_service
+                        ->setModel($user)
+                        ->setRequest($request)
+                        ->storeBranch($user->mainBranch()->first())
+                        ->getModel();
+                }
 
                 activity()->useLog('merchant:register')
                     ->causedByAnonymous()

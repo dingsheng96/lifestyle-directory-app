@@ -187,10 +187,19 @@
                         <i class="fas fa-caret-left"></i>
                         {{ __('labels.previous') }}
                     </button>
-                    <button type="button" class="btn btn-purple btnNextTab float-right">
+                    <button type="button" class="btn btn-purple btnNextTab float-right ml-2">
                         <i class="fas fa-caret-right"></i>
                         {{ __('labels.next') }}
                     </button>
+                    @if (is_null($branch->password))
+                    <button type="submit" class="btn btn-info float-right ml-2" form="resendVerificationEmailForm">
+                        <i class="fas fa-envelope"></i>
+                        {{ __('app.btn_resend_verification_email') }}
+                    </button>
+                    <form method="POST" action="{{ route('admin.merchants.verification.resend', ['user' => $branch->id]) }}" id="resendVerificationEmailForm" class="d-none">
+                        @csrf
+                    </form>
+                    @endif
                 </div>
 
             </div>

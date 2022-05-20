@@ -33,6 +33,7 @@
                             <input type="email" name="email" id="email" value="{{ $merchant->email }}" class="form-control form-control-lg @error('email') is-invalid @enderror" placeholder="Eg: example@email.com" disabled>
                         </div>
                     </div>
+                    @if ($merchant->is_main_branch)
                     <div class="col-12 col-lg-6 mb-4">
                         <div class="form-group-lg">
                             <label for="reg_no" class="label-text required">{!! trans('labels.reg_no') !!}</label>
@@ -124,8 +125,34 @@
                             @enderror
                         </div>
                     </div>
+                    @elseif($merchant->is_sub_branch)
+                    <div class="col-12 col-lg-6 mb-4">
+                        <div class="form-group-lg">
+                            <label for="password" class="label-text required">{!! trans('labels.password') !!}</label>
+                            <input type="password" name="password" id="password" class="form-control form-control-lg @error('password') is-invalid @enderror" autocomplete="off" required>
+                            <small class="form-text text-muted">* {!! __('messages.password_format') !!}</small>
+                            @error('password')
+                            <div class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 mb-4">
+                        <div class="form-group-lg">
+                            <label for="password_confirmation" class="label-text required ">{!! trans('labels.password_confirmation') !!}</label>
+                            <input type="password" name="password_confirmation" id="password_confirmation" value="{{ old('password_confirmation') }}" class="form-control form-control-lg @error('password_confirmation') is-invalid @enderror" autocomplete="off" required>
+                            @error('password_confirmation')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+                    @endif
                 </div>
 
+                @if ($merchant->is_main_branch)
                 <div class="row mb-5">
                     <div class="col-12 mb-4">
                         <h3>{!! trans('labels.personal_details') !!}</h3>
@@ -161,7 +188,7 @@
                         </div>
                     </div>
                 </div>
-
+                @endif
                 <div class="row mb-5">
                     <div class="col-12 mb-4">
                         <h3>{!! trans('labels.upload_verification_documents') !!}</h3>
@@ -196,7 +223,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row mb-5">
                     <div class="col-12 mb-4">
                         <div class="form-group-lg">
